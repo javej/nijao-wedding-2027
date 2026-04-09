@@ -1,0 +1,26 @@
+frontend/app/(main)/dev/tokens/page.tsx
+  1358f4e607211d84 32
+frontend/app/globals.css
+  1358f4e607211d84 87-102,139-154
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "e54f6bf7052a6a6feae4c3b590efbc07bdeb8e76",
+  "prompts": {
+    "1358f4e607211d84": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a6e4f733-66f4-47f8-92aa-2ac6fa57cfa5",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 136,
+      "total_deletions": 123,
+      "accepted_lines": 68,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/f097945fe20f0a389703d5b3e6ba6e852bb1900f8d210c509c63f777e3a6c162"
+    }
+  }
+}
