@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nijao-wedding-2027 — Design Directions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ─── DESIGN TOKENS ─────────────────────────────────── */
+    :root {
+      --deep-matcha:     #676930;
+      --raspberry:       #9c4051;
+      --matcha-latte:    #9fc768;
+      --strawberry-jam:  #b55a64;
+      --matcha-chiffon:  #b2bf93;
+      --berry-meringue:  #c98d8e;
+      --golden-matcha:   #baaf2f;
+      --strawberry-milk: #e8bcbc;
+      --background:      #faf9f6;
+      --text-dark:       #1a1a1a;
+      --text-light:      #ffffff;
+    }
+
+    /* ─── RESET & BASE ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #111;
+      color: var(--text-light);
+    }
+
+    /* ─── HEADER / NAV ──────────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(17,17,17,0.95);
+      backdrop-filter: blur(8px);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.125rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.7);
+    }
+    nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+    nav button {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.375rem 0.75rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    nav button:hover { color: white; border-color: rgba(255,255,255,0.5); }
+    nav button.active {
+      background: white;
+      color: #111;
+      border-color: white;
+    }
+
+    /* ─── MAIN CONTENT ──────────────────────────────────── */
+    main {
+      padding-top: 56px;
+    }
+
+    /* ─── DIRECTION CONTAINERS ──────────────────────────── */
+    .direction {
+      display: none;
+    }
+    .direction.active {
+      display: block;
+    }
+
+    /* ─── DIRECTION LABEL ────────────────────────────────── */
+    .direction-label {
+      background: #1a1a1a;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .direction-label h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+    .direction-label p {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .direction-label .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ─── SCREEN GRID ────────────────────────────────────── */
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: #333;
+    }
+
+    /* ─── SCREEN ─────────────────────────────────────────── */
+    .screen {
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem 1.5rem;
+    }
+    .screen-label {
+      position: absolute;
+      top: 1rem; left: 1rem;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* DIRECTION A: CINEMATIC DARK                            */
+    /* ─────────────────────────────────────────────────────── */
+
+    /* A — Screen 1: Monogram Loader */
+    .a-monogram {
+      background: #0e0f0a;
+      justify-content: center;
+      align-items: center;
+    }
+    .a-monogram .monogram {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 7rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--deep-matcha);
+      line-height: 1;
+    }
+    .a-monogram .subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(103,105,48,0.5);
+      margin-top: 1.5rem;
+    }
+
+    /* A — Screen 2: Hero */
+    .a-hero {
+      background: #0d0608;
+      justify-content: flex-end;
+      align-items: flex-start;
+      padding: 2rem;
+    }
+    .a-hero .hero-image-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(156,64,81,0.08) 0%,
+        rgba(13,6,8,0.85) 70%,
+        rgba(13,6,8,1) 100%
+      );
+    }
+    .a-hero .hero-photo-sim {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 30%, rgba(156,64,81,0.15) 0%, transparent 70%);
+    }
+    .a-hero .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .a-hero .kicker {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--raspberry);
+      margin-bottom: 1rem;
+    }
+    .a-hero .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: white;
+    }
+    .a-hero .headline em {
+      font-style: italic;
+      color: var(--raspberry);
+    }
+    .a-hero .date {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: 1.25rem;
+    }
+
+    /* A — Screen 3: RSVP */
+    .a-rsvp {
+      background: #0c0d06;
+      justify-content: flex-end;
+      padding: 2rem;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+    .a-rsvp .chat-prompt {
+      background: rgba(186,175,47,0.12);
+      border: 1px solid rgba(186,175,47,0.25);
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.5;
+      max-width: 85%;
+      align-self: flex-start;
+    }
+    .a-rsvp .chat-response {
+      background: var(--golden-matcha);
+      border-radius: 16px 16px 4px 16px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: #1a1a1a;
+      line-height: 1.5;
+      max-width: 80%;
+      align-self: flex-end;
+    }
+    .a-rsvp .chat-confirm {
+      background: rgba(186,175,47,0.08);
+      border: 1px solid rgba(186,175,47,0.2);
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--golden-matcha);
+      line-height: 1.5;
+      max-width: 85%;
+      align-self: flex-start;
+    }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* DIRECTION B: LIGHT EDITORIAL                           */
+    /* ─────────────────────────────────────────────────────── */
+
+    /* B — Screen 1: Monogram */
+    .b-monogram {
+      background: var(--background);
+      justify-content: center;
+      align-items: center;
+    }
+    .b-monogram .monogram {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 7rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--deep-matcha);
+      line-height: 1;
+    }
+    .b-monogram .subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(103,105,48,0.5);
+      margin-top: 1.5rem;
+    }
+
+    /* B — Screen 2: Hero */
+    .b-hero {
+      background: var(--background);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .b-hero .rule {
+      width: 40px;
+      height: 1px;
+      background: var(--raspberry);
+      margin: 0 auto 1.5rem;
+    }
+    .b-hero .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text-dark);
+    }
+    .b-hero .headline em {
+      font-style: italic;
+      color: var(--raspberry);
+    }
+    .b-hero .tagline {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(26,26,26,0.4);
+      margin-top: 1.5rem;
+    }
+    .b-hero .cta {
+      margin-top: 2rem;
+      padding: 0.75rem 2rem;
+      border: 1px solid var(--raspberry);
+      color: var(--raspberry);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    /* B — Screen 3: RSVP */
+    .b-rsvp {
+      background: #f5f3ee;
+      justify-content: flex-end;
+      padding: 2rem;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+    .b-rsvp .screen-label { color: rgba(26,26,26,0.4); }
+    .b-rsvp .chat-prompt {
+      background: white;
+      border: 1px solid rgba(186,175,47,0.3);
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: var(--text-dark);
+      line-height: 1.5;
+      max-width: 85%;
+      align-self: flex-start;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .b-rsvp .chat-response {
+      background: var(--golden-matcha);
+      border-radius: 16px 16px 4px 16px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: white;
+      line-height: 1.5;
+      max-width: 80%;
+      align-self: flex-end;
+    }
+    .b-rsvp .chat-confirm {
+      background: white;
+      border: 1px solid rgba(186,175,47,0.3);
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--golden-matcha);
+      line-height: 1.5;
+      max-width: 85%;
+      align-self: flex-start;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* DIRECTION C: WARM ORGANIC                              */
+    /* ─────────────────────────────────────────────────────── */
+
+    /* C — Screen 1: Monogram */
+    .c-monogram {
+      background: #f2ede4;
+      justify-content: center;
+      align-items: center;
+    }
+    .c-monogram .monogram {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 7rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--deep-matcha);
+      line-height: 1;
+    }
+    .c-monogram .ornament {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--raspberry);
+      opacity: 0.4;
+      margin-bottom: 0.5rem;
+    }
+    .c-monogram .subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(103,105,48,0.5);
+      margin-top: 1.5rem;
+    }
+
+    /* C — Screen 2: Hero */
+    .c-hero {
+      background: #f2ede4;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+    }
+    .c-hero .left-accent {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--raspberry);
+    }
+    .c-hero .content { max-width: 80%; }
+    .c-hero .names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--raspberry);
+      margin-bottom: 0.75rem;
+    }
+    .c-hero .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.75rem;
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text-dark);
+    }
+    .c-hero .headline em {
+      font-style: italic;
+    }
+    .c-hero .divider {
+      width: 32px;
+      height: 1px;
+      background: var(--matcha-chiffon);
+      margin: 1.25rem 0;
+    }
+    .c-hero .date {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(26,26,26,0.45);
+    }
+
+    /* C — Screen 3: RSVP */
+    .c-rsvp {
+      background: #ede8df;
+      justify-content: flex-end;
+      padding: 2rem;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+    .c-rsvp .screen-label { color: rgba(26,26,26,0.4); }
+    .c-rsvp .chat-prompt {
+      background: white;
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: var(--text-dark);
+      line-height: 1.5;
+      max-width: 85%;
+      align-self: flex-start;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .c-rsvp .chat-response {
+      background: var(--deep-matcha);
+      border-radius: 16px 16px 4px 16px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: white;
+      line-height: 1.5;
+      max-width: 80%;
+      align-self: flex-end;
+    }
+    .c-rsvp .chat-confirm {
+      background: white;
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--deep-matcha);
+      line-height: 1.5;
+      max-width: 85%;
+      align-self: flex-start;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* DIRECTION D: FULL BLEED COLOR                          */
+    /* ─────────────────────────────────────────────────────── */
+
+    /* D — Screen 1: Monogram */
+    .d-monogram {
+      background: var(--deep-matcha);
+      justify-content: center;
+      align-items: center;
+    }
+    .d-monogram .monogram {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 7rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+    }
+    .d-monogram .subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-top: 1.5rem;
+    }
+
+    /* D — Screen 2: Hero */
+    .d-hero {
+      background: var(--raspberry);
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+    }
+    .d-hero .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: white;
+    }
+    .d-hero .headline em {
+      font-style: italic;
+      opacity: 0.7;
+    }
+    .d-hero .date {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 1.5rem;
+    }
+    .d-hero .scroll-hint {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* D — Screen 3: RSVP */
+    .d-rsvp {
+      background: var(--golden-matcha);
+      justify-content: flex-end;
+      padding: 2rem;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+    .d-rsvp .chat-prompt {
+      background: rgba(255,255,255,0.25);
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: white;
+      line-height: 1.5;
+      max-width: 85%;
+      align-self: flex-start;
+    }
+    .d-rsvp .chat-response {
+      background: white;
+      border-radius: 16px 16px 4px 16px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: var(--text-dark);
+      line-height: 1.5;
+      max-width: 80%;
+      align-self: flex-end;
+    }
+    .d-rsvp .chat-confirm {
+      background: rgba(255,255,255,0.2);
+      border-radius: 16px 16px 16px 4px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      font-style: italic;
+      color: white;
+      line-height: 1.5;
+      max-width: 85%;
+      align-self: flex-start;
+    }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* DIRECTION E: SERIF & FILM                             */
+    /* ─────────────────────────────────────────────────────── */
+
+    /* E — Screen 1: Monogram */
+    .e-monogram {
+      background: #060606;
+      justify-content: center;
+      align-items: center;
+    }
+    .e-monogram .monogram {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: white;
+      line-height: 1;
+      opacity: 0.92;
+    }
+    .e-monogram .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.875rem;
+      font-style: italic;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.3);
+      margin-top: 2rem;
+    }
+
+    /* E — Screen 2: Hero */
+    .e-hero {
+      background: #0a0a0a;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+    }
+    .e-hero .vol {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 2rem;
+    }
+    .e-hero .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4.5rem;
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: white;
+    }
+    .e-hero .headline .accent-word {
+      color: var(--raspberry);
+    }
+    .e-hero .byline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.35);
+      margin-top: 2rem;
+    }
+
+    /* E — Screen 3: RSVP */
+    .e-rsvp {
+      background: #0a0a0a;
+      justify-content: flex-end;
+      padding: 2rem;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+    .e-rsvp .rsvp-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 0.5rem;
+      align-self: flex-start;
+    }
+    .e-rsvp .chat-prompt {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 0;
+      padding: 0.875rem 1.125rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.0625rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.5;
+      max-width: 90%;
+      align-self: flex-start;
+    }
+    .e-rsvp .chat-response {
+      background: var(--raspberry);
+      border-radius: 0;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: white;
+      line-height: 1.5;
+      max-width: 75%;
+      align-self: flex-end;
+    }
+    .e-rsvp .chat-confirm {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--golden-matcha);
+      line-height: 1.4;
+      max-width: 90%;
+      align-self: flex-start;
+    }
+
+    /* ─────────────────────────────────────────────────────── */
+    /* DIRECTION F: INTIMATE & CLOSE                          */
+    /* ─────────────────────────────────────────────────────── */
+
+    /* F — Screen 1: Monogram */
+    .f-monogram {
+      background: #1c1712;
+      justify-content: center;
+      align-items: center;
+    }
+    .f-monogram .monogram {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5.5rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--strawberry-milk);
+      line-height: 1;
+      opacity: 0.85;
+    }
+    .f-monogram .ring {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 1px solid rgba(232,188,188,0.15);
+    }
+    .f-monogram .subtitle {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(232,188,188,0.25);
+      margin-top: 1.75rem;
+    }
+
+    /* F — Screen 2: Hero */
+    .f-hero {
+      background: #1a1410;
+      justify-content: flex-end;
+      align-items: flex-start;
+      padding: 2rem;
+    }
+    .f-hero .photo-sim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(28,23,18,0.2) 0%,
+        rgba(28,23,18,0.0) 30%,
+        rgba(28,23,18,0.7) 70%,
+        rgba(28,23,18,1) 100%
+      );
+    }
+    .f-hero .photo-texture {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, rgba(181,90,100,0.12) 0%, transparent 60%);
+    }
+    .f-hero .content {
+      position: relative;
+      z-index: 2;
+    }
+    .f-hero .name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.875rem;
+      letter-spacing: 0.15em;
+      color: rgba(232,188,188,0.6);
+      margin-bottom: 0.75rem;
+    }
+    .f-hero .headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.25rem;
+      font-weight: 300;
+      line-height: 1.15;
+      color: rgba(255,255,255,0.92);
+    }
+    .f-hero .headline em {
+      font-style: italic;
+      color: var(--strawberry-milk);
+    }
+    .f-hero .date {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-top: 1rem;
+    }
+
+    /* F — Screen 3: RSVP */
+    .f-rsvp {
+      background: #1a1410;
+      justify-content: flex-end;
+      padding: 2rem;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+    .f-rsvp .chat-prompt {
+      background: rgba(232,188,188,0.08);
+      border: 1px solid rgba(232,188,188,0.15);
+      border-radius: 12px 12px 12px 3px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+      max-width: 85%;
+      align-self: flex-start;
+    }
+    .f-rsvp .chat-response {
+      background: var(--strawberry-jam);
+      border-radius: 12px 12px 3px 12px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      color: white;
+      line-height: 1.5;
+      max-width: 75%;
+      align-self: flex-end;
+    }
+    .f-rsvp .chat-confirm {
+      background: rgba(232,188,188,0.06);
+      border: 1px solid rgba(232,188,188,0.12);
+      border-radius: 12px 12px 12px 3px;
+      padding: 0.875rem 1.125rem;
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--strawberry-milk);
+      line-height: 1.6;
+      max-width: 85%;
+      align-self: flex-start;
+    }
+
+    /* ─── COMPARISON SECTION ─────────────────────────────── */
+    .comparison {
+      display: none;
+    }
+    .comparison.active {
+      display: block;
+    }
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1px;
+      background: #333;
+    }
+    .comparison-cell {
+      padding: 1.5rem 1rem;
+      text-align: center;
+    }
+    .comparison-cell h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+    .comparison-cell p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+    }
+    .swatch-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin: 0.75rem 0;
+    }
+    .swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      margin: 2px;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: #1a1a1a;
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.08em;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    footer span {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>nijao · design directions</h1>
+    <nav>
+      <button class="active" onclick="showDirection('a')">A · Dark</button>
+      <button onclick="showDirection('b')">B · Editorial</button>
+      <button onclick="showDirection('c')">C · Organic</button>
+      <button onclick="showDirection('d')">D · Color</button>
+      <button onclick="showDirection('e')">E · Serif</button>
+      <button onclick="showDirection('f')">F · Intimate</button>
+      <button onclick="showDirection('compare')">⊞ Compare</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- DIRECTION A: CINEMATIC DARK                        -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="direction active" id="dir-a">
+      <div class="direction-label">
+        <h2>Direction A — Cinematic Dark</h2>
+        <p>Dark-ground chapters where each accent color becomes the dominant hue of its section. Inspired by film credits and editorial cinema. The wedding website as a late-night screening.</p>
+        <span class="tag" style="background:rgba(103,105,48,0.2); color:var(--matcha-latte);">Dramatic</span>
+        <span class="tag" style="background:rgba(156,64,81,0.2); color:var(--berry-meringue);">Cinematic</span>
+        <span class="tag" style="background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.5);">High contrast</span>
+      </div>
+      <div class="screens">
+        <!-- Screen 1: Monogram Loader -->
+        <div class="screen a-monogram">
+          <span class="screen-label">Chapter 1 · Monogram Loader</span>
+          <div class="monogram">.jn</div>
+          <div class="subtitle">Jave &amp; Nianne · 2027</div>
+        </div>
+        <!-- Screen 2: Hero -->
+        <div class="screen a-hero">
+          <span class="screen-label" style="color:rgba(255,255,255,0.3)">Chapter 2 · Hero</span>
+          <div class="hero-image-bg"></div>
+          <div class="hero-photo-sim"></div>
+          <div class="hero-content">
+            <div class="kicker">Eight January, Two Thousand Twenty-Seven</div>
+            <div class="headline">Ten years.<br><em>One more day.</em></div>
+            <div class="date">Lipa, Batangas · The Philippines</div>
+          </div>
+        </div>
+        <!-- Screen 3: RSVP -->
+        <div class="screen a-rsvp">
+          <span class="screen-label" style="color:rgba(255,255,255,0.3)">Chapter 7 · RSVP</span>
+          <div class="chat-prompt">Will you be joining us on January 8, 2027?</div>
+          <div class="chat-response">Oo! Andoon kami 🙏</div>
+          <div class="chat-confirm">"We've been waiting for you." — See you on January 8. Confirmation sent to your email.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- DIRECTION B: LIGHT EDITORIAL                       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="direction" id="dir-b">
+      <div class="direction-label">
+        <h2>Direction B — Light Editorial</h2>
+        <p>Near-white ground throughout. Accent colors used sparingly — for rules, emphasis, and UI states. Feels like a well-designed print invitation translated to screen. Clean and restrained.</p>
+        <span class="tag" style="background:rgba(156,64,81,0.1); color:var(--raspberry);">Refined</span>
+        <span class="tag" style="background:rgba(178,191,147,0.2); color:var(--deep-matcha);">Light</span>
+        <span class="tag" style="background:rgba(26,26,26,0.08); color:rgba(26,26,26,0.6);">Magazine</span>
+      </div>
+      <div class="screens">
+        <div class="screen b-monogram">
+          <span class="screen-label" style="color:rgba(26,26,26,0.3)">Chapter 1 · Monogram Loader</span>
+          <div class="monogram" style="color:var(--deep-matcha)">.jn</div>
+          <div class="subtitle" style="color:rgba(103,105,48,0.5)">Jave &amp; Nianne · 2027</div>
+        </div>
+        <div class="screen b-hero">
+          <span class="screen-label" style="color:rgba(26,26,26,0.3)">Chapter 2 · Hero</span>
+          <div class="rule"></div>
+          <div class="headline" style="color:var(--text-dark)">Ten years.<br><em style="color:var(--raspberry)">One more day.</em></div>
+          <div class="tagline" style="color:rgba(26,26,26,0.4)">Jave &amp; Nianne · January 8, 2027 · Lipa, Batangas</div>
+          <div class="cta">RSVP</div>
+        </div>
+        <div class="screen b-rsvp">
+          <span class="screen-label" style="color:rgba(26,26,26,0.4)">Chapter 7 · RSVP</span>
+          <div class="chat-prompt">Will you be joining us on January 8, 2027?</div>
+          <div class="chat-response">Oo! Andoon kami 🙏</div>
+          <div class="chat-confirm">"We've been waiting for you." — See you on January 8. Confirmation sent.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- DIRECTION C: WARM ORGANIC                          -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="direction" id="dir-c">
+      <div class="direction-label">
+        <h2>Direction C — Warm Organic</h2>
+        <p>Cream/parchment as the consistent canvas. Accent colors used only for typography highlights and UI elements — never as backgrounds. Feels like artisan stationery. Tactile and warm.</p>
+        <span class="tag" style="background:rgba(103,105,48,0.15); color:var(--deep-matcha);">Tactile</span>
+        <span class="tag" style="background:rgba(181,90,100,0.1); color:var(--strawberry-jam);">Warm</span>
+        <span class="tag" style="background:rgba(178,191,147,0.15); color:var(--deep-matcha);">Artisan</span>
+      </div>
+      <div class="screens">
+        <div class="screen c-monogram">
+          <span class="screen-label" style="color:rgba(26,26,26,0.3)">Chapter 1 · Monogram Loader</span>
+          <div class="ornament">✦</div>
+          <div class="monogram">.jn</div>
+          <div class="subtitle">Jave &amp; Nianne · 2027</div>
+        </div>
+        <div class="screen c-hero">
+          <span class="screen-label" style="color:rgba(26,26,26,0.3)">Chapter 2 · Hero</span>
+          <div class="left-accent"></div>
+          <div class="content">
+            <div class="names">Jave &amp; Nianne</div>
+            <div class="headline">Ten years.<br><em>One more day.</em></div>
+            <div class="divider"></div>
+            <div class="date">January 8, 2027 · Lipa, Batangas</div>
+          </div>
+        </div>
+        <div class="screen c-rsvp">
+          <span class="screen-label">Chapter 7 · RSVP</span>
+          <div class="chat-prompt">Will you be joining us on January 8, 2027?</div>
+          <div class="chat-response">Oo! Andoon kami 🙏</div>
+          <div class="chat-confirm">"We've been waiting for you." — See you on January 8.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- DIRECTION D: FULL BLEED COLOR                      -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="direction" id="dir-d">
+      <div class="direction-label">
+        <h2>Direction D — Full Bleed Color</h2>
+        <p>Each chapter's accent color becomes the entire background. Bold, joyful color transitions as guests scroll. The palette-as-wayfinding system at its most expressive. Celebratory and confident.</p>
+        <span class="tag" style="background:rgba(186,175,47,0.2); color:var(--golden-matcha);">Bold</span>
+        <span class="tag" style="background:rgba(156,64,81,0.2); color:var(--berry-meringue);">Expressive</span>
+        <span class="tag" style="background:rgba(159,198,104,0.2); color:var(--matcha-latte);">Joyful</span>
+      </div>
+      <div class="screens">
+        <div class="screen d-monogram">
+          <span class="screen-label" style="color:rgba(255,255,255,0.4)">Chapter 1 · Monogram Loader</span>
+          <div class="monogram">.jn</div>
+          <div class="subtitle">Jave &amp; Nianne · 2027</div>
+        </div>
+        <div class="screen d-hero">
+          <span class="screen-label" style="color:rgba(255,255,255,0.4)">Chapter 2 · Hero</span>
+          <div class="headline">Ten years.<br><em>One more day.</em></div>
+          <div class="date">January 8, 2027 · Lipa, Batangas</div>
+          <div class="scroll-hint">Scroll to begin ↓</div>
+        </div>
+        <div class="screen d-rsvp">
+          <span class="screen-label" style="color:rgba(255,255,255,0.5)">Chapter 7 · RSVP</span>
+          <div class="chat-prompt">Will you be joining us on January 8, 2027?</div>
+          <div class="chat-response">Oo! Andoon kami 🙏</div>
+          <div class="chat-confirm">"We've been waiting for you."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- DIRECTION E: SERIF & FILM                          -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="direction" id="dir-e">
+      <div class="direction-label">
+        <h2>Direction E — Serif &amp; Film</h2>
+        <p>Typography at maximum scale. The headline fills the screen. Text is the art. Inspired by film title cards and Wes Anderson credits. The story told in letterforms, not photos.</p>
+        <span class="tag" style="background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.6);">Typography-forward</span>
+        <span class="tag" style="background:rgba(156,64,81,0.2); color:var(--berry-meringue);">Auteur</span>
+        <span class="tag" style="background:rgba(186,175,47,0.15); color:var(--golden-matcha);">Serif-first</span>
+      </div>
+      <div class="screens">
+        <div class="screen e-monogram">
+          <span class="screen-label" style="color:rgba(255,255,255,0.25)">Chapter 1 · Monogram Loader</span>
+          <div class="monogram">.jn</div>
+          <div class="subtitle">A film about ten years</div>
+        </div>
+        <div class="screen e-hero">
+          <span class="screen-label" style="color:rgba(255,255,255,0.25)">Chapter 2 · Hero</span>
+          <div class="vol">Vol. 10 — 2017 – 2027</div>
+          <div class="headline">Ten<br><span class="accent-word">years.</span><br>One more<br>day.</div>
+          <div class="byline">Jave &amp; Nianne · January 8, 2027</div>
+        </div>
+        <div class="screen e-rsvp">
+          <span class="screen-label" style="color:rgba(255,255,255,0.25)">Chapter 7 · RSVP</span>
+          <div class="rsvp-heading">Your seat awaits.</div>
+          <div class="chat-prompt">Will you be joining us on January 8, 2027?</div>
+          <div class="chat-response">Oo! Andoon kami</div>
+          <div class="chat-confirm">"We've been waiting for you."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- DIRECTION F: INTIMATE & CLOSE                      -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="direction" id="dir-f">
+      <div class="direction-label">
+        <h2>Direction F — Intimate &amp; Close</h2>
+        <p>Photography-dominant with quiet text overlays. Dark, warm ground. The couple's story told through images, with type stepping back to let moments breathe. Feels like a private album.</p>
+        <span class="tag" style="background:rgba(232,188,188,0.1); color:var(--strawberry-milk);">Intimate</span>
+        <span class="tag" style="background:rgba(181,90,100,0.15); color:var(--berry-meringue);">Photo-first</span>
+        <span class="tag" style="background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.4);">Quiet</span>
+      </div>
+      <div class="screens">
+        <div class="screen f-monogram">
+          <span class="screen-label" style="color:rgba(232,188,188,0.25)">Chapter 1 · Monogram Loader</span>
+          <div class="ring"></div>
+          <div class="monogram">.jn</div>
+          <div class="subtitle">Jave &amp; Nianne · 2027</div>
+        </div>
+        <div class="screen f-hero">
+          <span class="screen-label" style="color:rgba(255,255,255,0.2)">Chapter 2 · Hero</span>
+          <div class="photo-sim"></div>
+          <div class="photo-texture"></div>
+          <div class="content">
+            <div class="name">Jave &amp; Nianne</div>
+            <div class="headline">Ten years.<br><em>One more day.</em></div>
+            <div class="date">January 8, 2027 · Lipa, Batangas</div>
+          </div>
+        </div>
+        <div class="screen f-rsvp">
+          <span class="screen-label" style="color:rgba(255,255,255,0.2)">Chapter 7 · RSVP</span>
+          <div class="chat-prompt">Will you be joining us on January 8, 2027?</div>
+          <div class="chat-response">Oo! Andoon kami 🙏</div>
+          <div class="chat-confirm">"We've been waiting for you." — See you on January 8, 2027.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- COMPARISON VIEW                                    -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="comparison" id="dir-compare">
+      <div class="direction-label">
+        <h2>All 6 Directions — Side by Side</h2>
+        <p>Quick comparison of character and color approach for each direction.</p>
+      </div>
+      <div class="comparison-grid">
+
+        <div class="comparison-cell" style="background:#0e0f0a">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3.5rem; font-weight:300; color:var(--deep-matcha); letter-spacing:0.05em">.jn</div>
+          <h3 style="color:white; margin-top:1rem">A</h3>
+          <p>Cinematic Dark</p>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#0e0f0a; border:1px solid #333"></div>
+            <div class="swatch" style="background:var(--raspberry)"></div>
+            <div class="swatch" style="background:var(--golden-matcha)"></div>
+          </div>
+          <span class="pill" style="background:rgba(156,64,81,0.2); color:var(--berry-meringue)">Dark ground</span>
+          <span class="pill" style="background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.4)">Accent chapters</span>
+        </div>
+
+        <div class="comparison-cell" style="background:var(--background)">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3.5rem; font-weight:300; color:var(--deep-matcha); letter-spacing:0.05em">.jn</div>
+          <h3 style="color:var(--text-dark); margin-top:1rem">B</h3>
+          <p style="color:rgba(26,26,26,0.5)">Light Editorial</p>
+          <div class="swatch-row">
+            <div class="swatch" style="background:var(--background); border:1px solid #ddd"></div>
+            <div class="swatch" style="background:var(--raspberry)"></div>
+            <div class="swatch" style="background:var(--golden-matcha)"></div>
+          </div>
+          <span class="pill" style="background:rgba(156,64,81,0.1); color:var(--raspberry)">Light ground</span>
+          <span class="pill" style="background:rgba(26,26,26,0.06); color:rgba(26,26,26,0.5)">Sparse color</span>
+        </div>
+
+        <div class="comparison-cell" style="background:#f2ede4">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3.5rem; font-weight:300; color:var(--deep-matcha); letter-spacing:0.05em">.jn</div>
+          <h3 style="color:var(--text-dark); margin-top:1rem">C</h3>
+          <p style="color:rgba(26,26,26,0.5)">Warm Organic</p>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#f2ede4; border:1px solid #e0d8cc"></div>
+            <div class="swatch" style="background:var(--deep-matcha)"></div>
+            <div class="swatch" style="background:var(--raspberry)"></div>
+          </div>
+          <span class="pill" style="background:rgba(103,105,48,0.12); color:var(--deep-matcha)">Parchment</span>
+          <span class="pill" style="background:rgba(156,64,81,0.08); color:var(--raspberry)">Type accents</span>
+        </div>
+
+        <div class="comparison-cell" style="background:var(--raspberry)">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3.5rem; font-weight:300; color:rgba(255,255,255,0.9); letter-spacing:0.05em">.jn</div>
+          <h3 style="color:white; margin-top:1rem">D</h3>
+          <p style="color:rgba(255,255,255,0.5)">Full Bleed Color</p>
+          <div class="swatch-row">
+            <div class="swatch" style="background:var(--deep-matcha)"></div>
+            <div class="swatch" style="background:var(--raspberry)"></div>
+            <div class="swatch" style="background:var(--golden-matcha)"></div>
+            <div class="swatch" style="background:var(--matcha-latte)"></div>
+          </div>
+          <span class="pill" style="background:rgba(255,255,255,0.15); color:white">Color chapters</span>
+          <span class="pill" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7)">Bold shifts</span>
+        </div>
+
+        <div class="comparison-cell" style="background:#060606">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3.5rem; font-weight:300; color:white; letter-spacing:0.1em">.jn</div>
+          <h3 style="color:white; margin-top:1rem">E</h3>
+          <p>Serif &amp; Film</p>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#060606; border:1px solid #222"></div>
+            <div class="swatch" style="background:white"></div>
+            <div class="swatch" style="background:var(--raspberry)"></div>
+          </div>
+          <span class="pill" style="background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.5)">Type dominant</span>
+          <span class="pill" style="background:rgba(156,64,81,0.2); color:var(--berry-meringue)">Film-inspired</span>
+        </div>
+
+        <div class="comparison-cell" style="background:#1c1712">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3.5rem; font-weight:300; color:var(--strawberry-milk); letter-spacing:0.08em; opacity:0.85">.jn</div>
+          <h3 style="color:white; margin-top:1rem">F</h3>
+          <p>Intimate &amp; Close</p>
+          <div class="swatch-row">
+            <div class="swatch" style="background:#1c1712; border:1px solid #333"></div>
+            <div class="swatch" style="background:var(--strawberry-milk)"></div>
+            <div class="swatch" style="background:var(--strawberry-jam)"></div>
+          </div>
+          <span class="pill" style="background:rgba(232,188,188,0.1); color:var(--strawberry-milk)">Photo-first</span>
+          <span class="pill" style="background:rgba(181,90,100,0.15); color:var(--berry-meringue)">Quiet type</span>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>nijao-wedding-2027</span> · ux design directions · generated 2026-04-04
+  </footer>
+
+  <script>
+    function showDirection(dir) {
+      // Hide all directions
+      document.querySelectorAll('.direction').forEach(d => d.classList.remove('active'));
+      document.querySelectorAll('.comparison').forEach(d => d.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+
+      // Show selected
+      if (dir === 'compare') {
+        document.getElementById('dir-compare').classList.add('active');
+      } else {
+        document.getElementById('dir-' + dir).classList.add('active');
+      }
+
+      // Activate nav button
+      const buttons = document.querySelectorAll('nav button');
+      const dirMap = { a:0, b:1, c:2, d:3, e:4, f:5, compare:6 };
+      buttons[dirMap[dir]].classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
