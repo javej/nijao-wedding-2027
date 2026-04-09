@@ -1,0 +1,30 @@
+frontend/app/layout.tsx
+  1358f4e607211d84 2,29,31-40,49,53-55
+frontend/app/globals.css
+  1358f4e607211d84 6-21,23-67,103,170-171,205-207
+_bmad-output/implementation-artifacts/1-2-design-token-system.md
+  1358f4e607211d84 3,27-29,40,47-49,51-52,55-57,62-63,65-66,78,84,86-87,93,99,105,115,117-118,124,126-128,252-253,256-258,261-266,268-272,274-277
+frontend/app/(main)/dev/tokens/page.tsx
+  1358f4e607211d84 1-159
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "738b85ad0de9cfc0d1985cf4d1e145241b820336",
+  "prompts": {
+    "1358f4e607211d84": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a6e4f733-66f4-47f8-92aa-2ac6fa57cfa5",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 392,
+      "total_deletions": 242,
+      "accepted_lines": 294,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/b932ef407f34cde668ee57017796087fc2e1c866e36e53826172dcc7bb17a7da"
+    }
+  }
+}
