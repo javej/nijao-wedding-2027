@@ -59,7 +59,7 @@ so that every push to `main` produces a live preview URL testable on real device
 
 ### ✅ Starter Template Decision — RESOLVED
 
-**Use the starter as-is: Next.js 16.2.2, Tailwind v4, pnpm monorepo structure.**
+**Use the starter as-is: Next.js 16.1.7, Tailwind v4, pnpm monorepo structure.**
 
 The starter v2.0.0 is a pnpm workspace with separate `frontend/` and `studio/` subdirs. This means the architecture's `app/studio/[[...tool]]/page.tsx` embedded Studio approach does **not apply** — the Studio is a standalone workspace, not embedded in the Next.js app. All Epic 4 admin stories should treat Studio as a separate pnpm workspace, not an `/studio` route.
 
@@ -71,7 +71,7 @@ pnpm install
 ```
 
 **Active versions in use:**
-- Next.js: `16.2.2`
+- Next.js: `16.1.7`
 - React: `19.2.4`
 - Sanity: `5.19.0`
 - Tailwind CSS: `4.2.2`
@@ -188,7 +188,7 @@ All 6 required env vars — never hardcode values, always assert at module load:
 | `GOOGLE_SERVICE_ACCOUNT_JSON` | `lib/sheets.ts` | Full JSON of service account — server-side only |
 | `RESEND_API_KEY` | `lib/resend.ts` | Resend API key — server-side only |
 | `SANITY_WEBHOOK_SECRET` | `lib/webhook.ts` | HMAC-SHA256 secret — server-side only |
-| `TURNSTILE_SECRET_KEY` | `app/actions/rsvp.ts` | Cloudflare Turnstile server key — server-side only |
+| `TURNSTILE_SECRET_KEY` | `lib/turnstile.ts` → `app/actions/rsvp.ts` | Cloudflare Turnstile server key — server-side only |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | `components/ui/RSVPChat.tsx` | Turnstile public key — exposed to browser (NEXT_PUBLIC_ prefix) |
 
 Only `NEXT_PUBLIC_TURNSTILE_SITE_KEY` is safe to expose to the client. All others are server-side only.
@@ -198,12 +198,12 @@ Only `NEXT_PUBLIC_TURNSTILE_SITE_KEY` is safe to expose to the client. All other
 ### Architecture Compliance Checklist for this Story
 
 From `architecture.md` → Implementation Patterns & Consistency Rules:
-- [ ] Package manager: pnpm only — `pnpm install`, `pnpm dev`, `pnpm build`
-- [ ] No `package-lock.json` or `yarn.lock` committed
-- [ ] TypeScript: strict mode enabled (`tsconfig.json` → `"strict": true`)
-- [ ] ESLint: `no-explicit-any` rule active (`.eslintrc.json`)
-- [ ] File naming: Next.js reserved files lowercase (`page.tsx`, `layout.tsx`, `route.ts`)
-- [ ] Env vars: asserted at module load in `lib/` files — never inline optional-chain
+- [x] Package manager: pnpm only — `pnpm install`, `pnpm dev`, `pnpm build`
+- [x] No `package-lock.json` or `yarn.lock` committed
+- [x] TypeScript: strict mode enabled (`tsconfig.json` → `"strict": true`)
+- [x] ESLint: `no-explicit-any` rule active (`eslint.config.mjs`)
+- [x] File naming: Next.js reserved files lowercase (`page.tsx`, `layout.tsx`, `route.ts`)
+- [x] Env vars: asserted at module load in `lib/` files — never inline optional-chain
 
 ---
 
@@ -273,6 +273,9 @@ claude-opus-4-6 (implementation) — 2026-04-09
 - `studio/defaultDocumentNode.ts` — removed post/contact preview schema types
 - `studio/schemas/blocks/shared/block-content.ts` — removed post reference from internal links
 - `studio/schemas/blocks/shared/link.ts` — removed post reference from internal links
+- `studio/presentation/resolve.ts` — removed post/blog location definitions and routes
+- `frontend/sanity.types.ts` — regenerated after schema cleanup (2028→452 lines)
+- `studio/schema.json` — regenerated after schema cleanup (4269→1748 lines)
 
 **Deleted files:**
 - `studio/sample-data.tar.gz`
