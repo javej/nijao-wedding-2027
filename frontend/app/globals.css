@@ -3,23 +3,6 @@
 @plugin "tailwindcss-animate";
 
 @theme {
-  /* ── Wedding Palette ── */
-  --color-deep-matcha:      #676930;
-  --color-raspberry:        #9c4051;
-  --color-golden-matcha:    #baaf2f;
-  --color-strawberry-jam:   #b55a64;
-  --color-matcha-chiffon:   #b2bf93;
-  --color-berry-meringue:   #c98d8e;
-  --color-matcha-latte:     #9fc768;
-  --color-strawberry-milk:  #e8bcbc;
-
-  /* ── Supporting Colors ── */
-  --color-primary-dark:     #7a3040;
-  --color-text-on-dark:     #ffffff;
-  --color-text-on-light:    #1a1a1a;
-  --color-background:       #faf9f6;
-  --color-foreground:       #1a1a1a;
-
   /* ── Typography ── */
   --font-display: var(--font-cormorant-garamond), serif;
   --font-body: var(--font-dm-sans), sans-serif;
@@ -101,6 +84,22 @@
 
 @theme inline {
   --font-sans: var(--font-dm-sans), sans-serif;
+  /* ── Wedding Palette ── */
+  --color-deep-matcha:      var(--deep-matcha);
+  --color-raspberry:        var(--raspberry);
+  --color-golden-matcha:    var(--golden-matcha);
+  --color-strawberry-jam:   var(--strawberry-jam);
+  --color-matcha-chiffon:   var(--matcha-chiffon);
+  --color-berry-meringue:   var(--berry-meringue);
+  --color-matcha-latte:     var(--matcha-latte);
+  --color-strawberry-milk:  var(--strawberry-milk);
+  /* ── Supporting Colors ── */
+  --color-primary-dark:     var(--primary-dark);
+  --color-text-on-dark:     var(--text-on-dark);
+  --color-text-on-light:    var(--text-on-light);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /* ── shadcn/ui tokens ── */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -137,6 +136,22 @@
 }
 
 :root {
+  /* ── Wedding Palette ── */
+  --deep-matcha:      #676930;
+  --raspberry:        #9c4051;
+  --golden-matcha:    #baaf2f;
+  --strawberry-jam:   #b55a64;
+  --matcha-chiffon:   #b2bf93;
+  --berry-meringue:   #c98d8e;
+  --matcha-latte:     #9fc768;
+  --strawberry-milk:  #e8bcbc;
+  /* ── Supporting Colors ── */
+  --primary-dark:     #7a3040;
+  --text-on-dark:     #ffffff;
+  --text-on-light:    #1a1a1a;
+  --background: #faf9f6;
+  --foreground: #1a1a1a;
+  /* ── shadcn/ui ── */
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.13 0.028 261.692);
@@ -167,8 +182,6 @@
   --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
-  --background: #faf9f6;
-  --foreground: #1a1a1a;
 }
 
 @utility container {

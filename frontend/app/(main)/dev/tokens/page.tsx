@@ -29,7 +29,7 @@ export default function TokenPreviewPage() {
         </div>
       </section>
 
-      {/* Typography — using Tailwind utility classes to verify token generation */}
+      {/* Typography — using Tailwind utility classes */}
       <section className="mb-12">
         <h2 className="font-display text-2xl mb-6">Typography</h2>
 
