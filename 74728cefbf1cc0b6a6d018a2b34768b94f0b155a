@@ -1,0 +1,24 @@
+_bmad-output/implementation-artifacts/1-1-project-bootstrap-vercel-deployment.md
+  7d05669d9b23ff1b 62,74,191,201-206,276-278
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "74728cefbf1cc0b6a6d018a2b34768b94f0b155a",
+  "prompts": {
+    "7d05669d9b23ff1b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8ea8d0a4-76a1-4329-9dfb-cc38be84eaa8",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 12,
+      "total_deletions": 9,
+      "accepted_lines": 12,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/69ebf1508df7e9e513012332eeed80f9653e27e7e09b18320f81b79dd5a0473d"
+    }
+  }
+}
