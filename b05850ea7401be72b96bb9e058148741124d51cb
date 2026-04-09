@@ -1,0 +1,179 @@
+_bmad-output/planning-artifacts/ux-design-specification.md
+  15e74876bcb32e16 1-1184
+_bmad-output/planning-artifacts/prd.md
+  15e74876bcb32e16 1-585
+_bmad-output/planning-artifacts/epics.md
+  7f34c9aeb2aba33e 1-965
+frontend/sanity/queries/page.ts
+  7caa80e2e59f8a0f 7-8
+_bmad-output/planning-artifacts/architecture.md
+  5483bc37f5d3e0bd 1-844
+.env.example
+  7caa80e2e59f8a0f 1-20
+package.json
+  7caa80e2e59f8a0f 15-22
+frontend/eslint.config.mjs
+  7caa80e2e59f8a0f 1-19
+frontend/components/blocks/index.tsx
+  7caa80e2e59f8a0f 5,18
+_bmad-output/planning-artifacts/product-brief-nijao-wedding-2027-2026-04-03.md
+  5bb165ba56562a28 1-255
+frontend/sanity/lib/metadata.ts
+  7caa80e2e59f8a0f 2,9
+_bmad-output/planning-artifacts/research/technical-wedding-website-tech-stack-research-2026-04-03.md
+  d42eee125a058748 1-563
+_bmad-output/planning-artifacts/prd-validation-report.md
+  7178fcc10d64da3e 1-515
+studio/schemas/blocks/shared/block-content.ts
+  7caa80e2e59f8a0f 46
+studio/schemas/blocks/shared/link.ts
+  7caa80e2e59f8a0f 18
+_bmad-output/brainstorming/brainstorming-session-2026-03-08-0001.md
+  331c39a830a0b92d 2,8-11,40-328
+frontend/lib/webhook.ts
+  7caa80e2e59f8a0f 1-7
+studio/schemas/documents/page.ts
+  7caa80e2e59f8a0f 42
+.npmrc
+  7caa80e2e59f8a0f 1
+frontend/components/header/index.tsx
+  7caa80e2e59f8a0f 18,23-25
+studio/structure.ts
+  7caa80e2e59f8a0f 2,30,39
+frontend/sanity/lib/fetch.ts
+  7caa80e2e59f8a0f 12-15,21,32,42-44,46,52-54,56
+_bmad-output/planning-artifacts/ux-design-directions.html
+  15e74876bcb32e16 1-1269
+_bmad-output/implementation-artifacts/1-1-project-bootstrap-vercel-deployment.md
+  7caa80e2e59f8a0f 3,20-24,26-29,31-32,41-43,45,53-56,224,228-231,234,237-245,248-285
+  7f34c9aeb2aba33e 1-2,4-19,25,30,33-40,44,46-52,57-223,225-227,232-233,235-236,246-247
+frontend/package.json
+  7caa80e2e59f8a0f 10
+frontend/lib/sheets.ts
+  7caa80e2e59f8a0f 1-8
+frontend/app/sitemap.ts
+  7caa80e2e59f8a0f 5,18,31-34,36-37
+frontend/lib/resend.ts
+  7caa80e2e59f8a0f 1-7
+frontend/components/footer.tsx
+  7caa80e2e59f8a0f 26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "b05850ea7401be72b96bb9e058148741124d51cb",
+  "prompts": {
+    "15e74876bcb32e16": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c9c3689f-c8bc-46f8-b542-cd4cb44a5a71",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 3076,
+      "total_deletions": 38,
+      "accepted_lines": 3038,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/e49fb3d1d5a3b5549fe6bae925e859f08b0e56428a719b26f11beac86c2d6dc3"
+    },
+    "331c39a830a0b92d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d11f37fb-e5da-4fa6-9811-e78761691f09",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 294,
+      "total_deletions": 2,
+      "accepted_lines": 294,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/835dee3661342b9fe9bca542ef0550a7761364aa28a10ec46e98384cba4a4b00"
+    },
+    "5483bc37f5d3e0bd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4ee780d-21c3-47b1-94b6-0c1d05d8fa39",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 853,
+      "total_deletions": 9,
+      "accepted_lines": 844,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/2a117b59a22bd01fb8dbf70e3f646e01cd3818c10b5ef07704b62a78c3352496"
+    },
+    "5bb165ba56562a28": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "405292f7-ee31-4ff3-8b30-bfc28097e6ff",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 260,
+      "total_deletions": 5,
+      "accepted_lines": 255,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/f543e60a7638343de82b538a3a14a05f043bb7826ded71715118bc081d79fb13"
+    },
+    "7178fcc10d64da3e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "976802ce-aa6e-44e3-989d-333c6d92b3b3",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 519,
+      "total_deletions": 4,
+      "accepted_lines": 515,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/5ed2e53de126ea0396c964c64be1a74b06633cf68255b44c400ac1f63e4a4978"
+    },
+    "7caa80e2e59f8a0f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9bf7a313-5782-4f01-a856-5df7b1257446",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 202,
+      "total_deletions": 345,
+      "accepted_lines": 183,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/1fefa42d7c3d0c28d88a63d935a3a12065e8cdcfcbda29c8c2a39d404318824d"
+    },
+    "7f34c9aeb2aba33e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "07132036-81e8-4cb4-80eb-5c667a9b324f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 1264,
+      "total_deletions": 63,
+      "accepted_lines": 1177,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/777aa1ede38d380ef54e13849eacb3565f35fdd1256d6dc48821ce98b7b61a5c"
+    },
+    "d42eee125a058748": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eab1eae3-bb7e-4779-adf8-18aa3b7e56eb",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 571,
+      "total_deletions": 8,
+      "accepted_lines": 563,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/7522b39cc691d1ef61873f177de694f7bd825ef1ba5973aa0ed61ce92180bf7f"
+    }
+  }
+}
