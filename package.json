@@ -1,7 +1,7 @@
 {
-  "name": "schema-ui-next-js-sanity-starter",
-  "version": "2.0.0",
-  "description": "Schema UI: Next.js + Sanity Starter Template",
+  "name": "nijao-wedding-2027",
+  "version": "0.1.0",
+  "description": "Nijao Wedding 2027 — January 8, 2027",
   "private": true,
   "packageManager": "pnpm@10.19.0",
   "scripts": {
@@ -9,14 +9,15 @@
     "dev:frontend": "pnpm run dev --workspace=frontend",
     "dev:studio": "pnpm run dev --workspace=studio",
     "typegen": "cd studio && pnpm typegen",
-    "typecheck": "cd frontend && pnpm typecheck",
-    "export": "cd studio && sanity dataset export production sample-data.tar.gz"
+    "build": "pnpm --parallel -r run build",
+    "lint": "pnpm --filter frontend lint",
+    "typecheck": "cd frontend && pnpm typecheck"
   },
   "engines": {
     "node": ">=20",
     "pnpm": ">=10"
   },
-  "homepage": "https://www.schemaui.com/",
+  "homepage": "https://nijao-wedding-2027-frontend.vercel.app/",
   "pnpm": {
     "onlyBuiltDependencies": ["esbuild", "sharp", "unrs-resolver"]
   }

@@ -1,7 +1,5 @@
-function assertEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) throw new Error(`${name} is not set`);
-  return value;
-}
+const SANITY_WEBHOOK_SECRET = process.env.SANITY_WEBHOOK_SECRET;
+if (!SANITY_WEBHOOK_SECRET)
+  throw new Error("SANITY_WEBHOOK_SECRET is not set");
 
-export const sanityWebhookSecret = () => assertEnv("SANITY_WEBHOOK_SECRET");
+export const sanityWebhookSecret = SANITY_WEBHOOK_SECRET;

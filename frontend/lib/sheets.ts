@@ -1,8 +1,6 @@
-function assertEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) throw new Error(`${name} is not set`);
-  return value;
-}
+const GOOGLE_SERVICE_ACCOUNT_JSON =
+  process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
+if (!GOOGLE_SERVICE_ACCOUNT_JSON)
+  throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON is not set");
 
-export const googleServiceAccountJson = () =>
-  assertEnv("GOOGLE_SERVICE_ACCOUNT_JSON");
+export const googleServiceAccountJson = GOOGLE_SERVICE_ACCOUNT_JSON;

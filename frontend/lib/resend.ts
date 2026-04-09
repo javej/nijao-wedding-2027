@@ -1,7 +1,4 @@
-function assertEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) throw new Error(`${name} is not set`);
-  return value;
-}
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY is not set");
 
-export const resendApiKey = () => assertEnv("RESEND_API_KEY");
+export const resendApiKey = RESEND_API_KEY;

@@ -1,6 +1,4 @@
-import { PAGE_QUERY_RESULT } from "@/sanity.types";
-
-type Block = NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number];
+type Block = { _type: string; _key: string; [key: string]: unknown };
 
 const componentMap: Record<string, React.ComponentType<Block>> = {};
 
