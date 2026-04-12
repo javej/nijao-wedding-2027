@@ -770,7 +770,7 @@ All FR categories (Guest Experience, Story/Content, RSVP, Personalization, Admin
    - `emails/GuestConfirmation.tsx` — "We've been waiting for you" HTML email template
    - `emails/AdminNotification.tsx` — new RSVP alert email to Jave + Nianne
 
-2. **Missing `public/robots.txt`** — PRD specifies no public indexing (invite-only site). Added `public/robots.txt` disallowing all crawlers.
+2. **Missing `robots.txt`** — PRD specifies no public indexing (invite-only site). Implemented via Next.js metadata API (`app/robots.ts`) disallowing all crawlers — preferred over static `public/robots.txt` for co-location with other metadata files.
 
 3. **Sanity Studio Next.js config requirement** — Embedded Studio requires explicit configuration:
 

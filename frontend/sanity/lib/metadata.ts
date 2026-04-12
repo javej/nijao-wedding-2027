@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import { urlFor } from "@/sanity/lib/image";
 import { PAGE_QUERY_RESULT } from "@/sanity.types";
-const isProduction = process.env.NEXT_PUBLIC_SITE_ENV === "production";
 
 export function generatePageMetadata({
   page,
@@ -8,31 +8,33 @@ export function generatePageMetadata({
 }: {
   page: PAGE_QUERY_RESULT;
   slug: string;
-}) {
-  return {
-    title: page?.meta?.title,
-    description: page?.meta?.description,
-    openGraph: {
-      images: [
-        {
-          url: page?.meta?.image
-            ? urlFor(page?.meta?.image).quality(100).url()
-            : `${process.env.NEXT_PUBLIC_SITE_URL}/images/og-image.jpg`,
-          width: page?.meta?.image?.asset?.metadata?.dimensions?.width || 1200,
-          height: page?.meta?.image?.asset?.metadata?.dimensions?.height || 630,
-        },
-      ],
-      locale: "en_US",
-      type: "website",
-    },
-    robots: !isProduction
-      ? "noindex, nofollow"
-      : page?.meta?.noindex
-        ? "noindex"
-        : "index, follow",
+}): Metadata {
+  const openGraph: Metadata["openGraph"] = {
+    locale: "en_PH",
+    type: "website",
+    siteName: "Jave & Nianne Wedding",
+  };
+
+  if (page?.meta?.image) {
+    openGraph.images = [
+      {
+        url: urlFor(page.meta.image).quality(100).url(),
+        width: page.meta.image.asset?.metadata?.dimensions?.width || 1200,
+        height: page.meta.image.asset?.metadata?.dimensions?.height || 630,
+      },
+    ];
+  }
+
+  const metadata: Metadata = {
+    openGraph,
     alternates: {
       canonical:
         process.env.NEXT_PUBLIC_SITE_URL + `/${slug === "index" ? "" : slug}`,
     },
   };
+
+  if (page?.meta?.title) metadata.title = page.meta.title;
+  if (page?.meta?.description) metadata.description = page.meta.description;
+
+  return metadata;
 }
