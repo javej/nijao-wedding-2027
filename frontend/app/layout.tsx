@@ -4,26 +4,23 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 
-const isProduction = process.env.NEXT_PUBLIC_SITE_ENV === "production";
-
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
   title: {
-    template: "%s | Schema UI",
-    default: "Sanity Next.js Website | Schema UI",
+    template: "%s | Jave & Nianne",
+    default: "Jave & Nianne — January 8, 2027",
   },
+  description:
+    "Ten years. One more day. Join us as we celebrate our wedding at Casa 10 22, Lipa, Batangas.",
   openGraph: {
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL}/images/og-image.jpg`,
-        width: 1200,
-        height: 630,
-      },
-    ],
-    locale: "en_US",
+    title: "Jave & Nianne — January 8, 2027",
+    description:
+      "Ten years. One more day. Join us as we celebrate our wedding at Casa 10 22, Lipa, Batangas.",
     type: "website",
+    locale: "en_PH",
+    siteName: "Jave & Nianne Wedding",
   },
-  robots: !isProduction ? "noindex, nofollow" : "index, follow",
+  robots: { index: false, follow: false },
 };
 
 const cormorantGaramond = Cormorant_Garamond({
