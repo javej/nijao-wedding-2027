@@ -103,6 +103,109 @@ export type BlockContent = Array<
     } & Code)
 >;
 
+export type Announcement = {
+  _id: string;
+  _type: "announcement";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  body?: BlockContent;
+  publishedAt?: string;
+  scheduledAt?: string;
+};
+
+export type GuestReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "guest";
+};
+
+export type Guest = {
+  _id: string;
+  _type: "guest";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  firstName?: string;
+  slug?: Slug;
+  plusOneEligible?: boolean;
+  plusOneType?: "linked" | "open";
+  plusOneLinkedGuest?: GuestReference;
+};
+
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
+
+export type EntourageMember = {
+  _id: string;
+  _type: "entourageMember";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  role?: string;
+  colorAssignment?:
+    | "deep-matcha"
+    | "raspberry"
+    | "golden-matcha"
+    | "strawberry-jam"
+    | "matcha-chiffon"
+    | "berry-meringue"
+    | "matcha-latte"
+    | "strawberry-milk";
+  photo?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  isPadrino?: boolean;
+  orderRank?: string;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type StoryChapter = {
+  _id: string;
+  _type: "storyChapter";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  year?: number;
+  caption?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  publishedAt?: string;
+  order?: number;
+  orderRank?: string;
+};
+
 export type Settings = {
   _id: string;
   _type: "settings";
@@ -129,22 +232,6 @@ export type Settings = {
   };
   siteName?: string;
   copyright?: BlockContent;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type Navigation = {
@@ -193,12 +280,6 @@ export type Page = {
     };
   };
   orderRank?: string;
-};
-
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
 };
 
 export type MediaTag = {
@@ -323,13 +404,18 @@ export type AllSanitySchemaTypes =
   | Link
   | SanityImageAssetReference
   | BlockContent
-  | Settings
+  | Announcement
+  | GuestReference
+  | Guest
+  | Slug
+  | EntourageMember
   | SanityImageCrop
   | SanityImageHotspot
+  | StoryChapter
+  | Settings
   | Navigation
   | Faq
   | Page
-  | Slug
   | MediaTag
   | Code
   | SanityImagePaletteSwatch
