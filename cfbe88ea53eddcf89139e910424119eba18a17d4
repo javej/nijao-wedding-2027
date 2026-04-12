@@ -1,0 +1,70 @@
+_bmad-output/implementation-artifacts/2-1-scroll-architecture-palette-wayfinding.md
+  1807638190f90c37 1-142
+_bmad-output/implementation-artifacts/2-4-hero-section.md
+  1807638190f90c37 1-135
+_bmad-output/implementation-artifacts/2-8-dress-code-section.md
+  1807638190f90c37 1-176
+_bmad-output/implementation-artifacts/2-9-entourage-padrino-wall-wedding-party.md
+  1807638190f90c37 1-153
+_bmad-output/implementation-artifacts/2-10-accessibility-verification.md
+  1807638190f90c37 1-185
+_bmad-output/implementation-artifacts/2-2-monogram-loader.md
+  1807638190f90c37 1-155
+_bmad-output/implementation-artifacts/2-5-ten-year-love-story-chapters.md
+  1807638190f90c37 1-157
+_bmad-output/implementation-artifacts/2-6-mt-fuji-proposal-section.md
+  1807638190f90c37 1-137
+_bmad-output/implementation-artifacts/2-3-arrival-overlay-ambient-music.md
+  1807638190f90c37 1-145
+_bmad-output/implementation-artifacts/2-7-wedding-details-ceremony-reception.md
+  1807638190f90c37 1-170
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "cfbe88ea53eddcf89139e910424119eba18a17d4",
+  "prompts": {
+    "1807638190f90c37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "18fd7ba6-c0c1-4a90-9075-76e794deca73",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 1557,
+      "total_deletions": 1,
+      "accepted_lines": 1556,
+      "overriden_lines": 1,
+      "messages_url": "https://usegitai.com/cas/ec1c73a5bdceb18cc9bd3bafbe8beab49ee8ca2cc9937b2c0b5128fcb8f2ef84"
+    },
+    "df62998f558b3d03": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "59271ea7-fc39-4877-88a2-377ba0dcaba2",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 14,
+      "total_deletions": 3,
+      "accepted_lines": 11,
+      "overriden_lines": 1,
+      "messages_url": "https://usegitai.com/cas/23b70caa3f8649688520e241109d04e4dcb14fb31ca56e00fc4133b93f11e1f9"
+    },
+    "fa366d91a931436a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "39f54d3b-f9c2-4216-8afb-804c5923e7da",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 128,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/52e2862e7b451a32eeedd55aa6ea97a72508079ccb0e6b1bd21f60ea0c4964e1"
+    }
+  }
+}
