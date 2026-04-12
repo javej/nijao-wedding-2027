@@ -1,0 +1,50 @@
+_bmad-output/implementation-artifacts/1-4-production-configuration-hardening.md
+  df62998f558b3d03 3,25-26,35,45,49,57,59-60,74-75,80-81,85-90,92-93,97-98,104,106,108-109,112-115,117-118,121-122,245,248-250,253-259,262-287
+frontend/app/layout.tsx
+  df62998f558b3d03 10-11,13-14,16-18,20-21,23
+frontend/app/not-found.tsx
+  df62998f558b3d03 10
+frontend/sanity/lib/metadata.ts
+  df62998f558b3d03 1,11-29,35-39
+_bmad-output/planning-artifacts/architecture.md
+  df62998f558b3d03 773
+frontend/app/robots.ts
+  df62998f558b3d03 1,5-8
+frontend/components/ui/sonner.tsx
+  df62998f558b3d03 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "874ec87b5d18779f52d2341e09b033057b0c3eb3",
+  "prompts": {
+    "df62998f558b3d03": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "59271ea7-fc39-4877-88a2-377ba0dcaba2",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 138,
+      "total_deletions": 496,
+      "accepted_lines": 125,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/617492fe3a0bab84d5290310fdf62d6b1a862c1745a7af93af580fc4740f0452"
+    },
+    "fa366d91a931436a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "39f54d3b-f9c2-4216-8afb-804c5923e7da",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 128,
+      "total_deletions": 0,
+      "accepted_lines": 128,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/52e2862e7b451a32eeedd55aa6ea97a72508079ccb0e6b1bd21f60ea0c4964e1"
+    }
+  }
+}
