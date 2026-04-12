@@ -1,10 +1,52 @@
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
-import { Files, ListCollapse, Menu, Settings } from "lucide-react";
+import {
+  BookOpen,
+  Files,
+  Heart,
+  ListCollapse,
+  Megaphone,
+  Menu,
+  Settings,
+  User,
+  Users,
+} from "lucide-react";
 
 export const structure = (S: any, context: any) =>
   S.list()
     .title("Content")
     .items([
+      // Wedding Content
+      S.listItem()
+        .title("Wedding Content")
+        .icon(Heart)
+        .child(
+          S.list()
+            .title("Wedding Content")
+            .items([
+              orderableDocumentListDeskItem({
+                type: "storyChapter",
+                title: "Story Chapters",
+                icon: BookOpen,
+                S,
+                context,
+              }),
+              orderableDocumentListDeskItem({
+                type: "entourageMember",
+                title: "Entourage",
+                icon: Users,
+                S,
+                context,
+              }),
+              S.documentTypeListItem("guest")
+                .title("Guests")
+                .icon(User),
+              S.documentTypeListItem("announcement")
+                .title("Announcements")
+                .icon(Megaphone),
+            ]),
+        ),
+      S.divider(),
+      // Pages
       orderableDocumentListDeskItem({
         type: "page",
         title: "Pages",
@@ -19,7 +61,8 @@ export const structure = (S: any, context: any) =>
         S,
         context,
       }),
-      S.divider({ title: "Global" }),
+      S.divider(),
+      // Global
       S.listItem()
         .title("Navigation")
         .icon(Menu)
