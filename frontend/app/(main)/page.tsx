@@ -3,6 +3,8 @@ import { ChapterScrollContainer } from '@/components/ui/ChapterScrollContainer';
 import { ChapterSection } from '@/components/ui/ChapterSection';
 import { ExperienceShell } from '@/components/ui/ExperienceShell';
 import { HeroSection } from '@/components/sections/HeroSection';
+import { StoryChapter } from '@/components/sections/StoryChapter';
+import { getStoryChapters } from '@/sanity/queries/storyChapters';
 
 export const metadata: Metadata = {
   title: 'Jave & Nianne — January 8, 2027',
@@ -10,7 +12,9 @@ export const metadata: Metadata = {
     'You are cordially invited to the wedding of Jave and Nianne. January 8, 2027 — Lipa, Batangas.',
 };
 
-export default function IndexPage() {
+export default async function IndexPage() {
+  const chapters = await getStoryChapters();
+
   return (
     <ExperienceShell>
       <ChapterScrollContainer>
@@ -18,9 +22,16 @@ export default function IndexPage() {
           <HeroSection />
         </ChapterSection>
 
-        <ChapterSection id="story-scroll" palette="matcha-latte" label="Story Scroll">
-          <p className="font-display text-display-md">Story Scroll</p>
-        </ChapterSection>
+        {chapters.map((chapter) => (
+          <ChapterSection
+            key={chapter._id}
+            id={`story-${chapter.year}`}
+            palette="matcha-latte"
+            label={`Our story — ${chapter.year}`}
+          >
+            <StoryChapter chapter={chapter} />
+          </ChapterSection>
+        ))}
 
         <ChapterSection id="proposal" palette="strawberry-jam" label="Proposal">
           <p className="font-display text-display-md">Proposal</p>
