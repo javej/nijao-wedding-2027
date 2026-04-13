@@ -5,7 +5,9 @@ import { ExperienceShell } from '@/components/ui/ExperienceShell';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProposalSection } from '@/components/sections/ProposalSection';
 import { StoryChapter } from '@/components/sections/StoryChapter';
+import { WeddingDetails } from '@/components/sections/WeddingDetails';
 import { getProposalSection, getStoryChapters } from '@/sanity/queries/storyChapters';
+import { getWeddingDetails } from '@/sanity/queries/weddingDetails';
 
 export const metadata: Metadata = {
   title: 'Jave & Nianne — January 8, 2027',
@@ -14,9 +16,10 @@ export const metadata: Metadata = {
 };
 
 export default async function IndexPage() {
-  const [chapters, proposal] = await Promise.all([
+  const [chapters, proposal, weddingDetails] = await Promise.all([
     getStoryChapters(),
     getProposalSection(),
+    getWeddingDetails(),
   ]);
 
   return (
@@ -46,7 +49,11 @@ export default async function IndexPage() {
         </ChapterSection>
 
         <ChapterSection id="wedding-details" palette="matcha-chiffon" label="Wedding Details">
-          <p className="font-display text-display-md">Wedding Details</p>
+          {weddingDetails ? (
+            <WeddingDetails details={weddingDetails} />
+          ) : (
+            <p className="font-display text-display-md">Wedding Details</p>
+          )}
         </ChapterSection>
 
         <ChapterSection id="entourage" palette="berry-meringue" label="Entourage">

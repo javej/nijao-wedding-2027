@@ -12,6 +12,7 @@
   --text-display-xl:  clamp(2.5rem, 6vw, 5rem);
   --text-display-lg:  clamp(1.75rem, 4vw, 3rem);
   --text-display-md:  clamp(1.25rem, 3vw, 2rem);
+  --text-display-sm:  clamp(1rem, 2vw, 1.25rem);
   --text-body-lg:     1.25rem;
   --text-body-md:     1rem;
   --text-body-sm:     0.875rem;
