@@ -1,0 +1,62 @@
+frontend/components/ui/ArrivalOverlay.tsx
+  1214c2d15b1435b5 1-153
+frontend/components/ui/ExperienceShell.tsx
+  1214c2d15b1435b5 1-58
+_bmad-output/implementation-artifacts/2-3-arrival-overlay-ambient-music.md
+  1214c2d15b1435b5 3,25-33,35-43,45-50,52-57,59-63,71,141-142,145-146,149-155,157-161,163-172
+frontend/components/ui/AudioController.tsx
+  1214c2d15b1435b5 1-114
+frontend/app/(main)/page.tsx
+  1214c2d15b1435b5 4,14,44
+frontend/components/ui/MonogramLoader.tsx
+  1214c2d15b1435b5 60-65,100
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "52c80beff120edfc61b41630ee547ae0de705c55",
+  "prompts": {
+    "1214c2d15b1435b5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1323b656-1f53-4459-9f70-99b843055955",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 978,
+      "total_deletions": 101,
+      "accepted_lines": 405,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/44ba124b4a892ed83cf9799f72f76d4a2e46f9d3f55e7b8f0dd8e4016c929605"
+    },
+    "3f7bfa31d6d67ce0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "15c54ec8-84e0-42e0-b99f-59f967420346",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 22,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/ff5ad31d24e39e12e9bf07e5e3ba8280dbcfd659461fb7c3bddca121dcaaf7dd"
+    },
+    "fa366d91a931436a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "39f54d3b-f9c2-4216-8afb-804c5923e7da",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 128,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/52e2862e7b451a32eeedd55aa6ea97a72508079ccb0e6b1bd21f60ea0c4964e1"
+    }
+  }
+}
