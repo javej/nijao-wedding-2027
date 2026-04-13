@@ -1,0 +1,52 @@
+frontend/app/globals.css
+  a21b4eb4fe8b4509 15
+frontend/app/(main)/page.tsx
+  a21b4eb4fe8b4509 8,10,19,22,52-56
+studio/structure.ts
+  a21b4eb4fe8b4509 4,47-55
+_bmad-output/implementation-artifacts/2-7-wedding-details-ceremony-reception.md
+  a21b4eb4fe8b4509 3,25-27,48-50,52-53,60-61,63-65,68-91,97,165,168,171-179,181-196,199-208
+studio/schemas/documents/weddingDetails.ts
+  a21b4eb4fe8b4509 1-98
+studio/schema-types.ts
+  a21b4eb4fe8b4509 10,29
+frontend/sanity/queries/weddingDetails.ts
+  a21b4eb4fe8b4509 1-46
+frontend/components/sections/WeddingDetails.tsx
+  a21b4eb4fe8b4509 1-143
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "08e597d4b024bec7b64623c12a30cca467b0f77e",
+  "prompts": {
+    "a21b4eb4fe8b4509": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7f35b395-7c45-465b-ac3e-23f598fd7803",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 1131,
+      "total_deletions": 56,
+      "accepted_lines": 389,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/d06e2443c693b3132163d1ebfef506cd5bb2426a4264d37a182549517835c7a3"
+    },
+    "e8967fc45485fab3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6556e8a6-2d11-4965-ba5a-0f9da20a42d6",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 19,
+      "total_deletions": 1,
+      "accepted_lines": 142,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/70073d4bbb44cb281279d2ba3ae70469785e80ded7c7718dc613bd0a44748762"
+    }
+  }
+}
