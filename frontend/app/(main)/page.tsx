@@ -6,8 +6,10 @@ import { HeroSection } from '@/components/sections/HeroSection';
 import { ProposalSection } from '@/components/sections/ProposalSection';
 import { StoryChapter } from '@/components/sections/StoryChapter';
 import { WeddingDetails } from '@/components/sections/WeddingDetails';
+import { DressCodeSection } from '@/components/sections/DressCodeSection';
 import { getProposalSection, getStoryChapters } from '@/sanity/queries/storyChapters';
 import { getWeddingDetails } from '@/sanity/queries/weddingDetails';
+import { getDressCode } from '@/sanity/queries/dressCode';
 
 export const metadata: Metadata = {
   title: 'Jave & Nianne — January 8, 2027',
@@ -16,10 +18,11 @@ export const metadata: Metadata = {
 };
 
 export default async function IndexPage() {
-  const [chapters, proposal, weddingDetails] = await Promise.all([
+  const [chapters, proposal, weddingDetails, dressCode] = await Promise.all([
     getStoryChapters(),
     getProposalSection(),
     getWeddingDetails(),
+    getDressCode(),
   ]);
 
   return (
@@ -53,6 +56,14 @@ export default async function IndexPage() {
             <WeddingDetails details={weddingDetails} />
           ) : (
             <p className="font-display text-display-md">Wedding Details</p>
+          )}
+        </ChapterSection>
+
+        <ChapterSection id="dress-code" palette="matcha-chiffon" label="Dress Code">
+          {dressCode ? (
+            <DressCodeSection dressCode={dressCode} />
+          ) : (
+            <p className="font-display text-display-md">Dress Code</p>
           )}
         </ChapterSection>
 
