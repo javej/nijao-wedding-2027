@@ -7,9 +7,11 @@ import { ProposalSection } from '@/components/sections/ProposalSection';
 import { StoryChapter } from '@/components/sections/StoryChapter';
 import { WeddingDetails } from '@/components/sections/WeddingDetails';
 import { DressCodeSection } from '@/components/sections/DressCodeSection';
+import { EntourageSection } from '@/components/sections/EntourageSection';
 import { getProposalSection, getStoryChapters } from '@/sanity/queries/storyChapters';
 import { getWeddingDetails } from '@/sanity/queries/weddingDetails';
 import { getDressCode } from '@/sanity/queries/dressCode';
+import { getPadrinos, getWeddingParty } from '@/sanity/queries/entourage';
 
 export const metadata: Metadata = {
   title: 'Jave & Nianne — January 8, 2027',
@@ -18,11 +20,13 @@ export const metadata: Metadata = {
 };
 
 export default async function IndexPage() {
-  const [chapters, proposal, weddingDetails, dressCode] = await Promise.all([
+  const [chapters, proposal, weddingDetails, dressCode, padrinos, weddingParty] = await Promise.all([
     getStoryChapters(),
     getProposalSection(),
     getWeddingDetails(),
     getDressCode(),
+    getPadrinos(),
+    getWeddingParty(),
   ]);
 
   return (
@@ -68,7 +72,11 @@ export default async function IndexPage() {
         </ChapterSection>
 
         <ChapterSection id="entourage" palette="berry-meringue" label="Entourage">
-          <p className="font-display text-display-md">Entourage</p>
+          {padrinos.length > 0 || weddingParty.length > 0 ? (
+            <EntourageSection padrinos={padrinos} weddingParty={weddingParty} />
+          ) : (
+            <p className="font-display text-display-md">Entourage</p>
+          )}
         </ChapterSection>
 
         <ChapterSection id="rsvp" palette="golden-matcha" label="RSVP">
