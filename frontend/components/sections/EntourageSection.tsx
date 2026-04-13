@@ -93,7 +93,7 @@ function PadrinoCard({ padrino }: PadrinoCardProps) {
         <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden mb-3">
           <Image
             src={urlFor(photo).width(160).height(160).url()}
-            alt=""
+            alt={`Photo of ${name}`}
             fill
             sizes="(max-width: 768px) 4rem, 5rem"
             loading="lazy"
@@ -107,13 +107,13 @@ function PadrinoCard({ padrino }: PadrinoCardProps) {
           className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-berry-meringue/15 flex items-center justify-center mb-3"
           aria-hidden="true"
         >
-          <span className="font-display font-light text-display-sm text-berry-meringue/60 select-none">
+          <span className="font-body font-normal text-display-sm text-berry-meringue/60 select-none">
             {name.charAt(0)}
           </span>
         </div>
       )}
 
-      <p className="font-display font-medium text-body-lg text-text-on-light leading-snug">
+      <p className="font-body font-medium text-body-lg text-text-on-light leading-snug">
         {name}
       </p>
       <p className="font-body text-body-sm text-text-on-light/70 mt-1">
@@ -193,13 +193,13 @@ function WeddingPartyCard({ member }: WeddingPartyCardProps) {
         {Icon ? (
           <Icon className={cn("w-6 h-6 md:w-7 md:h-7", circleText)} strokeWidth={1.5} />
         ) : (
-          <span className={cn("font-display font-light text-display-sm select-none", circleText)}>
+          <span className={cn("font-body font-normal text-display-sm select-none", circleText)}>
             {name.charAt(0)}
           </span>
         )}
       </div>
 
-      <p className="font-display font-medium text-body-md text-text-on-light leading-snug">
+      <p className="font-body font-medium text-body-md text-text-on-light leading-snug">
         {name}
       </p>
       <p className="font-body text-body-sm text-text-on-light/70 mt-1">
@@ -231,7 +231,7 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
       {/* ── Padrino Wall ── */}
       {hasPadrinos && (
         <div className="w-full max-w-4xl mb-12">
-          <h3 className="font-display font-light text-display-md text-text-on-light tracking-wide text-center mb-2">
+          <h3 className="font-body font-normal text-display-md text-text-on-light tracking-wide text-center mb-2">
             The Padrino Wall
           </h3>
           <p className="font-body text-body-sm text-text-on-light/70 text-center mb-8 tracking-widest uppercase">
@@ -254,7 +254,7 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
       {/* ── Wedding Party ── */}
       {hasWeddingParty && (
         <div className="w-full max-w-4xl">
-          <h3 className="font-display font-light text-display-sm text-text-on-light tracking-wide text-center mb-8">
+          <h3 className="font-body font-normal text-display-sm text-text-on-light tracking-wide text-center mb-8">
             Wedding Party
           </h3>
 
@@ -268,7 +268,7 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
 
       {/* Empty state */}
       {!hasPadrinos && !hasWeddingParty && (
-        <p className="font-display text-display-md text-text-on-light/40">
+        <p className="font-body text-display-md text-text-on-light/40">
           Entourage
         </p>
       )}

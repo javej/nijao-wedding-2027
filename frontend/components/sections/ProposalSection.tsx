@@ -51,7 +51,7 @@ export function ProposalSection({ proposal }: ProposalSectionProps) {
           The Proposal
         </h2>
 
-        <p className="font-display font-light text-display-md text-text-on-dark/90 leading-relaxed mt-8 max-w-lg whitespace-pre-line">
+        <p className="font-display font-light italic text-display-md text-text-on-dark/90 leading-relaxed mt-8 max-w-lg whitespace-pre-line">
           {caption}
         </p>
       </div>

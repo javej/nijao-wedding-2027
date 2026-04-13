@@ -31,6 +31,9 @@ export function ExperienceShell({ children }: ExperienceShellProps) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
+      // Move focus to main content after overlay exits
+      const main = document.getElementById('main-content');
+      if (main) main.focus();
     }
     return () => {
       document.body.style.overflow = '';

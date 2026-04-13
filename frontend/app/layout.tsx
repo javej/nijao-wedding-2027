@@ -44,14 +44,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={cn(cormorantGaramond.variable, dmSans.variable)}>
       <link rel="icon" href="/favicon.ico" />
       <body
-        className={cn(
-          "min-h-screen bg-background font-body antialiased overscroll-none",
-          cormorantGaramond.variable,
-          dmSans.variable,
-        )}
+        className="min-h-screen bg-background font-body antialiased overscroll-none"
       >
           {children}
         <Toaster position="top-center" richColors />

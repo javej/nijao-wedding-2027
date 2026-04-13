@@ -47,11 +47,11 @@ export function DressCodeSection({ dressCode }: DressCodeSectionProps) {
 
   return (
     <div className="flex flex-col items-center justify-center w-full px-(--chapter-padding-x) py-(--chapter-padding-y)">
-      <h2 className="font-display font-light text-display-md text-text-on-light tracking-wide mb-4">
+      <h2 className="font-body font-normal text-display-md text-text-on-light tracking-wide mb-4">
         Dress Code
       </h2>
 
-      <p className="font-body font-semibold text-display-sm text-deep-matcha tracking-widest uppercase mb-8">
+      <p className="font-body font-medium text-display-sm text-deep-matcha tracking-widest uppercase mb-8">
         {label}
       </p>
 
@@ -92,7 +92,7 @@ export function DressCodeSection({ dressCode }: DressCodeSectionProps) {
       {/* Inspiration images — only rendered if array is non-empty */}
       {inspirationImages && inspirationImages.length > 0 && (
         <div className="w-full max-w-4xl mb-12">
-          <h3 className="font-display font-light text-display-sm text-text-on-light tracking-wide text-center mb-8">
+          <h3 className="font-body font-normal text-display-sm text-text-on-light tracking-wide text-center mb-8">
             Inspiration
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
