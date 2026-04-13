@@ -1,0 +1,38 @@
+_bmad-output/implementation-artifacts/2-2-monogram-loader.md
+  3f7bfa31d6d67ce0 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "8007ef1c6e6c4f85c4a4d573dc6492f8cb3e76c0",
+  "prompts": {
+    "3f7bfa31d6d67ce0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "15c54ec8-84e0-42e0-b99f-59f967420346",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 20,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/07482d624498e1fbfadfc8d36c06d63020037f2cbe0418ca8330225e6c31fe09"
+    },
+    "fa366d91a931436a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "39f54d3b-f9c2-4216-8afb-804c5923e7da",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 128,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/52e2862e7b451a32eeedd55aa6ea97a72508079ccb0e6b1bd21f60ea0c4964e1"
+    }
+  }
+}
