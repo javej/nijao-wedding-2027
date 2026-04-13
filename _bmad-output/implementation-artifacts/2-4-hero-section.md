@@ -1,6 +1,6 @@
 # Story 2.4: Hero Section
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -20,49 +20,49 @@ so that the emotional core of the story is anchored before anything else.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create the sections directory and HeroSection component (AC: 1, 2)
-  - [ ] 1.1 Create directory `frontend/components/sections/` — this is the architecture-specified location for full-viewport RSC section components
-  - [ ] 1.2 Create `frontend/components/sections/HeroSection.tsx` as a **Server Component** (no `'use client'` directive)
-  - [ ] 1.3 Component renders:
+- [x] Task 1: Create the sections directory and HeroSection component (AC: 1, 2)
+  - [x] 1.1 Create directory `frontend/components/sections/` — this is the architecture-specified location for full-viewport RSC section components
+  - [x] 1.2 Create `frontend/components/sections/HeroSection.tsx` as a **Server Component** (no `'use client'` directive)
+  - [x] 1.3 Component renders:
     - Couple's names: "Jave & Nianne" (or styled variant) in display typeface (`font-display`, Cormorant Garamond)
     - Tagline: *"Ten years. One more day."* in display typeface, prominent size (`--text-display-xl`)
     - Wedding date: "January 8, 2027" in display or body typeface
-  - [ ] 1.4 Content can be hardcoded for now — these are core identity elements unlikely to change. If Sanity content is preferred, create a `heroSettings` singleton or use an existing settings document
-  - [ ] 1.5 Layout: center all content vertically and horizontally within the chapter frame. Use generous negative space — the hero should breathe
+  - [x] 1.4 Content can be hardcoded for now — these are core identity elements unlikely to change. If Sanity content is preferred, create a `heroSettings` singleton or use an existing settings document
+  - [x] 1.5 Layout: center all content vertically and horizontally within the chapter frame. Use generous negative space — the hero should breathe
 
-- [ ] Task 2: Apply palette and typography tokens (AC: 1, 4)
-  - [ ] 2.1 Hero section palette accent: **Raspberry** (`border-raspberry`) — Chapter 2 in the UX color mapping
-  - [ ] 2.2 Display text: use `font-display` (Cormorant Garamond), weight 300 or 400 for the tagline, weight 600 for the couple's names
-  - [ ] 2.3 Text color: use token-based classes (`text-text-on-light` or equivalent from the design token system) — verify 4.5:1 contrast against the background
-  - [ ] 2.4 Background: warm off-white (`bg-background` / `#faf9f6`) or a palette-tinted treatment
-  - [ ] 2.5 **No hardcoded hex values** — all colors via Tailwind token classes
-  - [ ] 2.6 Verify contrast: Raspberry text on off-white background? Or off-white text on Raspberry background? Choose the combination that passes WCAG AA and feels right. Test with a contrast checker
+- [x] Task 2: Apply palette and typography tokens (AC: 1, 4)
+  - [x] 2.1 Hero section palette accent: **Raspberry** (`border-raspberry`) — Chapter 2 in the UX color mapping
+  - [x] 2.2 Display text: use `font-display` (Cormorant Garamond), weight 300 or 400 for the tagline, weight 600 for the couple's names
+  - [x] 2.3 Text color: use token-based classes (`text-text-on-light` or equivalent from the design token system) — verify 4.5:1 contrast against the background
+  - [x] 2.4 Background: warm off-white (`bg-background` / `#faf9f6`) or a palette-tinted treatment
+  - [x] 2.5 **No hardcoded hex values** — all colors via Tailwind token classes
+  - [x] 2.6 Verify contrast: Raspberry text on off-white background? Or off-white text on Raspberry background? Choose the combination that passes WCAG AA and feels right. Test with a contrast checker
 
-- [ ] Task 3: Responsive design (AC: 3)
-  - [ ] 3.1 Mobile-first at 390px, minimum 375px (iPhone SE)
-  - [ ] 3.2 Use `clamp()`-based type scale tokens for responsive text sizing — already defined in globals.css from Story 1.2:
+- [x] Task 3: Responsive design (AC: 3)
+  - [x] 3.1 Mobile-first at 390px, minimum 375px (iPhone SE)
+  - [x] 3.2 Use `clamp()`-based type scale tokens for responsive text sizing — already defined in globals.css from Story 1.2:
     - `--text-display-xl: clamp(2.5rem, 6vw, 5rem)` for the tagline
     - `--text-display-lg: clamp(1.75rem, 4vw, 3rem)` for names
-  - [ ] 3.3 Ensure no text falls below 16px on mobile (NFR-A5)
-  - [ ] 3.4 Test: all text visible and legible at 375px with no clipping or horizontal scroll
+  - [x] 3.3 Ensure no text falls below 16px on mobile (NFR-A5)
+  - [x] 3.4 Test: all text visible and legible at 375px with no clipping or horizontal scroll
 
-- [ ] Task 4: Semantic structure and accessibility (AC: 4)
-  - [ ] 4.1 Use `<section>` with an appropriate `aria-label` (e.g., "Hero")
-  - [ ] 4.2 The couple's names or tagline should be the `<h1>` — this is the site's primary heading. Only one `<h1>` per page
-  - [ ] 4.3 Remaining hero text uses appropriate heading or paragraph elements
-  - [ ] 4.4 Ensure heading hierarchy is correct: `<h1>` here, `<h2>` for subsequent chapter headings (Story 2.5+)
+- [x] Task 4: Semantic structure and accessibility (AC: 4)
+  - [x] 4.1 Use `<section>` with an appropriate `aria-label` (e.g., "Hero")
+  - [x] 4.2 The couple's names or tagline should be the `<h1>` — this is the site's primary heading. Only one `<h1>` per page
+  - [x] 4.3 Remaining hero text uses appropriate heading or paragraph elements
+  - [x] 4.4 Ensure heading hierarchy is correct: `<h1>` here, `<h2>` for subsequent chapter headings (Story 2.5+)
 
-- [ ] Task 5: Wire into ChapterScrollContainer (AC: 1)
-  - [ ] 5.1 In `frontend/app/(main)/page.tsx`, replace the "Hero" placeholder chapter (from Story 2.1) with the `<HeroSection>` component
-  - [ ] 5.2 The hero section sits inside the ChapterScrollContainer as the first content chapter
-  - [ ] 5.3 Ensure the hero chapter uses the `raspberry` palette prop for the left-edge accent
+- [x] Task 5: Wire into ChapterScrollContainer (AC: 1)
+  - [x] 5.1 In `frontend/app/(main)/page.tsx`, replace the "Hero" placeholder chapter (from Story 2.1) with the `<HeroSection>` component
+  - [x] 5.2 The hero section sits inside the ChapterScrollContainer as the first content chapter
+  - [x] 5.3 Ensure the hero chapter uses the `raspberry` palette prop for the left-edge accent
 
-- [ ] Task 6: Verification (AC: 1-4)
-  - [ ] 6.1 Visual check: hero displays correctly with names, tagline, date in display typeface
-  - [ ] 6.2 Verify SSG: view page source — hero content should be in the initial HTML
-  - [ ] 6.3 Verify 375px: all text visible, legible, no overflow
-  - [ ] 6.4 Verify contrast: all text meets 4.5:1 against background
-  - [ ] 6.5 Run `pnpm build` and `pnpm lint` — zero errors
+- [x] Task 6: Verification (AC: 1-4)
+  - [x] 6.1 Visual check: hero displays correctly with names, tagline, date in display typeface
+  - [x] 6.2 Verify SSG: view page source — hero content should be in the initial HTML
+  - [x] 6.3 Verify 375px: all text visible, legible, no overflow
+  - [x] 6.4 Verify contrast: all text meets 4.5:1 against background
+  - [x] 6.5 Run `pnpm build` and `pnpm lint` — zero errors
 
 ## Dev Notes
 
@@ -128,8 +128,38 @@ frontend/app/(main)/page.tsx   (replace hero placeholder with HeroSection)
 
 ### Agent Model Used
 
+Claude Opus 4.6
+
 ### Debug Log References
+
+No debug issues encountered.
 
 ### Completion Notes List
 
+- Created `frontend/components/sections/` directory — establishes the architecture pattern for full-viewport RSC section components (Stories 2.5–2.9 will follow)
+- Created `HeroSection.tsx` as a pure Server Component (no `'use client'`, no hooks, no client-side fetches). Hardcoded hero text for reliability
+- Typography: `font-display` (Cormorant Garamond) — `font-semibold` for names, `font-light italic` for tagline, `font-normal` for date
+- Token usage: `text-display-lg` (names), `text-display-xl` (tagline), `text-display-md` (date), `text-text-on-light`, spacing via `--chapter-padding-x/y`
+- No hardcoded hex values — all colors via Tailwind token classes
+- `<h1>` assigned to couple's names "Jave & Nianne" — the page's only h1. Tagline and date use `<p>` elements
+- `<section>` with `aria-label="Jave and Nianne"` provided by parent `ChapterSection` wrapper (updated per UX spec)
+- Raspberry palette accent preserved via `ChapterSection palette="raspberry"` prop
+- Contrast verified: `#1a1a1a` on `#faf9f6` = **16.53:1** (passes WCAG AA and AAA)
+- Responsive verified: all clamp() minimums above 16px at 375px viewport (40px, 28px, 20px)
+- SSG verified: all hero text present in static HTML build output
+- `pnpm build`, `pnpm lint`, `pnpm typecheck` — zero errors
+
+### Change Log
+
+- 2026-04-13: Implemented Story 2.4 — HeroSection component with names, tagline, date; wired into page as first content chapter
+- 2026-04-13: Code review — fixed 5 issues (2M, 3L): added italic font style to Cormorant Garamond config, corrected aria-label to match UX spec, removed redundant h1 classes, replaced HTML entity with plain ampersand, added explicit bg-background
+
 ### File List
+
+New files:
+- `frontend/components/sections/HeroSection.tsx`
+
+Modified files:
+- `frontend/app/(main)/page.tsx`
+- `frontend/app/layout.tsx`
+- `_bmad-output/implementation-artifacts/2-4-hero-section.md`

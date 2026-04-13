@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ChapterScrollContainer } from '@/components/ui/ChapterScrollContainer';
 import { ChapterSection } from '@/components/ui/ChapterSection';
 import { ExperienceShell } from '@/components/ui/ExperienceShell';
+import { HeroSection } from '@/components/sections/HeroSection';
 
 export const metadata: Metadata = {
   title: 'Jave & Nianne — January 8, 2027',
@@ -13,8 +14,8 @@ export default function IndexPage() {
   return (
     <ExperienceShell>
       <ChapterScrollContainer>
-        <ChapterSection id="hero" palette="raspberry" label="Hero">
-          <p className="font-display text-display-md">Hero</p>
+        <ChapterSection id="hero" palette="raspberry" label="Jave and Nianne">
+          <HeroSection />
         </ChapterSection>
 
         <ChapterSection id="story-scroll" palette="matcha-latte" label="Story Scroll">
