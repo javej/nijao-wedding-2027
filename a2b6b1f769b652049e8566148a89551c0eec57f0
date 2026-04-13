@@ -1,0 +1,72 @@
+frontend/app/(main)/page.tsx
+  c1e071eca1a9e43c 6-7,15-17,25-34
+frontend/components/sections/StoryChapter.tsx
+  c1e071eca1a9e43c 1-59
+frontend/sanity/queries/storyChapters.ts
+  c1e071eca1a9e43c 1-66
+_bmad-output/implementation-artifacts/2-5-ten-year-love-story-chapters.md
+  c1e071eca1a9e43c 3,27-28,30,34-36,38-42,45-47,49-53,55-60,62-65,69-70,80,153-154,157-158,161-171,173-196,198-202
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "a2b6b1f769b652049e8566148a89551c0eec57f0",
+  "prompts": {
+    "1214c2d15b1435b5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1323b656-1f53-4459-9f70-99b843055955",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/4709294c64fc98034ea7a83f10a17de8c1c79525d0f08399a6eecaccadd1efe9"
+    },
+    "786fd35077aabf4e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8bfcfb7a-4392-4ae2-b2a0-8d07fb557490",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 19,
+      "total_deletions": 1,
+      "accepted_lines": 19,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/62d21161fee1899607465d5e8446c1101e4640ac2e6e7ee9cef5dc58d51453ad"
+    },
+    "c1e071eca1a9e43c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5bde6bb2-0344-4f60-97b4-49c4c46f3416",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 460,
+      "total_deletions": 78,
+      "accepted_lines": 243,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/02ec62f79b0280953436c6d7dc07155ffd902eb115cbeb23d2c99e92ae60d425"
+    },
+    "fa366d91a931436a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "39f54d3b-f9c2-4216-8afb-804c5923e7da",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 128,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/52e2862e7b451a32eeedd55aa6ea97a72508079ccb0e6b1bd21f60ea0c4964e1"
+    }
+  }
+}
