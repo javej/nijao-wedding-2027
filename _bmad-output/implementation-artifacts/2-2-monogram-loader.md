@@ -28,18 +28,18 @@ so that the site opens like a ceremony — not a web page.
   - [x] 1.3 Verify `pnpm build` still passes — no bundle size regression concerns (Framer Motion tree-shakes well) — Build passes
 
 - [x] Task 2: Create the `.jn` monogram SVG (AC: 5)
-  - [x] 2.1 Create or source the `.jn` ligature SVG path data — this must be the actual designed monogram, not a placeholder. The monogram is a stylized lowercase `.jn` mark — Created 4-element SVG: dot, j tittle, j stem+descender, n hump
+  - [x] 2.1 Create or source the `.jn` ligature SVG path data — this must be the actual designed monogram, not a placeholder. The monogram is a stylized lowercase `.jn` mark — Created 3-element SVG: j tittle, j stem+descender, n hump
   - [x] 2.2 The SVG must use `<path>` elements (not `<text>`) so Framer Motion can animate `pathLength` — Uses motion.path and motion.circle elements
   - [x] 2.3 Store the SVG path data inline in the component or as a separate SVG file imported into the component — Inline in MonogramLoader.tsx
-  - [x] 2.4 SVG should use `stroke` (not `fill`) for the draw-on effect — the path draws itself via stroke-dashoffset animation — All elements use stroke with fill="none"
-  - [x] 2.5 Stroke color: use `--color-deep-matcha` (`#676930`) — the monogram chapter color per UX spec — Uses var(--color-deep-matcha)
+  - [x] 2.4 SVG should use `stroke` (not `fill`) for the draw-on effect — the path draws itself via stroke-dashoffset animation — Paths use stroke with fill="none"; tittle circle uses both stroke and fill with animated fillOpacity
+  - [x] 2.5 Stroke color: use `--color-deep-matcha` (`#676930`) — the monogram chapter color per UX spec — J elements use var(--color-deep-matcha); N uses var(--color-strawberry-milk) per user direction
 
 - [x] Task 3: Create MonogramLoader client component (AC: 1, 2, 3)
   - [x] 3.1 Create `frontend/components/ui/MonogramLoader.tsx` with `'use client'` directive
   - [x] 3.2 Full-screen overlay: `fixed inset-0 z-50` with dark/black background (the UX spec says "screen goes dark" before draw-on)
   - [x] 3.3 Center the `.jn` SVG in the viewport using flexbox — flex items-center justify-center
   - [x] 3.4 Animate SVG path using Framer Motion's `motion.path` with `pathLength` property
-  - [x] 3.5 Total animation budget: **< 2 seconds** including draw-on + any fade. Aim for 1.5s draw-on + 0.3s hold + 0.2s fade-out — Total ~2.0s (1.5s draw + 0.3s hold + 0.2s fade)
+  - [x] 3.5 Total animation budget: **< 2 seconds** including draw-on + any fade. Aim for 1.5s draw-on + 0.3s hold + 0.2s fade-out — Total ~3.0s (2.2s draw + 0.5s hold + 0.3s fade); extended per user direction for more ceremonial pacing
   - [x] 3.6 After animation completes, fade out the entire loader overlay to reveal the content behind it — AnimatePresence with exit opacity transition
   - [x] 3.7 Use `onAnimationComplete` callback or `AnimatePresence` to handle the exit transition — Both used
   - [x] 3.8 After exit, the component should unmount or become `pointer-events: none` — it must not block scroll interaction — Component unmounts via AnimatePresence conditional render
@@ -47,8 +47,8 @@ so that the site opens like a ceremony — not a web page.
 - [x] Task 4: Implement reduced-motion fallback (AC: 4)
   - [x] 4.1 Import `useReducedMotion` from `framer-motion` — this is the architecture-mandated pattern for all animated client components — Imported from 'motion/react'
   - [x] 4.2 When `shouldReduceMotion` is true: render the monogram SVG with full pathLength (fully drawn), skip the draw-on animation entirely — 'reduced' variant renders pathLength: 1 immediately
-  - [x] 4.3 Loader exits immediately (or after a brief 300ms hold so the mark is still seen) — no fade animation — 300ms hold then exit
-  - [x] 4.4 Define Framer Motion variants **outside the component** to prevent re-renders (architecture pattern) — All 5 variant objects defined at module scope
+  - [x] 4.3 Loader exits immediately (or after a brief 300ms hold so the mark is still seen) — no fade animation — Exits immediately on mount via useEffect; no hold, no fade (overlayReducedVariants has duration: 0)
+  - [x] 4.4 Define Framer Motion variants **outside the component** to prevent re-renders (architecture pattern) — All 5 variant objects defined at module scope (tittleVariants, jVariants, nVariants, overlayVariants, overlayReducedVariants)
 
 - [x] Task 5: Wire into the page and manage loading state (AC: 2, 3)
   - [x] 5.1 Add `<MonogramLoader>` to the main page — it renders as an overlay on top of the `<ChapterScrollContainer>` (from Story 2.1) — Added as sibling above ChapterScrollContainer in Fragment
@@ -141,15 +141,17 @@ Claude Opus 4.6
 ### Completion Notes List
 
 - **Task 1:** `motion` v12.38.0 was already installed (modern rebrand of framer-motion). No additional dependency needed.
-- **Task 2:** Created a 4-element `.jn` monogram SVG: dot (period), j tittle, j stem with descender hook, and n hump. All use stroke-based rendering for pathLength animation. Stroke color uses `var(--color-deep-matcha)` design token.
-- **Task 3:** `MonogramLoader.tsx` is a `'use client'` component with full-screen black overlay (`fixed inset-0 z-50`), centered SVG, staggered draw-on animation (~1.5s total draw + 0.3s hold + 0.2s fade-out = ~2.0s), and `AnimatePresence` exit handling. Component fully unmounts after exit.
-- **Task 4:** `useReducedMotion()` hook from `motion/react`. When active, all SVG elements render fully drawn immediately (pathLength: 1), hold for 300ms, then exit without fade animation. All 5 variant objects defined at module scope outside the component.
+- **Task 2:** Created a 3-element `.jn` monogram SVG: j tittle (filled circle), j stem with descender hook, and n hump. J elements use `var(--color-deep-matcha)`, n uses `var(--color-strawberry-milk)`. Tittle uses both stroke and fill with animated fillOpacity; letter paths use thick stroke (24/22px) with round caps.
+- **Task 3:** `MonogramLoader.tsx` is a `'use client'` component with full-screen black overlay (`fixed inset-0 z-50`), centered SVG, staggered draw-on animation (~2.2s draw + 0.5s hold + 0.3s fade = ~3.0s total), and `AnimatePresence` exit handling. Component fully unmounts after exit. Includes 5s safety timeout to prevent permanent page lock.
+- **Task 4:** `useReducedMotion()` hook from `motion/react`. When active, all SVG elements render fully drawn immediately (pathLength: 1) and loader exits immediately via useEffect — no hold, no fade (overlayReducedVariants with duration: 0). All 5 variant objects defined at module scope outside the component.
 - **Task 5:** `MonogramLoader` added as overlay sibling above `ChapterScrollContainer` in `page.tsx`. Body scroll is locked (`overflow: hidden`) during loader via `useEffect`, cleaned up on exit. Removed the monogram-loader placeholder `ChapterSection` that was in the scroll container.
 - **Task 6:** `pnpm build`, `pnpm lint`, and `pnpm typecheck` all pass. MonogramLoader is in the client-reference-manifest (correct RSC boundary). Inline SVG means no network fetch — animation starts on hydration.
 
 ### Change Log
 
 - 2026-04-13: Implemented Story 2.2 — Monogram Loader. Created `MonogramLoader.tsx` client component with `.jn` SVG draw-on animation using Framer Motion pathLength. Wired into main page as overlay above scroll container with body scroll lock. Reduced-motion fallback shows monogram instantly with 300ms hold.
+- 2026-04-13: User iterations — J in deep-matcha, N in strawberry-milk; extended animation timing to ~3.0s for ceremonial pacing; dot removed; tittle made smaller; stroke widths increased to 24/22px for bold display weight.
+- 2026-04-13: Code review fixes — (1) Reduced-motion now exits immediately via useEffect (AC4 compliance); (2) Added role="status" aria-label="Loading" on overlay, aria-hidden on SVG (architecture spec); (3) Added 5s safety timeout to prevent permanent page lock; (4) Added overlayReducedVariants with duration: 0 for instant exit; (5) Updated stale story notes to match actual implementation.
 
 ### File List
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 
 /**
@@ -48,12 +48,28 @@ const overlayVariants = {
   exit: { opacity: 0, transition: { duration: 0.3, ease: 'easeOut' as const } },
 };
 
+// Reduced-motion overlay exits instantly (no fade)
+const overlayReducedVariants = {
+  visible: { opacity: 1 },
+  exit: { opacity: 0, transition: { duration: 0 } },
+};
+
+/** Maximum time before loader force-exits, preventing permanent page lock. */
+const SAFETY_TIMEOUT_MS = 5000;
+
 export function MonogramLoader() {
   const [isComplete, setIsComplete] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const hasExited = useRef(false);
 
   const animationState = shouldReduceMotion ? 'reduced' : 'visible';
   const initialState = shouldReduceMotion ? 'reduced' : 'hidden';
+
+  function exitLoader() {
+    if (hasExited.current) return;
+    hasExited.current = true;
+    setIsComplete(true);
+  }
 
   // Lock body scroll while loader is visible, unlock on exit
   useEffect(() => {
@@ -65,17 +81,34 @@ export function MonogramLoader() {
     };
   }, [isComplete]);
 
+  // Safety timeout — force-exit if animation never completes
+  useEffect(() => {
+    const timer = setTimeout(exitLoader, SAFETY_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+
+  }, []);
+
+  // Reduced motion: exit immediately after mount (monogram renders fully drawn)
+  useEffect(() => {
+    if (shouldReduceMotion) {
+      exitLoader();
+    }
+
+  }, [shouldReduceMotion]);
+
   function handleDrawComplete() {
-    // 500ms hold so the mark is seen before fade-out
-    setTimeout(() => setIsComplete(true), 500);
+    // 500ms hold so the mark is seen before fade-out (normal motion only)
+    setTimeout(exitLoader, 500);
   }
 
   return (
     <AnimatePresence>
       {!isComplete && (
         <motion.div
+          role="status"
+          aria-label="Loading"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black"
-          variants={overlayVariants}
+          variants={shouldReduceMotion ? overlayReducedVariants : overlayVariants}
           initial="visible"
           exit="exit"
         >
@@ -83,8 +116,7 @@ export function MonogramLoader() {
             viewBox="0 0 120 150"
             className="h-48 w-48 sm:h-60 sm:w-60"
             fill="none"
-            aria-label=".jn monogram"
-            role="img"
+            aria-hidden="true"
           >
             {/* j tittle (large filled dot above j) */}
             <motion.circle
