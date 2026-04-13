@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ChapterScrollContainer } from '@/components/ui/ChapterScrollContainer';
 import { ChapterSection } from '@/components/ui/ChapterSection';
+import { MonogramLoader } from '@/components/ui/MonogramLoader';
 
 export const metadata: Metadata = {
   title: 'Jave & Nianne — January 8, 2027',
@@ -10,38 +11,37 @@ export const metadata: Metadata = {
 
 export default function IndexPage() {
   return (
-    <ChapterScrollContainer>
-      <ChapterSection id="monogram-loader" palette="deep-matcha" label="Monogram Loader">
-        <p className="font-display text-display-md">Monogram Loader</p>
-      </ChapterSection>
+    <>
+      <MonogramLoader />
+      <ChapterScrollContainer>
+        <ChapterSection id="hero" palette="raspberry" label="Hero">
+          <p className="font-display text-display-md">Hero</p>
+        </ChapterSection>
 
-      <ChapterSection id="hero" palette="raspberry" label="Hero">
-        <p className="font-display text-display-md">Hero</p>
-      </ChapterSection>
+        <ChapterSection id="story-scroll" palette="matcha-latte" label="Story Scroll">
+          <p className="font-display text-display-md">Story Scroll</p>
+        </ChapterSection>
 
-      <ChapterSection id="story-scroll" palette="matcha-latte" label="Story Scroll">
-        <p className="font-display text-display-md">Story Scroll</p>
-      </ChapterSection>
+        <ChapterSection id="proposal" palette="strawberry-jam" label="Proposal">
+          <p className="font-display text-display-md">Proposal</p>
+        </ChapterSection>
 
-      <ChapterSection id="proposal" palette="strawberry-jam" label="Proposal">
-        <p className="font-display text-display-md">Proposal</p>
-      </ChapterSection>
+        <ChapterSection id="wedding-details" palette="matcha-chiffon" label="Wedding Details">
+          <p className="font-display text-display-md">Wedding Details</p>
+        </ChapterSection>
 
-      <ChapterSection id="wedding-details" palette="matcha-chiffon" label="Wedding Details">
-        <p className="font-display text-display-md">Wedding Details</p>
-      </ChapterSection>
+        <ChapterSection id="entourage" palette="berry-meringue" label="Entourage">
+          <p className="font-display text-display-md">Entourage</p>
+        </ChapterSection>
 
-      <ChapterSection id="entourage" palette="berry-meringue" label="Entourage">
-        <p className="font-display text-display-md">Entourage</p>
-      </ChapterSection>
+        <ChapterSection id="rsvp" palette="golden-matcha" label="RSVP">
+          <p className="font-display text-display-md">RSVP</p>
+        </ChapterSection>
 
-      <ChapterSection id="rsvp" palette="golden-matcha" label="RSVP">
-        <p className="font-display text-display-md">RSVP</p>
-      </ChapterSection>
-
-      <ChapterSection id="completion" palette="strawberry-milk" label="Completion">
-        <p className="font-display text-display-md">Completion</p>
-      </ChapterSection>
-    </ChapterScrollContainer>
+        <ChapterSection id="completion" palette="strawberry-milk" label="Completion">
+          <p className="font-display text-display-md">Completion</p>
+        </ChapterSection>
+      </ChapterScrollContainer>
+    </>
   );
 }
