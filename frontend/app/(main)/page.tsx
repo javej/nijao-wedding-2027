@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { ChapterScrollContainer } from '@/components/ui/ChapterScrollContainer';
 import { ChapterSection } from '@/components/ui/ChapterSection';
-import { MonogramLoader } from '@/components/ui/MonogramLoader';
+import { ExperienceShell } from '@/components/ui/ExperienceShell';
 
 export const metadata: Metadata = {
   title: 'Jave & Nianne — January 8, 2027',
@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 
 export default function IndexPage() {
   return (
-    <>
-      <MonogramLoader />
+    <ExperienceShell>
       <ChapterScrollContainer>
         <ChapterSection id="hero" palette="raspberry" label="Hero">
           <p className="font-display text-display-md">Hero</p>
@@ -42,6 +41,6 @@ export default function IndexPage() {
           <p className="font-display text-display-md">Completion</p>
         </ChapterSection>
       </ChapterScrollContainer>
-    </>
+    </ExperienceShell>
   );
 }

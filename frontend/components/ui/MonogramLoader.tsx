@@ -57,7 +57,12 @@ const overlayReducedVariants = {
 /** Maximum time before loader force-exits, preventing permanent page lock. */
 const SAFETY_TIMEOUT_MS = 5000;
 
-export function MonogramLoader() {
+interface MonogramLoaderProps {
+  /** Called after the exit animation completes and the loader fully unmounts. */
+  onComplete?: () => void;
+}
+
+export function MonogramLoader({ onComplete }: MonogramLoaderProps) {
   const [isComplete, setIsComplete] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const hasExited = useRef(false);
@@ -70,16 +75,6 @@ export function MonogramLoader() {
     hasExited.current = true;
     setIsComplete(true);
   }
-
-  // Lock body scroll while loader is visible, unlock on exit
-  useEffect(() => {
-    if (!isComplete) {
-      document.body.style.overflow = 'hidden';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isComplete]);
 
   // Safety timeout — force-exit if animation never completes
   useEffect(() => {
@@ -102,7 +97,7 @@ export function MonogramLoader() {
   }
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={onComplete}>
       {!isComplete && (
         <motion.div
           role="status"
