@@ -10,13 +10,15 @@ export function ChapterScrollContainer({
   children,
 }: ChapterScrollContainerProps) {
   return (
-    <div
+    <main
+      id="main-content"
+      tabIndex={-1}
       className={cn(
         'h-dvh overflow-y-scroll overflow-x-hidden snap-y snap-mandatory',
-        'scrollbar-none',
+        'scrollbar-none outline-none',
       )}
     >
       {children}
-    </div>
+    </main>
   );
 }

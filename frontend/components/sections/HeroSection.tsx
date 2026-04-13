@@ -8,17 +8,17 @@
 export function HeroSection() {
   return (
     <div className="flex flex-col items-center justify-center text-center bg-background px-(--chapter-padding-x) py-(--chapter-padding-y)">
-      <h1 className="font-semibold text-display-lg text-text-on-light">
-        Jave & Nianne
+      {/* Visual headline — tagline is the emotional centrepiece */}
+      <p className="font-display font-light text-display-xl text-text-on-light leading-display">
+        Ten years.
+        <br />
+        <em className="text-raspberry">One more day.</em>
+      </p>
+
+      {/* Semantic h1 styled as secondary tagline — screen readers still find the title */}
+      <h1 className="font-display font-normal text-display-sm text-text-on-light/70 tracking-widest mt-8">
+        Jave &amp; Nianne &middot; January 8, 2027 &middot; Lipa, Batangas
       </h1>
-
-      <p className="font-display font-light text-display-xl text-text-on-light leading-display mt-6 italic">
-        Ten years. One more day.
-      </p>
-
-      <p className="font-display font-normal text-display-md text-text-on-light leading-display mt-8">
-        January 8, 2027
-      </p>
     </div>
   );
 }

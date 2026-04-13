@@ -83,7 +83,7 @@ export function ArrivalOverlay({ visible, interactive, onDismiss }: ArrivalOverl
     }
 
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowDown') {
+      if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowDown' || e.key === 'Escape') {
         e.preventDefault();
         dismiss();
       }
@@ -138,7 +138,7 @@ export function ArrivalOverlay({ visible, interactive, onDismiss }: ArrivalOverl
 
           {/* Tap-to-begin affordance — ceremonial, not utilitarian */}
           <motion.p
-            className="absolute bottom-16 font-display text-sm font-light text-foreground/40 tracking-widest uppercase"
+            className="absolute bottom-16 font-display text-body-sm font-light text-foreground/40 tracking-widest uppercase"
             variants={hintVariants}
             initial={initialTextState}
             animate={animationState}

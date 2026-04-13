@@ -216,6 +216,14 @@
   }
 }
 
+/* NFR-A5: Ensure no text below 16px on mobile (375px) */
+@media (max-width: 479px) {
+  :root {
+    --text-body-sm: 1rem;
+    --text-ui-sm: 1rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -234,7 +242,7 @@
     @apply bg-background text-foreground;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     line-height: var(--leading-display);
   }
 }
