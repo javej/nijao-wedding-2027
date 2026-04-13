@@ -1,0 +1,64 @@
+frontend/sanity/queries/dressCode.ts
+  508c32bef2ee2f13 1-79
+studio/schema-types.ts
+  508c32bef2ee2f13 11,31
+frontend/components/sections/DressCodeSection.tsx
+  508c32bef2ee2f13 1-127
+_bmad-output/implementation-artifacts/2-8-dress-code-section.md
+  508c32bef2ee2f13 3,25-27,40-42,44-45,51,53-56,60-62,64-68,70-74,76-80,82-84,88-89,92,172-173,176-177,180-188,190-194,196-205
+studio/schemas/documents/dressCode.ts
+  508c32bef2ee2f13 1-117
+studio/structure.ts
+  508c32bef2ee2f13 11,57-65
+frontend/app/(main)/page.tsx
+  508c32bef2ee2f13 9,12,21,25,62-69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "04ef5b40061b514163b3b1671f950a8a410efbf0",
+  "prompts": {
+    "508c32bef2ee2f13": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "013eade4-34ea-4977-9d35-1cc4d51f5c41",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 975,
+      "total_deletions": 608,
+      "accepted_lines": 415,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/01f0a01c4d563c82b33539eb512d07209d6a416d92f1cd987555a941cdf06722"
+    },
+    "a21b4eb4fe8b4509": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7f35b395-7c45-465b-ac3e-23f598fd7803",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 19,
+      "total_deletions": 1,
+      "accepted_lines": 19,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/90976f802ef94287cb4a89a5abbd4c431abbfcf7adf1c96e3cd41123afdd63b5"
+    },
+    "e8967fc45485fab3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6556e8a6-2d11-4965-ba5a-0f9da20a42d6",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 123,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/70073d4bbb44cb281279d2ba3ae70469785e80ded7c7718dc613bd0a44748762"
+    }
+  }
+}
