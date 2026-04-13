@@ -1,6 +1,6 @@
 # Story 2.2: Monogram Loader
 
-Status: review
+Status: done
 
 ## Story
 
