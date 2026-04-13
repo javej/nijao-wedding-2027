@@ -1,6 +1,6 @@
 # Story 2.8: Dress Code Section
 
-Status: ready-for-dev
+Status: in-progress
 
 ## Story
 
@@ -22,9 +22,9 @@ so that I know what to wear and feel confident about it — without sending the 
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create Sanity schema for dress code (AC: 1, 4)
-  - [ ] 1.1 Create `studio/schemas/dressCode.ts` — a **singleton** document type (one instance)
-  - [ ] 1.2 Schema fields:
+- [x] Task 1: Create Sanity schema for dress code (AC: 1, 4)
+  - [x] 1.1 Create `studio/schemas/dressCode.ts` — a **singleton** document type (one instance)
+  - [x] 1.2 Schema fields:
     ```
     dressCode {
       label: string (required) — e.g., "Semi-Formal" or "Formal Filipiniana"
@@ -37,59 +37,59 @@ so that I know what to wear and feel confident about it — without sending the 
       publishedAt: datetime
     }
     ```
-  - [ ] 1.3 All field names camelCase [Source: architecture.md → Naming Patterns]
-  - [ ] 1.4 Register in Studio schema index
-  - [ ] 1.5 Configure as singleton in Studio sidebar (same pattern as weddingDetails from Story 2.7)
+  - [x] 1.3 All field names camelCase [Source: architecture.md → Naming Patterns]
+  - [x] 1.4 Register in Studio schema index
+  - [x] 1.5 Configure as singleton in Studio sidebar (same pattern as weddingDetails from Story 2.7)
 
-- [ ] Task 2: Create GROQ query (AC: 1)
-  - [ ] 2.1 Create `frontend/sanity/queries/dressCode.ts`:
+- [x] Task 2: Create GROQ query (AC: 1)
+  - [x] 2.1 Create `frontend/sanity/queries/dressCode.ts`:
     ```groq
     *[_type == "dressCode"][0] {
       label, description, paletteColors, inspirationImages, additionalNotes
     }
     ```
-  - [ ] 2.2 Export typed fetch function (e.g., `getDressCode()`)
+  - [x] 2.2 Export typed fetch function (e.g., `getDressCode()`)
 
-- [ ] Task 3: Create DressCodeSection component (AC: 1, 2, 3, 5)
-  - [ ] 3.1 Create `frontend/components/sections/DressCodeSection.tsx` as a **Server Component**
-  - [ ] 3.2 Display dress code label prominently in display typeface (Cormorant Garamond)
-  - [ ] 3.3 Render palette color swatches/cards:
+- [x] Task 3: Create DressCodeSection component (AC: 1, 2, 3, 5)
+  - [x] 3.1 Create `frontend/components/sections/DressCodeSection.tsx` as a **Server Component**
+  - [x] 3.2 Display dress code label prominently in display typeface (Cormorant Garamond)
+  - [x] 3.3 Render palette color swatches/cards:
     - Each swatch: a colored rectangle using Tailwind token class (e.g., `bg-deep-matcha`) — **no hardcoded hex**
     - Below or beside each swatch: text label (e.g., "Deep Matcha — a dark green") for accessibility (AC: 5)
     - Use `cn()` for dynamic className based on `colorKey`
-  - [ ] 3.4 Layout palette cards: grid or flex wrap. On mobile (375px): 2 columns of swatches. On desktop: 4 columns
-  - [ ] 3.5 Render description/notes in body typeface (DM Sans)
-  - [ ] 3.6 Palette accent: **Matcha Chiffon** (`--color-matcha-chiffon`) — same as Wedding Details (both are in the "logistics" section of the scroll)
+  - [x] 3.4 Layout palette cards: grid or flex wrap. On mobile (375px): 2 columns of swatches. On desktop: 4 columns
+  - [x] 3.5 Render description/notes in body typeface (DM Sans)
+  - [x] 3.6 Palette accent: **Matcha Chiffon** (`--color-matcha-chiffon`) — same as Wedding Details (both are in the "logistics" section of the scroll)
 
-- [ ] Task 4: Handle optional inspiration images (AC: 4)
-  - [ ] 4.1 If `inspirationImages` array is non-empty: render a curated image gallery within the chapter
-  - [ ] 4.2 Images via `next/image` + `urlFor()` — WebP, lazy loaded, responsive sizes
-  - [ ] 4.3 If array is empty or null: gracefully omit the gallery section — no placeholder, no empty space, no error
-  - [ ] 4.4 Each image must have `alt` text from Sanity for accessibility
+- [x] Task 4: Handle optional inspiration images (AC: 4)
+  - [x] 4.1 If `inspirationImages` array is non-empty: render a curated image gallery within the chapter
+  - [x] 4.2 Images via `next/image` + `urlFor()` — WebP, lazy loaded, responsive sizes
+  - [x] 4.3 If array is empty or null: gracefully omit the gallery section — no placeholder, no empty space, no error
+  - [x] 4.4 Each image must have `alt` text from Sanity for accessibility
 
-- [ ] Task 5: Accessibility for color vision (AC: 5)
-  - [ ] 5.1 Every color swatch MUST have an adjacent text label describing the color — relying on color alone violates WCAG
-  - [ ] 5.2 Text labels should describe the color in plain language: "Deep Matcha — a dark green", "Raspberry — a deep rose", "Strawberry Milk — a soft pink"
-  - [ ] 5.3 These labels come from Sanity (`paletteColors[].colorLabel`) so Nianne can customize them
-  - [ ] 5.4 Swatch + label should be perceivable as a unit (group them visually and semantically)
+- [x] Task 5: Accessibility for color vision (AC: 5)
+  - [x] 5.1 Every color swatch MUST have an adjacent text label describing the color — relying on color alone violates WCAG
+  - [x] 5.2 Text labels should describe the color in plain language: "Deep Matcha — a dark green", "Raspberry — a deep rose", "Strawberry Milk — a soft pink"
+  - [x] 5.3 These labels come from Sanity (`paletteColors[].colorLabel`) so Nianne can customize them
+  - [x] 5.4 Swatch + label should be perceivable as a unit (group them visually and semantically)
 
-- [ ] Task 6: Wire into scroll sequence (AC: 1)
-  - [ ] 6.1 In `frontend/app/(main)/page.tsx`, fetch dress code content and render `<DressCodeSection>` inside ChapterScrollContainer
-  - [ ] 6.2 Position after WeddingDetails (Story 2.7) and before Entourage (Story 2.9)
-  - [ ] 6.3 Use `matcha-chiffon` palette accent for left-edge border
-  - [ ] 6.4 Replace the "Dress Code" placeholder from Story 2.1
+- [x] Task 6: Wire into scroll sequence (AC: 1)
+  - [x] 6.1 In `frontend/app/(main)/page.tsx`, fetch dress code content and render `<DressCodeSection>` inside ChapterScrollContainer
+  - [x] 6.2 Position after WeddingDetails (Story 2.7) and before Entourage (Story 2.9)
+  - [x] 6.3 Use `matcha-chiffon` palette accent for left-edge border
+  - [x] 6.4 Replace the "Dress Code" placeholder from Story 2.1
 
-- [ ] Task 7: Handle missing content (AC: 1)
-  - [ ] 7.1 If dressCode document doesn't exist in Sanity yet: render gracefully (skip section or show placeholder)
-  - [ ] 7.2 If paletteColors array is empty: still show the label and description, just without swatches
+- [x] Task 7: Handle missing content (AC: 1)
+  - [x] 7.1 If dressCode document doesn't exist in Sanity yet: render gracefully (skip section or show placeholder)
+  - [x] 7.2 If paletteColors array is empty: still show the label and description, just without swatches
 
 - [ ] Task 8: Verification (AC: 1-5)
   - [ ] 8.1 Create a dressCode document in Sanity Studio with label, palette colors with labels, and optional description
-  - [ ] 8.2 Verify swatches render with correct palette token classes — inspect to confirm no hardcoded hex
-  - [ ] 8.3 Verify text labels alongside every swatch
+  - [x] 8.2 Verify swatches render with correct palette token classes — inspect to confirm no hardcoded hex
+  - [x] 8.3 Verify text labels alongside every swatch
   - [ ] 8.4 Add inspiration images via Studio — verify they appear. Remove them — verify graceful absence
   - [ ] 8.5 Test 375px viewport — cards and text fit, no overflow
-  - [ ] 8.6 Run `pnpm build` and `pnpm lint` — zero errors
+  - [x] 8.6 Run `pnpm build` and `pnpm lint` — zero errors
 
 ## Dev Notes
 
@@ -169,8 +169,37 @@ frontend/app/(main)/page.tsx     (fetch and render DressCodeSection)
 
 ### Agent Model Used
 
+Claude Opus 4.6
+
 ### Debug Log References
+
+No issues encountered. Build, lint, and TypeScript type checking all passed on first attempt.
 
 ### Completion Notes List
 
+- Created `dressCode` singleton Sanity schema with label (required), description (text), paletteColors (array of colorKey + colorLabel objects with dropdown of 8 palette keys), inspirationImages (array of image with alt), additionalNotes (text), and publishedAt (datetime)
+- Registered schema in `studio/schema-types.ts` and configured singleton sidebar entry in `studio/structure.ts` using the same fixed-documentId pattern as weddingDetails
+- Created GROQ query with typed fetch function `getDressCode()` following the existing isSanityConfigured guard + sanityFetch pattern; inspirationImages query includes full asset expansion with lqip metadata for blur placeholders
+- Built `DressCodeSection` as a Server Component with: static `paletteBgMap` Record for Tailwind class mapping (no dynamic template strings), `cn()` for className composition, 2-col mobile / 4-col desktop grid for palette swatches, `role="group"` + `aria-label` on each swatch-label pair for accessibility
+- Inspiration images render via `next/image` + `urlFor()` with WebP format, lazy loading, responsive sizes, and lqip blur placeholders; gracefully omitted when array is empty/null
+- Wired into page.tsx with `getDressCode()` added to `Promise.all()`, positioned between Wedding Details and Entourage with `matcha-chiffon` palette accent
+- Missing content handled: null dressCode shows placeholder text; empty paletteColors renders label + description without swatches
+- Verification: `pnpm lint` zero errors, `pnpm build` compiled successfully, `tsc --noEmit` zero type errors
+- Manual verification tasks (8.1, 8.4, 8.5) require Sanity Studio content creation and browser testing
+
+### Change Log
+
+- 2026-04-13: Implemented Story 2.8 — Dress Code Section with Sanity singleton schema, GROQ query, DressCodeSection server component with palette swatches, inspiration images gallery, and accessibility labels
+- 2026-04-13: Code review — fixed 8 issues (1 High, 3 Medium, 4 Low): added `_key` to GROQ projections for stable React keys, added alt fallback for inspiration images, upgraded additionalNotes to 16px body text minimum, aligned label font to UX spec (DM Sans), upgraded description field from text to blockContent for rich formatting, corrected Task 8 completion status
+
 ### File List
+
+New files:
+- studio/schemas/documents/dressCode.ts
+- frontend/sanity/queries/dressCode.ts
+- frontend/components/sections/DressCodeSection.tsx
+
+Modified files:
+- studio/schema-types.ts
+- studio/structure.ts
+- frontend/app/(main)/page.tsx

@@ -8,6 +8,7 @@ import {
   Megaphone,
   Menu,
   Settings,
+  Shirt,
   User,
   Users,
 } from "lucide-react";
@@ -52,6 +53,15 @@ export const structure = (S: any, context: any) =>
                     .id("weddingDetails")
                     .schemaType("weddingDetails")
                     .documentId("weddingDetails"),
+                ),
+              S.listItem()
+                .title("Dress Code")
+                .icon(Shirt)
+                .child(
+                  S.editor()
+                    .id("dressCode")
+                    .schemaType("dressCode")
+                    .documentId("dressCode"),
                 ),
             ]),
         ),
