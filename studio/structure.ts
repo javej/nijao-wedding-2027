@@ -1,6 +1,7 @@
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   BookOpen,
+  CalendarHeart,
   Files,
   Heart,
   ListCollapse,
@@ -43,6 +44,15 @@ export const structure = (S: any, context: any) =>
               S.documentTypeListItem("announcement")
                 .title("Announcements")
                 .icon(Megaphone),
+              S.listItem()
+                .title("Wedding Details")
+                .icon(CalendarHeart)
+                .child(
+                  S.editor()
+                    .id("weddingDetails")
+                    .schemaType("weddingDetails")
+                    .documentId("weddingDetails"),
+                ),
             ]),
         ),
       S.divider(),

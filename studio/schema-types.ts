@@ -7,6 +7,7 @@ import storyChapter from "./schemas/documents/storyChapter";
 import entourageMember from "./schemas/documents/entourageMember";
 import guest from "./schemas/documents/guest";
 import announcement from "./schemas/documents/announcement";
+import weddingDetails from "./schemas/documents/weddingDetails";
 
 // Schema UI shared objects
 import blockContent from "./schemas/blocks/shared/block-content";
@@ -25,6 +26,7 @@ export const schemaTypes = [
   entourageMember,
   guest,
   announcement,
+  weddingDetails,
   // shared objects
   blockContent,
   link,
