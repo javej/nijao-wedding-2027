@@ -1,0 +1,72 @@
+frontend/components/sections/EntourageSection.tsx
+  e2e0a651ee9d44c5 1-277
+frontend/sanity/queries/entourage.ts
+  e2e0a651ee9d44c5 1-100
+frontend/app/(main)/page.tsx
+  e2e0a651ee9d44c5 10,14,23,28-29,75-79
+_bmad-output/implementation-artifacts/2-9-entourage-padrino-wall-wedding-party.md
+  e2e0a651ee9d44c5 3,25-26,38-39,41-44,47-49,51-53,56-59,61-66,68-72,74,81,148,151,154-167,169-187,190-192
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "752ec9d59bf2f3b7705ae7be085b8c5c39dac09e",
+  "prompts": {
+    "508c32bef2ee2f13": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "013eade4-34ea-4977-9d35-1cc4d51f5c41",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 19,
+      "total_deletions": 1,
+      "accepted_lines": 19,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/65bdb8085c5ac4853336af75a92c747366566ab1fd792e7a4e3b7dd0b07a65c3"
+    },
+    "a21b4eb4fe8b4509": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7f35b395-7c45-465b-ac3e-23f598fd7803",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/90976f802ef94287cb4a89a5abbd4c431abbfcf7adf1c96e3cd41123afdd63b5"
+    },
+    "e2e0a651ee9d44c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0882c7d0-48e5-41a2-bcfa-b7e93292451d",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 1054,
+      "total_deletions": 161,
+      "accepted_lines": 458,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/83f8f85eed04da76783e4c43dee741c50cf83928da00c264b4a09cb1680a2312"
+    },
+    "e8967fc45485fab3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6556e8a6-2d11-4965-ba5a-0f9da20a42d6",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 123,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/70073d4bbb44cb281279d2ba3ae70469785e80ded7c7718dc613bd0a44748762"
+    }
+  }
+}
