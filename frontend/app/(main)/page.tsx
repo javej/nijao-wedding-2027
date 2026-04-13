@@ -3,8 +3,9 @@ import { ChapterScrollContainer } from '@/components/ui/ChapterScrollContainer';
 import { ChapterSection } from '@/components/ui/ChapterSection';
 import { ExperienceShell } from '@/components/ui/ExperienceShell';
 import { HeroSection } from '@/components/sections/HeroSection';
+import { ProposalSection } from '@/components/sections/ProposalSection';
 import { StoryChapter } from '@/components/sections/StoryChapter';
-import { getStoryChapters } from '@/sanity/queries/storyChapters';
+import { getProposalSection, getStoryChapters } from '@/sanity/queries/storyChapters';
 
 export const metadata: Metadata = {
   title: 'Jave & Nianne — January 8, 2027',
@@ -13,7 +14,10 @@ export const metadata: Metadata = {
 };
 
 export default async function IndexPage() {
-  const chapters = await getStoryChapters();
+  const [chapters, proposal] = await Promise.all([
+    getStoryChapters(),
+    getProposalSection(),
+  ]);
 
   return (
     <ExperienceShell>
@@ -33,8 +37,12 @@ export default async function IndexPage() {
           </ChapterSection>
         ))}
 
-        <ChapterSection id="proposal" palette="strawberry-jam" label="Proposal">
-          <p className="font-display text-display-md">Proposal</p>
+        <ChapterSection id="proposal" palette="strawberry-jam" label="The Proposal">
+          {proposal ? (
+            <ProposalSection proposal={proposal} />
+          ) : (
+            <p className="font-display text-display-md">The Proposal</p>
+          )}
         </ChapterSection>
 
         <ChapterSection id="wedding-details" palette="matcha-chiffon" label="Wedding Details">
