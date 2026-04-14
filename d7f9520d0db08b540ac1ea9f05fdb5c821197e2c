@@ -1,0 +1,52 @@
+frontend/components/sections/RSVPSection.tsx
+  b6d3ea1bba4e4a0c 15-16,23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "d7f9520d0db08b540ac1ea9f05fdb5c821197e2c",
+  "prompts": {
+    "15b45ed6b7371fb8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f4d2ddc7-c69d-4b64-8adc-f5e125b480e5",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/efd9fe2a30acb0a9bc0e61446072a0308a7fa211c97ed85be49565bc72cbc714"
+    },
+    "b6d3ea1bba4e4a0c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec02b18e-3c34-4958-ba6b-e54f2c62f746",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 844,
+      "total_deletions": 2,
+      "accepted_lines": 819,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/ce29fa6b29b355e1e2161335035f5f039fbadf8c75a0b91c7fd2615c5e723540"
+    },
+    "e8967fc45485fab3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6556e8a6-2d11-4965-ba5a-0f9da20a42d6",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/70073d4bbb44cb281279d2ba3ae70469785e80ded7c7718dc613bd0a44748762"
+    }
+  }
+}
