@@ -1,0 +1,83 @@
+frontend/components/ui/ArrivalOverlay.tsx
+  15b45ed6b7371fb8 135
+_bmad-output/implementation-artifacts/3-2-personalized-arrival-greeting.md
+  15b45ed6b7371fb8 3,23-25,27-31,33-36,38-43,71-72,75-76,78-83,85-88,90-91
+  1acee7bd7df06b2c 1-2,4-22,26,32,37,44-70,73-74,77,84,89
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "79a99c822b5fbbf5916a754861e7f59c34b073fc",
+  "prompts": {
+    "15b45ed6b7371fb8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f4d2ddc7-c69d-4b64-8adc-f5e125b480e5",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 194,
+      "total_deletions": 177,
+      "accepted_lines": 39,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/999bcc7c74d9495f235479cf02e79cd10e20f73a126eeafc0ed8e63e804c52a8"
+    },
+    "1acee7bd7df06b2c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e2a0d25f-7ae0-4c06-b9b9-f6336769aee6",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 1031,
+      "total_deletions": 1,
+      "accepted_lines": 1011,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/d0db0329ba4d435c3bb4d09d11ecaf1b85056b0ecb162a0a6be7f9cda8aaeab7"
+    },
+    "4c6727f91ee1129a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0df73d8a-25d8-4da2-9457-21c5e2cdf048",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/caa367d89c4f7c1f7bca36d21230aef415b70beabec3dbcb636b01d93d3128a6"
+    },
+    "81f5294c92092b55": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "076e987e-b316-4008-8060-e999c8aa6ad0",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/bb1ab4e7801881142a27cbb88e3cc254ee962cdcf1152145efad4c1e980dcd51"
+    },
+    "e8967fc45485fab3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6556e8a6-2d11-4965-ba5a-0f9da20a42d6",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/70073d4bbb44cb281279d2ba3ae70469785e80ded7c7718dc613bd0a44748762"
+    }
+  }
+}
