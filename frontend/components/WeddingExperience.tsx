@@ -7,6 +7,7 @@ import { StoryChapter } from '@/components/sections/StoryChapter';
 import { WeddingDetails } from '@/components/sections/WeddingDetails';
 import { DressCodeSection } from '@/components/sections/DressCodeSection';
 import { EntourageSection } from '@/components/sections/EntourageSection';
+import { RSVPSection } from '@/components/sections/RSVPSection';
 import { getProposalSection, getStoryChapters } from '@/sanity/queries/storyChapters';
 import { getWeddingDetails } from '@/sanity/queries/weddingDetails';
 import { getDressCode } from '@/sanity/queries/dressCode';
@@ -80,7 +81,11 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
         </ChapterSection>
 
         <ChapterSection id="rsvp" palette="golden-matcha" label="RSVP">
-          <p className="font-display text-display-md">RSVP</p>
+          {guest ? (
+            <RSVPSection guest={guest} />
+          ) : (
+            <p className="font-display text-display-md">RSVP</p>
+          )}
         </ChapterSection>
 
         <ChapterSection id="completion" palette="strawberry-milk" label="Completion">
