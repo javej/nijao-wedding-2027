@@ -17,10 +17,17 @@ export default defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
-      description: "Used for personalized URLs (/[guest-slug])",
+      description:
+        "Non-guessable random token for personalized URLs — click Generate to create",
       options: {
         source: "firstName",
-        maxLength: 96,
+        maxLength: 10,
+        slugify: () => {
+          const array = new Uint8Array(8);
+          crypto.getRandomValues(array);
+          const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+          return Array.from(array, (b) => chars[b % 36]).join("");
+        },
         isUnique: (value, context) => context.defaultIsUnique(value, context),
       },
       validation: (rule) => rule.required(),

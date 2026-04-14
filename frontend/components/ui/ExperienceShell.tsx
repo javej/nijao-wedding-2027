@@ -10,6 +10,7 @@ import {
 
 interface ExperienceShellProps {
   children: React.ReactNode;
+  guestName?: string;
 }
 
 /**
@@ -19,7 +20,7 @@ interface ExperienceShellProps {
  * Body scroll is locked during loader + overlay, then unlocked when the
  * guest's first interaction dismisses the overlay.
  */
-export function ExperienceShell({ children }: ExperienceShellProps) {
+export function ExperienceShell({ children, guestName }: ExperienceShellProps) {
   const [loaderDone, setLoaderDone] = useState(false);
   const [overlayDismissed, setOverlayDismissed] = useState(false);
   const audioRef = useRef<AudioControllerHandle>(null);
@@ -53,6 +54,7 @@ export function ExperienceShell({ children }: ExperienceShellProps) {
         visible={!overlayDismissed}
         interactive={loaderDone}
         onDismiss={handleOverlayDismiss}
+        guestName={guestName}
       />
       <AudioController ref={audioRef} visible={overlayDismissed} />
       {children}
