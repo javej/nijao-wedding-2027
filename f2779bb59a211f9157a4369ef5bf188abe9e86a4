@@ -1,0 +1,87 @@
+frontend/components/ui/RSVPChat.tsx
+  09c67e2d231d8c47 55-56,113-117,126,160-163,220,274-334,612
+frontend/components/ui/PetalBurst.tsx
+  09c67e2d231d8c47 1-154
+_bmad-output/implementation-artifacts/3-5-rsvp-in-site-confirmation.md
+  1a43432d1194c510 1-2,4-26,33,41,46,51,61-94,97-98,101,108,114
+  09c67e2d231d8c47 3,27-32,34-40,42-45,47-50,52-60,95-96,99-100,102-107,109-113,115-118
+frontend/components/sections/RSVPSection.tsx
+  09c67e2d231d8c47 1-3,5,12-14,16-24,26-27,29-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "f2779bb59a211f9157a4369ef5bf188abe9e86a4",
+  "prompts": {
+    "09c67e2d231d8c47": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec79fd18-f94b-4170-9d24-d6ddfff1d03a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 1442,
+      "total_deletions": 239,
+      "accepted_lines": 309,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/80cf6ac209ff840b8151b1a0a3f2c5b0c5dc9b8d9d3752aacc04d310613b25ab"
+    },
+    "15b45ed6b7371fb8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f4d2ddc7-c69d-4b64-8adc-f5e125b480e5",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/efd9fe2a30acb0a9bc0e61446072a0308a7fa211c97ed85be49565bc72cbc714"
+    },
+    "1a43432d1194c510": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6c9479c2-2844-4a74-8fbc-5be209493fb4",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 697,
+      "total_deletions": 1,
+      "accepted_lines": 681,
+      "overriden_lines": 1,
+      "messages_url": "https://usegitai.com/cas/5580175e6ee9fe14a707d413ab8cef67330f369be0dfc50c573dedd28c464b4d"
+    },
+    "b6d3ea1bba4e4a0c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec02b18e-3c34-4958-ba6b-e54f2c62f746",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/5fb1f90d41b64a0700188282a4fbb6f6cabeda0e5991d46393a1e9122521fa37"
+    },
+    "e8967fc45485fab3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6556e8a6-2d11-4965-ba5a-0f9da20a42d6",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/70073d4bbb44cb281279d2ba3ae70469785e80ded7c7718dc613bd0a44748762"
+    }
+  }
+}
