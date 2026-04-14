@@ -52,6 +52,8 @@ export interface RSVPChatProps {
   plusOneEligible: boolean;
   plusOneType: 'linked' | 'open' | null;
   plusOneLinkedGuestName: string | null;
+  /** Called when the final confirmation moment fires (petal burst, haptic) */
+  onConfirm?: () => void;
 }
 
 // --- Framer Motion Variants (outside component body) ---
@@ -108,6 +110,11 @@ function isNegative(input: string): boolean {
   return NEGATIVE_START.test(trimmed) || NEGATIVE_KEYWORDS.test(trimmed);
 }
 
+// --- Confirmation Constants ---
+
+const RSVP_SESSION_KEY = 'rsvp-confirmation';
+const CONFIRMATION_MESSAGE = "We've been waiting for you.";
+
 // --- Component ---
 
 export function RSVPChat({
@@ -116,6 +123,7 @@ export function RSVPChat({
   plusOneEligible,
   plusOneType,
   plusOneLinkedGuestName,
+  onConfirm,
 }: RSVPChatProps) {
   const shouldReduceMotion = useReducedMotion();
   const [chatState, setChatState] = useState<ChatState>('asked-attendance');
@@ -148,6 +156,10 @@ export function RSVPChat({
 
   // Outer container ref for mobile keyboard offset
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Confirmation persistence
+  const restoredFromSession = useRef(false);
+  const finalBubbleShown = useRef(false);
 
   const animInitial = shouldReduceMotion ? 'reduced' : 'hidden';
   const animAnimate = shouldReduceMotion ? 'reduced' : 'visible';
@@ -205,7 +217,7 @@ export function RSVPChat({
   // Auto-scroll chat to bottom when messages change — but only after the first interaction
   useEffect(() => {
     if (!hasInteracted.current) return;
-    chatEndRef.current?.scrollIntoView({ behavior: shouldReduceMotion ? 'auto' : 'smooth' });
+    chatEndRef.current?.scrollIntoView({ behavior: shouldReduceMotion ? 'auto' : 'smooth', block: 'nearest' });
   }, [messages, showChips, showInput, shouldReduceMotion]);
 
   // Focus management: when new chips appear after interaction, focus the first chip button.
@@ -258,6 +270,67 @@ export function RSVPChat({
     window.addEventListener('online', retryQueued);
     return () => window.removeEventListener('online', retryQueued);
   }, []);
+
+  // --- Confirmation Persistence (sessionStorage) ---
+
+  // Restore confirmation state from sessionStorage on mount (AC 6)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const stored = sessionStorage.getItem(`${RSVP_SESSION_KEY}-${guestSlug}`);
+      if (!stored) return;
+      const data = JSON.parse(stored) as { state: ChatState; messages: ChatMessage[] };
+      if (data.state === 'confirmed' || data.state === 'declined') {
+        setChatState(data.state);
+        setMessages(data.messages);
+        setShowChips(false);
+        setShowInput(false);
+        restoredFromSession.current = true;
+        finalBubbleShown.current = true;
+        msgIdCounter.current = data.messages.length + 1;
+      }
+    } catch {
+      // Ignore sessionStorage errors
+    }
+  }, [guestSlug]);
+
+  // Show the final "We've been waiting for you." bubble after fresh confirmation (AC 1)
+  useEffect(() => {
+    if (chatState !== 'confirmed' || restoredFromSession.current || finalBubbleShown.current) return;
+    finalBubbleShown.current = true;
+
+    const timer = setTimeout(() => {
+      addSystemMessage(CONFIRMATION_MESSAGE);
+      onConfirm?.();
+      // Haptic feedback (AC 2) — graceful degradation on iOS (AC 3)
+      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        navigator.vibrate([100, 50, 100, 50, 100]);
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [chatState, addSystemMessage, onConfirm]);
+
+  // Persist terminal state to sessionStorage (AC 6)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (chatState !== 'confirmed' && chatState !== 'declined') return;
+
+    // For confirmed: wait until the final couple's message appears
+    if (chatState === 'confirmed') {
+      const hasFinal = messages.some((m) => m.text === CONFIRMATION_MESSAGE);
+      if (!hasFinal) return;
+    }
+
+    try {
+      sessionStorage.setItem(
+        `${RSVP_SESSION_KEY}-${guestSlug}`,
+        JSON.stringify({ state: chatState, messages }),
+      );
+    } catch {
+      // sessionStorage full or unavailable
+    }
+  }, [chatState, messages, guestSlug]);
 
   // --- Submission ---
 
@@ -536,7 +609,7 @@ export function RSVPChat({
     showInput || (unrecognizedCount.current === 0 && (chatState === 'asked-attendance' || chatState === 'asked-plusone'));
 
   return (
-    <div ref={containerRef} className="flex w-full max-w-lg flex-col mx-auto transition-transform duration-150">
+    <div ref={containerRef} className="relative flex w-full max-w-lg flex-col mx-auto transition-transform duration-150">
       {/* Chat message log */}
       <div
         role="log"

@@ -1,25 +1,38 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { RSVPChat } from '@/components/ui/RSVPChat';
+import { PetalBurst } from '@/components/ui/PetalBurst';
 import type { WeddingGuest } from '@/components/WeddingExperience';
 
 interface RSVPSectionProps {
   guest: WeddingGuest;
 }
 
-/**
- * Server Component shell for the RSVP section.
- * Receives guest context from the page and passes serializable props
- * to the RSVPChat client island.
- */
+// Longest petal animation: ~10.1s (delay 1.1 + duration 9.0). Cleanup buffer: 11s.
+const PETAL_BURST_DURATION_MS = 11_000;
+
 export function RSVPSection({ guest }: RSVPSectionProps) {
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  // Auto-unmount PetalBurst after the animation completes to reclaim DOM nodes
+  useEffect(() => {
+    if (!showConfetti) return;
+    const timer = setTimeout(() => setShowConfetti(false), PETAL_BURST_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [showConfetti]);
+
   return (
-    <div className="flex flex-col items-center justify-center w-full px-(--chapter-padding-x) py-(--chapter-padding-y)">
+    <div className="relative flex flex-col items-center justify-center w-full px-(--chapter-padding-x) py-(--chapter-padding-y)">
+      {showConfetti && <PetalBurst />}
       <RSVPChat
-      guestName={guest.firstName}
-      guestSlug={guest.slug}
-      plusOneEligible={guest.plusOneEligible ?? false}
-      plusOneType={guest.plusOneType ?? null}
-      plusOneLinkedGuestName={guest.plusOneLinkedGuest?.firstName ?? null}
-    />
+        guestName={guest.firstName}
+        guestSlug={guest.slug}
+        plusOneEligible={guest.plusOneEligible ?? false}
+        plusOneType={guest.plusOneType ?? null}
+        plusOneLinkedGuestName={guest.plusOneLinkedGuest?.firstName ?? null}
+        onConfirm={() => setShowConfetti(true)}
+      />
     </div>
   );
 }
