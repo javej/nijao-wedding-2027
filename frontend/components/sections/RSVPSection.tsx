@@ -12,12 +12,14 @@ interface RSVPSectionProps {
  */
 export function RSVPSection({ guest }: RSVPSectionProps) {
   return (
-    <RSVPChat
+    <div className="flex flex-col items-center justify-center w-full px-(--chapter-padding-x) py-(--chapter-padding-y)">
+      <RSVPChat
       guestName={guest.firstName}
       guestSlug={guest.slug}
       plusOneEligible={guest.plusOneEligible ?? false}
       plusOneType={guest.plusOneType ?? null}
       plusOneLinkedGuestName={guest.plusOneLinkedGuest?.firstName ?? null}
     />
+    </div>
   );
 }
