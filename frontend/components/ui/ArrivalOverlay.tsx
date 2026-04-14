@@ -132,7 +132,7 @@ export function ArrivalOverlay({ visible, interactive, onDismiss, guestName }: A
             initial={initialTextState}
             animate={animationState}
           >
-            Welcome.
+            {guestName ? <>Welcome, <span className="italic text-raspberry">{guestName}</span>.</> : 'Welcome.'}
             <br />
             We&rsquo;re so glad you&rsquo;re here.
           </motion.p>
