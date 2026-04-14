@@ -4,6 +4,9 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import Script from 'next/script';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
+import { submitRsvp } from '@/app/actions/rsvp';
+import type { RSVPPayload } from '@/app/actions/rsvp';
+import { getLocalItem, setLocalItem, removeLocalItem } from '@/lib/localStorage';
 
 // --- Turnstile global type ---
 
@@ -229,7 +232,34 @@ export function RSVPChat({
     setMessages((prev) => [...prev, { id, sender: 'guest', text }]);
   }, []);
 
-  // --- Submission (stub for Story 3.4) ---
+  // --- localStorage retry queue for Sheets failures ---
+
+  useEffect(() => {
+    function retryQueued() {
+      const queued = getLocalItem<RSVPPayload | null>('rsvpQueue', null);
+      if (!queued) return;
+
+      submitRsvp(queued)
+        .then((result) => {
+          if (result.success) {
+            removeLocalItem('rsvpQueue');
+          }
+          // If still failing, leave in queue for next retry
+        })
+        .catch(() => {
+          // Silently ignore — will retry on next reconnect
+        });
+    }
+
+    // Retry on page load
+    retryQueued();
+
+    // Retry when coming back online
+    window.addEventListener('online', retryQueued);
+    return () => window.removeEventListener('online', retryQueued);
+  }, []);
+
+  // --- Submission ---
 
   const handleSubmit = useCallback(
     async (data: { attending: boolean; plusOneName: string | null; plusOneAttending: boolean }) => {
@@ -239,21 +269,74 @@ export function RSVPChat({
 
       const turnstileToken = turnstileTokenRef.current;
 
-      // TODO: Story 3.4 — call submitRsvp() Server Action with payload + turnstileToken
-      // Payload shape: { guestSlug, guestName, attending, plusOneName, plusOneAttending, turnstileToken }
-      void guestSlug;
-      void data;
-      void turnstileToken;
+      // Turnstile hasn't loaded yet — let the guest retry rather than sending an empty token
+      if (!turnstileToken) {
+        setChatState('asked-attendance');
+        setShowChips(true);
+        addSystemMessage(
+          "Still verifying — please try again in a moment.",
+        );
+        return;
+      }
 
-      // For now, simulate success after a brief delay
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const payload: RSVPPayload = {
+        guestSlug,
+        guestName,
+        attending: data.attending,
+        turnstileToken,
+        ...(data.plusOneName && { plusOneName: data.plusOneName }),
+        ...(data.plusOneAttending && plusOneType === 'linked' && plusOneLinkedGuestName && {
+          linkedGuest: { name: plusOneLinkedGuestName, attending: true },
+        }),
+      };
 
-      setChatState('confirmed');
-      addSystemMessage(
-        `Wonderful! We've saved your RSVP, ${guestName}. We can't wait to celebrate with you! 🎉`,
-      );
+      try {
+        const result = await submitRsvp(payload);
+
+        if (result.success) {
+          if (data.attending) {
+            setChatState('confirmed');
+            addSystemMessage(
+              `Wonderful! We've saved your RSVP, ${guestName}. We can't wait to celebrate with you! 🎉`,
+            );
+          } else {
+            setChatState('declined');
+            addSystemMessage(
+              'We understand. Thank you for letting us know.',
+            );
+          }
+        } else if (result.error === 'sheets_unavailable') {
+          // Queue for retry — guest still sees confirmation/decline
+          setLocalItem('rsvpQueue', payload);
+          if (data.attending) {
+            setChatState('confirmed');
+            addSystemMessage(
+              `Wonderful! We've saved your RSVP, ${guestName}. We can't wait to celebrate with you! 🎉`,
+            );
+          } else {
+            setChatState('declined');
+            addSystemMessage(
+              'We understand. Thank you for letting us know.',
+            );
+          }
+        } else {
+          // Turnstile or unexpected error — show generic message, reset to allow retry
+          setChatState('asked-attendance');
+          setShowChips(true);
+          addSystemMessage(
+            "Something went wrong saving your RSVP. Please try again.",
+          );
+        }
+      } catch {
+        // Server Action failed at the network level (e.g., 500 from module load failure)
+        setChatState('asked-attendance');
+        setShowChips(true);
+        addSystemMessage(
+          "Something went wrong saving your RSVP. Please try again.",
+        );
+      }
     },
-    [guestSlug, guestName, addSystemMessage],
+    [guestSlug, guestName, plusOneType, plusOneLinkedGuestName, addSystemMessage],
   );
 
   // --- Flow: Advance to plus-one or submission ---
@@ -307,14 +390,11 @@ export function RSVPChat({
   const handleAttendanceNo = useCallback(() => {
     selectChipAndHide("Sorry, I can't make it", () => {
       addGuestMessage("Sorry, I can't make it");
-      setChatState('declined');
       setTimeout(() => {
-        addSystemMessage(
-          'We understand. Thank you for letting us know.',
-        );
+        handleSubmit({ attending: false, plusOneName: null, plusOneAttending: false });
       }, 400);
     });
-  }, [selectChipAndHide, addGuestMessage, addSystemMessage]);
+  }, [selectChipAndHide, addGuestMessage, handleSubmit]);
 
   const handlePlusOneYes = useCallback(() => {
     const label = plusOneType === 'linked' ? "Yes, we'll both be there" : 'Yes, bringing someone';
