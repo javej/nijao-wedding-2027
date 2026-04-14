@@ -43,9 +43,10 @@ interface ArrivalOverlayProps {
   /** Dismiss gestures are ignored until interactive is true (loader must finish first). */
   interactive: boolean;
   onDismiss: () => void;
+  guestName?: string;
 }
 
-export function ArrivalOverlay({ visible, interactive, onDismiss }: ArrivalOverlayProps) {
+export function ArrivalOverlay({ visible, interactive, onDismiss, guestName }: ArrivalOverlayProps) {
   const shouldReduceMotion = useReducedMotion();
   const hasDismissed = useRef(false);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -116,7 +117,7 @@ export function ArrivalOverlay({ visible, interactive, onDismiss }: ArrivalOverl
           ref={overlayRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Welcome"
+          aria-label={guestName ? `Welcome, ${guestName}` : 'Welcome'}
           tabIndex={-1}
           className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-background outline-none"
           variants={shouldReduceMotion ? overlayReducedVariants : overlayVariants}

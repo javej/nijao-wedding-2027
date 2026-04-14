@@ -1,41 +1,42 @@
-import Blocks from "@/components/blocks";
-import {
-  fetchSanityPageBySlug,
-  fetchSanityPagesStaticParams,
-} from "@/sanity/lib/fetch";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { generatePageMetadata } from "@/sanity/lib/metadata";
+import { getAllGuestSlugs, getGuestBySlug } from "@/sanity/queries/guests";
+import { WeddingExperience } from "@/components/WeddingExperience";
+
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const pages = await fetchSanityPagesStaticParams();
+  const guests = await getAllGuestSlugs();
 
-  return pages.map((page) => ({
-    slug: page.slug?.current,
+  return guests.map((guest) => ({
+    slug: guest.slug,
   }));
 }
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
-}) {
+}): Promise<Metadata> {
   const params = await props.params;
-  const page = await fetchSanityPageBySlug({ slug: params.slug });
+  const guest = await getGuestBySlug(params.slug);
 
-  if (!page) {
-    notFound();
-  }
+  if (!guest) return {};
 
-  return generatePageMetadata({ page, slug: params.slug });
+  return {
+    title: `${guest.firstName} — Jave & Nianne, January 8, 2027`,
+    description:
+      "You are cordially invited to the wedding of Jave and Nianne. January 8, 2027 — Lipa, Batangas.",
+  };
 }
 
-export default async function Page(props: {
+export default async function GuestPage(props: {
   params: Promise<{ slug: string }>;
 }) {
   const params = await props.params;
-  const page = await fetchSanityPageBySlug({ slug: params.slug });
+  const guest = await getGuestBySlug(params.slug);
 
-  if (!page) {
+  if (!guest) {
     notFound();
   }
 
-  return <Blocks blocks={page?.blocks ?? []} />;
+  return <WeddingExperience guest={guest} />;
 }
