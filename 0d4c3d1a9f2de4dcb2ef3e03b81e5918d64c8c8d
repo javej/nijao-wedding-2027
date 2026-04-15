@@ -1,0 +1,101 @@
+frontend/.env.local.example
+  58e37e939c17ceb6 27-29
+frontend/lib/webhook.ts
+  58e37e939c17ceb6 1-4,6-9,11-22
+frontend/app/api/revalidate/route.ts
+  58e37e939c17ceb6 1-101
+_bmad-output/implementation-artifacts/4-1-webhook-isr-live-content-publishing.md
+  58e37e939c17ceb6 3,23-29,31-35,37-39,45-46,48-51,53-54,59,61,67,107-108,111-112,114-122,124-144,146-151
+  b05e8aaabfb49645 1-2,4-22,30,36,40-44,47,52,55-58,60,62-66,68-106,109-110,113,123,145
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "0d4c3d1a9f2de4dcb2ef3e03b81e5918d64c8c8d",
+  "prompts": {
+    "09c67e2d231d8c47": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec79fd18-f94b-4170-9d24-d6ddfff1d03a",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/5ac68b8fe1e3fcdeaf0b23ef65d58f6f60a7f5dbbc05344af5708d3c108b511b"
+    },
+    "15b45ed6b7371fb8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f4d2ddc7-c69d-4b64-8adc-f5e125b480e5",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/efd9fe2a30acb0a9bc0e61446072a0308a7fa211c97ed85be49565bc72cbc714"
+    },
+    "1a43432d1194c510": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6c9479c2-2844-4a74-8fbc-5be209493fb4",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/5580175e6ee9fe14a707d413ab8cef67330f369be0dfc50c573dedd28c464b4d"
+    },
+    "58e37e939c17ceb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "958d2eb5-64d2-4c66-8fed-26a906341703",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 469,
+      "total_deletions": 99,
+      "accepted_lines": 192,
+      "overriden_lines": 16,
+      "messages_url": "https://usegitai.com/cas/9b0b198ac8f868052fadfee3b3e984480dcba8816a2e1b5c4fe5ba8e5a21ab6c"
+    },
+    "b05e8aaabfb49645": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3249e487-f732-4ed3-80d4-e442264437e2",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 484,
+      "total_deletions": 1,
+      "accepted_lines": 457,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/f27a51a8c141e8609224dfaa3e670fefd0e15fc31e13b656fcaad83cb8f55238"
+    },
+    "e8967fc45485fab3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6556e8a6-2d11-4965-ba5a-0f9da20a42d6",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/70073d4bbb44cb281279d2ba3ae70469785e80ded7c7718dc613bd0a44748762"
+    }
+  }
+}
