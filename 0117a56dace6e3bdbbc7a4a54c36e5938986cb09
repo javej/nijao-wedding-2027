@@ -1,0 +1,22 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "0117a56dace6e3bdbbc7a4a54c36e5938986cb09",
+  "prompts": {
+    "58e37e939c17ceb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "958d2eb5-64d2-4c66-8fed-26a906341703",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 373,
+      "total_deletions": 1,
+      "accepted_lines": 373,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/43ee3716f4220e3d0abe6788efd5e9aa655591dc4c14025a604114a43a2f34a2"
+    }
+  }
+}
