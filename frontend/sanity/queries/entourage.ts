@@ -83,6 +83,7 @@ export async function getPadrinos(): Promise<PadrinoResult[]> {
 
   const { data } = await sanityFetch({
     query: PADRINOS_QUERY,
+    tags: ["sanity"],
   });
 
   return (data ?? []) as PadrinoResult[];
@@ -94,6 +95,7 @@ export async function getWeddingParty(): Promise<WeddingPartyResult[]> {
 
   const { data } = await sanityFetch({
     query: WEDDING_PARTY_QUERY,
+    tags: ["sanity"],
   });
 
   return (data ?? []) as WeddingPartyResult[];
