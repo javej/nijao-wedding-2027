@@ -1,0 +1,24 @@
+frontend/app/api/revalidate/route.ts
+  58e37e939c17ceb6 13,82-83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "9f29a02ac5149213036d01ef09e6b83052d4f403",
+  "prompts": {
+    "58e37e939c17ceb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "958d2eb5-64d2-4c66-8fed-26a906341703",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/4aec6c274ca93472b3831185e04352fbbcf78f98aa140594f519e88da5e81cd2"
+    }
+  }
+}
