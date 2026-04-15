@@ -1,0 +1,36 @@
+frontend/sanity/lib/fetch.ts
+  58e37e939c17ceb6 21,34
+frontend/sanity/queries/entourage.ts
+  58e37e939c17ceb6 86,98
+frontend/sanity/queries/guests.ts
+  58e37e939c17ceb6 57,71
+frontend/app/api/revalidate/route.ts
+  58e37e939c17ceb6 82-85
+frontend/sanity/queries/storyChapters.ts
+  58e37e939c17ceb6 108,120
+frontend/sanity/queries/weddingDetails.ts
+  58e37e939c17ceb6 43
+frontend/sanity/queries/dressCode.ts
+  58e37e939c17ceb6 76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "5eb52f528372f882570c7967b5c96877c20c8fb8",
+  "prompts": {
+    "58e37e939c17ceb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "958d2eb5-64d2-4c66-8fed-26a906341703",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 959,
+      "total_deletions": 575,
+      "accepted_lines": 387,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/7450d16633b9d47c27b6f8961bf92aef1362b8750d8d069dca3f0b2c6ff4205e"
+    }
+  }
+}
