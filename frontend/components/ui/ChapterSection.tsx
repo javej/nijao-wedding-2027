@@ -49,6 +49,7 @@ export function ChapterSection({
     <section
       id={id}
       aria-label={label}
+      data-palette={palette}
       className={cn(
         'min-h-dvh snap-start',
         'flex items-center justify-center',

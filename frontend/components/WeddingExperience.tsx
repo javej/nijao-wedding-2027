@@ -1,6 +1,7 @@
 import { ChapterScrollContainer } from '@/components/ui/ChapterScrollContainer';
 import { ChapterSection } from '@/components/ui/ChapterSection';
 import { ExperienceShell } from '@/components/ui/ExperienceShell';
+import { FloatingAnchorSet } from '@/components/ui/FloatingAnchorSet';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProposalSection } from '@/components/sections/ProposalSection';
 import { StoryChapter } from '@/components/sections/StoryChapter';
@@ -32,6 +33,7 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
 
   return (
     <ExperienceShell guestName={guest?.firstName}>
+      <FloatingAnchorSet />
       <ChapterScrollContainer>
         <ChapterSection id="hero" palette="raspberry" label="Jave and Nianne">
           <HeroSection />
