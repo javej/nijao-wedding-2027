@@ -73,6 +73,7 @@ export async function getDressCode(): Promise<DressCodeResult> {
 
   const { data } = await sanityFetch({
     query: DRESS_CODE_QUERY,
+    tags: ["sanity"],
   });
 
   return (data ?? null) as DressCodeResult;

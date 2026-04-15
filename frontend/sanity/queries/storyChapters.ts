@@ -105,6 +105,7 @@ export async function getProposalSection(): Promise<ProposalSectionResult> {
 
   const { data } = await sanityFetch({
     query: PROPOSAL_SECTION_QUERY,
+    tags: ["sanity"],
   });
 
   return (data ?? null) as ProposalSectionResult;
@@ -116,6 +117,7 @@ export async function getStoryChapters(): Promise<StoryChapterResult[]> {
 
   const { data } = await sanityFetch({
     query: STORY_CHAPTERS_QUERY,
+    tags: ["sanity"],
   });
 
   return (data ?? []) as StoryChapterResult[];

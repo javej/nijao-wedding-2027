@@ -40,6 +40,7 @@ export async function getWeddingDetails(): Promise<WeddingDetailsResult> {
 
   const { data } = await sanityFetch({
     query: WEDDING_DETAILS_QUERY,
+    tags: ["sanity"],
   });
 
   return (data ?? null) as WeddingDetailsResult;

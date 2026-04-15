@@ -54,6 +54,7 @@ export async function getGuestBySlug(
   const { data } = await sanityFetch({
     query: GUEST_BY_SLUG_QUERY,
     params: { slug },
+    tags: ["sanity"],
   });
 
   return (data ?? null) as GuestResult;
@@ -67,6 +68,7 @@ export async function getAllGuestSlugs(): Promise<GuestSlugResult> {
     query: ALL_GUEST_SLUGS_QUERY,
     perspective: "published",
     stega: false,
+    tags: ["sanity"],
   });
 
   return (data ?? []) as GuestSlugResult;
