@@ -10,7 +10,7 @@
  *   HTTP method: POST
  */
 import { type NextRequest, NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import {
   validateWebhookSignature,
   SIGNATURE_HEADER_NAME,
@@ -79,6 +79,8 @@ export async function POST(request: NextRequest) {
       // Layout-level revalidation is the only way to purge all dynamic [slug]
       // pages without querying Sanity for every slug at webhook time.
       revalidatePath("/", "layout");
+      // Also bust next-sanity's fetch data cache (defineLive uses tag-based caching)
+      revalidateTag("sanity:fetch-sync-tags", { expire: 0 });
       revalidatedPaths.push("/ (layout)");
     }
 
