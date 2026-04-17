@@ -103,6 +103,75 @@ export type BlockContent = Array<
     } & Code)
 >;
 
+export type DressCode = {
+  _id: string;
+  _type: "dressCode";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  label?: string;
+  description?: BlockContent;
+  paletteColors?: Array<{
+    colorKey?:
+      | "deep-matcha"
+      | "raspberry"
+      | "golden-matcha"
+      | "strawberry-jam"
+      | "matcha-chiffon"
+      | "berry-meringue"
+      | "matcha-latte"
+      | "strawberry-milk";
+    colorLabel?: string;
+    _key: string;
+  }>;
+  inspirationImages?: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  additionalNotes?: string;
+  publishedAt?: string;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type WeddingDetails = {
+  _id: string;
+  _type: "weddingDetails";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  ceremonyVenue?: string;
+  ceremonyDate?: string;
+  ceremonyTime?: string;
+  ceremonyAddress?: string;
+  ceremonyMapUrl?: string;
+  receptionVenue?: string;
+  receptionDate?: string;
+  receptionTime?: string;
+  receptionAddress?: string;
+  receptionMapUrl?: string;
+  publishedAt?: string;
+};
+
 export type Announcement = {
   _id: string;
   _type: "announcement";
@@ -163,26 +232,11 @@ export type EntourageMember = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
     _type: "image";
   };
   isPadrino?: boolean;
   orderRank?: string;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type StoryChapter = {
@@ -191,6 +245,7 @@ export type StoryChapter = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  isProposal?: boolean;
   year?: number;
   caption?: string;
   image?: {
@@ -404,13 +459,15 @@ export type AllSanitySchemaTypes =
   | Link
   | SanityImageAssetReference
   | BlockContent
+  | DressCode
+  | SanityImageCrop
+  | SanityImageHotspot
+  | WeddingDetails
   | Announcement
   | GuestReference
   | Guest
   | Slug
   | EntourageMember
-  | SanityImageCrop
-  | SanityImageHotspot
   | StoryChapter
   | Settings
   | Navigation
@@ -426,6 +483,138 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
+
+// Source: ../frontend/sanity/queries/announcements.ts
+// Variable: ANNOUNCEMENTS_QUERY
+// Query: *[_type == "announcement" && (scheduledAt == null || scheduledAt <= now())]    | order(publishedAt desc) {      _id,      title,      body,      publishedAt,      scheduledAt    }
+export type ANNOUNCEMENTS_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  body: BlockContent | null;
+  publishedAt: string | null;
+  scheduledAt: string | null;
+}>;
+
+// Source: ../frontend/sanity/queries/dressCode.ts
+// Variable: DRESS_CODE_QUERY
+// Query: *[_type == "dressCode"][0] {    label,    description,    paletteColors[] {      _key,      colorKey,      colorLabel    },    inspirationImages[] {      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    additionalNotes  }
+export type DRESS_CODE_QUERY_RESULT = {
+  label: string | null;
+  description: BlockContent | null;
+  paletteColors: Array<{
+    _key: string;
+    colorKey:
+      | "berry-meringue"
+      | "deep-matcha"
+      | "golden-matcha"
+      | "matcha-chiffon"
+      | "matcha-latte"
+      | "raspberry"
+      | "strawberry-jam"
+      | "strawberry-milk"
+      | null;
+    colorLabel: string | null;
+  }> | null;
+  inspirationImages: Array<{
+    asset: {
+      _id: string;
+      url: string | null;
+      mimeType: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }> | null;
+  additionalNotes: string | null;
+} | null;
+
+// Source: ../frontend/sanity/queries/entourage.ts
+// Variable: PADRINOS_QUERY
+// Query: *[_type == "entourageMember" && isPadrino == true] | order(orderRank asc, name asc) {    _id, name, role, colorAssignment,    photo {      ...,      alt,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions { width, height }        }      }    }  }
+export type PADRINOS_QUERY_RESULT = Array<{
+  _id: string;
+  name: string | null;
+  role: string | null;
+  colorAssignment:
+    | "berry-meringue"
+    | "deep-matcha"
+    | "golden-matcha"
+    | "matcha-chiffon"
+    | "matcha-latte"
+    | "raspberry"
+    | "strawberry-jam"
+    | "strawberry-milk"
+    | null;
+  photo: {
+    asset: {
+      _id: string;
+      url: string | null;
+      mimeType: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string | null;
+    _type: "image";
+  } | null;
+}>;
+
+// Source: ../frontend/sanity/queries/entourage.ts
+// Variable: WEDDING_PARTY_QUERY
+// Query: *[_type == "entourageMember" && isPadrino != true] | order(orderRank asc, role asc, name asc) {    _id, name, role, colorAssignment  }
+export type WEDDING_PARTY_QUERY_RESULT = Array<{
+  _id: string;
+  name: string | null;
+  role: string | null;
+  colorAssignment:
+    | "berry-meringue"
+    | "deep-matcha"
+    | "golden-matcha"
+    | "matcha-chiffon"
+    | "matcha-latte"
+    | "raspberry"
+    | "strawberry-jam"
+    | "strawberry-milk"
+    | null;
+}>;
+
+// Source: ../frontend/sanity/queries/guests.ts
+// Variable: GUEST_BY_SLUG_QUERY
+// Query: *[_type == "guest" && slug.current == $slug][0] {    firstName,    "slug": slug.current,    plusOneEligible,    plusOneType,    plusOneLinkedGuest->{      firstName,      "slug": slug.current    }  }
+export type GUEST_BY_SLUG_QUERY_RESULT = {
+  firstName: string | null;
+  slug: string | null;
+  plusOneEligible: boolean | null;
+  plusOneType: "linked" | "open" | null;
+  plusOneLinkedGuest: {
+    firstName: string | null;
+    slug: string | null;
+  } | null;
+} | null;
+
+// Source: ../frontend/sanity/queries/guests.ts
+// Variable: ALL_GUEST_SLUGS_QUERY
+// Query: *[_type == "guest" && defined(slug.current)] {    "slug": slug.current  }
+export type ALL_GUEST_SLUGS_QUERY_RESULT = Array<{
+  slug: string | null;
+}>;
 
 // Source: ../frontend/sanity/queries/navigation.ts
 // Variable: NAVIGATION_QUERY
@@ -526,13 +715,96 @@ export type SETTINGS_QUERY_RESULT = {
   copyright: BlockContent | null;
 } | null;
 
+// Source: ../frontend/sanity/queries/storyChapters.ts
+// Variable: STORY_CHAPTERS_QUERY
+// Query: *[_type == "storyChapter" && isProposal != true] | order(order asc) {    _id,    year,    caption,    image {      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    order,    publishedAt  }
+export type STORY_CHAPTERS_QUERY_RESULT = Array<{
+  _id: string;
+  year: number | null;
+  caption: string | null;
+  image: {
+    asset: {
+      _id: string;
+      url: string | null;
+      mimeType: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  order: number | null;
+  publishedAt: string | null;
+}>;
+
+// Source: ../frontend/sanity/queries/storyChapters.ts
+// Variable: PROPOSAL_SECTION_QUERY
+// Query: *[_type == "storyChapter" && isProposal == true][0] {    _id,    caption,    image {      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    publishedAt  }
+export type PROPOSAL_SECTION_QUERY_RESULT = {
+  _id: string;
+  caption: string | null;
+  image: {
+    asset: {
+      _id: string;
+      url: string | null;
+      mimeType: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  publishedAt: string | null;
+} | null;
+
+// Source: ../frontend/sanity/queries/weddingDetails.ts
+// Variable: WEDDING_DETAILS_QUERY
+// Query: *[_type == "weddingDetails"][0] {    ceremonyVenue,    ceremonyDate,    ceremonyTime,    ceremonyAddress,    ceremonyMapUrl,    receptionVenue,    receptionDate,    receptionTime,    receptionAddress,    receptionMapUrl  }
+export type WEDDING_DETAILS_QUERY_RESULT = {
+  ceremonyVenue: string | null;
+  ceremonyDate: string | null;
+  ceremonyTime: string | null;
+  ceremonyAddress: string | null;
+  ceremonyMapUrl: string | null;
+  receptionVenue: string | null;
+  receptionDate: string | null;
+  receptionTime: string | null;
+  receptionAddress: string | null;
+  receptionMapUrl: string | null;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    '\n  *[_type == "announcement" && (scheduledAt == null || scheduledAt <= now())]\n    | order(publishedAt desc) {\n      _id,\n      title,\n      body,\n      publishedAt,\n      scheduledAt\n    }\n': ANNOUNCEMENTS_QUERY_RESULT;
+    '\n  *[_type == "dressCode"][0] {\n    label,\n    description,\n    paletteColors[] {\n      _key,\n      colorKey,\n      colorLabel\n    },\n    inspirationImages[] {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    additionalNotes\n  }\n': DRESS_CODE_QUERY_RESULT;
+    '\n  *[_type == "entourageMember" && isPadrino == true] | order(orderRank asc, name asc) {\n    _id, name, role, colorAssignment,\n    photo {\n      ...,\n      alt,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    }\n  }\n': PADRINOS_QUERY_RESULT;
+    '\n  *[_type == "entourageMember" && isPadrino != true] | order(orderRank asc, role asc, name asc) {\n    _id, name, role, colorAssignment\n  }\n': WEDDING_PARTY_QUERY_RESULT;
+    '\n  *[_type == "guest" && slug.current == $slug][0] {\n    firstName,\n    "slug": slug.current,\n    plusOneEligible,\n    plusOneType,\n    plusOneLinkedGuest->{\n      firstName,\n      "slug": slug.current\n    }\n  }\n': GUEST_BY_SLUG_QUERY_RESULT;
+    '\n  *[_type == "guest" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': ALL_GUEST_SLUGS_QUERY_RESULT;
     '\n  *[_type == "navigation"]{\n    _type,\n    _key,\n    links\n  }\n': NAVIGATION_QUERY_RESULT;
     '\n  *[_type == "page" && slug.current == $slug][0]{\n    blocks[]{\n      _type,\n      _key,\n    },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;
     '*[_type == "page" && defined(slug)]{slug}': PAGES_SLUGS_QUERY_RESULT;
     '*[_type == "settings"][0]{\n  _type,\n  siteName,\n  logo{\n    dark{\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    light{\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    width,\n    height,\n  },\n  copyright\n}': SETTINGS_QUERY_RESULT;
+    '\n  *[_type == "storyChapter" && isProposal != true] | order(order asc) {\n    _id,\n    year,\n    caption,\n    image {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    order,\n    publishedAt\n  }\n': STORY_CHAPTERS_QUERY_RESULT;
+    '\n  *[_type == "storyChapter" && isProposal == true][0] {\n    _id,\n    caption,\n    image {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    publishedAt\n  }\n': PROPOSAL_SECTION_QUERY_RESULT;
+    '\n  *[_type == "weddingDetails"][0] {\n    ceremonyVenue,\n    ceremonyDate,\n    ceremonyTime,\n    ceremonyAddress,\n    ceremonyMapUrl,\n    receptionVenue,\n    receptionDate,\n    receptionTime,\n    receptionAddress,\n    receptionMapUrl\n  }\n': WEDDING_DETAILS_QUERY_RESULT;
   }
 }

@@ -17,8 +17,14 @@ const singletonActions = new Set([
   "unpublish",
 ]);
 
-// Define the singleton document types
-const singletonTypes = new Set(["settings", "navigation"]);
+// Define the singleton document types — one document per type, not a list.
+// These are surfaced directly from `structure.ts` via `S.editor().documentId(...)`.
+const singletonTypes = new Set([
+  "settings",
+  "navigation",
+  "weddingDetails",
+  "dressCode",
+]);
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || "your-project-id";
 const dataset = process.env.SANITY_STUDIO_DATASET || "production";

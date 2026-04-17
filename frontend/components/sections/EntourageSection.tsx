@@ -93,7 +93,7 @@ function PadrinoCard({ padrino }: PadrinoCardProps) {
         <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden mb-3">
           <Image
             src={urlFor(photo).width(160).height(160).url()}
-            alt={`Photo of ${name}`}
+            alt={photo.alt || `Photo of ${name}`}
             fill
             sizes="(max-width: 768px) 4rem, 5rem"
             loading="lazy"

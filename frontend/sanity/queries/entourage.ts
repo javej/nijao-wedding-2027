@@ -11,6 +11,7 @@ export const PADRINOS_QUERY = groq`
     _id, name, role, colorAssignment,
     photo {
       ...,
+      alt,
       asset->{
         _id,
         url,
@@ -57,6 +58,7 @@ export type PadrinoResult = {
     };
     hotspot?: { x: number; y: number; width: number; height: number };
     crop?: { top: number; bottom: number; left: number; right: number };
+    alt?: string;
     _type: "image";
   } | null;
 };
