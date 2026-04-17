@@ -1,0 +1,70 @@
+studio/sanity.config.ts
+  9cdfaab04a57cbdd 11,72
+studio/plugins/guest-link-generator/index.tsx
+  9cdfaab04a57cbdd 1-20
+studio/schemas/documents/guest.ts
+  9cdfaab04a57cbdd 14,19,22,34-41,48-49,56-57,78-81,83-86,88-95,102-122,125-136
+studio/structure.ts
+  9cdfaab04a57cbdd 42,44-51
+_bmad-output/implementation-artifacts/4-3-guest-list-personalized-link-management.md
+  9023cda5ad49db0a 1-2,4-24,27-31,33-34,36-38,49-50,72-111,114-115,121,135-136
+  9cdfaab04a57cbdd 3,25-26,32,35,39-48,51-71,112-113,116-120,122-134,137-148
+studio/plugins/guest-link-generator/GuestLinksTool.tsx
+  9cdfaab04a57cbdd 1-215
+studio/.env.local.example
+  9cdfaab04a57cbdd 3-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "f4bd8cc0d696dfb444f9bb0609869414a1b09a61",
+  "prompts": {
+    "58e37e939c17ceb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "958d2eb5-64d2-4c66-8fed-26a906341703",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/1f98a531ec3455161d433f3b08471bad1578a5886f929e7e17fdea6b02f213b0"
+    },
+    "9023cda5ad49db0a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5d7a18cf-3336-4b24-964d-ad03156ecccd",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 234,
+      "total_deletions": 0,
+      "accepted_lines": 198,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/593b91514a7280c90666dc19f404ef0254ce600d35d1b899a8a6691061c2707b"
+    },
+    "9cdfaab04a57cbdd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ef53692e-8c8b-46d6-8c30-b5468c5485f4",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 950,
+      "total_deletions": 115,
+      "accepted_lines": 381,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/8e7e66c759619b39d8185ec005d28a139c394ad3ed17b3483e889c04267b07b6"
+    }
+  },
+  "humans": {
+    "h_2afc2e179e8870": {
+      "author": "Jave Jao"
+    }
+  }
+}
