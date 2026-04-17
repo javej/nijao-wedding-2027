@@ -1,7 +1,36 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(pnpm --filter frontend dev)",
+      "Bash(rm -rf frontend/.next)",
+      "Bash(pnpm --filter frontend build)",
+      "Bash(python3 -c \"import sys; html=sys.stdin.read\\(\\); start=html.find\\('<head'\\); end=html.find\\('</head>'\\); print\\(html[start:end+7]\\)\")",
+      "Bash(curl -s http://localhost:3000/robots.txt)",
+      "Bash(pnpm --filter frontend lint)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm --filter frontend remove @radix-ui/react-navigation-menu)",
+      "Bash(gh pr create --title 'feat: production configuration & hardening \\(Story 1.4\\)' --body ':*)",
+      "Bash(gh pr:*)",
+      "WebFetch(domain:nijao-wedding-2027-frontend-git-29428b-javes-projects-35e1989f.vercel.app)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(git checkout:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm dev:*)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k:v for k,v in {**d.get\\('dependencies',{}\\), **d.get\\('devDependencies',{}\\)}.items\\(\\) if 'test' in k.lower\\(\\) or 'vitest' in k.lower\\(\\) or 'jest' in k.lower\\(\\) or 'playwright' in k.lower\\(\\)}, indent=2\\)\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/test-guest)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(node -e \"console.log\\(JSON.stringify\\(JSON.parse\\(require\\('fs'\\).readFileSync\\('/c/Users/Javej/Downloads/nijao-wedding-2027-3e741cef3e8b.json','utf8'\\)\\)\\)\\)\")",
+      "Bash(node -e \"console.log\\(JSON.stringify\\(JSON.parse\\(require\\('fs'\\).readFileSync\\('C:/Users/Javej/Downloads/nijao-wedding-2027-3e741cef3e8b.json','utf8'\\)\\)\\)\\)\")",
+      "Bash(node -e ':*)",
+      "Bash(xargs grep:*)",
+      "Bash(curl -s http://localhost:3000/dev/tokens)",
+      "Bash(curl -s \"https://le2hi5mu.api.sanity.io/v2024-01-01/data/query/production?query=*%5B_type%3D%3D%22guest%22%5D%7Bslug%2CfirstName%7D\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/uxzjzmio)",
+      "Bash(taskkill //F //IM node.exe)"
     ]
   }
 }

@@ -33,6 +33,8 @@ export default defineType({
       name: "year",
       title: "Year",
       type: "number",
+      description:
+        "The year this chapter represents (2017–2027). Leave empty only for the proposal chapter.",
       validation: (rule) =>
         rule.custom((value, context) => {
           const doc = context.document as { isProposal?: boolean } | undefined;
@@ -46,18 +48,23 @@ export default defineType({
       name: "caption",
       title: "Caption",
       type: "text",
+      description: "Short caption shown under the chapter image (1–2 sentences).",
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "image",
       title: "Image",
       type: "image",
+      description:
+        "Drag to reposition focal point after upload — the crop adjusts automatically across screen sizes.",
       options: { hotspot: true },
       fields: [
         defineField({
           name: "alt",
           title: "Alternative Text",
           type: "string",
+          description:
+            "Describe the image for screen readers and SEO (e.g., \"Jave and Nianne on their first date, 2017\").",
           validation: (rule) => rule.required(),
         }),
       ],
@@ -66,13 +73,14 @@ export default defineType({
       name: "publishedAt",
       title: "Published At",
       type: "datetime",
+      description: "Informational timestamp — does not control visibility (use Publish/Unpublish).",
     }),
     defineField({
       name: "order",
       title: "Order",
       type: "number",
       description:
-        "Manual sort order for frontend GROQ queries. orderRank (below) handles Studio drag-and-drop only.",
+        "Manual sort order for the frontend (ascending). Lower numbers appear first. Drag-and-drop in the Studio list also updates ordering automatically.",
     }),
     orderRankField({ type: "storyChapter" }),
   ],

@@ -26,6 +26,8 @@ export default defineType({
       name: "colorAssignment",
       title: "Color Assignment",
       type: "string",
+      description:
+        "Accent color used for this member's card on the site. Rotate through the palette so adjacent cards look distinct.",
       options: {
         list: [
           { title: "Deep Matcha", value: "deep-matcha" },
@@ -43,14 +45,25 @@ export default defineType({
       name: "photo",
       title: "Photo",
       type: "image",
+      description:
+        "Square-ish headshot works best. Drag to reposition the focal point so the face stays centered when cropped to a circle.",
       options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alternative Text",
+          type: "string",
+          description:
+            "Optional. Describe the photo for screen readers. Leave empty to use \"Photo of <name>\" automatically.",
+        }),
+      ],
     }),
     defineField({
       name: "isPadrino",
       title: "Is Padrino",
       type: "boolean",
       description:
-        "Used to filter for the Digital Padrino Wall vs. full entourage list",
+        "Enable for Ninongs and Ninangs — they will appear in the Digital Padrino Wall. Leave off for the wedding party (best man, maid of honor, groomsmen, bridesmaids).",
       initialValue: false,
     }),
     orderRankField({ type: "entourageMember" }),
