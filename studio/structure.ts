@@ -39,9 +39,16 @@ export const structure = (S: any, context: any) =>
                 S,
                 context,
               }),
-              S.documentTypeListItem("guest")
+              S.listItem()
                 .title("Guests")
-                .icon(User),
+                .icon(User)
+                .child(
+                  S.documentTypeList("guest")
+                    .title("Guests")
+                    .defaultOrdering([
+                      { field: "firstName", direction: "asc" },
+                    ]),
+                ),
               S.documentTypeListItem("announcement")
                 .title("Announcements")
                 .icon(Megaphone),

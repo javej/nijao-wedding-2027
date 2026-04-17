@@ -8,6 +8,7 @@ import { resolve } from "./presentation/resolve";
 import { structure } from "./structure";
 import { defaultDocumentNode } from "./defaultDocumentNode";
 import { codeInput } from "@sanity/code-input";
+import { guestLinkGenerator } from "./plugins/guest-link-generator";
 
 // Define the actions that should be available for singleton documents
 const singletonActions = new Set([
@@ -68,5 +69,6 @@ export default defineConfig({
     visionTool({ defaultApiVersion: apiVersion }),
     codeInput(),
     media(),
+    guestLinkGenerator(),
   ],
 });
