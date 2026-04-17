@@ -1,0 +1,61 @@
+_bmad-output/implementation-artifacts/4-2-content-management-all-sections.md
+  9023cda5ad49db0a 3,27-33,35-39,41-45,47-48,51-52,54-55,58-59,61-68,105-106,109-114,116-137,139-175,177-193
+  58e37e939c17ceb6 1-2,4-26,34,40,46,49-50,53,56-57,60,69-104,107-108,115,138,176
+studio/schema.json
+  9023cda5ad49db0a 527-932,1269-1275,1338-1343
+frontend/components/sections/EntourageSection.tsx
+  9023cda5ad49db0a 96
+.claude/settings.local.json
+  58e37e939c17ceb6 4-33
+frontend/sanity.types.ts
+  9023cda5ad49db0a 106-174,235,248,462-465,487-618,718-791,796-801,806-808
+frontend/app/(main)/dev/announcements/page.tsx
+  9023cda5ad49db0a 1-122
+frontend/sanity/queries/entourage.ts
+  9023cda5ad49db0a 14,61
+studio/schemas/documents/announcement.ts
+  9023cda5ad49db0a 14,21,27-28,34,37,44,46-65,68
+studio/schemas/documents/entourageMember.ts
+  9023cda5ad49db0a 29-30,48-49,51-59,66
+frontend/sanity/queries/announcements.ts
+  9023cda5ad49db0a 1-85
+studio/schemas/documents/storyChapter.ts
+  9023cda5ad49db0a 36-37,51,58-59,66-67,76,83
+studio/sanity.config.ts
+  9023cda5ad49db0a 20-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "f4b1b72554f556063adb3cf323ebf072fce99a32",
+  "prompts": {
+    "58e37e939c17ceb6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "958d2eb5-64d2-4c66-8fed-26a906341703",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 342,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/1f98a531ec3455161d433f3b08471bad1578a5886f929e7e17fdea6b02f213b0"
+    },
+    "9023cda5ad49db0a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5d7a18cf-3336-4b24-964d-ad03156ecccd",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao",
+      "messages": [],
+      "total_additions": 4225,
+      "total_deletions": 212,
+      "accepted_lines": 1098,
+      "overriden_lines": 0,
+      "messages_url": "https://usegitai.com/cas/a4ffa55afe5655f226ee5f55c3b305d7a49f839dccc784b900536388819bd090"
+    }
+  }
+}
