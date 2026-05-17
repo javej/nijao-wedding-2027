@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import Script from 'next/script';
+// import Script from 'next/script';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { submitRsvp } from '@/app/actions/rsvp';
@@ -148,10 +148,10 @@ export function RSVPChat({
   const inputRef = useRef<HTMLInputElement>(null);
   const chipContainerRef = useRef<HTMLDivElement>(null);
 
-  // Turnstile
-  const turnstileContainerRef = useRef<HTMLDivElement>(null);
-  const turnstileTokenRef = useRef<string | null>(null);
-  const turnstileWidgetIdRef = useRef<string | null>(null);
+  // Turnstile — temporarily disabled
+  // const turnstileContainerRef = useRef<HTMLDivElement>(null);
+  // const turnstileTokenRef = useRef<string | null>(null);
+  // const turnstileWidgetIdRef = useRef<string | null>(null);
 
   // Message ID counter (avoids Date.now() collisions)
   const msgIdCounter = useRef(1);
@@ -191,27 +191,27 @@ export function RSVPChat({
     };
   }, []);
 
-  // Turnstile initialization
-  const handleTurnstileLoad = useCallback(() => {
-    if (!turnstileContainerRef.current || turnstileWidgetIdRef.current) return;
-    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-    if (!siteKey || !window.turnstile) return;
-
-    turnstileWidgetIdRef.current = window.turnstile.render(
-      turnstileContainerRef.current,
-      {
-        sitekey: siteKey,
-        callback: (token: string) => {
-          turnstileTokenRef.current = token;
-        },
-        'expired-callback': () => {
-          turnstileTokenRef.current = null;
-        },
-        appearance: 'interaction-only',
-        size: 'flexible',
-      },
-    );
-  }, []);
+  // Turnstile initialization — temporarily disabled
+  // const handleTurnstileLoad = useCallback(() => {
+  //   if (!turnstileContainerRef.current || turnstileWidgetIdRef.current) return;
+  //   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  //   if (!siteKey || !window.turnstile) return;
+  //
+  //   turnstileWidgetIdRef.current = window.turnstile.render(
+  //     turnstileContainerRef.current,
+  //     {
+  //       sitekey: siteKey,
+  //       callback: (token: string) => {
+  //         turnstileTokenRef.current = token;
+  //       },
+  //       'expired-callback': () => {
+  //         turnstileTokenRef.current = null;
+  //       },
+  //       appearance: 'interaction-only',
+  //       size: 'flexible',
+  //     },
+  //   );
+  // }, []);
 
   // Track whether the user has interacted (to avoid scrolling the page on mount)
   const hasInteracted = useRef(false);
@@ -342,17 +342,17 @@ export function RSVPChat({
       setShowChips(false);
       setShowInput(false);
 
-      const turnstileToken = turnstileTokenRef.current;
+      // Turnstile temporarily disabled — pass empty token; server-side verification is also bypassed.
+      const turnstileToken = '';
 
-      // Turnstile hasn't loaded yet — let the guest retry rather than sending an empty token
-      if (!turnstileToken) {
-        setChatState('asked-attendance');
-        setShowChips(true);
-        addSystemMessage(
-          "Still verifying — please try again in a moment.",
-        );
-        return;
-      }
+      // if (!turnstileToken) {
+      //   setChatState('asked-attendance');
+      //   setShowChips(true);
+      //   addSystemMessage(
+      //     "Still verifying — please try again in a moment.",
+      //   );
+      //   return;
+      // }
 
       const payload: RSVPPayload = {
         guestSlug,
@@ -749,13 +749,13 @@ export function RSVPChat({
         </motion.div>
       )}
 
-      {/* Cloudflare Turnstile — invisible/interaction-only */}
-      <div ref={turnstileContainerRef} aria-hidden="true" />
+      {/* Cloudflare Turnstile — temporarily disabled */}
+      {/* <div ref={turnstileContainerRef} aria-hidden="true" />
       <Script
         src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback"
         strategy="lazyOnload"
         onReady={handleTurnstileLoad}
-      />
+      /> */}
     </div>
   );
 }
