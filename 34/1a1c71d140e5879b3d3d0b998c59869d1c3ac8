@@ -1,0 +1,33 @@
+_bmad-output/implementation-artifacts/3-4-rsvp-submission-google-sheets-email.md
+  s_22ae9b6e6c2b19::t_30349da25156e6 3
+_bmad-output/implementation-artifacts/2-8-dress-code-section.md
+  s_22ae9b6e6c2b19::t_6a5e5e877ca98b 3
+_bmad-output/implementation-artifacts/2-3-arrival-overlay-ambient-music.md
+  s_22ae9b6e6c2b19::t_1e961a770bb008 3
+_bmad-output/implementation-artifacts/3-2-personalized-arrival-greeting.md
+  s_22ae9b6e6c2b19::t_fe7e8baf75ce1b 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "341a1c71d140e5879b3d3d0b998c59869d1c3ac8",
+  "prompts": {},
+  "humans": {
+    "h_2afc2e179e8870": {
+      "author": "Jave Jao"
+    },
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_22ae9b6e6c2b19": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c4e69c0d-df1a-4a83-8963-a1651dd98787",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
