@@ -1,6 +1,6 @@
 # Story 2.8: Dress Code Section
 
-Status: in-progress
+Status: done
 
 ## Story
 

@@ -42,7 +42,7 @@ function getSiteUrl(): string {
   return raw.replace(/\/+$/, "");
 }
 
-const API_VERSION = process.env.SANITY_STUDIO_API_VERSION || "2026-03-23";
+const API_VERSION = process.env.SANITY_STUDIO_API_VERSION || "2026-04-09";
 
 export function GuestLinksTool() {
   const client = useClient({ apiVersion: API_VERSION });

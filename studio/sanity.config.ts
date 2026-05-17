@@ -9,6 +9,7 @@ import { structure } from "./structure";
 import { defaultDocumentNode } from "./defaultDocumentNode";
 import { codeInput } from "@sanity/code-input";
 import { guestLinkGenerator } from "./plugins/guest-link-generator";
+import { rsvpDashboard } from "./plugins/rsvp-dashboard";
 
 // Define the actions that should be available for singleton documents
 const singletonActions = new Set([
@@ -70,5 +71,6 @@ export default defineConfig({
     codeInput(),
     media(),
     guestLinkGenerator(),
+    rsvpDashboard(),
   ],
 });

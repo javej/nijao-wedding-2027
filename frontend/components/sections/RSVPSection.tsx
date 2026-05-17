@@ -31,6 +31,7 @@ export function RSVPSection({ guest }: RSVPSectionProps) {
         plusOneEligible={guest.plusOneEligible ?? false}
         plusOneType={guest.plusOneType ?? null}
         plusOneLinkedGuestName={guest.plusOneLinkedGuest?.firstName ?? null}
+        plusOneLinkedGuestSlug={guest.plusOneLinkedGuest?.slug ?? null}
         onConfirm={() => setShowConfetti(true)}
       />
     </div>

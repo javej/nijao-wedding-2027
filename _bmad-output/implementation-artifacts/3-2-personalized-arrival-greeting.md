@@ -1,6 +1,6 @@
 # Story 3.2: Personalized Arrival Greeting
 
-Status: review
+Status: done
 
 ## Story
 
