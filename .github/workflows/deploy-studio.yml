@@ -65,12 +65,17 @@ jobs:
         working-directory: ./studio
         env:
           SANITY_STUDIO_PREVIEW_URL: ${{ vars.SANITY_STUDIO_PREVIEW_URL }}
+          # Canonical production URL used by Guest Links + RSVP Dashboard to call
+          # /api/rsvp-data. Must be the canonical host (e.g. with `www.`) — using
+          # an apex that redirects to `www.` breaks CORS preflight.
+          SANITY_STUDIO_SITE_URL: ${{ vars.SANITY_STUDIO_SITE_URL }}
           SANITY_STUDIO_PROJECT_ID: ${{ vars.SANITY_STUDIO_PROJECT_ID }}
           SANITY_STUDIO_DATASET: ${{ vars.SANITY_STUDIO_DATASET }}
           SANITY_STUDIO_HOSTNAME: ${{ vars.SANITY_STUDIO_HOSTNAME }}
           SANITY_STUDIO_API_VERSION: ${{ vars.SANITY_STUDIO_API_VERSION }}
           SANITY_STUDIO_APP_ID: ${{ vars.SANITY_STUDIO_APP_ID }}
           SANITY_STUDIO_VERCEL_BYPASS_SECRET: ${{ secrets.SANITY_STUDIO_VERCEL_BYPASS_SECRET }}
+          SANITY_STUDIO_RSVP_DASHBOARD_SECRET: ${{ secrets.SANITY_STUDIO_RSVP_DASHBOARD_SECRET }}
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
         run: |
           echo "🚀 Starting Sanity Studio deployment..."
