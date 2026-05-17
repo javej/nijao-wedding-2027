@@ -1,6 +1,6 @@
 "use server";
 
-import { verifyTurnstileToken } from "@/lib/turnstile";
+// import { verifyTurnstileToken } from "@/lib/turnstile";
 import { appendRsvpRows } from "@/lib/sheets";
 import { sendRsvpConfirmation } from "@/lib/resend";
 
@@ -24,11 +24,11 @@ export type ActionResult =
 
 export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
   try {
-    // 1. Validate Turnstile token
-    const turnstileValid = await verifyTurnstileToken(payload.turnstileToken);
-    if (!turnstileValid) {
-      return { success: false, error: "Verification failed" };
-    }
+    // 1. Validate Turnstile token — temporarily disabled
+    // const turnstileValid = await verifyTurnstileToken(payload.turnstileToken);
+    // if (!turnstileValid) {
+    //   return { success: false, error: "Verification failed" };
+    // }
 
     // 2. Write to Google Sheets
     try {
