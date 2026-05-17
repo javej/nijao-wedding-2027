@@ -1,6 +1,6 @@
 # Story 2.3: Arrival Overlay & Ambient Music
 
-Status: review
+Status: done
 
 ## Story
 

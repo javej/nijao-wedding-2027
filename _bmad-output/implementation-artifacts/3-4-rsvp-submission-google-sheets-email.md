@@ -1,6 +1,6 @@
 # Story 3.4: RSVP Submission — Google Sheets & Email
 
-Status: review
+Status: done
 
 ## Story
 
