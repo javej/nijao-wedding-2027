@@ -1,0 +1,26 @@
+studio/.env.local.example
+  s_605495473ce91c::t_8899711eaaab38 5-8
+.github/workflows/deploy-studio.yml
+  s_605495473ce91c::t_e116073a7b3133 68-71,78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "efac63b678bca1c7c149cc285870ff3df7832ca5",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_605495473ce91c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0fe3fede-4709-4431-ba27-c9b408e61d87",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
