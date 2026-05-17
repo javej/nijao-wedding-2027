@@ -12,7 +12,7 @@ export interface RSVPPayload {
   attending: boolean;
   plusOneName?: string;
   turnstileToken: string;
-  linkedGuest?: { name: string; attending: boolean };
+  linkedGuest?: { name: string; slug?: string; attending: boolean };
   guestEmail?: string;
 }
 
@@ -34,6 +34,7 @@ export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
     try {
       await appendRsvpRows({
         guestName: payload.guestName,
+        guestSlug: payload.guestSlug,
         attending: payload.attending,
         plusOneName: payload.plusOneName,
         linkedGuest: payload.linkedGuest,

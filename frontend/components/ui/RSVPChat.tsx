@@ -52,6 +52,7 @@ export interface RSVPChatProps {
   plusOneEligible: boolean;
   plusOneType: 'linked' | 'open' | null;
   plusOneLinkedGuestName: string | null;
+  plusOneLinkedGuestSlug: string | null;
   /** Called when the final confirmation moment fires (petal burst, haptic) */
   onConfirm?: () => void;
 }
@@ -123,6 +124,7 @@ export function RSVPChat({
   plusOneEligible,
   plusOneType,
   plusOneLinkedGuestName,
+  plusOneLinkedGuestSlug,
   onConfirm,
 }: RSVPChatProps) {
   const shouldReduceMotion = useReducedMotion();
@@ -359,7 +361,11 @@ export function RSVPChat({
         turnstileToken,
         ...(data.plusOneName && { plusOneName: data.plusOneName }),
         ...(data.plusOneAttending && plusOneType === 'linked' && plusOneLinkedGuestName && {
-          linkedGuest: { name: plusOneLinkedGuestName, attending: true },
+          linkedGuest: {
+            name: plusOneLinkedGuestName,
+            slug: plusOneLinkedGuestSlug ?? undefined,
+            attending: true,
+          },
         }),
       };
 
@@ -409,7 +415,14 @@ export function RSVPChat({
         );
       }
     },
-    [guestSlug, guestName, plusOneType, plusOneLinkedGuestName, addSystemMessage],
+    [
+      guestSlug,
+      guestName,
+      plusOneType,
+      plusOneLinkedGuestName,
+      plusOneLinkedGuestSlug,
+      addSystemMessage,
+    ],
   );
 
   // --- Flow: Advance to plus-one or submission ---
