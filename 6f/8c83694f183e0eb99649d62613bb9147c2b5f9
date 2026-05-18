@@ -1,0 +1,24 @@
+.github/workflows/deploy-studio.yml
+  s_06354068894451::t_1b29569db82968 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "6f8c83694f183e0eb99649d62613bb9147c2b5f9",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_06354068894451": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c9c0e973-a06f-49fd-ad10-27e1a8d5927c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
