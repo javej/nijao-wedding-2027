@@ -15,8 +15,12 @@ export const GUEST_BY_SLUG_QUERY = groq`
     plusOneType,
     plusOneLinkedGuest->{
       firstName,
-      "slug": slug.current
-    }
+      "slug": slug.current,
+      rsvpStatus
+    },
+    rsvpStatus,
+    rsvpUpdatedAt,
+    openPlusOne
   }
 `;
 
@@ -28,6 +32,8 @@ export const ALL_GUEST_SLUGS_QUERY = groq`
 
 // --- Types ---
 
+export type RsvpStatus = "pending" | "attending" | "declined";
+
 export type GuestResult = {
   firstName: string;
   slug: string;
@@ -36,6 +42,13 @@ export type GuestResult = {
   plusOneLinkedGuest: {
     firstName: string;
     slug: string;
+    rsvpStatus: RsvpStatus | null;
+  } | null;
+  rsvpStatus: RsvpStatus | null;
+  rsvpUpdatedAt: string | null;
+  openPlusOne: {
+    attending: boolean | null;
+    name: string | null;
   } | null;
 } | null;
 
@@ -54,7 +67,7 @@ export async function getGuestBySlug(
   const { data } = await sanityFetch({
     query: GUEST_BY_SLUG_QUERY,
     params: { slug },
-    tags: ["sanity"],
+    tags: ["sanity", `guest:${slug}`],
   });
 
   return (data ?? null) as GuestResult;

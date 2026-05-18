@@ -202,6 +202,12 @@ export type Guest = {
   plusOneEligible?: boolean;
   plusOneType?: "linked" | "open";
   plusOneLinkedGuest?: GuestReference;
+  rsvpStatus?: "pending" | "attending" | "declined";
+  rsvpUpdatedAt?: string;
+  openPlusOne?: {
+    attending?: boolean;
+    name?: string;
+  };
 };
 
 export type Slug = {
@@ -495,6 +501,16 @@ export type ANNOUNCEMENTS_QUERY_RESULT = Array<{
   scheduledAt: string | null;
 }>;
 
+// Source: ../frontend/sanity/queries/announcements.ts
+// Variable: ALL_ANNOUNCEMENTS_QUERY
+// Query: *[_type == "announcement"] | order(publishedAt desc) {    _id,    title,    publishedAt,    scheduledAt  }
+export type ALL_ANNOUNCEMENTS_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  publishedAt: string | null;
+  scheduledAt: string | null;
+}>;
+
 // Source: ../frontend/sanity/queries/dressCode.ts
 // Variable: DRESS_CODE_QUERY
 // Query: *[_type == "dressCode"][0] {    label,    description,    paletteColors[] {      _key,      colorKey,      colorLabel    },    inspirationImages[] {      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    additionalNotes  }
@@ -597,7 +613,7 @@ export type WEDDING_PARTY_QUERY_RESULT = Array<{
 
 // Source: ../frontend/sanity/queries/guests.ts
 // Variable: GUEST_BY_SLUG_QUERY
-// Query: *[_type == "guest" && slug.current == $slug][0] {    firstName,    "slug": slug.current,    plusOneEligible,    plusOneType,    plusOneLinkedGuest->{      firstName,      "slug": slug.current    }  }
+// Query: *[_type == "guest" && slug.current == $slug][0] {    firstName,    "slug": slug.current,    plusOneEligible,    plusOneType,    plusOneLinkedGuest->{      firstName,      "slug": slug.current,      rsvpStatus    },    rsvpStatus,    rsvpUpdatedAt,    openPlusOne  }
 export type GUEST_BY_SLUG_QUERY_RESULT = {
   firstName: string | null;
   slug: string | null;
@@ -606,6 +622,13 @@ export type GUEST_BY_SLUG_QUERY_RESULT = {
   plusOneLinkedGuest: {
     firstName: string | null;
     slug: string | null;
+    rsvpStatus: "attending" | "declined" | "pending" | null;
+  } | null;
+  rsvpStatus: "attending" | "declined" | "pending" | null;
+  rsvpUpdatedAt: string | null;
+  openPlusOne: {
+    attending?: boolean;
+    name?: string;
   } | null;
 } | null;
 
@@ -794,10 +817,11 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '\n  *[_type == "announcement" && (scheduledAt == null || scheduledAt <= now())]\n    | order(publishedAt desc) {\n      _id,\n      title,\n      body,\n      publishedAt,\n      scheduledAt\n    }\n': ANNOUNCEMENTS_QUERY_RESULT;
+    '\n  *[_type == "announcement"] | order(publishedAt desc) {\n    _id,\n    title,\n    publishedAt,\n    scheduledAt\n  }\n': ALL_ANNOUNCEMENTS_QUERY_RESULT;
     '\n  *[_type == "dressCode"][0] {\n    label,\n    description,\n    paletteColors[] {\n      _key,\n      colorKey,\n      colorLabel\n    },\n    inspirationImages[] {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    additionalNotes\n  }\n': DRESS_CODE_QUERY_RESULT;
     '\n  *[_type == "entourageMember" && isPadrino == true] | order(orderRank asc, name asc) {\n    _id, name, role, colorAssignment,\n    photo {\n      ...,\n      alt,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    }\n  }\n': PADRINOS_QUERY_RESULT;
     '\n  *[_type == "entourageMember" && isPadrino != true] | order(orderRank asc, role asc, name asc) {\n    _id, name, role, colorAssignment\n  }\n': WEDDING_PARTY_QUERY_RESULT;
-    '\n  *[_type == "guest" && slug.current == $slug][0] {\n    firstName,\n    "slug": slug.current,\n    plusOneEligible,\n    plusOneType,\n    plusOneLinkedGuest->{\n      firstName,\n      "slug": slug.current\n    }\n  }\n': GUEST_BY_SLUG_QUERY_RESULT;
+    '\n  *[_type == "guest" && slug.current == $slug][0] {\n    firstName,\n    "slug": slug.current,\n    plusOneEligible,\n    plusOneType,\n    plusOneLinkedGuest->{\n      firstName,\n      "slug": slug.current,\n      rsvpStatus\n    },\n    rsvpStatus,\n    rsvpUpdatedAt,\n    openPlusOne\n  }\n': GUEST_BY_SLUG_QUERY_RESULT;
     '\n  *[_type == "guest" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': ALL_GUEST_SLUGS_QUERY_RESULT;
     '\n  *[_type == "navigation"]{\n    _type,\n    _key,\n    links\n  }\n': NAVIGATION_QUERY_RESULT;
     '\n  *[_type == "page" && slug.current == $slug][0]{\n    blocks[]{\n      _type,\n      _key,\n    },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;

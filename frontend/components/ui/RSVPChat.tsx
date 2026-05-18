@@ -38,12 +38,19 @@ type ChatState =
   | 'asked-plusone-name'
   | 'submitting'
   | 'confirmed'
-  | 'declined';
+  | 'declined'
+  | 'closed';
 
 interface ChatMessage {
   id: string;
   sender: 'system' | 'guest';
   text: string;
+}
+
+export interface RSVPSubmissionResult {
+  attending: boolean;
+  plusOneName: string | null;
+  plusOneAttending: boolean;
 }
 
 export interface RSVPChatProps {
@@ -55,6 +62,8 @@ export interface RSVPChatProps {
   plusOneLinkedGuestSlug: string | null;
   /** Called when the final confirmation moment fires (petal burst, haptic) */
   onConfirm?: () => void;
+  /** Called once a submission has been accepted by the server (success). */
+  onComplete?: (result: RSVPSubmissionResult) => void;
 }
 
 // --- Framer Motion Variants (outside component body) ---
@@ -113,8 +122,9 @@ function isNegative(input: string): boolean {
 
 // --- Confirmation Constants ---
 
-const RSVP_SESSION_KEY = 'rsvp-confirmation';
 const CONFIRMATION_MESSAGE = "We've been waiting for you.";
+const CLOSED_MESSAGE =
+  "RSVPs have closed on November 8. If you'd still like to reach us, please contact Jave & Nianne directly.";
 
 // --- Component ---
 
@@ -126,6 +136,7 @@ export function RSVPChat({
   plusOneLinkedGuestName,
   plusOneLinkedGuestSlug,
   onConfirm,
+  onComplete,
 }: RSVPChatProps) {
   const shouldReduceMotion = useReducedMotion();
   const [chatState, setChatState] = useState<ChatState>('asked-attendance');
@@ -159,8 +170,7 @@ export function RSVPChat({
   // Outer container ref for mobile keyboard offset
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Confirmation persistence
-  const restoredFromSession = useRef(false);
+  // Tracks the "We've been waiting for you." closing bubble so it only fires once
   const finalBubbleShown = useRef(false);
 
   const animInitial = shouldReduceMotion ? 'reduced' : 'hidden';
@@ -192,26 +202,7 @@ export function RSVPChat({
   }, []);
 
   // Turnstile initialization — temporarily disabled
-  // const handleTurnstileLoad = useCallback(() => {
-  //   if (!turnstileContainerRef.current || turnstileWidgetIdRef.current) return;
-  //   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  //   if (!siteKey || !window.turnstile) return;
-  //
-  //   turnstileWidgetIdRef.current = window.turnstile.render(
-  //     turnstileContainerRef.current,
-  //     {
-  //       sitekey: siteKey,
-  //       callback: (token: string) => {
-  //         turnstileTokenRef.current = token;
-  //       },
-  //       'expired-callback': () => {
-  //         turnstileTokenRef.current = null;
-  //       },
-  //       appearance: 'interaction-only',
-  //       size: 'flexible',
-  //     },
-  //   );
-  // }, []);
+  // const handleTurnstileLoad = useCallback(() => { /* ... */ }, []);
 
   // Track whether the user has interacted (to avoid scrolling the page on mount)
   const hasInteracted = useRef(false);
@@ -273,38 +264,16 @@ export function RSVPChat({
     return () => window.removeEventListener('online', retryQueued);
   }, []);
 
-  // --- Confirmation Persistence (sessionStorage) ---
+  // --- Confirmation closing bubble (fresh confirmation only) ---
 
-  // Restore confirmation state from sessionStorage on mount (AC 6)
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      const stored = sessionStorage.getItem(`${RSVP_SESSION_KEY}-${guestSlug}`);
-      if (!stored) return;
-      const data = JSON.parse(stored) as { state: ChatState; messages: ChatMessage[] };
-      if (data.state === 'confirmed' || data.state === 'declined') {
-        setChatState(data.state);
-        setMessages(data.messages);
-        setShowChips(false);
-        setShowInput(false);
-        restoredFromSession.current = true;
-        finalBubbleShown.current = true;
-        msgIdCounter.current = data.messages.length + 1;
-      }
-    } catch {
-      // Ignore sessionStorage errors
-    }
-  }, [guestSlug]);
-
-  // Show the final "We've been waiting for you." bubble after fresh confirmation (AC 1)
-  useEffect(() => {
-    if (chatState !== 'confirmed' || restoredFromSession.current || finalBubbleShown.current) return;
+    if (chatState !== 'confirmed' || finalBubbleShown.current) return;
     finalBubbleShown.current = true;
 
     const timer = setTimeout(() => {
       addSystemMessage(CONFIRMATION_MESSAGE);
       onConfirm?.();
-      // Haptic feedback (AC 2) — graceful degradation on iOS (AC 3)
+      // Haptic feedback — graceful degradation on iOS
       if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
         navigator.vibrate([100, 50, 100, 50, 100]);
       }
@@ -312,27 +281,6 @@ export function RSVPChat({
 
     return () => clearTimeout(timer);
   }, [chatState, addSystemMessage, onConfirm]);
-
-  // Persist terminal state to sessionStorage (AC 6)
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (chatState !== 'confirmed' && chatState !== 'declined') return;
-
-    // For confirmed: wait until the final couple's message appears
-    if (chatState === 'confirmed') {
-      const hasFinal = messages.some((m) => m.text === CONFIRMATION_MESSAGE);
-      if (!hasFinal) return;
-    }
-
-    try {
-      sessionStorage.setItem(
-        `${RSVP_SESSION_KEY}-${guestSlug}`,
-        JSON.stringify({ state: chatState, messages }),
-      );
-    } catch {
-      // sessionStorage full or unavailable
-    }
-  }, [chatState, messages, guestSlug]);
 
   // --- Submission ---
 
@@ -345,21 +293,17 @@ export function RSVPChat({
       // Turnstile temporarily disabled — pass empty token; server-side verification is also bypassed.
       const turnstileToken = '';
 
-      // if (!turnstileToken) {
-      //   setChatState('asked-attendance');
-      //   setShowChips(true);
-      //   addSystemMessage(
-      //     "Still verifying — please try again in a moment.",
-      //   );
-      //   return;
-      // }
-
       const payload: RSVPPayload = {
         guestSlug,
         guestName,
         attending: data.attending,
         turnstileToken,
+        plusOneType,
+        plusOneAttending: data.plusOneAttending,
         ...(data.plusOneName && { plusOneName: data.plusOneName }),
+        ...(plusOneType === 'linked' && plusOneLinkedGuestSlug && {
+          linkedPartnerSlug: plusOneLinkedGuestSlug,
+        }),
         ...(data.plusOneAttending && plusOneType === 'linked' && plusOneLinkedGuestName && {
           linkedGuest: {
             name: plusOneLinkedGuestName,
@@ -367,6 +311,12 @@ export function RSVPChat({
             attending: true,
           },
         }),
+      };
+
+      const completion: RSVPSubmissionResult = {
+        attending: data.attending,
+        plusOneName: data.plusOneName,
+        plusOneAttending: data.plusOneAttending,
       };
 
       try {
@@ -380,12 +330,14 @@ export function RSVPChat({
             );
           } else {
             setChatState('declined');
-            addSystemMessage(
-              'We understand. Thank you for letting us know.',
-            );
+            addSystemMessage('We understand. Thank you for letting us know.');
           }
+          onComplete?.(completion);
+        } else if (result.error === 'rsvp_closed') {
+          setChatState('closed');
+          addSystemMessage(CLOSED_MESSAGE);
         } else if (result.error === 'sheets_unavailable') {
-          // Queue for retry — guest still sees confirmation/decline
+          // Sanity already wrote — queue the Sheets payload for retry only.
           setLocalItem('rsvpQueue', payload);
           if (data.attending) {
             setChatState('confirmed');
@@ -394,24 +346,23 @@ export function RSVPChat({
             );
           } else {
             setChatState('declined');
-            addSystemMessage(
-              'We understand. Thank you for letting us know.',
-            );
+            addSystemMessage('We understand. Thank you for letting us know.');
           }
+          onComplete?.(completion);
         } else {
-          // Turnstile or unexpected error — show generic message, reset to allow retry
+          // sanity_unavailable, turnstile, or unexpected — allow retry
           setChatState('asked-attendance');
           setShowChips(true);
           addSystemMessage(
-            "Something went wrong saving your RSVP. Please try again.",
+            'Something went wrong saving your RSVP. Please try again.',
           );
         }
       } catch {
-        // Server Action failed at the network level (e.g., 500 from module load failure)
+        // Server Action failed at the network level
         setChatState('asked-attendance');
         setShowChips(true);
         addSystemMessage(
-          "Something went wrong saving your RSVP. Please try again.",
+          'Something went wrong saving your RSVP. Please try again.',
         );
       }
     },
@@ -422,6 +373,7 @@ export function RSVPChat({
       plusOneLinkedGuestName,
       plusOneLinkedGuestSlug,
       addSystemMessage,
+      onComplete,
     ],
   );
 
@@ -616,7 +568,10 @@ export function RSVPChat({
   };
 
   const chips = getChips();
-  const isTerminal = chatState === 'confirmed' || chatState === 'declined';
+  const isTerminal =
+    chatState === 'confirmed' ||
+    chatState === 'declined' ||
+    chatState === 'closed';
   // showInput is explicitly false after re-prompt limit; otherwise show for chat states that accept text
   const showFreeTextInput =
     showInput || (unrecognizedCount.current === 0 && (chatState === 'asked-attendance' || chatState === 'asked-plusone'));

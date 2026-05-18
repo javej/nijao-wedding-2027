@@ -14,6 +14,7 @@ import { getWeddingDetails } from '@/sanity/queries/weddingDetails';
 import { getDressCode } from '@/sanity/queries/dressCode';
 import { getPadrinos, getWeddingParty } from '@/sanity/queries/entourage';
 import type { GuestResult } from '@/sanity/queries/guests';
+import { deriveRsvpViewState } from '@/lib/rsvp-view-state';
 
 export type WeddingGuest = NonNullable<GuestResult>;
 
@@ -84,7 +85,10 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
 
         <ChapterSection id="rsvp" palette="golden-matcha" label="RSVP">
           {guest ? (
-            <RSVPSection guest={guest} />
+            <RSVPSection
+              guest={guest}
+              rsvpViewState={deriveRsvpViewState(guest)}
+            />
           ) : (
             <p className="font-display text-display-md">RSVP</p>
           )}
