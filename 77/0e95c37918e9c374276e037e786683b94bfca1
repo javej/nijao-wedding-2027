@@ -1,0 +1,88 @@
+frontend/components/WeddingExperience.tsx
+  s_06354068894451::t_6ddddba957b458 17
+  s_06354068894451::t_14a4b916b9d6a7 88-91
+frontend/sanity/lib/write.ts
+  s_06354068894451::t_d8e550d2836195 1-18
+frontend/components/ui/RSVPClosedPanel.tsx
+  s_06354068894451::t_d1170cf2d245b8 1-35
+.github/workflows/deploy-studio.yml
+  s_06354068894451::t_c2912db037a27c 68
+frontend/sanity/queries/guests.ts
+  s_06354068894451::t_1eb462353cebe6 18-23,35-36,45-51,70
+frontend/components/ui/RSVPChat.tsx
+  s_06354068894451::t_68dc7b7c1fe40a 41-42,50-55,65-66,126-127,139,173,205,267,270,276,301-302,304-306,316-321,333,335-338,340,349,351,353,357,361,365,376,571-574
+studio/.env.local.example
+  s_06354068894451::t_032db4ee2420c6 3-4
+frontend/sanity.types.ts
+  s_06354068894451::t_825df3b9f7cb57 205-210,504-509,820
+  s_06354068894451::t_4e10cbdbab6702 616,625-631,824
+frontend/components/sections/RSVPSection.tsx
+  s_06354068894451::t_d64f278f3ed223 3-6,9,20,26,28-36,45-67,78-87,89-97,101-131
+  s_06354068894451::t_11c9869bae7f8c 68-77,88
+  s_06354068894451::t_64bb7ee5e63b6c 10-16
+.gitignore
+  h_e320e9b9b1464c 37-41
+studio/schema.json
+  s_06354068894451::t_825df3b9f7cb57 1110-1160
+frontend/app/actions/rsvp.ts
+  s_06354068894451::t_15c042ef440851 93-99,102,122-129,134-137,146,156,160,164-176,178,185-190
+  s_06354068894451::t_d4b03194a9d311 180,182
+  s_06354068894451::t_a4efcfdc3261de 25-30,33,37
+  s_06354068894451::t_192b51d4008733 4,7-8,19-21,35-36,38-39,44-65,67-92,100-101,103-121,130-132,138-145,147-155,157-159,162,181
+frontend/lib/rsvp-cutoff.ts
+  s_06354068894451::t_49dcc3b2228dcb 1-14
+studio/plugins/rsvp-dashboard/RsvpDashboardTool.tsx
+  s_06354068894451::t_e81a249efe6c77 16-30,33,38-55,58,72-91,95,98-101,123,126,140,142,149,158-184,186-188,192-194,196-197,202,214,216,225-226,243,257,259-263,267,272,275-276,284,293,295-296,300,306,309,315-340,342-355
+docs/adr/0001-sanity-as-rsvp-source-of-truth.md
+  s_4ba18906dc8737::t_cd4c81d5b0a589 1-62
+CONTEXT.md
+  s_4ba18906dc8737::t_ef127cff1977f6 1-23
+frontend/lib/rsvp-view-state.ts
+  s_06354068894451::t_b876fd318e7941 1-14,23-34,40-46,48-50,52-57,64,66-67,69,72-82,86-90,108
+  s_06354068894451::t_0beee04e345086 15-22,35-39,47,51,58-63,65,68,70-71,83-85,91-107
+docs/adr/0002-conditional-cross-mutation-linked-plus-ones.md
+  s_4ba18906dc8737::t_f99fca002450db 1-60
+frontend/.env.local.example
+  s_06354068894451::t_7490a6fe322256 28-31
+studio/schemas/documents/guest.ts
+  s_06354068894451::t_3cc9139463d76d 9-15
+  s_06354068894451::t_72c64a1978a3be 106-156
+_bmad-output/planning-artifacts/epics.md
+  s_4ba18906dc8737::t_a5576c728e1baf 104
+  s_4ba18906dc8737::t_b166f8e8632bf0 255,257-260
+  s_4ba18906dc8737::t_1b1910de78bad5 972-1011
+  s_4ba18906dc8737::t_9d06423cc5a20e 256
+frontend/components/ui/RSVPSummaryCard.tsx
+  s_06354068894451::t_00bc025dab24ae 1-64
+_bmad-output/implementation-artifacts/5-1-rsvp-cross-session-persistence-editing.md
+  s_4ba18906dc8737::t_8cdb5e3536e28b 1-188
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "770e95c37918e9c374276e037e786683b94bfca1",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_06354068894451": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c9c0e973-a06f-49fd-ad10-27e1a8d5927c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    },
+    "s_4ba18906dc8737": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d2ace45a-9eb5-4602-ba15-306e0524aa4d",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
