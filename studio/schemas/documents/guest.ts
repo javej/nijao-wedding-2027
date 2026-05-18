@@ -6,6 +6,13 @@ export default defineType({
   title: "Guest",
   type: "document",
   icon: User,
+  fieldsets: [
+    {
+      name: "rsvp",
+      title: "RSVP (managed by site — do not edit)",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     defineField({
       name: "firstName",
@@ -95,6 +102,57 @@ export default defineType({
           }
           return true;
         }),
+    }),
+    defineField({
+      name: "rsvpStatus",
+      title: "RSVP Status",
+      type: "string",
+      description:
+        "Current RSVP state. Written by the site when the guest submits. Treat absence as 'pending'.",
+      fieldset: "rsvp",
+      readOnly: true,
+      options: {
+        list: [
+          { title: "Pending", value: "pending" },
+          { title: "Attending", value: "attending" },
+          { title: "Declined", value: "declined" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "pending",
+    }),
+    defineField({
+      name: "rsvpUpdatedAt",
+      title: "RSVP Updated At",
+      type: "datetime",
+      description:
+        "Timestamp of the guest's most recent RSVP submission.",
+      fieldset: "rsvp",
+      readOnly: true,
+    }),
+    defineField({
+      name: "openPlusOne",
+      title: "Open Plus-One",
+      type: "object",
+      description:
+        "Captured plus-one details when this guest brought someone via the 'open' plus-one flow.",
+      fieldset: "rsvp",
+      readOnly: true,
+      hidden: ({ document }) => document?.plusOneType !== "open",
+      fields: [
+        defineField({
+          name: "attending",
+          title: "Attending",
+          type: "boolean",
+          readOnly: true,
+        }),
+        defineField({
+          name: "name",
+          title: "Name",
+          type: "string",
+          readOnly: true,
+        }),
+      ],
     }),
   ],
   preview: {

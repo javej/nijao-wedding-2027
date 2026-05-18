@@ -101,7 +101,7 @@ This document provides the complete epic and story breakdown for nijao-wedding-2
 - NFR-S4: All traffic served over HTTPS — enforced by Vercel on all deployments including previews
 - NFR-S5: Sanity content API accessed server-side only via read-only token — no API credentials exposed to the browser
 - NFR-S6: Admin Sanity Studio access requires authenticated login — not publicly accessible without credentials
-- NFR-S7: Guest personal data (name, RSVP response) stored only in Google Sheets — no persistent database exposed to the internet
+- NFR-S7: Guest personal data (name, RSVP response) lives in Sanity (gated by authenticated Studio access and server-side read tokens) with Google Sheets as an append-only audit/export log. No public database endpoint is exposed. *(Amended by [ADR-0001](../../docs/adr/0001-sanity-as-rsvp-source-of-truth.md) on 2026-05-17, superseding the prior "Sheets-only" wording.)*
 
 **Accessibility**
 
@@ -251,6 +251,12 @@ A guest with a personalized link is greeted by name, submits an RSVP through the
 ### Epic 4: Admin — Content & Guest Management
 Nianne can manage all site content through Sanity Studio — editing, publishing, scheduling — with updates live within 10 seconds. She can view the RSVP dashboard, export the guest list for the caterer, and manage personalized link assignments. Jave does not need to touch code.
 **FRs covered:** FR16a, FR24, FR25, FR26, FR27, FR28, FR29, FR30, FR31, FR38
+
+### Epic 5: Post-Launch RSVP Enhancements
+
+A guest who has already RSVPed sees their answer the moment they land on their personalized link — on any device, in any browser — and can change it up until two months before the wedding (2026-11-08 PHT). Sanity becomes the authoritative source of RSVP state; Google Sheets is demoted to an append-only audit log. The Studio RSVP dashboard reads Sanity directly.
+**FRs added:** FR41 (cross-session RSVP visibility), FR42 (RSVP editing until cutoff), FR43 (hard RSVP write cutoff)
+**Architecture decisions:** [ADR-0001](../../docs/adr/0001-sanity-as-rsvp-source-of-truth.md), [ADR-0002](../../docs/adr/0002-conditional-cross-mutation-linked-plus-ones.md)
 
 ---
 
@@ -963,3 +969,43 @@ So that I always know how many guests are coming and can hand off the list witho
 **Then** they have read access to the full live response data — no additional export step required for day-to-day monitoring
 
 **And** the RSVP dashboard reads directly from Google Sheets via the Sheets API — it does not store RSVP data in Sanity, keeping guest personal data out of the CMS (NFR-S7)
+
+*Note (2026-05-17): The "reads directly from Google Sheets" line is superseded by Story 5.1 — the dashboard now reads Sanity (the new source of truth). The NFR-S7 amendment captures the new arrangement.*
+
+---
+
+## Epic 5: Post-Launch RSVP Enhancements
+
+Sanity becomes the authoritative source of truth for RSVP state, with Google Sheets demoted to an append-only audit log. A guest who has already RSVPed sees their answer on every visit regardless of device or browser, and can change it up until 2026-11-08 PHT. Past the cutoff, all RSVP writes are closed and the UI degrades gracefully. The Studio RSVP dashboard is rewired to read Sanity directly; the `/api/rsvp-data` proxy and its shared-secret env var are removed.
+
+### Additional Requirements Introduced by Epic 5
+
+**Functional:**
+
+- FR41: A guest who has already submitted an RSVP sees their current answer rendered server-side on every visit to their personalized link — across devices, browsers, and private windows — without being re-prompted as if it were their first time
+- FR42: A guest can change their RSVP (attendance and/or plus-one) at any time up until 2026-11-08 (PHT), with each submission fully replacing the prior one
+- FR43: After 2026-11-08 00:00 PHT, all RSVP write paths (initial and edit) are closed server-side; guests who have answered see a closed-state caption, and guests who never answered see a contact-the-couple panel
+- FR44: The RSVP dashboard reads Sanity (current state) instead of Google Sheets (event log); CSV export reflects current state per guest
+
+**Non-Functional:**
+
+- NFR-S7 (amended at top of doc): RSVP state lives in Sanity, audit log in Google Sheets
+- NFR-R5: Returning-guest summary card renders from the same Sanity query as the personalized greeting — no additional read on the hot path
+- NFR-I6: Each successful RSVP mutation triggers `revalidateTag(\`guest:${slug}\`)`; the live page reflects the new state on the next request without waiting for a Sanity webhook
+
+### Story 5.1: RSVP Cross-Session Persistence & Editing
+
+As a **guest who has already submitted an RSVP**,
+I want to see my prior answer the moment I land on my personalized link — on any device, in any browser — and be able to change it up until two months before the wedding,
+So that I never get re-prompted as if I'd never answered, and I'm not locked in if my plans change.
+
+**Acceptance Criteria:** see [./implementation-artifacts/5-1-rsvp-cross-session-persistence-editing.md](../implementation-artifacts/5-1-rsvp-cross-session-persistence-editing.md) — 22 acceptance criteria covering schema migration, server-side cutoff enforcement, summary-card UI, conditional cross-mutation for linked plus-ones, and dashboard switch.
+
+**Key architectural decisions captured separately:**
+
+- [ADR-0001](../../docs/adr/0001-sanity-as-rsvp-source-of-truth.md) — Sanity as source of truth for RSVP state
+- [ADR-0002](../../docs/adr/0002-conditional-cross-mutation-linked-plus-ones.md) — Conditional cross-mutation for linked plus-ones (the one corner where last-write-wins is intentionally broken)
+
+**Glossary:** see [../../CONTEXT.md](../../CONTEXT.md) for the canonical definitions of *RSVP*, *RSVP submission*, *RSVP audit log*, *linked plus-one*, and *open plus-one*.
+
+---
