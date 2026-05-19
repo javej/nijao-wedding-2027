@@ -1,0 +1,32 @@
+frontend/app/globals.css
+  s_4e31ea22ee02af::t_60c2a52b322bf6 103-105
+  s_4e31ea22ee02af::t_3f86d6e4994fcf 158-160
+  s_4e31ea22ee02af::t_94cf022a1332ce 201-216,218-219,221-223
+frontend/components/ui/decorations/MatchaLeaf.tsx
+  s_4e31ea22ee02af::t_f0c20d5da9bb6a 1-3,5,10-13,16-19,27-29
+frontend/components/ui/SectionDecorations.tsx
+  s_4e31ea22ee02af::t_1245929ad275cc 1-5,20-23,25,27-28,36-37,39,41-42,50-53
+frontend/components/ui/ChapterSection.tsx
+  s_4e31ea22ee02af::t_d1b96753c94c82 1
+  s_4e31ea22ee02af::t_3b3f5290396c86 60
+frontend/components/ui/decorations/CallaLily.tsx
+  s_4e31ea22ee02af::t_ca4ce1dcbf2f27 1-3,5,9,12-15,18-21,40-42
+frontend/components/ui/decorations/Strawberry.tsx
+  s_4e31ea22ee02af::t_322dff63458457 1-3,5,11-14,17-20,54-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "4eb5e80b344e77517057188ccfb60c37e86cd8ae",
+  "prompts": {},
+  "sessions": {
+    "s_4e31ea22ee02af": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77e05acd-cc86-4001-9d9a-961efad270d3",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
