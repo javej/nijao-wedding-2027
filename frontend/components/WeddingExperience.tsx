@@ -4,6 +4,7 @@ import { ExperienceShell } from '@/components/ui/ExperienceShell';
 import { FloatingAnchorSet } from '@/components/ui/FloatingAnchorSet';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { StoryChapter } from '@/components/sections/StoryChapter';
+import { ChapterConnector, connectorVariantForChapter } from '@/components/ui/decorations/ChapterConnector';
 import { WeddingDetails } from '@/components/sections/WeddingDetails';
 import { DressCodeSection } from '@/components/sections/DressCodeSection';
 import { EntourageSection } from '@/components/sections/EntourageSection';
@@ -38,21 +39,27 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           <HeroSection />
         </ChapterSection>
 
-        {chapters.map((chapter) => (
-          <ChapterSection
-            key={chapter._id}
-            id={`story-${chapter.year}`}
-            palette={chapter.isProposal ? 'strawberry-jam' : 'matcha-latte'}
-            label={
-              chapter.isProposal
-                ? `The proposal — ${chapter.year}`
-                : `Our story — ${chapter.year}`
-            }
-            decorate
-          >
-            <StoryChapter chapter={chapter} />
-          </ChapterSection>
-        ))}
+        {chapters.map((chapter, index) => {
+          const connectorVariant = connectorVariantForChapter(index);
+          return (
+            <ChapterSection
+              key={chapter._id}
+              id={`story-${chapter.year}`}
+              palette={chapter.isProposal ? 'strawberry-jam' : 'matcha-latte'}
+              label={
+                chapter.isProposal
+                  ? `The proposal — ${chapter.year}`
+                  : `Our story — ${chapter.year}`
+              }
+              decorate
+            >
+              {connectorVariant !== null && (
+                <ChapterConnector variant={connectorVariant} swayOffset={index} />
+              )}
+              <StoryChapter chapter={chapter} />
+            </ChapterSection>
+          );
+        })}
 
         <ChapterSection id="wedding-details" palette="matcha-chiffon" label="Wedding Details">
           {weddingDetails ? (

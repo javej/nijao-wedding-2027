@@ -52,6 +52,7 @@
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-fade-up: fade-up 0.7s ease-out forwards;
+  --animate-connector-sway: connector-sway 6s ease-in-out infinite;
 }
 
 @keyframes accordion-down {
@@ -80,6 +81,19 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Idle pendulum sway for ChapterConnector — pivots from the top of the
+   cord so the charm at the bottom drifts a few pixels each way, reading
+   as gravity on a hanging thread. Disabled by the global
+   `prefers-reduced-motion: reduce` block below. */
+@keyframes connector-sway {
+  0%, 100% {
+    transform: rotate(-1.5deg);
+  }
+  50% {
+    transform: rotate(1.5deg);
   }
 }
 
