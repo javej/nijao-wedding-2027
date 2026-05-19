@@ -1,0 +1,19 @@
+frontend/components/sections/StoryChapter.tsx
+  s_c36e9be6bec10c::t_e8728bdc08f8cd 4,15-20,22,39-43,51,57,66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "2dca0f80c8d433b17ecccda636471f925cf9dd9d",
+  "prompts": {},
+  "sessions": {
+    "s_c36e9be6bec10c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c5139f51-78bd-49b5-bfeb-38a6bda45b50",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
