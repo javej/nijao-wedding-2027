@@ -53,6 +53,10 @@ export function ChapterSection({
       className={cn(
         'min-h-dvh snap-start snap-always',
         'flex items-center justify-center',
+        // Alternating two-tone heartbeat across sections. nth-child(odd)
+        // is the first, third, fifth section — starts with sage (the
+        // first section after arrival lands on Hero with sage bg).
+        'odd:bg-section-sage even:bg-section-cream',
         'border-l-4',
         paletteBorderClass[palette],
       )}

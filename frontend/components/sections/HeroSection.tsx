@@ -7,7 +7,7 @@
  */
 export function HeroSection() {
   return (
-    <div className="flex flex-col items-center justify-center text-center bg-background px-(--chapter-padding-x) py-(--chapter-padding-y)">
+    <div className="flex flex-col items-center justify-center text-center px-(--chapter-padding-x) py-(--chapter-padding-y)">
       {/* Visual headline — tagline is the emotional centrepiece */}
       <p className="font-display font-light text-display-xl text-text-on-light leading-display">
         Ten years.
