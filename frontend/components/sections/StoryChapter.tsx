@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+import { ProposalScrapbook } from "@/components/sections/ProposalScrapbook";
 import type { StoryChapterResult } from "@/sanity/queries/storyChapters";
 
 interface StoryChapterProps {
@@ -9,12 +10,19 @@ interface StoryChapterProps {
 /**
  * StoryChapter — Server Component
  *
- * Renders a single year of the love story: one image + one caption.
- * Designed for restraint — "density is the enemy of luxury."
+ * Renders a single year of the love story. For most years that's one image
+ * + one caption — restraint over density. The proposal year branches into
+ * `ProposalScrapbook`, which trades the single print for a small scatter
+ * of scalloped-mat photos but keeps the same outer rhythm (year, caption,
+ * one snap point).
  *
  * Must be wrapped in <ChapterSection> for snap-scroll and palette accent.
  */
 export function StoryChapter({ chapter }: StoryChapterProps) {
+  if (chapter.isProposal) {
+    return <ProposalScrapbook chapter={chapter} />;
+  }
+
   const { year, caption, image } = chapter;
 
   return (
