@@ -1,35 +1,28 @@
-import type { SVGProps } from 'react';
+import Image from 'next/image';
+
+type StrawberryProps = {
+  className?: string;
+};
 
 /**
- * Strawberry — Lucide Lab community icon.
- * Body with stylised seed-dots and a stem-leaf at the top right.
+ * Strawberry — watercolor strawberry illustration, rendered via next/image.
  *
- * Source: lucide-icons/lucide-lab — "strawberry" — ISC license.
+ * Was previously a Lucide Lab line-art strawberry icon inheriting
+ * `currentColor`. Now a raster watercolor — `text-*` classes from
+ * callers are no-ops.
+ *
+ * Asset: frontend/public/decorations/strawberry.png — needs a
+ * transparent background.
  */
-export function Strawberry(props: SVGProps<SVGSVGElement>) {
+export function Strawberry({ className }: StrawberryProps) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <Image
+      src="/decorations/strawberry.png"
+      alt=""
       aria-hidden="true"
-      {...props}
-    >
-      <path d="m17 7 3.5-3.5" />
-      <path d="M17 2v5h5" />
-      <path d="M2.1 17.1a4 4 0 0 0 4.8 4.8l9-2.1a6.32 6.32 0 0 0 2.9-10.9L15 5.2A6.5 6.5 0 0 0 4.1 8.3Z" />
-      <path d="M8.5 9.5h.01" />
-      <path d="M12.5 8.5h.01" />
-      <path d="M7.5 13.5h.01" />
-      <path d="M11.5 12.5h.01" />
-      <path d="M15.5 11.5h.01" />
-      <path d="M6.5 17.5h.01" />
-      <path d="M10.5 16.5h.01" />
-      <path d="M14.5 15.5h.01" />
-    </svg>
+      width={512}
+      height={512}
+      className={className}
+    />
   );
 }

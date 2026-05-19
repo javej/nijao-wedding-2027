@@ -1,13 +1,9 @@
 import type { ReactNode } from 'react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { LaceCorner } from '@/components/ui/decorations/LaceCorner';
 
 interface ScallopedMatProps {
-  /**
-   * Number of scallops along each edge. Higher = finer lace; lower = chunkier
-   * scrapbook cardstock. Defaults to 14 — pleasant on a 3/4 portrait card.
-   */
-  scallops?: number;
   /**
    * Render the four `LaceCorner` motifs inside the mat margin. Defaults `true`
    * for the scrapbook proposal layout; pass `false` to skip and keep the mat
@@ -20,9 +16,9 @@ interface ScallopedMatProps {
    */
   tilt?: number;
   /**
-   * Tailwind classes for the OUTER wrapper. The mat's color comes from
-   * `text-…` (we paint the scalloped background via `currentColor`).
-   * The wrapper also accepts sizing classes (width, aspect ratio).
+   * Tailwind classes for the OUTER wrapper. Accepts sizing classes
+   * (width, aspect ratio). Note: `text-*` classes are no longer used to
+   * paint the mat — the mat texture comes from `wedding-paper.png`.
    */
   className?: string;
   /**
@@ -35,12 +31,12 @@ interface ScallopedMatProps {
 }
 
 /**
- * ScallopedMat — a paper "mat" with scalloped outer edges, framing children
- * with a vintage scrapbook print look.
+ * ScallopedMat — a paper "mat" rendered from `wedding-paper.png`, framing
+ * children with a vintage scrapbook print look.
  *
  * Anatomy:
  *   ┌───────────────────────────────┐
- *   │ ◇         (lace)            ◇ │  ← scalloped paper (this component)
+ *   │ ◇         (lace)            ◇ │  ← wedding-paper.png background
  *   │   ┌───────────────────────┐   │
  *   │   │                       │   │
  *   │   │      <children>       │   │  ← inner slot (your photo/text)
@@ -49,23 +45,23 @@ interface ScallopedMatProps {
  *   │ ◇                           ◇ │
  *   └───────────────────────────────┘
  *
- * The scalloped edge is drawn via an inline SVG with `preserveAspectRatio="none"`
- * so the mat stretches to fit any aspect ratio — at typical scrapbook sizes
- * (a few hundred px per side) the minor scallop distortion is invisible.
+ * Was previously a procedural SVG scalloped rectangle that stretched to
+ * any aspect ratio with `preserveAspectRatio="none"`. Now a raster image
+ * sized via `fill` + `object-fill` to keep the same stretch behaviour —
+ * be aware that extreme aspect ratios will visibly distort the paper
+ * texture. If you need crisp scalloped edges at arbitrary sizes, the
+ * old procedural version is in git history.
  *
- * The mat color comes from `currentColor`, so the calling site sets it via
- * `text-strawberry-milk`, `text-matcha-chiffon`, etc. — keeping the palette
- * in design tokens, not hardcoded values.
+ * The `scallops` prop is gone — the scallop count is now baked into the
+ * PNG asset.
  */
 export function ScallopedMat({
-  scallops = 14,
   withLaceCorners = true,
   tilt,
   className,
   contentClassName,
   children,
 }: ScallopedMatProps) {
-  const pathD = buildScallopedRectPath(scallops);
   const transform = tilt !== undefined ? `rotate(${tilt}deg)` : undefined;
 
   return (
@@ -73,14 +69,13 @@ export function ScallopedMat({
       className={cn('relative', className)}
       style={transform ? { transform } : undefined}
     >
-      <svg
-        className="absolute inset-0 h-full w-full"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
+      <Image
+        src="/decorations/wedding-paper.png"
+        alt=""
         aria-hidden="true"
-      >
-        <path d={pathD} fill="currentColor" />
-      </svg>
+        fill
+        className="pointer-events-none object-fill"
+      />
 
       {withLaceCorners && (
         <>
@@ -94,35 +89,4 @@ export function ScallopedMat({
       <div className={cn('relative z-0', contentClassName)}>{children}</div>
     </div>
   );
-}
-
-/**
- * Build the SVG path for a scalloped rectangle in a 100×100 viewBox.
- *
- * `n` semicircle bumps along each of the four sides, all bumping OUTWARD,
- * traced clockwise from the top-left. The inset baseline sits 5 units in
- * from each edge so the bumps reach the 0/100 boundary cleanly.
- */
-function buildScallopedRectPath(n: number): string {
-  // Inset by the scallop radius so bumps just touch the viewBox edge.
-  // Scallop diameter = 2r = side-length / n  ⇒  r = (100 − 2·inset) / (2n)
-  // and inset == r, so r = (100 − 2r) / (2n) ⇒  r = 50 / (n + 1) is wrong;
-  // simpler: hold inset = r as a constant and let the span equal 100 − 2r.
-  // For a square with `n` scallops of radius `r` per side:  2·r·n = 100 − 2r
-  // ⇒  r = 100 / (2n + 2). Yields a clean baseline for any `n`.
-  const r = 100 / (2 * n + 2);
-  const inset = r;
-  const d = 2 * r;
-
-  const arcs = (count: number, dx: number, dy: number) =>
-    Array.from({ length: count }, () => `a ${r} ${r} 0 0 1 ${dx} ${dy}`).join(' ');
-
-  return [
-    `M ${inset} ${inset}`,
-    arcs(n, d, 0), // top edge → right, bumps outward (up)
-    arcs(n, 0, d), // right edge → down, bumps outward (right)
-    arcs(n, -d, 0), // bottom edge → left, bumps outward (down)
-    arcs(n, 0, -d), // left edge → up, bumps outward (left)
-    'Z',
-  ].join(' ');
 }

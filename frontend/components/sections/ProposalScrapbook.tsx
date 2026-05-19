@@ -72,9 +72,8 @@ function ScrapbookPhoto({ image, index, year }: ScrapbookPhotoProps) {
   return (
     <div className={cn("absolute", slot.position)} style={{ zIndex: slot.z }}>
       <ScallopedMat
-        scallops={11}
         tilt={slot.tilt}
-        className={cn(slot.size, "text-(--mat-color) drop-shadow-md")}
+        className={cn(slot.size, "drop-shadow-md")}
         contentClassName="absolute inset-[8%] overflow-hidden rounded-[2px] bg-section-cream"
       >
         <Image
