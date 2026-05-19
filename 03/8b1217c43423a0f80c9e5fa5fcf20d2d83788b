@@ -1,0 +1,31 @@
+frontend/components/ui/ChapterSection.tsx
+  s_4e31ea22ee02af::t_d1b96753c94c82 1
+  s_4e31ea22ee02af::t_02751170de70e4 55-58,68
+frontend/app/globals.css
+  s_4e31ea22ee02af::t_94cf022a1332ce 201-223
+frontend/components/ui/decorations/CallaLily.tsx
+  s_4e31ea22ee02af::t_ca4ce1dcbf2f27 1-42
+frontend/components/ui/decorations/Strawberry.tsx
+  s_4e31ea22ee02af::t_322dff63458457 1-56
+frontend/components/ui/decorations/MatchaLeaf.tsx
+  s_4e31ea22ee02af::t_f0c20d5da9bb6a 1-5,8-29
+  s_4e31ea22ee02af::t_3f386c665d63fa 6-7
+frontend/components/ui/SectionDecorations.tsx
+  s_4e31ea22ee02af::t_1245929ad275cc 1-53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "038b1217c43423a0f80c9e5fa5fcf20d2d83788b",
+  "prompts": {},
+  "sessions": {
+    "s_4e31ea22ee02af": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77e05acd-cc86-4001-9d9a-961efad270d3",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
