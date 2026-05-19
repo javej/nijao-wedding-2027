@@ -1,0 +1,45 @@
+docs/adr/0003-arrival-scroll-lock-targets-scroll-container.md
+  s_4e31ea22ee02af::t_3e27754396a67d 1-59
+frontend/components/ui/ChapterSection.tsx
+  s_4e31ea22ee02af::t_763acc63f92d4d 54
+CONTEXT.md
+  s_4e31ea22ee02af::t_a0ceb5fc9c48ad 27-29
+  s_4e31ea22ee02af::t_f5504b0fb88212 24-26
+frontend/components/ui/ArrivalOverlay.tsx
+  s_4e31ea22ee02af::t_95c80d3ce7ffd7 132
+  s_4e31ea22ee02af::t_8696d5f8c5e4f0 46-47,51
+  s_4e31ea22ee02af::t_2874bce13f72e5 84-87,111
+  s_4e31ea22ee02af::t_2e4d9ff19796e7 98-108,113,119
+  s_4e31ea22ee02af::t_49cafd62ca8c01 140
+frontend/components/sections/StoryChapter.tsx
+  s_4e31ea22ee02af::t_3d31a308c71672 34
+frontend/components/ui/MonogramLoader.tsx
+  s_4e31ea22ee02af::t_f5c03d735663f9 105
+frontend/components/sections/ProposalSection.tsx
+  s_4e31ea22ee02af::t_5c8eac40b34300 32
+frontend/components/ui/ExperienceShell.tsx
+  s_4e31ea22ee02af::t_de758dfff84ec4 44-50
+  s_4e31ea22ee02af::t_4115430f0b0934 37-39,41,53-56,60-61
+  s_4e31ea22ee02af::t_d9061847f65aae 23-25,29,32-36,42,63-69,78-81,89
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "d5df9906e1dbd04b5e238cdc965644c737315268",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_4e31ea22ee02af": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77e05acd-cc86-4001-9d9a-961efad270d3",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
