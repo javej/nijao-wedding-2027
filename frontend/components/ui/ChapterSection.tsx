@@ -1,3 +1,4 @@
+import { SectionDecorations } from '@/components/ui/SectionDecorations';
 import { cn } from '@/lib/utils';
 
 /**
@@ -36,6 +37,13 @@ interface ChapterSectionProps {
   palette: PaletteColor;
   /** Accessible label for the section */
   label: string;
+  /**
+   * Render the floral/cat decoration layer in this section.
+   * Opt-in (defaults false) — currently only Hero and story chapters
+   * decorate; the functional sections (wedding details, dress code,
+   * entourage, RSVP, completion) and the proposal stay clean.
+   */
+  decorate?: boolean;
   children: React.ReactNode;
 }
 
@@ -43,6 +51,7 @@ export function ChapterSection({
   id,
   palette,
   label,
+  decorate = false,
   children,
 }: ChapterSectionProps) {
   return (
@@ -54,13 +63,17 @@ export function ChapterSection({
         'min-h-dvh snap-start snap-always',
         'flex items-center justify-center',
         // Alternating two-tone heartbeat across sections. nth-child(odd)
-        // is the first, third, fifth section — starts with sage (the
-        // first section after arrival lands on Hero with sage bg).
-        'odd:bg-section-sage even:bg-section-cream',
+        // is the first, third, fifth section — starts with cream so the
+        // Hero (first section after arrival) lands on the lighter tone.
+        'odd:bg-section-cream even:bg-section-sage',
         'border-l-4',
         paletteBorderClass[palette],
+        // `relative overflow-hidden` only when decorated, so undecorated
+        // sections don't accidentally clip overflowing content.
+        decorate && 'relative overflow-hidden',
       )}
     >
+      {decorate && <SectionDecorations />}
       {children}
     </section>
   );
