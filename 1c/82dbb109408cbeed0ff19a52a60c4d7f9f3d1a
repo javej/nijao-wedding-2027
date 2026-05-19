@@ -1,0 +1,24 @@
+frontend/components/ui/ChapterSection.tsx
+  s_4e31ea22ee02af::t_3b3f5290396c86 56-59
+frontend/app/globals.css
+  s_4e31ea22ee02af::t_60c2a52b322bf6 103-105
+  s_4e31ea22ee02af::t_3f86d6e4994fcf 158-160
+frontend/components/sections/HeroSection.tsx
+  s_4e31ea22ee02af::t_f754fa016ad7a6 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "1c82dbb109408cbeed0ff19a52a60c4d7f9f3d1a",
+  "prompts": {},
+  "sessions": {
+    "s_4e31ea22ee02af": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77e05acd-cc86-4001-9d9a-961efad270d3",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
