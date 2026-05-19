@@ -198,6 +198,29 @@
   }
 }
 
+/*
+ * Section decoration variant toggling.
+ *
+ * SectionDecorations renders BOTH a sage variant and a cream variant
+ * as direct children of every <section>. CSS uses the section's
+ * nth-child position to show only the variant that matches its bg
+ * (which is also driven by nth-child via `odd:bg-section-sage` and
+ * `even:bg-section-cream` on ChapterSection).
+ *
+ * Hiding the wrong variant with `display: none` (not opacity/visibility)
+ * keeps unused SVG paths out of the paint tree entirely.
+ */
+.section-decor-sage,
+.section-decor-cream {
+  display: none;
+}
+#main-content > section:nth-child(odd) > .section-decor-sage {
+  display: block;
+}
+#main-content > section:nth-child(even) > .section-decor-cream {
+  display: block;
+}
+
 @utility container {
   width: 100%;
   margin-left: auto;

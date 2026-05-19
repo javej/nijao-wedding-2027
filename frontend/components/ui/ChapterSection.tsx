@@ -1,3 +1,4 @@
+import { SectionDecorations } from '@/components/ui/SectionDecorations';
 import { cn } from '@/lib/utils';
 
 /**
@@ -51,7 +52,10 @@ export function ChapterSection({
       aria-label={label}
       data-palette={palette}
       className={cn(
-        'min-h-dvh snap-start snap-always',
+        // `relative` so absolutely-positioned SectionDecorations sit
+        // inside this section. `overflow-hidden` clips any decor that
+        // overshoots the section edge during responsive resizing.
+        'relative min-h-dvh snap-start snap-always overflow-hidden',
         'flex items-center justify-center',
         // Alternating two-tone heartbeat across sections. nth-child(odd)
         // is the first, third, fifth section — starts with sage (the
@@ -61,6 +65,7 @@ export function ChapterSection({
         paletteBorderClass[palette],
       )}
     >
+      <SectionDecorations />
       {children}
     </section>
   );
