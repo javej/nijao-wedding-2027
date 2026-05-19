@@ -43,10 +43,12 @@ interface ArrivalOverlayProps {
   /** Dismiss gestures are ignored until interactive is true (loader must finish first). */
   interactive: boolean;
   onDismiss: () => void;
+  /** Fires after the overlay's fade-out exit animation completes. Used by the shell to release the scroll lock only AFTER the fade, not at gesture time. See ADR-0003. */
+  onExitComplete?: () => void;
   guestName?: string;
 }
 
-export function ArrivalOverlay({ visible, interactive, onDismiss, guestName }: ArrivalOverlayProps) {
+export function ArrivalOverlay({ visible, interactive, onDismiss, onExitComplete, guestName }: ArrivalOverlayProps) {
   const shouldReduceMotion = useReducedMotion();
   const hasDismissed = useRef(false);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -79,7 +81,10 @@ export function ArrivalOverlay({ visible, interactive, onDismiss, guestName }: A
       if (deltaY > TOUCH_THRESHOLD) dismiss();
     }
 
-    function handleWheel() {
+    function handleWheel(e: WheelEvent) {
+      // Non-passive so we can block the wheel from also scrolling <main>
+      // underneath the overlay. See ADR-0003.
+      e.preventDefault();
       dismiss();
     }
 
@@ -90,15 +95,28 @@ export function ArrivalOverlay({ visible, interactive, onDismiss, guestName }: A
       }
     }
 
+    function handleMouseDown(e: MouseEvent) {
+      // Middle mouse button (button === 1) opens the browser's native
+      // auto-scroll mode (the dual-arrow cursor), which scrolls <main>
+      // even when its overflow is locked. Block it before the browser
+      // engages auto-scroll, and treat it as a valid dismiss gesture.
+      if (e.button === 1) {
+        e.preventDefault();
+        dismiss();
+      }
+    }
+
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('mousedown', handleMouseDown);
     return () => {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mousedown', handleMouseDown);
     };
   }, [visible, interactive, dismiss]);
 
@@ -111,7 +129,7 @@ export function ArrivalOverlay({ visible, interactive, onDismiss, guestName }: A
   const initialTextState = shouldReduceMotion ? 'reduced' : 'hidden';
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={onExitComplete}>
       {visible && (
         <motion.div
           ref={overlayRef}
@@ -119,7 +137,7 @@ export function ArrivalOverlay({ visible, interactive, onDismiss, guestName }: A
           aria-modal="true"
           aria-label={guestName ? `Welcome, ${guestName}` : 'Welcome'}
           tabIndex={-1}
-          className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-background outline-none"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background outline-none"
           variants={shouldReduceMotion ? overlayReducedVariants : overlayVariants}
           initial="visible"
           exit="exit"

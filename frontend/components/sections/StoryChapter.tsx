@@ -31,7 +31,7 @@ export function StoryChapter({ chapter }: StoryChapterProps) {
             fill
             sizes="(max-width: 768px) 18rem, 24rem"
             loading="lazy"
-            className="object-cover rounded-sm mix-blend-multiply"
+            className="object-cover rounded-sm"
             placeholder={image.asset.metadata?.lqip ? "blur" : undefined}
             blurDataURL={image.asset.metadata?.lqip}
           />
