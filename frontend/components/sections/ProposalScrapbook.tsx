@@ -6,6 +6,14 @@ import type { StoryChapterImage, StoryChapterResult } from "@/sanity/queries/sto
 
 interface ProposalScrapbookProps {
   chapter: StoryChapterResult;
+  /**
+   * True when this chapter sits on a deep-matcha bg. Reserved for future
+   * sage-variant treatment of the scrapbook scatter — currently unused
+   * because the proposal year may land on either parity and tuning the
+   * scatter for both palettes is a separate task. Threaded through for
+   * API consistency with `StoryChapter`.
+   */
+  isOnDarkBg: boolean;
 }
 
 /**

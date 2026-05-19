@@ -45,6 +45,14 @@ interface ChapterSectionProps {
    */
   decorate?: boolean;
   /**
+   * Apply the alternating cream / deep-matcha bg "heartbeat" via the
+   * odd/even nth-child Tailwind utilities. Opt-in (defaults false) so
+   * functional sections (wedding details, dress code, entourage, RSVP,
+   * completion) stay on a single fixed cream bg regardless of where they
+   * land in the section sequence. Story chapters pass `true`.
+   */
+  alternating?: boolean;
+  /**
    * When true, use the hero variant of the decoration layout — the
    * middle callas grow much larger to fill the empty vertical space
    * around the centered headline. Story chapters keep small middle
@@ -60,6 +68,7 @@ export function ChapterSection({
   palette,
   label,
   decorate = false,
+  alternating = false,
   hero = false,
   children,
 }: ChapterSectionProps) {
@@ -71,15 +80,13 @@ export function ChapterSection({
       className={cn(
         'min-h-dvh snap-start snap-always',
         'flex items-center justify-center',
-        // Alternating two-tone heartbeat across sections. nth-child(odd)
-        // is the first, third, fifth section — starts with cream so the
-        // Hero (first section after arrival) lands on the lighter tone.
-        'odd:bg-section-cream even:bg-section-sage',
-        // Mat color for any `ScallopedMat` rendered inside this section
-        // tracks the bg alternation: deep-matcha (green) prints on cream,
-        // strawberry-milk (pink) prints on sage. Single source of truth —
-        // children read it via `text-(--mat-color)`.
-        'odd:[--mat-color:var(--color-deep-matcha)] even:[--mat-color:var(--color-strawberry-milk)]',
+        // Alternating two-tone heartbeat — opt-in via `alternating`.
+        // Story chapters use it (cream / deep-matcha rhythm); functional
+        // sections opt out and stay on a fixed cream bg so the visual
+        // flow shifts gears once the love-story concludes.
+        alternating
+          ? 'odd:bg-section-cream even:bg-section-sage odd:[--mat-color:var(--color-deep-matcha)] even:[--mat-color:var(--color-strawberry-milk)]'
+          : 'bg-section-cream [--mat-color:var(--color-deep-matcha)]',
         'border-l-4',
         paletteBorderClass[palette],
         // `relative overflow-hidden` only when decorated, so undecorated

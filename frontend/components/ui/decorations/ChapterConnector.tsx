@@ -34,6 +34,14 @@ export function connectorVariantForChapter(chapterIndex: number): ConnectorVaria
 interface ChapterConnectorProps {
   variant: ConnectorVariant;
   /**
+   * Override the watercolor PNG resolved from `variant` with an arbitrary
+   * image URL. Used to swap in vector connectors (e.g. `vine-vector.png`)
+   * for dark-bg sections while keeping the same sway + layout behaviour.
+   * When set, `variant` is still required for typing but its asset path
+   * is ignored.
+   */
+  imageSrc?: string;
+  /**
    * Deterministic offset (in seconds) for the sway animation, so adjacent
    * chapters don't pendulum in lockstep. Pass the chapter index — the
    * component derives a stable per-chapter phase from it.
@@ -60,11 +68,17 @@ interface ChapterConnectorProps {
  * handles WebP conversion + responsive sizing at request time, matching
  * the existing SectionDivider convention.
  */
-export function ChapterConnector({ variant, swayOffset = 0, className }: ChapterConnectorProps) {
+export function ChapterConnector({
+  variant,
+  imageSrc,
+  swayOffset = 0,
+  className,
+}: ChapterConnectorProps) {
   // Stagger sway across chapters: each chapter offsets the animation by
   // ~0.7s × index, so the cycle is fully desynced after a few chapters
   // without ever lining up identically again.
   const animationDelay = `${-((swayOffset * 0.7) % 6)}s`;
+  const src = imageSrc ?? `/decorations/connector-${variant}.png`;
 
   return (
     <div
@@ -89,7 +103,7 @@ export function ChapterConnector({ variant, swayOffset = 0, className }: Chapter
       )}
     >
       <Image
-        src={`/decorations/connector-${variant}.png`}
+        src={src}
         alt=""
         width={400}
         height={600}

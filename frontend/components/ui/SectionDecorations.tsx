@@ -1,7 +1,7 @@
 import { CallaLily } from '@/components/ui/decorations/CallaLily';
-import { CatStrawberry } from '@/components/ui/decorations/CatStrawberry';
-import { SectionDivider } from '@/components/ui/decorations/SectionDivider';
-import { SiameseMatcha } from '@/components/ui/decorations/SiameseMatcha';
+// import { CatStrawberry } from '@/components/ui/decorations/CatStrawberry';
+// import { SectionDivider } from '@/components/ui/decorations/SectionDivider';
+// import { SiameseMatcha } from '@/components/ui/decorations/SiameseMatcha';
 
 /**
  * SectionDecorations — three-band ornamental layer for decorated sections.
@@ -58,7 +58,7 @@ type SectionDecorationsProps = {
   hero?: boolean;
 };
 
-const cornerWidth = 'w-24 md:w-36';
+// const cornerWidth = 'w-24 md:w-36';
 const chapterMiddleWidth = 'w-12 md:w-24';
 const heroMiddleWidth = 'w-24 md:w-40';
 const baseOpacity = 'opacity-70';
@@ -73,7 +73,7 @@ export function SectionDecorations({ hero = false }: SectionDecorationsProps) {
   // "centered" between content and bottom edge. Chapter sections have a
   // dense photo + caption stack that fills most of the section, so the
   // divider hugs the bottom edge to clear the caption.
-  const dividerBottom = hero ? 'bottom-32 md:bottom-40' : 'bottom-6 md:bottom-8';
+  // const dividerBottom = hero ? 'bottom-32 md:bottom-40' : 'bottom-6 md:bottom-8';
   return (
     <>
       {/* ── Cream variant (odd sections: Hero, every other story chapter) ── */}
@@ -81,17 +81,19 @@ export function SectionDecorations({ hero = false }: SectionDecorationsProps) {
         className="section-decor-cream pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
-        <SiameseMatcha
+        {/* <SiameseMatcha
           className={`absolute top-10 left-10 rotate-6 md:top-16 md:left-16 ${cornerWidth} ${baseOpacity}`}
         />
         <CatStrawberry
           className={`absolute top-10 right-10 -rotate-6 md:top-16 md:right-16 ${cornerWidth} ${baseOpacity}`}
-        />
+        /> */}
         <CallaLily
           className={`absolute left-2 -translate-y-1/2 rotate-12 md:left-8 ${middleLeftTop} ${middleWidth} ${baseOpacity}`}
+          variant={2}
         />
         <CallaLily
           className={`absolute top-1/2 right-2 -translate-y-1/2 -rotate-12 md:right-8 ${middleWidth} ${baseOpacity}`}
+          variant={2}
         />
       </div>
 
@@ -100,17 +102,19 @@ export function SectionDecorations({ hero = false }: SectionDecorationsProps) {
         className="section-decor-sage pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
-        <CatStrawberry
+        {/* <CatStrawberry
           className={`absolute top-10 left-10 rotate-6 md:top-16 md:left-16 ${cornerWidth} ${baseOpacity}`}
         />
         <SiameseMatcha
           className={`absolute top-10 right-10 -rotate-6 md:top-16 md:right-16 ${cornerWidth} ${baseOpacity}`}
-        />
+        /> */}
         <CallaLily
           className={`absolute left-2 -translate-y-1/2 rotate-12 md:left-8 ${middleLeftTop} ${middleWidth} ${baseOpacity}`}
+          variant={2}
         />
         <CallaLily
           className={`absolute top-1/2 right-2 -translate-y-1/2 -rotate-12 md:right-8 ${middleWidth} ${baseOpacity}`}
+          variant={2}
         />
       </div>
 
@@ -119,9 +123,9 @@ export function SectionDecorations({ hero = false }: SectionDecorationsProps) {
           border on ChapterSection plus any off-center painting inside
           the divider PNG canvas. Vertical position is hero-aware
           (see `dividerBottom` above). */}
-      <SectionDivider
+      {/* <SectionDivider
         className={`pointer-events-none absolute right-0 left-0 mx-auto w-3/4 max-w-sm translate-x-2 md:max-w-lg ${dividerBottom}`}
-      />
+      /> */}
     </>
   );
 }

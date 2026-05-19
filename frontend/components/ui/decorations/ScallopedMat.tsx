@@ -11,6 +11,13 @@ interface ScallopedMatProps {
    */
   withLaceCorners?: boolean;
   /**
+   * Background frame asset path. Defaults to the cream `wedding-paper.png`
+   * mat texture. Pass `/decorations/lace-vector.png` (or any other
+   * frame asset) to swap the mat treatment — e.g. for dark-bg sections
+   * that need a lace frame instead of the paper mat.
+   */
+  frameSrc?: string;
+  /**
    * Optional CSS rotation (deg) for a hand-arranged tilt. Applied as inline
    * style so the value can be any degree, not just Tailwind's preset steps.
    */
@@ -57,6 +64,7 @@ interface ScallopedMatProps {
  */
 export function ScallopedMat({
   withLaceCorners = true,
+  frameSrc = '/decorations/wedding-paper.png',
   tilt,
   className,
   contentClassName,
@@ -70,7 +78,7 @@ export function ScallopedMat({
       style={transform ? { transform } : undefined}
     >
       <Image
-        src="/decorations/wedding-paper.png"
+        src={frameSrc}
         alt=""
         aria-hidden="true"
         fill

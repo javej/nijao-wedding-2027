@@ -41,6 +41,11 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
 
         {chapters.map((chapter, index) => {
           const connectorVariant = connectorVariantForChapter(index);
+          // Hero is the 1st <section> child of #main-content, so chapter[i]
+          // is at DOM position i + 2. Even DOM position lands on the sage
+          // (deep-matcha) bg via `:nth-child(even)` in globals.css, which
+          // matches when `i` is even.
+          const isOnDarkBg = index % 2 === 0;
           return (
             <ChapterSection
               key={chapter._id}
@@ -52,11 +57,16 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
                   : `Our story — ${chapter.year}`
               }
               decorate
+              alternating
             >
               {connectorVariant !== null && (
-                <ChapterConnector variant={connectorVariant} swayOffset={index} />
+                <ChapterConnector
+                  variant={connectorVariant}
+                  imageSrc={isOnDarkBg ? '/decorations/vine-vector.png' : undefined}
+                  swayOffset={index}
+                />
               )}
-              <StoryChapter chapter={chapter} />
+              <StoryChapter chapter={chapter} isOnDarkBg={isOnDarkBg} />
             </ChapterSection>
           );
         })}

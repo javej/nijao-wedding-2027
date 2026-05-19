@@ -171,7 +171,7 @@
   --foreground: #1a1a1a;
   /* Section bg alternation. Sage is matcha-chiffon (#b2bf93) ~25% over cream. */
   --section-cream: #faf9f6;
-  --section-sage:  #e8eadd;
+  --section-sage:  #676930;
   /* ── shadcn/ui ── */
   --radius: 0.625rem;
   --card: oklch(1 0 0);
@@ -236,6 +236,22 @@
 }
 
 /*
+ * Dark-bg readability: only on story-chapter sections that land on the
+ * deep-matcha bg (even position via the existing alternation), redefine
+ * the `--text-on-light` token to white. `@theme inline` above keeps
+ * `--color-text-on-light` as a live `var()` reference, so every
+ * `text-text-on-light` consumer inside scope auto-resolves to white
+ * without touching a single class name.
+ *
+ * Scoped via `[id^="story-"]` so functional sections (wedding-details,
+ * dress-code, entourage, RSVP, completion) keep their own text-color
+ * treatments regardless of which parity they happen to land on.
+ */
+#main-content > section[id^="story-"]:nth-child(even) {
+  --text-on-light: #ffffff;
+}
+
+/*
  * Section watermark backdrop.
  *
  * Tiles `pattern-watermark.png` across every section at very low
@@ -265,7 +281,7 @@
   background-image: url("/decorations/pattern-watermark.png");
   background-size: 800px;
   background-repeat: repeat;
-  opacity: 0.06;
+  opacity: 0.04;
   pointer-events: none;
   z-index: -1;
 }
