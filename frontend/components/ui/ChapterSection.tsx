@@ -51,7 +51,7 @@ export function ChapterSection({
       aria-label={label}
       data-palette={palette}
       className={cn(
-        'min-h-dvh snap-start',
+        'min-h-dvh snap-start snap-always',
         'flex items-center justify-center',
         'border-l-4',
         paletteBorderClass[palette],

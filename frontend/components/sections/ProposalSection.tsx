@@ -29,7 +29,7 @@ export function ProposalSection({ proposal }: ProposalSectionProps) {
             fill
             sizes="100vw"
             loading="lazy"
-            className="object-cover blur-sm scale-105"
+            className="object-cover"
             placeholder={image.asset.metadata?.lqip ? "blur" : undefined}
             blurDataURL={image.asset.metadata?.lqip}
           />

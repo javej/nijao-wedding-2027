@@ -102,7 +102,7 @@ export function MonogramLoader({ onComplete }: MonogramLoaderProps) {
         <motion.div
           role="status"
           aria-label="Loading"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+          className="fixed inset-0 z-60 flex items-center justify-center bg-black"
           variants={shouldReduceMotion ? overlayReducedVariants : overlayVariants}
           initial="visible"
           exit="exit"
