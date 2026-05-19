@@ -1,0 +1,48 @@
+frontend/components/sections/ProposalScrapbook.tsx
+  s_1752467febc2d0::t_ace7bff729547b 9-16
+frontend/components/ui/SectionDecorations.tsx
+  h_e320e9b9b1464c 2-4,61,76,84,89,92,96,105,110,113,117,126,128
+frontend/components/ui/decorations/ChapterConnector.tsx
+  s_1752467febc2d0::t_0543f813c0d8b5 71-76,81
+  s_1752467febc2d0::t_b01901f15a936d 106
+  s_1752467febc2d0::t_7da01768ffe47f 37-43
+frontend/app/globals.css
+  s_1752467febc2d0::t_cf7d674a12e28e 239-240,243-248,250
+  s_1752467febc2d0::t_d8d028139abd10 241-242,249,251-253
+  h_e320e9b9b1464c 174,284
+frontend/components/ui/decorations/ScallopedMat.tsx
+  s_1752467febc2d0::t_da7ad84e1d5262 67,81
+  s_1752467febc2d0::t_8c5e1986f81ead 14-19
+frontend/components/sections/StoryChapter.tsx
+  s_1752467febc2d0::t_e3942564a8567e 41-63
+  s_1752467febc2d0::t_6db21040eadcbb 34,36,70,77-79,82-86,88-94
+  s_1752467febc2d0::t_bdedbd8950981d 71-76,80-81,87
+  s_1752467febc2d0::t_33a9de9a019704 9-16
+frontend/components/WeddingExperience.tsx
+  s_1752467febc2d0::t_35a4e949722134 60
+  s_1752467febc2d0::t_b4cbdb4e66faed 44-48,63-67,69
+frontend/components/ui/ChapterSection.tsx
+  s_1752467febc2d0::t_d2a0a295a0c3f2 71,83-89
+  s_1752467febc2d0::t_79af8376cc0376 48-54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "2b28bf3c58d0d0dca33aa8e012db1e368276afa6",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_1752467febc2d0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0307c4aa-f6c2-4c17-8263-07e9ac9b639a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
