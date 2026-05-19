@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { ProposalScrapbook } from "@/components/sections/ProposalScrapbook";
+import { ScallopedMat } from "@/components/ui/decorations/ScallopedMat";
 import type { StoryChapterResult } from "@/sanity/queries/storyChapters";
 
 interface StoryChapterProps {
@@ -11,10 +12,14 @@ interface StoryChapterProps {
  * StoryChapter — Server Component
  *
  * Renders a single year of the love story. For most years that's one image
- * + one caption — restraint over density. The proposal year branches into
+ * + one caption — restraint over density. The photo is framed by a
+ * `ScallopedMat` so every chapter shares the lace-print treatment that
+ * anchors the proposal scrapbook, just upright and centered rather than
+ * scattered.
+ *
+ * The proposal year (`isProposal === true`) branches into
  * `ProposalScrapbook`, which trades the single print for a small scatter
- * of scalloped-mat photos but keeps the same outer rhythm (year, caption,
- * one snap point).
+ * of mats but keeps the same outer rhythm (year, caption, one snap point).
  *
  * Must be wrapped in <ChapterSection> for snap-scroll and palette accent.
  */
@@ -31,7 +36,11 @@ export function StoryChapter({ chapter }: StoryChapterProps) {
         {year}
       </h2>
 
-      <div className="relative w-72 md:w-96 aspect-3/4">
+      <ScallopedMat
+        scallops={14}
+        className="aspect-3/4 w-72 text-strawberry-milk drop-shadow-md md:w-96"
+        contentClassName="absolute inset-[6%] overflow-hidden rounded-[2px] bg-section-cream"
+      >
         {image?.asset ? (
           <Image
             src={urlFor(image).width(800).url()}
@@ -39,13 +48,13 @@ export function StoryChapter({ chapter }: StoryChapterProps) {
             fill
             sizes="(max-width: 768px) 18rem, 24rem"
             loading="lazy"
-            className="object-cover rounded-sm"
+            className="object-cover"
             placeholder={image.asset.metadata?.lqip ? "blur" : undefined}
             blurDataURL={image.asset.metadata?.lqip}
           />
         ) : (
           <div
-            className="absolute inset-0 bg-matcha-latte/20 rounded-sm flex items-center justify-center"
+            className="absolute inset-0 flex items-center justify-center bg-matcha-latte/20"
             role="img"
             aria-label={`Placeholder for ${year}`}
           >
@@ -54,7 +63,7 @@ export function StoryChapter({ chapter }: StoryChapterProps) {
             </span>
           </div>
         )}
-      </div>
+      </ScallopedMat>
 
       <p className="font-body font-normal text-body-md text-text-on-light leading-relaxed mt-5 max-w-sm">
         {caption}
