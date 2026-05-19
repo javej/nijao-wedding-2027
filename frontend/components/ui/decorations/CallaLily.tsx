@@ -1,38 +1,44 @@
-import type { SVGProps } from 'react';
+import Image from 'next/image';
+
+type CallaLilyProps = {
+  className?: string;
+  /**
+   * Which watercolor variant to render. Two illustrations live in
+   * `public/decorations/` — `calla-lily.png` (variant 1, default) and
+   * `calla-lily-2.png` (variant 2). Used by SectionDecorations to
+   * alternate the top-corner pair without repeating the same image.
+   */
+  variant?: 1 | 2;
+};
 
 /**
- * "Calla lily" slot — currently uses Lucide's generic Flower icon
- * as a stand-in. Lucide does not ship a calla-lily-shaped icon.
+ * "Calla lily" slot — watercolor illustration rendered via next/image.
  *
- * Swap this file's SVG content with a true calla lily later
- * (e.g., from Recraft / Creative Market / a commissioned illustrator)
- * without touching SectionDecorations, ChapterSection, or globals.css.
+ * Was previously an inline SVG (Lucide flower stand-in) that inherited
+ * stroke color from `currentColor`. The current asset is a raster
+ * watercolor, so:
+ *   - `text-*` color classes from callers are no-ops (raster keeps its
+ *     own colors). The white-petals/green-leaves palette reads neutral
+ *     on both the cream and sage section backgrounds.
+ *   - SVG-only props (`strokeWidth` etc.) are not accepted. Sizing
+ *     comes from `className` (`w-24`, `w-36`, …) — the next/image
+ *     `width`/`height` only reserve the aspect ratio.
  *
- * Source: lucide-icons/lucide — "flower" — ISC license.
+ * Assets must have transparent backgrounds — otherwise the rectangular
+ * image bounds show up on the section background.
  */
-export function CallaLily(props: SVGProps<SVGSVGElement>) {
+export function CallaLily({ className, variant = 1 }: CallaLilyProps) {
+  const src =
+    variant === 2 ? '/decorations/calla-lily-2.png' : '/decorations/calla-lily.png';
+
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+    <Image
+      src={src}
+      alt=""
       aria-hidden="true"
-      {...props}
-    >
-      <circle cx="12" cy="12" r="3" />
-      <path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5" />
-      <path d="M12 7.5V9" />
-      <path d="M7.5 12H9" />
-      <path d="M16.5 12H15" />
-      <path d="M12 16.5V15" />
-      <path d="m8 8 1.88 1.88" />
-      <path d="M14.12 9.88 16 8" />
-      <path d="m8 16 1.88-1.88" />
-      <path d="M14.12 14.12 16 16" />
-    </svg>
+      width={512}
+      height={512}
+      className={className}
+    />
   );
 }

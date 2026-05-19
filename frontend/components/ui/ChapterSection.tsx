@@ -44,6 +44,14 @@ interface ChapterSectionProps {
    * entourage, RSVP, completion) and the proposal stay clean.
    */
   decorate?: boolean;
+  /**
+   * When true, use the hero variant of the decoration layout — the
+   * middle callas grow much larger to fill the empty vertical space
+   * around the centered headline. Story chapters keep small middle
+   * callas because they have a photo in the side-strip zone.
+   * No effect when `decorate` is false.
+   */
+  hero?: boolean;
   children: React.ReactNode;
 }
 
@@ -52,6 +60,7 @@ export function ChapterSection({
   palette,
   label,
   decorate = false,
+  hero = false,
   children,
 }: ChapterSectionProps) {
   return (
@@ -78,7 +87,7 @@ export function ChapterSection({
         decorate && 'relative overflow-hidden',
       )}
     >
-      {decorate && <SectionDecorations />}
+      {decorate && <SectionDecorations hero={hero} />}
       {children}
     </section>
   );

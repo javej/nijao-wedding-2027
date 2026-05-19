@@ -221,6 +221,41 @@
   display: block;
 }
 
+/*
+ * Section watermark backdrop.
+ *
+ * Tiles `pattern-watermark.png` across every section at very low
+ * opacity, giving the flat cream/sage backgrounds a painterly
+ * "watermarked stationery" depth. Universal — applies to decorated
+ * AND functional sections so the paper-like feel is consistent
+ * across the whole experience.
+ *
+ * Layering: pseudo-element with `z-index: -1` + `isolation: isolate`
+ * on the section. The watermark sits ABOVE the section's background
+ * color but BELOW every child (text, photos, decorations, FABs) —
+ * no JSX changes needed, no z-index work in any child component.
+ *
+ * Tune `opacity` (0.04–0.10 is the sensible range) — at the low end
+ * it's barely-there paper texture, at the high end the motifs read
+ * as visible scattered florals. Tune `background-size` to control
+ * how often the pattern tiles per section.
+ */
+#main-content > section {
+  position: relative;
+  isolation: isolate;
+}
+#main-content > section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/decorations/pattern-watermark.png");
+  background-size: 800px;
+  background-repeat: repeat;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: -1;
+}
+
 @utility container {
   width: 100%;
   margin-left: auto;
