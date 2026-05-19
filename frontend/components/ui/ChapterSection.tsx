@@ -66,6 +66,11 @@ export function ChapterSection({
         // is the first, third, fifth section — starts with cream so the
         // Hero (first section after arrival) lands on the lighter tone.
         'odd:bg-section-cream even:bg-section-sage',
+        // Mat color for any `ScallopedMat` rendered inside this section
+        // tracks the bg alternation: deep-matcha (green) prints on cream,
+        // strawberry-milk (pink) prints on sage. Single source of truth —
+        // children read it via `text-(--mat-color)`.
+        'odd:[--mat-color:var(--color-deep-matcha)] even:[--mat-color:var(--color-strawberry-milk)]',
         'border-l-4',
         paletteBorderClass[palette],
         // `relative overflow-hidden` only when decorated, so undecorated

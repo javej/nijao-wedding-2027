@@ -74,7 +74,7 @@ function ScrapbookPhoto({ image, index, year }: ScrapbookPhotoProps) {
       <ScallopedMat
         scallops={11}
         tilt={slot.tilt}
-        className={cn(slot.size, slot.matColor, "drop-shadow-md")}
+        className={cn(slot.size, "text-(--mat-color) drop-shadow-md")}
         contentClassName="absolute inset-[8%] overflow-hidden rounded-[2px] bg-section-cream"
       >
         <Image
@@ -97,9 +97,9 @@ function ScrapbookPhoto({ image, index, year }: ScrapbookPhotoProps) {
  * deterministic per index so the cluster reads the same on every render — no
  * Math.random() that'd hydration-mismatch between server and client.
  *
- * Mat colors rotate through the warm half of the palette (raspberry pinks +
- * matcha chiffon green) so each print feels distinct against the section
- * background without anything fighting the others.
+ * Every mat picks up the section's `--mat-color`, so all 5 prints share the
+ * bg-alternation rule (deep-matcha on cream, strawberry-milk on sage); the
+ * scatter's variety comes from position, tilt, and overlap instead of color.
  */
 const SCRAPBOOK_SLOTS = [
   {
@@ -107,35 +107,30 @@ const SCRAPBOOK_SLOTS = [
     size: "w-32 h-40 md:w-44 md:h-56",
     tilt: -5,
     z: 3,
-    matColor: "text-strawberry-milk",
   },
   {
     position: "right-2 top-6 md:right-12 md:top-10",
     size: "w-28 h-36 md:w-40 md:h-52",
     tilt: 6,
     z: 2,
-    matColor: "text-matcha-chiffon",
   },
   {
     position: "left-10 bottom-6 md:left-24 md:bottom-4",
     size: "w-32 h-40 md:w-44 md:h-56",
     tilt: -3,
     z: 4,
-    matColor: "text-berry-meringue",
   },
   {
     position: "right-8 bottom-2 md:right-20 md:bottom-6",
     size: "w-28 h-36 md:w-40 md:h-52",
     tilt: 7,
     z: 1,
-    matColor: "text-strawberry-milk",
   },
   {
     position: "left-1/2 top-1/3 -translate-x-1/2 md:top-1/4",
     size: "w-24 h-32 md:w-36 md:h-48",
     tilt: -2,
     z: 5,
-    matColor: "text-matcha-chiffon",
   },
 ] as const;
 

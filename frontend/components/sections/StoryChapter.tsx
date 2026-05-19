@@ -38,7 +38,7 @@ export function StoryChapter({ chapter }: StoryChapterProps) {
 
       <ScallopedMat
         scallops={14}
-        className="aspect-3/4 w-72 text-strawberry-milk drop-shadow-md md:w-96"
+        className="aspect-3/4 w-72 text-(--mat-color) drop-shadow-md md:w-96"
         contentClassName="absolute inset-[6%] overflow-hidden rounded-[2px] bg-section-cream"
       >
         {image?.asset ? (
