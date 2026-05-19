@@ -13,7 +13,7 @@ export default defineType({
       title: "Proposal Chapter",
       type: "boolean",
       description:
-        "Toggle on for the Mt. Fuji proposal chapter. Only one chapter should have this enabled.",
+        "Marks this chapter as the proposal. The chapter renders with the scrapbook gallery layout using `images` instead of `image`. Only one chapter should have this enabled.",
       initialValue: false,
       validation: (rule) =>
         rule.custom(async (value, context) => {
@@ -34,13 +34,12 @@ export default defineType({
       title: "Year",
       type: "number",
       description:
-        "The year this chapter represents (2017–2027). Leave empty only for the proposal chapter.",
+        "The year this chapter represents (2017–2027). Required for every chapter, including the proposal.",
       validation: (rule) =>
-        rule.custom((value, context) => {
-          const doc = context.document as { isProposal?: boolean } | undefined;
-          if (doc?.isProposal) return true;
-          if (!value) return "Year is required for non-proposal chapters";
-          if (value < 2017 || value > 2027) return "Year must be between 2017 and 2027";
+        rule.required().custom((value) => {
+          if (value === undefined || value === null) return true;
+          if (value < 2017 || value > 2027)
+            return "Year must be between 2017 and 2027";
           return true;
         }),
     }),
@@ -58,6 +57,7 @@ export default defineType({
       description:
         "Drag to reposition focal point after upload — the crop adjusts automatically across screen sizes.",
       options: { hotspot: true },
+      hidden: ({ parent }) => parent?.isProposal === true,
       fields: [
         defineField({
           name: "alt",
@@ -68,6 +68,38 @@ export default defineType({
           validation: (rule) => rule.required(),
         }),
       ],
+    }),
+    defineField({
+      name: "images",
+      title: "Gallery Images",
+      type: "array",
+      description:
+        "Gallery photos for the proposal scrapbook layout. Used only when this chapter is marked as the proposal — other chapters should leave this empty and use the single `image` field above.",
+      hidden: ({ parent }) => parent?.isProposal !== true,
+      of: [
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alternative Text",
+              type: "string",
+              description:
+                "Describe the image for screen readers (e.g., \"The ring against the Mt. Fuji view\").",
+              validation: (rule) => rule.required(),
+            }),
+          ],
+        },
+      ],
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const doc = context.document as { isProposal?: boolean } | undefined;
+          if (!doc?.isProposal) return true;
+          if (!value || value.length === 0)
+            return "The proposal chapter needs at least one gallery image";
+          return true;
+        }),
     }),
     defineField({
       name: "publishedAt",
@@ -88,16 +120,19 @@ export default defineType({
     select: {
       year: "year",
       media: "image",
+      galleryMedia: "images.0",
       isProposal: "isProposal",
     },
-    prepare({ year, media, isProposal }) {
+    prepare({ year, media, galleryMedia, isProposal }) {
       return {
         title: isProposal
-          ? "💍 The Proposal"
+          ? year
+            ? `💍 Chapter ${year} — The Proposal`
+            : "💍 The Proposal"
           : year
             ? `Chapter ${year}`
             : "New Chapter",
-        media,
+        media: isProposal ? galleryMedia ?? media : media,
       };
     },
   },

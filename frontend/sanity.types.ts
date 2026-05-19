@@ -262,6 +262,15 @@ export type StoryChapter = {
     alt?: string;
     _type: "image";
   };
+  images?: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }>;
   publishedAt?: string;
   order?: number;
   orderRank?: string;
@@ -740,11 +749,12 @@ export type SETTINGS_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/storyChapters.ts
 // Variable: STORY_CHAPTERS_QUERY
-// Query: *[_type == "storyChapter" && isProposal != true] | order(order asc) {    _id,    year,    caption,    image {      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    order,    publishedAt  }
+// Query: *[_type == "storyChapter"] | order(order asc) {    _id,    year,    caption,    isProposal,    image {      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    images[] {      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    order,    publishedAt  }
 export type STORY_CHAPTERS_QUERY_RESULT = Array<{
   _id: string;
   year: number | null;
   caption: string | null;
+  isProposal: boolean | null;
   image: {
     asset: {
       _id: string;
@@ -764,37 +774,29 @@ export type STORY_CHAPTERS_QUERY_RESULT = Array<{
     alt?: string;
     _type: "image";
   } | null;
+  images: Array<{
+    asset: {
+      _id: string;
+      url: string | null;
+      mimeType: string | null;
+      metadata: {
+        lqip: string | null;
+        dimensions: {
+          width: number | null;
+          height: number | null;
+        } | null;
+      } | null;
+    } | null;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }> | null;
   order: number | null;
   publishedAt: string | null;
 }>;
-
-// Source: ../frontend/sanity/queries/storyChapters.ts
-// Variable: PROPOSAL_SECTION_QUERY
-// Query: *[_type == "storyChapter" && isProposal == true][0] {    _id,    caption,    image {      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    publishedAt  }
-export type PROPOSAL_SECTION_QUERY_RESULT = {
-  _id: string;
-  caption: string | null;
-  image: {
-    asset: {
-      _id: string;
-      url: string | null;
-      mimeType: string | null;
-      metadata: {
-        lqip: string | null;
-        dimensions: {
-          width: number | null;
-          height: number | null;
-        } | null;
-      } | null;
-    } | null;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  } | null;
-  publishedAt: string | null;
-} | null;
 
 // Source: ../frontend/sanity/queries/weddingDetails.ts
 // Variable: WEDDING_DETAILS_QUERY
@@ -827,8 +829,7 @@ declare module "@sanity/client" {
     '\n  *[_type == "page" && slug.current == $slug][0]{\n    blocks[]{\n      _type,\n      _key,\n    },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;
     '*[_type == "page" && defined(slug)]{slug}': PAGES_SLUGS_QUERY_RESULT;
     '*[_type == "settings"][0]{\n  _type,\n  siteName,\n  logo{\n    dark{\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    light{\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    width,\n    height,\n  },\n  copyright\n}': SETTINGS_QUERY_RESULT;
-    '\n  *[_type == "storyChapter" && isProposal != true] | order(order asc) {\n    _id,\n    year,\n    caption,\n    image {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    order,\n    publishedAt\n  }\n': STORY_CHAPTERS_QUERY_RESULT;
-    '\n  *[_type == "storyChapter" && isProposal == true][0] {\n    _id,\n    caption,\n    image {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    publishedAt\n  }\n': PROPOSAL_SECTION_QUERY_RESULT;
+    '\n  *[_type == "storyChapter"] | order(order asc) {\n    _id,\n    year,\n    caption,\n    isProposal,\n    image {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    images[] {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    order,\n    publishedAt\n  }\n': STORY_CHAPTERS_QUERY_RESULT;
     '\n  *[_type == "weddingDetails"][0] {\n    ceremonyVenue,\n    ceremonyDate,\n    ceremonyTime,\n    ceremonyAddress,\n    ceremonyMapUrl,\n    receptionVenue,\n    receptionDate,\n    receptionTime,\n    receptionAddress,\n    receptionMapUrl\n  }\n': WEDDING_DETAILS_QUERY_RESULT;
   }
 }

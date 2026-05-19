@@ -3,13 +3,12 @@ import { ChapterSection } from '@/components/ui/ChapterSection';
 import { ExperienceShell } from '@/components/ui/ExperienceShell';
 import { FloatingAnchorSet } from '@/components/ui/FloatingAnchorSet';
 import { HeroSection } from '@/components/sections/HeroSection';
-import { ProposalSection } from '@/components/sections/ProposalSection';
 import { StoryChapter } from '@/components/sections/StoryChapter';
 import { WeddingDetails } from '@/components/sections/WeddingDetails';
 import { DressCodeSection } from '@/components/sections/DressCodeSection';
 import { EntourageSection } from '@/components/sections/EntourageSection';
 import { RSVPSection } from '@/components/sections/RSVPSection';
-import { getProposalSection, getStoryChapters } from '@/sanity/queries/storyChapters';
+import { getStoryChapters } from '@/sanity/queries/storyChapters';
 import { getWeddingDetails } from '@/sanity/queries/weddingDetails';
 import { getDressCode } from '@/sanity/queries/dressCode';
 import { getPadrinos, getWeddingParty } from '@/sanity/queries/entourage';
@@ -23,9 +22,8 @@ interface WeddingExperienceProps {
 }
 
 export async function WeddingExperience({ guest }: WeddingExperienceProps) {
-  const [chapters, proposal, weddingDetails, dressCode, padrinos, weddingParty] = await Promise.all([
+  const [chapters, weddingDetails, dressCode, padrinos, weddingParty] = await Promise.all([
     getStoryChapters(),
-    getProposalSection(),
     getWeddingDetails(),
     getDressCode(),
     getPadrinos(),
@@ -44,21 +42,17 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           <ChapterSection
             key={chapter._id}
             id={`story-${chapter.year}`}
-            palette="matcha-latte"
-            label={`Our story — ${chapter.year}`}
+            palette={chapter.isProposal ? 'strawberry-jam' : 'matcha-latte'}
+            label={
+              chapter.isProposal
+                ? `The proposal — ${chapter.year}`
+                : `Our story — ${chapter.year}`
+            }
             decorate
           >
             <StoryChapter chapter={chapter} />
           </ChapterSection>
         ))}
-
-        <ChapterSection id="proposal" palette="strawberry-jam" label="The Proposal">
-          {proposal ? (
-            <ProposalSection proposal={proposal} />
-          ) : (
-            <p className="font-display text-display-md">The Proposal</p>
-          )}
-        </ChapterSection>
 
         <ChapterSection id="wedding-details" palette="matcha-chiffon" label="Wedding Details">
           {weddingDetails ? (
