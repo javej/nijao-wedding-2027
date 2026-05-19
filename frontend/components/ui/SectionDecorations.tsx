@@ -1,52 +1,98 @@
 import { CallaLily } from '@/components/ui/decorations/CallaLily';
+import { Cat } from '@/components/ui/decorations/Cat';
 import { MatchaLeaf } from '@/components/ui/decorations/MatchaLeaf';
 import { Strawberry } from '@/components/ui/decorations/Strawberry';
 
 /**
- * SectionDecorations — sparse ornamental layer for every ChapterSection.
+ * SectionDecorations — corner-anchored ornamental layer for decorated sections.
  *
- * Renders BOTH variants (sage + cream) as direct children of the parent
- * <section>. CSS in globals.css uses `:nth-child(odd|even)` on the
- * parent section to show only the matching variant — same selector
- * scheme that drives `odd:bg-section-sage even:bg-section-cream` in
- * ChapterSection. So the visible variant always matches the section bg.
+ * Rendered only when the parent ChapterSection passes `decorate`. Today
+ * that means the Hero and every story chapter; the functional sections
+ * (wedding details, dress code, entourage, RSVP, completion) and the
+ * proposal stay clean.
  *
- * Sage sections (odd): deep-matcha calla + strawberry-milk berries.
- * Cream sections (even): strawberry-milk calla + deep-matcha leaves.
+ * Composition pattern — "4-corner anchored, diagonal axis":
  *
- * Calla lily is the feature flower (~64-80px); strawberries and
- * leaves are the supporting motif (~24-40px). All elements are
- * pointer-events-none and aria-hidden — purely decorative.
+ *   ┌────────────────────────────┐
+ *   │  ◇                  [calla]│   TOP band: 1 small motif + calla
+ *   │                            │
+ *   │                            │
+ *   │         ●●●●●●●            │   MIDDLE band: KEPT CLEAR — the
+ *   │         ●●●●●●●            │     centered photo or text never
+ *   │         ●●●●●●●            │     collides with any decoration
+ *   │                            │
+ *   │  [cat]                  ◇  │   BOTTOM band: cat (with adjacent
+ *   │   ◇                        │     motif so it's not isolated) + 1
+ *   └────────────────────────────┘     small motif in opposite corner
+ *
+ * Cream variant: calla top-right, cat-pair bottom-left, single motifs
+ *   in the other two corners. Decorations all in deep-matcha (greens)
+ *   to contrast with cream bg.
+ * Sage variant: mirror — calla top-left, cat-pair bottom-right, single
+ *   motifs in the other two corners. Calla + cat in raspberry, vine
+ *   accents in strawberry-milk.
+ *
+ * Why corners (not vine)? The previous vine-down-one-edge pattern got
+ * visually swallowed by the centered photo on chapter sections — the
+ * narrow side strips left by a w-72 photo were the worst place to put
+ * 4 stacked elements. Spreading to corners pushes everything OUT of
+ * the side-strip danger zone and balances the composition: no side
+ * feels heavy, no side feels empty.
+ *
+ * The calla → cat DIAGONAL provides the visual axis without crowding
+ * any single edge.
+ *
+ * Bottom-corner FAB safe zones are respected: cat lives at `bottom-32`
+ * mobile / `bottom-40` desktop (~128-160px from the bottom), well
+ * above the audio/compass FABs at `bottom-6`.
+ *
+ * All elements are pointer-events-none and aria-hidden — purely decorative.
  */
 export function SectionDecorations() {
   return (
     <>
-      {/* ── Sage variant (odd sections: Hero, Story 2017, 2019, etc.) ── */}
-      <div
-        className="section-decor-sage pointer-events-none absolute inset-0 overflow-hidden"
-        aria-hidden="true"
-      >
-        {/* Feature flower — upper-left, deep-matcha tint */}
-        <CallaLily className="absolute top-8 left-6 w-14 rotate-12 text-deep-matcha opacity-50 md:top-12 md:left-10 md:w-20" />
-
-        {/* Supporting strawberries — scattered */}
-        <Strawberry className="absolute top-16 right-12 w-7 -rotate-12 text-strawberry-milk opacity-60 md:top-20 md:right-20 md:w-10" />
-        <Strawberry className="absolute right-6 bottom-40 w-6 rotate-45 text-strawberry-milk opacity-45 md:right-10 md:w-8" />
-        <Strawberry className="absolute bottom-16 left-24 w-5 -rotate-6 text-strawberry-milk opacity-55 md:bottom-20 md:left-32 md:w-7" />
-      </div>
-
-      {/* ── Cream variant (even sections: Story 2018, 2020, Wedding Details, etc.) ── */}
+      {/* ── Cream variant (odd sections: Hero, every other story chapter) ── */}
       <div
         className="section-decor-cream pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
-        {/* Feature flower — lower-right, strawberry-milk tint */}
-        <CallaLily className="absolute right-6 bottom-12 w-14 -rotate-12 text-strawberry-milk opacity-65 md:right-10 md:bottom-16 md:w-20" />
+        {/* TOP-RIGHT — feature calla */}
+        <CallaLily
+          strokeWidth={1.5}
+          className="absolute top-10 right-10 w-16 -rotate-6 text-deep-matcha opacity-50 md:top-16 md:right-16 md:w-24"
+        />
 
-        {/* Supporting matcha leaves — scattered */}
-        <MatchaLeaf className="absolute top-12 left-8 w-7 rotate-12 text-deep-matcha opacity-40 md:top-16 md:left-12 md:w-10" />
-        <MatchaLeaf className="absolute top-32 right-16 w-6 -rotate-45 text-deep-matcha opacity-50 md:top-40 md:right-24 md:w-9" />
-        <MatchaLeaf className="absolute bottom-24 left-16 w-5 rotate-45 text-deep-matcha opacity-45 md:bottom-32 md:left-24 md:w-7" />
+        {/* TOP-LEFT — single small leaf, balances the calla diagonally */}
+        <MatchaLeaf className="absolute top-12 left-10 w-6 rotate-12 text-deep-matcha opacity-55 md:top-16 md:left-16 md:w-9" />
+
+        {/* BOTTOM-RIGHT — single small leaf, balances the cat diagonally */}
+        <MatchaLeaf className="absolute right-12 bottom-32 w-5 -rotate-12 text-deep-matcha opacity-45 md:right-16 md:bottom-40 md:w-8" />
+
+        {/* BOTTOM-LEFT — cat-pair: cat + small leaf companion (so cat isn't isolated) */}
+        <Cat className="absolute bottom-32 left-10 w-8 rotate-6 text-deep-matcha opacity-55 md:bottom-40 md:left-16 md:w-12" />
+        <MatchaLeaf className="absolute bottom-48 left-24 w-5 -rotate-30 text-deep-matcha opacity-45 md:bottom-56 md:left-32 md:w-7" />
+      </div>
+
+      {/* ── Sage variant (even sections: alternating story chapters) ── */}
+      <div
+        className="section-decor-sage pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden="true"
+      >
+        {/* TOP-LEFT — feature calla */}
+        <CallaLily
+          strokeWidth={1.5}
+          className="absolute top-10 left-10 w-16 rotate-6 text-raspberry opacity-50 md:top-16 md:left-16 md:w-24"
+        />
+
+        {/* TOP-RIGHT — single small strawberry, balances the calla diagonally */}
+        <Strawberry className="absolute top-12 right-10 w-6 -rotate-12 text-strawberry-milk opacity-60 md:top-16 md:right-16 md:w-9" />
+
+        {/* BOTTOM-LEFT — single small strawberry, balances the cat diagonally */}
+        <Strawberry className="absolute bottom-32 left-12 w-5 rotate-12 text-strawberry-milk opacity-50 md:bottom-40 md:left-16 md:w-8" />
+
+        {/* BOTTOM-RIGHT — cat-pair: cat + small strawberry companion */}
+        <Cat className="absolute right-10 bottom-32 w-8 -rotate-6 text-raspberry opacity-50 md:right-16 md:bottom-40 md:w-12" />
+        <Strawberry className="absolute right-24 bottom-48 w-5 rotate-30 text-strawberry-milk opacity-50 md:right-32 md:bottom-56 md:w-7" />
       </div>
     </>
   );

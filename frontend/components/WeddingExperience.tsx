@@ -36,7 +36,7 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
     <ExperienceShell guestName={guest?.firstName}>
       <FloatingAnchorSet />
       <ChapterScrollContainer>
-        <ChapterSection id="hero" palette="raspberry" label="Jave and Nianne">
+        <ChapterSection id="hero" palette="raspberry" label="Jave and Nianne" decorate>
           <HeroSection />
         </ChapterSection>
 
@@ -46,6 +46,7 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
             id={`story-${chapter.year}`}
             palette="matcha-latte"
             label={`Our story — ${chapter.year}`}
+            decorate
           >
             <StoryChapter chapter={chapter} />
           </ChapterSection>

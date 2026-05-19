@@ -214,10 +214,10 @@
 .section-decor-cream {
   display: none;
 }
-#main-content > section:nth-child(odd) > .section-decor-sage {
+#main-content > section:nth-child(odd) > .section-decor-cream {
   display: block;
 }
-#main-content > section:nth-child(even) > .section-decor-cream {
+#main-content > section:nth-child(even) > .section-decor-sage {
   display: block;
 }
 

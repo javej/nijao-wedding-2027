@@ -1,29 +1,26 @@
 import type { SVGProps } from 'react';
 
 /**
- * MatchaLeaf — single-path SVG, fills with currentColor for CSS theming.
+ * MatchaLeaf — Lucide core Leaf icon.
+ * Elegant leaf-with-stem in line style.
  *
- * Pointed-oval tea leaf, slightly asymmetric for an organic feel.
- * Designed for ornamental use at 20-56px sizes.
- *
- * v0 hand-coded asset. Swap freely later.
+ * Source: lucide-icons/lucide — "leaf" — ISC license.
  */
 export function MatchaLeaf(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 40 64"
-      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       aria-hidden="true"
       {...props}
     >
-      <path
-        d="M20 4
-           C 8 12, 4 28, 6 42
-           C 8 52, 14 58, 20 60
-           C 26 58, 32 52, 34 42
-           C 36 28, 32 12, 20 4 Z"
-      />
+      <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+      <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
     </svg>
   );
 }

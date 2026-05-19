@@ -1,56 +1,35 @@
 import type { SVGProps } from 'react';
 
 /**
- * Strawberry — single-element SVG, fills with currentColor for CSS theming.
+ * Strawberry — Lucide Lab community icon.
+ * Body with stylised seed-dots and a stem-leaf at the top right.
  *
- * Classic teardrop body with a five-point leafy calyx on top. A few
- * tiny dots suggest seeds without painting realism. Designed for
- * ornamental use at 16-48px sizes.
- *
- * v0 hand-coded asset. Swap freely later.
+ * Source: lucide-icons/lucide-lab — "strawberry" — ISC license.
  */
 export function Strawberry(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 48 56"
-      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       aria-hidden="true"
       {...props}
     >
-      {/* Body — teardrop */}
-      <path
-        d="M24 18
-           C 12 18, 6 26, 6 34
-           C 6 46, 16 54, 24 54
-           C 32 54, 42 46, 42 34
-           C 42 26, 36 18, 24 18 Z"
-      />
-      {/* Calyx — five pointed leaves */}
-      <path
-        d="M24 4
-           L 18 14
-           L 10 12
-           L 14 20
-           L 8 24
-           L 16 24
-           L 14 18
-           L 22 20
-           L 24 12
-           L 26 20
-           L 34 18
-           L 32 24
-           L 40 24
-           L 34 20
-           L 38 12
-           L 30 14 Z"
-      />
-      {/* Seeds — tiny dots scattered on the body, drawn as small ellipses */}
-      <ellipse cx="16" cy="30" rx="1" ry="1.5" opacity="0.45" />
-      <ellipse cx="22" cy="36" rx="1" ry="1.5" opacity="0.45" />
-      <ellipse cx="30" cy="28" rx="1" ry="1.5" opacity="0.45" />
-      <ellipse cx="28" cy="42" rx="1" ry="1.5" opacity="0.45" />
-      <ellipse cx="18" cy="42" rx="1" ry="1.5" opacity="0.45" />
+      <path d="m17 7 3.5-3.5" />
+      <path d="M17 2v5h5" />
+      <path d="M2.1 17.1a4 4 0 0 0 4.8 4.8l9-2.1a6.32 6.32 0 0 0 2.9-10.9L15 5.2A6.5 6.5 0 0 0 4.1 8.3Z" />
+      <path d="M8.5 9.5h.01" />
+      <path d="M12.5 8.5h.01" />
+      <path d="M7.5 13.5h.01" />
+      <path d="M11.5 12.5h.01" />
+      <path d="M15.5 11.5h.01" />
+      <path d="M6.5 17.5h.01" />
+      <path d="M10.5 16.5h.01" />
+      <path d="M14.5 15.5h.01" />
     </svg>
   );
 }
