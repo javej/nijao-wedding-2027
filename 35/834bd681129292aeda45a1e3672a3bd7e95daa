@@ -1,0 +1,35 @@
+frontend/sanity.types.ts
+  s_c36e9be6bec10c::t_778ddf1787d528 265-273,752,757,777,795-797,799,832
+frontend/components/WeddingExperience.tsx
+  s_c36e9be6bec10c::t_f8e11c1f4bbca8 11,25,45-50
+studio/schema.json
+  s_c36e9be6bec10c::t_778ddf1787d528 1464-1531
+studio/schemas/documents/storyChapter.ts
+  s_c36e9be6bec10c::t_37c67b55b57d2f 16,37,39-42,60,72-103,123,126,129-131,135
+frontend/components/sections/StoryChapter.tsx
+  s_c36e9be6bec10c::t_0f85ecedf75b78 3,13-17,22-25
+docs/adr/0004-proposal-chapter-merged-into-storychapter-with-gallery.md
+  s_c36e9be6bec10c::t_37c67b55b57d2f 1-66
+frontend/sanity/queries/storyChapters.ts
+  s_c36e9be6bec10c::t_daf9d01e1fee95 8-17,19,23,39,54,59-75,81-84,89
+frontend/components/sections/ProposalScrapbook.tsx
+  s_c36e9be6bec10c::t_d67643527de690 1-153
+studio/migrations/0001-proposal-to-gallery.ts
+  s_c36e9be6bec10c::t_c9293db5a49a15 1-128
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "35834bd681129292aeda45a1e3672a3bd7e95daa",
+  "prompts": {},
+  "sessions": {
+    "s_c36e9be6bec10c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c5139f51-78bd-49b5-bfeb-38a6bda45b50",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
