@@ -1,0 +1,47 @@
+frontend/components/WeddingExperience.tsx
+  s_e75e8187f03d50::t_090c9c843fec37 26-30,32
+frontend/components/sections/WeddingDetails.tsx
+  s_ccd8ffb2cd630a::t_6116a53ee055af 59
+  s_ccd8ffb2cd630a::t_fe58b7cb579a29 99,104,108-113
+  s_ccd8ffb2cd630a::t_c73051905647f1 51,55-58,60
+.gitignore
+  h_e320e9b9b1464c 42
+  s_9321cd11b072e1::t_a03c5ebb126950 41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "ac003e141060a5ef64ecd22e8269deea08d3902a",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_9321cd11b072e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f433f4f-0b9f-4e03-ba65-6be6f389fb9b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    },
+    "s_ccd8ffb2cd630a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9a0e87a4-e8ac-4b66-88f3-5b805d170f67",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    },
+    "s_e75e8187f03d50": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ac84592a-5abe-462c-a2e2-cdd419bf58f6",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
