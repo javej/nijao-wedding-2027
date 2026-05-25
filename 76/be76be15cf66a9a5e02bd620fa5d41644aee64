@@ -1,0 +1,19 @@
+frontend/sanity/queries/dressCode.ts
+  s_9321cd11b072e1::t_e59a130cc5d353 8-9,16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "76be76be15cf66a9a5e02bd620fa5d41644aee64",
+  "prompts": {},
+  "sessions": {
+    "s_9321cd11b072e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f433f4f-0b9f-4e03-ba65-6be6f389fb9b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
