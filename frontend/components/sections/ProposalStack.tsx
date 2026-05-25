@@ -16,17 +16,29 @@ interface ProposalStackProps {
 
 /**
  * Scroll budget reserved for the caption reveal at the tail end of the
- * pinned travel. The first (1 - CAPTION_TAIL) fraction is split evenly
- * across photos for the accumulation; the last CAPTION_TAIL fades the
- * caption in over the fully-built stack.
+ * pinned travel. The accumulation phase ends at (1 - CAPTION_TAIL);
+ * the last CAPTION_TAIL fades the caption in over the fully-built stack.
  */
 const CAPTION_TAIL = 0.2;
 
 /**
- * How many extra viewport heights of scroll travel each photo costs.
- * Total outer container height = (0.5 * N + 0.8) * 100dvh — see Q13.
+ * Max fraction of total scroll progress dedicated to ONE photo's drop
+ * animation. With few photos this prevents the slot from stretching
+ * across most of the scroll (which made the first photo feel "stuck
+ * mid-flight" instead of landing). With many photos the slot shortens
+ * proportionally so all drops still fit within the accumulation phase.
  */
-const PER_PHOTO_VH = 0.5;
+const MAX_SLOT_FRACTION = 0.25;
+
+/**
+ * Pixel travel per photo. Larger value = taller outer container =
+ * more scroll input required to progress one photo's animation =
+ * slower perceived animation at the same scroll velocity.
+ *
+ * Total outer container height = `(N * PER_PHOTO_VH + TAIL_VH) * 100dvh`.
+ * TAIL_VH covers caption fade + minimum post-stack dwell. See Q13.
+ */
+const PER_PHOTO_VH = 0.9;
 const TAIL_VH = 0.8;
 
 /**
@@ -49,12 +61,15 @@ const STACK_SLOTS: ReadonlyArray<{
 ];
 
 /**
- * Photos drop from above as the user scrolls. Pre-stack offset (in px)
- * is how far above the stack centre the photo starts. Larger feels
- * more dramatic; this value chosen to clear the page-card's inner top
+ * Photos rise from below the stack as the user scrolls. Pre-stack
+ * offset (in px) is how far BELOW the stack centre the photo starts.
+ * Positive value = enters from below, matching the scroll direction —
+ * as the user scrolls downward, photos emerge from the bottom of the
+ * viewport into their landed slot positions. Larger value feels more
+ * dramatic; this value chosen to clear the page-card's inner bottom
  * edge so the entrance reads as "from off-page."
  */
-const DROP_FROM_PX = 240;
+const RISE_FROM_PX = 240;
 
 /**
  * ProposalStack — Client Component
@@ -148,18 +163,27 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
     <div ref={outerRef} style={{ minHeight: outerMinHeight }} className="relative w-full">
       <div className="sticky top-0 flex h-dvh w-full items-center justify-center">
         <PageCard bg="strawberry-milk">
-          <h2 className="font-display italic font-normal text-display-lg text-text-on-light leading-display">
-            {year}
-          </h2>
-          <p className="font-display italic font-normal text-display-md text-text-on-light/80 mt-1">
-            The Proposal
-          </p>
+          <div
+            className="flex flex-col items-center px-5 py-2 rounded-md backdrop-blur-sm"
+            style={{ backgroundColor: 'var(--text-backdrop)' }}
+          >
+            <h2 className="font-display italic font-normal text-display-lg text-text-on-light leading-display">
+              {year}
+            </h2>
+            <p className="font-display italic font-normal text-display-md text-text-on-light/80 mt-1">
+              The Proposal
+            </p>
+          </div>
 
-          <div className="relative my-(--gap-chapter-elements) flex min-h-0 flex-1 w-full items-center justify-center">
-            <div className="relative aspect-4/5 w-full max-h-full">
+          <div className="relative my-(--gap-chapter-elements) flex w-full items-center justify-center">
+            <div className="relative aspect-4/5 w-full">
               {photos.map((photo, i) => (
                 <StackPhoto
-                  key={photo.asset._id ?? `proposal-${i}`}
+                  // Index is part of the key — the same Sanity asset can
+                  // legitimately appear in the gallery more than once
+                  // (e.g., before a fresh upload during content editing),
+                  // so the asset _id alone is not guaranteed unique.
+                  key={`${photo.asset._id ?? 'proposal'}-${i}`}
                   image={photo}
                   index={i}
                   total={N}
@@ -171,10 +195,11 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
           </div>
 
           <p
-            className="font-body font-normal text-body-md text-text-on-light leading-relaxed max-w-sm whitespace-pre-line"
+            className="font-body font-normal text-body-md text-text-on-light leading-relaxed max-w-sm whitespace-pre-line px-5 py-2 rounded-md backdrop-blur-sm"
             style={{
               opacity: captionOpacity,
               transition: prefersReducedMotion ? 'none' : 'opacity 200ms linear',
+              backgroundColor: 'var(--text-backdrop)',
             }}
           >
             {caption}
@@ -196,22 +221,29 @@ interface StackPhotoProps {
 function StackPhoto({ image, index, total, progress, year }: StackPhotoProps) {
   const slot = STACK_SLOTS[index % STACK_SLOTS.length]!;
 
-  // Each photo's slot occupies an equal share of the accumulation
-  // window (everything before CAPTION_TAIL). slotProgress goes 0 → 1
-  // as the user scrolls through this photo's slot.
+  // Each photo's drop slot is the SMALLER of MAX_SLOT_FRACTION and
+  // an even share of the accumulation phase. With few photos this
+  // caps the slot length so the photo lands quickly and then dwells,
+  // rather than stretching its drop animation across most of the
+  // scroll. With many photos the slot shrinks proportionally so
+  // every photo still fits before the caption-tail fade-in begins.
   const accumulationEnd = 1 - CAPTION_TAIL;
-  const slotStart = (index / total) * accumulationEnd;
-  const slotEnd = ((index + 1) / total) * accumulationEnd;
+  const evenShare = accumulationEnd / total;
+  const slotFraction = Math.min(MAX_SLOT_FRACTION, evenShare);
+  const slotStart = index * slotFraction;
+  const slotEnd = slotStart + slotFraction;
   const slotProgress = Math.min(
     1,
     Math.max(0, (progress - slotStart) / (slotEnd - slotStart)),
   );
 
-  // Interpolate from pre-stack drop position to final stacked slot.
-  const dropY = (1 - slotProgress) * -DROP_FROM_PX;
+  // Interpolate from pre-stack position (below the stack) to final
+  // stacked slot. `riseY` starts positive (below centre) and decays
+  // toward 0 as slotProgress → 1, so the photo rises into place.
+  const riseY = (1 - slotProgress) * RISE_FROM_PX;
   const rotate = slot.rotate * slotProgress;
   const tx = slot.offsetX * slotProgress;
-  const ty = dropY + slot.offsetY * slotProgress;
+  const ty = riseY + slot.offsetY * slotProgress;
   // Fade-in occupies the first ~30% of the slot so the photo is
   // already visible by the time it's finishing its rotation.
   const opacity = Math.min(1, slotProgress * 3.3);

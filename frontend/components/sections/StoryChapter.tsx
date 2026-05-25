@@ -52,20 +52,23 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
 
   return (
     <PageCard bg={pageBg} priority={priority}>
-      <h2 className="font-display italic font-normal text-display-lg text-text-on-light leading-display">
+      <h2
+        className="font-display italic font-normal text-display-lg text-text-on-light leading-display px-5 py-1 rounded-md backdrop-blur-sm"
+        style={{ backgroundColor: 'var(--text-backdrop)' }}
+      >
         {year}
       </h2>
 
-      <div className="my-(--gap-chapter-elements) flex min-h-0 flex-1 items-center justify-center w-full">
+      <div className="my-(--gap-chapter-elements) flex w-full items-center justify-center">
         {photos.length > 0 ? (
           <ChapterPhotoCrossfade
             photos={photos}
             priorityFirst={priority}
-            className="aspect-4/5 w-full max-h-full"
+            className="aspect-4/5 w-full"
           />
         ) : (
           <div
-            className="aspect-4/5 w-full max-h-full flex items-center justify-center bg-text-on-light/5"
+            className="aspect-4/5 w-full flex items-center justify-center bg-text-on-light/5"
             role="img"
             aria-label={`Placeholder for ${year}`}
           >
@@ -76,7 +79,10 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
         )}
       </div>
 
-      <p className="font-body font-normal text-body-md text-text-on-light leading-relaxed max-w-sm">
+      <p
+        className="font-body font-normal text-body-md text-text-on-light leading-relaxed max-w-sm px-5 py-2 rounded-md backdrop-blur-sm"
+        style={{ backgroundColor: 'var(--text-backdrop)' }}
+      >
         {caption}
       </p>
     </PageCard>

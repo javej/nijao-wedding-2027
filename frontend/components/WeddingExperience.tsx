@@ -23,13 +23,14 @@ interface WeddingExperienceProps {
 }
 
 /**
- * 3-way bg rotation across year chapters. Cycles through cream,
- * matcha, and raspberry pages in order; raspberry is the deep
- * "heart-flutter" beat once every three chapters. The proposal
- * is locked to strawberry-milk and never participates in this
- * cycle — see `bgForChapter` below.
+ * 3-way bg rotation across year chapters. Cycles matcha → cream →
+ * raspberry — the first year opens on the deep matcha page (sets a
+ * confident tonal floor), softens to cream on the second, and lands
+ * on raspberry as the third-beat "heart-flutter" before the cycle
+ * repeats. The proposal is locked to strawberry-milk and never
+ * participates in this cycle — see `bgForChapter` below.
  */
-const YEAR_PAGE_ROTATION: ReadonlyArray<PageBg> = ['cream', 'matcha', 'raspberry'];
+const YEAR_PAGE_ROTATION: ReadonlyArray<PageBg> = ['matcha', 'cream', 'raspberry'];
 
 /**
  * Map each story chapter to its patterned page bg. Proposal chapters
@@ -87,7 +88,10 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           return (
             <ChapterSection
               key={chapter._id}
-              id={`story-${chapter.year}`}
+              // Append `-proposal` when this chapter is the engagement —
+              // lets a same-year anniversary chapter coexist with the
+              // proposal chapter without colliding on the HTML id.
+              id={`story-${chapter.year}${chapter.isProposal ? '-proposal' : ''}`}
               palette={chapter.isProposal ? 'strawberry-jam' : 'matcha-latte'}
               label={
                 chapter.isProposal

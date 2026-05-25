@@ -21,8 +21,7 @@ interface PageCardProps {
   bg: PageBg;
   /**
    * Prioritize loading the PNG (eager + fetchpriority high). True for
-   * the first story chapter to avoid LCP regression; false otherwise
-   * so subsequent pages lazy-load as the user scrolls.
+   * the first story chapter to avoid LCP regression; false otherwise.
    */
   priority?: boolean;
   /** Optional class override. */
@@ -33,35 +32,53 @@ interface PageCardProps {
 /**
  * PageCard — Server Component
  *
- * Renders one of the four patterned-bg pages as a full-bleed
- * background filling its parent. Children render in an inner safe
- * area inset 12% from each side, clear of the embossed floral
- * corner ornaments.
+ * Renders one of the four patterned-bg pages with orientation-aware
+ * sizing — the PNG is portrait-aspect (1024×1536), so we render it
+ * differently depending on viewport orientation:
  *
- * Sizing model:
- *   - Wrapper is `absolute inset-0` — fills the parent (`ChapterSection`
- *     in the year-chapter case, the sticky inner div in the proposal
- *     case). The parent already establishes the right scroll/layout
- *     box; PageCard just paints inside it.
- *   - The PNG fills via `next/image` `fill` + `object-cover`. On
- *     portrait viewports (mobile) the PNG fills naturally and the
- *     ornament reads as a full frame. On landscape viewports the
- *     PNG is wider-cropped: the central vertical line and partial
- *     top-left + bottom-right ornament still show; the edge florals
- *     run off-screen. Trade-off accepted in exchange for full-bleed
- *     pattern coverage with no wing color showing.
- *   - No drop shadow — when the PNG IS the section bg, there's no
- *     edge to lift the page off of. The page is the section.
+ *   • Portrait viewports (mobile, tall windows): full-bleed inside
+ *     the parent section. The PNG fills naturally, ornament reads as
+ *     a full frame, no wing color shows. This is what mobile users see.
+ *
+ *   • Landscape viewports (desktop, wide windows): centered portrait
+ *     page-card at the PNG's native 2:3 aspect, height-clamped to
+ *     90dvh, soft drop shadow, with the parent section's bg color
+ *     filling the wings on either side. Honors the PNG's authored
+ *     composition (no ornament cropping) at the cost of showing
+ *     wing color on either side.
+ *
+ * Children render in the same inner safe area (12% inset) in both
+ * modes — clear of the embossed floral corner ornaments.
+ *
+ * The parent (`ChapterSection` for year chapters, the sticky inner
+ * div for the proposal) already has `flex items-center justify-center`,
+ * so the landscape variant's `relative` positioning gets flex-centered
+ * automatically. The portrait variant's `absolute inset-0` opts out of
+ * flex layout entirely and fills the section.
  */
 export function PageCard({ bg, priority = false, className, children }: PageCardProps) {
   return (
-    <div className={cn('absolute inset-0', className)}>
+    <div
+      className={cn(
+        // Portrait: full-bleed — fills the parent section.
+        'portrait:absolute portrait:inset-0',
+        // Landscape: centered portrait card at native 2:3 aspect.
+        // Height clamps to min(90dvh, 95vw*3/2) so it never crowds the
+        // viewport edges. Width auto-derives from the aspect lock.
+        'landscape:relative landscape:aspect-2/3 landscape:w-auto landscape:h-[min(90dvh,calc(95vw*3/2))]',
+        // Landscape gets a soft drop shadow lifting the page off the
+        // wing color so it reads as a physical card on a tabletop.
+        // Portrait has no edge to shadow (the page IS the section).
+        'landscape:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.18)]',
+        className,
+      )}
+    >
       <Image
         src={pageBgSrc[bg]}
         alt=""
         fill
         priority={priority}
-        sizes="100vw"
+        sizes="(orientation: portrait) 100vw, 60vh"
         className="object-cover"
         aria-hidden="true"
       />

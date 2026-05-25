@@ -54,22 +54,26 @@ export type BgTone =
 const bgToneClass: Record<BgTone, string> = {
   // ── Functional section tones (flat fills, watermark overlay) ──
   'cream':
-    'bg-section-cream [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)]',
+    'bg-section-cream [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
   'sage':
-    'bg-section-sage [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)]',
+    'bg-section-sage [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)] [--text-backdrop:rgba(0,0,0,0.3)]',
   'strawberry-milk':
-    'bg-strawberry-milk [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)]',
+    'bg-strawberry-milk [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
   // ── Story chapter page-wing tones (PageCard renders pattern on top) ──
   // Wing color matches each patterned PNG's paper base so the page-card
   // edge seams cleanly into the section on landscape viewports.
+  // `--text-backdrop` is a CONTRASTING semi-opaque overlay (lighter
+  // than light bgs, darker than dark bgs), paired with backdrop-blur
+  // on text wrappers to lift text off the embossed ornament and keep
+  // captions readable.
   'page-cream':
-    'bg-section-cream [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)]',
+    'bg-section-cream [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
   'page-matcha':
-    'bg-deep-matcha [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)]',
+    'bg-deep-matcha [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)] [--text-backdrop:rgba(0,0,0,0.3)]',
   'page-raspberry':
-    'bg-raspberry [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)]',
+    'bg-raspberry [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)] [--text-backdrop:rgba(0,0,0,0.3)]',
   'page-strawberry-milk':
-    'bg-strawberry-milk [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)]',
+    'bg-strawberry-milk [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
 };
 
 interface ChapterSectionProps {
@@ -153,9 +157,17 @@ export function ChapterSection({
         bgClasses,
         // Accent stripe lives on functional sections only.
         !story && cn('border-l-4', paletteBorderClass[palette]),
-        // Story chapters always overflow-hidden to contain the PageCard
-        // composition. Functional sections only do so when decorated.
-        (decorate || story) && 'relative overflow-hidden',
+        // `relative` for any section that needs absolute-positioned
+        // children (PageCard on story chapters, SectionDecorations on
+        // decorated sections).
+        (decorate || story) && 'relative',
+        // `overflow-hidden` ONLY on decorated sections (the hero with
+        // its corner-anchor CallaLily bleeds). NEVER on story sections —
+        // the proposal uses `position: sticky` inside, and sticky breaks
+        // when ANY ancestor has overflow:hidden. PageCard's contents are
+        // already self-contained via inset-0 / inset-[12%], so clipping
+        // at the section level isn't needed for story chapters.
+        decorate && 'overflow-hidden',
       )}
     >
       {decorate && <SectionDecorations hero={hero} />}
