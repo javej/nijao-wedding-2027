@@ -1,0 +1,39 @@
+frontend/components/sections/StoryChapter.tsx
+  s_e75e8187f03d50::t_0d7bd9682e01ec 62,67,71
+  s_e75e8187f03d50::t_d83700c5494deb 55-58
+  s_e75e8187f03d50::t_59988799f3f720 82-85
+frontend/components/sections/ProposalStack.tsx
+  s_e75e8187f03d50::t_87c31b549febf8 64-69,72
+  s_e75e8187f03d50::t_355e53c54a5fa1 34-41
+  s_e75e8187f03d50::t_bd5e51910ed1e1 182-186
+  s_e75e8187f03d50::t_fbf3253ac97e83 19-20,25-29,31-33
+  s_e75e8187f03d50::t_9cbc641364fa64 224-229,231-234
+  s_e75e8187f03d50::t_a722c2de8fca79 178-179
+  s_e75e8187f03d50::t_d51743333f1af4 240-243,246
+  s_e75e8187f03d50::t_a625a7c58ba312 166-176
+  s_e75e8187f03d50::t_a4e013bb5e10e6 198,202
+frontend/components/ui/PageCard.tsx
+  s_e75e8187f03d50::t_7b798d4aecd912 24,35-37,39-57,61-75,81
+frontend/components/WeddingExperience.tsx
+  s_e75e8187f03d50::t_56b60af801c827 91-94
+  s_e75e8187f03d50::t_be1bbb27658ee7 26-31,33
+frontend/components/ui/ChapterSection.tsx
+  s_e75e8187f03d50::t_f174ab5a8aad33 57,59,61,65-68,70,72,74,76
+  s_e75e8187f03d50::t_de8d6ed734a12c 160-170
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "1ef5fb52610cd1d4232a71dbc09c5210fb36eb8d",
+  "prompts": {},
+  "sessions": {
+    "s_e75e8187f03d50": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ac84592a-5abe-462c-a2e2-cdd419bf58f6",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
