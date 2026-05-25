@@ -1,0 +1,20 @@
+frontend/components/sections/dress-code/DressCodeLightbox.tsx
+  s_9321cd11b072e1::t_8e63a40462d3d0 71-72
+  s_9321cd11b072e1::t_f8555415a97505 45,52,54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "c6bbf8be08a7dbb128844fe0f468048423b5f23a",
+  "prompts": {},
+  "sessions": {
+    "s_9321cd11b072e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f433f4f-0b9f-4e03-ba65-6be6f389fb9b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
