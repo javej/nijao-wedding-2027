@@ -1,0 +1,28 @@
+frontend/components/sections/DressCodeSection.tsx
+  s_9321cd11b072e1::t_42da1ee778bf5b 1-2,10-17,19-43,48-51,53-54,57,60-61,65-77,80-81
+frontend/components/sections/dress-code/DressCodeCategoryCard.tsx
+  s_9321cd11b072e1::t_ba747abbf79a58 1-66
+frontend/components/sections/dress-code/MakeupPalettePan.tsx
+  s_9321cd11b072e1::t_a71de4edf5efa5 68
+  s_9321cd11b072e1::t_a4daaae02a9027 1-23,26-42,47-65,69-71,84-87,89-90,95-96
+  s_9321cd11b072e1::t_ce3eee290cf4a8 24-25,43-46,67,72-83,88,91-94
+  s_9321cd11b072e1::t_8a11ead3e85561 66
+frontend/components/sections/dress-code/DressCodeLightbox.tsx
+  s_9321cd11b072e1::t_2e416a39d4c609 1-77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "df5222ede95f09021d0e19a0a1494f1a0f49727b",
+  "prompts": {},
+  "sessions": {
+    "s_9321cd11b072e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f433f4f-0b9f-4e03-ba65-6be6f389fb9b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
