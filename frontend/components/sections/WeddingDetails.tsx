@@ -48,9 +48,16 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 w-full max-w-4xl">
         {/* Ceremony Block */}
         <div className="flex flex-col items-center text-center">
-          <h3 className="font-body font-medium text-display-sm text-deep-matcha tracking-widest uppercase mb-6">
+          <h3 className="font-body font-medium text-display-sm text-deep-matcha tracking-widest uppercase mb-4">
             Ceremony
           </h3>
+
+          <img
+            src="/decorations/st.therese-watercolor.png"
+            alt={`Watercolor illustration of ${ceremonyVenue ?? "the ceremony venue"}`}
+            loading="lazy"
+            className="w-full max-w-[320px] h-auto mb-6 mask-[radial-gradient(ellipse_at_center,black_55%,transparent_95%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_95%)]"
+          />
 
           {ceremonyVenue && (
             <p className="font-body text-body-lg text-text-on-light font-medium">
@@ -89,17 +96,21 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
           )}
         </div>
 
-        {/* Divider — visible on mobile only */}
-        <div className="block md:hidden w-16 h-px bg-matcha-chiffon mx-auto" aria-hidden="true" />
-
-        {/* Reception Block */}
+        {/* Reception Block — paintings replace the mobile hairline divider that used to sit here. */}
         <div className="relative flex flex-col items-center text-center">
           {/* Divider — visible on desktop only (left border) */}
           <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 h-2/3 w-px bg-matcha-chiffon" aria-hidden="true" />
 
-          <h3 className="font-body font-medium text-display-sm text-deep-matcha tracking-widest uppercase mb-6">
+          <h3 className="font-body font-medium text-display-sm text-deep-matcha tracking-widest uppercase mb-4">
             Reception
           </h3>
+
+          <img
+            src="/decorations/1022-watercolor.png"
+            alt={`Watercolor illustration of ${receptionVenue ?? "the reception venue"}`}
+            loading="lazy"
+            className="w-full max-w-[320px] h-auto mb-6 mask-[radial-gradient(ellipse_at_center,black_55%,transparent_95%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_95%)]"
+          />
 
           {receptionVenue && (
             <p className="font-body text-body-lg text-text-on-light font-medium">

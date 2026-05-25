@@ -23,14 +23,13 @@ interface WeddingExperienceProps {
 }
 
 /**
- * 3-way bg rotation across year chapters. Cycles matcha → cream →
- * raspberry — the first year opens on the deep matcha page (sets a
- * confident tonal floor), softens to cream on the second, and lands
- * on raspberry as the third-beat "heart-flutter" before the cycle
- * repeats. The proposal is locked to strawberry-milk and never
- * participates in this cycle — see `bgForChapter` below.
+ * 2-way bg rotation across year chapters. Alternates matcha ↔
+ * raspberry — every chapter lands on a deep, saturated page,
+ * trading deep-green and deep-wine in lockstep. The proposal is
+ * locked to strawberry-milk for tonal contrast at the climax and
+ * never participates in this cycle — see `bgForChapter` below.
  */
-const YEAR_PAGE_ROTATION: ReadonlyArray<PageBg> = ['matcha', 'cream', 'raspberry'];
+const YEAR_PAGE_ROTATION: ReadonlyArray<PageBg> = ['matcha', 'raspberry'];
 
 /**
  * Map each story chapter to its patterned page bg. Proposal chapters
