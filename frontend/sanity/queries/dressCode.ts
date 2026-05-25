@@ -5,31 +5,15 @@ const isSanityConfigured =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== "placeholder" &&
   !!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 
+// Only paletteColors is rendered. label/description/inspirationImages/additionalNotes
+// remain on the schema for backward-compat but are no longer queried.
 export const DRESS_CODE_QUERY = groq`
   *[_type == "dressCode"][0] {
-    label,
-    description,
     paletteColors[] {
       _key,
       colorKey,
       colorLabel
-    },
-    inspirationImages[] {
-      ...,
-      asset->{
-        _id,
-        url,
-        mimeType,
-        metadata {
-          lqip,
-          dimensions {
-            width,
-            height
-          }
-        }
-      }
-    },
-    additionalNotes
+    }
   }
 `;
 
@@ -40,31 +24,9 @@ export type PaletteColorEntry = {
   colorLabel: string;
 };
 
-/** Shape of each inspiration image entry. */
-export type InspirationImage = {
-  _key: string;
-  asset: {
-    _id: string;
-    url: string;
-    mimeType: string;
-    metadata: {
-      lqip: string;
-      dimensions: { width: number; height: number };
-    };
-  };
-  hotspot?: { x: number; y: number; width: number; height: number };
-  crop?: { top: number; bottom: number; left: number; right: number };
-  alt: string;
-  _type: "image";
-};
-
 /** Shape returned by DRESS_CODE_QUERY. */
 export type DressCodeResult = {
-  label: string;
-  description?: Array<{ _type: string; [key: string]: unknown }>;
   paletteColors?: PaletteColorEntry[];
-  inspirationImages?: InspirationImage[];
-  additionalNotes?: string;
 } | null;
 
 /** Fetch the singleton dress code document. Returns null if none exists. */
