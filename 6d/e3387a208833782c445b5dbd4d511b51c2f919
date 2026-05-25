@@ -1,0 +1,86 @@
+frontend/components/ui/ChapterSection.tsx
+  s_1752467febc2d0::t_4dc25f7e88d0d9 34,44,53-54,56-59,73-74
+  h_e320e9b9b1464c 60-61,100-101
+  s_e75e8187f03d50::t_9adb1fa327d0c7 5,20-21,35-43,45-52,55,62-72,78,84-85,89-92,96-99,103-104,107-115,119-123,130,132,135-140,146,148-152,154-158
+  s_1752467febc2d0::t_dc6011b73c1cd9 102
+frontend/components/ui/decorations/ChapterConnector.tsx
+  s_1752467febc2d0::t_297d94b56df35b 113-123
+frontend/components/WeddingExperience.tsx
+  s_e75e8187f03d50::t_29d624ed9819c0 2,16,25-61,71-74,83-86,97-98,100
+frontend/app/globals.css
+  s_e75e8187f03d50::t_5b3fba073e69c4 56
+  s_e75e8187f03d50::t_70e3ef2d7d4237 101-110
+  s_1752467febc2d0::t_a3025cab4e3e5b 250-256
+  s_e75e8187f03d50::t_05959b659d9ca1 262-269,273,290-291
+frontend/components/ui/ChapterPhotoCrossfade.tsx
+  s_e75e8187f03d50::t_5977e1de4351c0 1-143
+frontend/components/sections/ProposalStack.tsx
+  s_e75e8187f03d50::t_802242d8c2f250 1-158,160-239,241-272
+  s_e75e8187f03d50::t_6531140b641603 159
+  s_e75e8187f03d50::t_2796ceb58087f6 240
+frontend/components/ui/ChapterScrollContainer.tsx
+  s_e75e8187f03d50::t_05e6af60a1bf39 17-23
+studio/schemas/documents/storyChapter.ts
+  s_e75e8187f03d50::t_17b8dee98d16df 55,58,76,95-111
+frontend/components/sections/StoryChapter.tsx
+  s_e75e8187f03d50::t_e3ec639b4638ae 68
+  s_e75e8187f03d50::t_96d8eb884f3764 64
+  s_e75e8187f03d50::t_73f1352644b2a2 2-11,16-19,21-27,33-36,38-40,42-43,45,47,50-51,54-55,59-63,65-67,69-77,79,82,85-107
+frontend/components/ui/SectionDecorations.tsx
+  s_5a5fc2b31e7024::t_9c6e76d5412354 7,9,11,14-25,27-28,31-38,40-43,45-50,52-57,59-61,63-64
+  s_5a5fc2b31e7024::t_e49b826ab5e8ca 82-100,103-131,145,159
+frontend/components/ui/PageCard.tsx
+  s_e75e8187f03d50::t_152d03a0c349cc 1-27,29-35,40-41,55-57,59-63,65-68,70-75
+  s_e75e8187f03d50::t_d236703d319a1d 28,36-39,42-54,58,64,69
+frontend/components/ui/ArrivalOverlay.tsx
+  s_24c33e3a710afa::t_9e230a8d3a04fd 167-168
+  s_24c33e3a710afa::t_7b7824a5405d81 150
+  s_24c33e3a710afa::t_375662129f31e3 147-149,155-163,165-166,169-171
+  s_24c33e3a710afa::t_8640cd22e67df4 4
+  s_24c33e3a710afa::t_bc52f9a607fe24 164
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "6de3387a208833782c445b5dbd4d511b51c2f919",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_1752467febc2d0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0307c4aa-f6c2-4c17-8263-07e9ac9b639a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    },
+    "s_24c33e3a710afa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "89965873-1f9a-4580-9f3b-a91e8ee196c1",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    },
+    "s_5a5fc2b31e7024": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6bc44092-2f77-4f82-a579-738f4771d888",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    },
+    "s_e75e8187f03d50": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ac84592a-5abe-462c-a2e2-cdd419bf58f6",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
