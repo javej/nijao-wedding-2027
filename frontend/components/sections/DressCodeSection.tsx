@@ -19,7 +19,7 @@ interface DressCodeSectionProps {
 const CATEGORIES = [
   {
     label: "Principal Sponsors",
-    attire: "Barong / Filipiniana",
+    attire: "Suits & Dresses",
     imageSrc: "/decorations/dress-principal-sponsors.png",
     imageAlt: "Principal Sponsors dress code: women in deep matcha gowns, men in dark suits with green ties",
   },
