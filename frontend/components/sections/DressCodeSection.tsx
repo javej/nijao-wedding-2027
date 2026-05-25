@@ -1,7 +1,5 @@
-import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
-import { cn } from "@/lib/utils";
-import PortableTextRenderer from "@/components/portable-text-renderer";
+import { DressCodeCategoryCard } from "./dress-code/DressCodeCategoryCard";
+import { MakeupPalettePan } from "./dress-code/MakeupPalettePan";
 import type { DressCodeResult } from "@/sanity/queries/dressCode";
 
 interface DressCodeSectionProps {
@@ -9,118 +7,79 @@ interface DressCodeSectionProps {
 }
 
 /**
- * Static mapping of palette color keys to Tailwind bg classes.
- * CRITICAL: Tailwind purges dynamic classes — `bg-${colorKey}` will NOT work
- * in production. Every class must be present verbatim in source for the scanner.
+ * Three category cards for a Filipino wedding, in seniority order:
+ *   1. Principal Sponsors (Ninongs & Ninangs) — the most formal tier.
+ *   2. Entourage — bridesmaids, groomsmen, secondary sponsors.
+ *   3. Guests — broadest latitude, formal attire from the palette.
+ *
+ * Illustrations live in /public/decorations/ — they are static brand
+ * assets, not Sanity-managed. The natural intrinsic size of each PNG is
+ * declared so next/image can lay it out without runtime probing.
  */
-const paletteBgMap: Record<string, string> = {
-  "deep-matcha": "bg-deep-matcha",
-  raspberry: "bg-raspberry",
-  "golden-matcha": "bg-golden-matcha",
-  "strawberry-jam": "bg-strawberry-jam",
-  "matcha-chiffon": "bg-matcha-chiffon",
-  "berry-meringue": "bg-berry-meringue",
-  "matcha-latte": "bg-matcha-latte",
-  "strawberry-milk": "bg-strawberry-milk",
-};
+const CATEGORIES = [
+  {
+    label: "Principal Sponsors",
+    attire: "Barong / Filipiniana",
+    imageSrc: "/decorations/dress-principal-sponsors.png",
+    imageAlt: "Principal Sponsors dress code: women in deep matcha gowns, men in dark suits with green ties",
+  },
+  {
+    label: "Entourage",
+    attire: "Suits & Dresses",
+    imageSrc: "/decorations/dress-entourage.png",
+    imageAlt: "Entourage dress code: bridesmaids in blush gowns, groomsmen in dark suits with pink ties",
+  },
+  {
+    label: "Guests",
+    attire: "Formal Attire",
+    imageSrc: "/decorations/dress-guests.png",
+    imageAlt: "Guests dress code: a crowd in the full palette — greens, pinks, and earth tones",
+  },
+] as const;
+
+// All three illustrations share the same intrinsic size (~3:2 landscape).
+// next/image needs explicit dimensions to reserve layout space at SSR.
+const ILLUSTRATION_WIDTH = 600;
+const ILLUSTRATION_HEIGHT = 400;
 
 /**
  * DressCodeSection — Server Component
  *
- * Renders dress code instructions with palette color swatches so guests
- * know what to wear without messaging the couple.
+ * Three category cards stacked vertically (Sponsors → Entourage → Guests),
+ * each linking to a full-size lightbox preview, with a single shared
+ * makeup-palette pan beneath. Designed to fit in a single snap-scroll
+ * viewport on mobile.
  *
- * Every color swatch includes a text label for guests with color vision
- * differences (WCAG compliance). Labels come from Sanity so Nianne can
- * customise descriptions without a code change.
- *
- * Must be wrapped in <ChapterSection> for snap-scroll and palette accent.
+ * Strawberry Milk is filtered out of the rendered pan by
+ * `MakeupPalettePan` — bridesmaids learn that colour off-site.
  */
 export function DressCodeSection({ dressCode }: DressCodeSectionProps) {
-  const {
-    label,
-    description,
-    paletteColors,
-    inspirationImages,
-    additionalNotes,
-  } = dressCode;
+  const { paletteColors } = dressCode;
 
   return (
-    <div className="flex flex-col items-center justify-center w-full px-(--chapter-padding-x) py-(--chapter-padding-y)">
-      <h2 className="font-body font-normal text-display-md text-text-on-light tracking-wide mb-4">
+    <div className="flex flex-col items-center w-full max-w-3xl mx-auto px-(--chapter-padding-x) py-(--chapter-padding-y) gap-6">
+      <h2 className="font-body font-normal text-display-md text-text-on-light tracking-wide">
         Dress Code
       </h2>
 
-      <p className="font-body font-medium text-display-sm text-deep-matcha tracking-widest uppercase mb-8">
-        {label}
-      </p>
+      <div className="flex flex-col gap-4 w-full">
+        {CATEGORIES.map((category) => (
+          <DressCodeCategoryCard
+            key={category.label}
+            label={category.label}
+            attire={category.attire}
+            imageSrc={category.imageSrc}
+            imageAlt={category.imageAlt}
+            imageWidth={ILLUSTRATION_WIDTH}
+            imageHeight={ILLUSTRATION_HEIGHT}
+          />
+        ))}
+      </div>
 
-      {description && (
-        <div className="font-body text-body-md text-text-on-light/80 text-center max-w-xl mb-12 leading-relaxed">
-          {Array.isArray(description) ? (
-            <PortableTextRenderer value={description} />
-          ) : (
-            <p className="whitespace-pre-line">{description}</p>
-          )}
-        </div>
-      )}
-
-      {/* Palette color swatches */}
       {paletteColors && paletteColors.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 w-full max-w-3xl mb-12">
-          {paletteColors.map((color) => (
-            <div
-              key={color._key}
-              className="flex flex-col items-center gap-3"
-              role="group"
-              aria-label={color.colorLabel}
-            >
-              <div
-                className={cn(
-                  "w-full aspect-square rounded-lg shadow-sm",
-                  paletteBgMap[color.colorKey],
-                )}
-              />
-              <span className="font-body text-body-sm text-text-on-light/70 text-center leading-snug">
-                {color.colorLabel}
-              </span>
-            </div>
-          ))}
+        <div className="w-full mt-1">
+          <MakeupPalettePan palette={paletteColors} />
         </div>
-      )}
-
-      {/* Inspiration images — only rendered if array is non-empty */}
-      {inspirationImages && inspirationImages.length > 0 && (
-        <div className="w-full max-w-4xl mb-12">
-          <h3 className="font-body font-normal text-display-sm text-text-on-light tracking-wide text-center mb-8">
-            Inspiration
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {inspirationImages.map((img) => (
-              <div
-                key={img._key}
-                className="relative aspect-3/4 rounded-lg overflow-hidden"
-              >
-                <Image
-                  src={urlFor(img).width(600).url()}
-                  alt={img.alt || "Dress inspiration"}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                  loading="lazy"
-                  className="object-cover"
-                  placeholder={img.asset.metadata?.lqip ? "blur" : undefined}
-                  blurDataURL={img.asset.metadata?.lqip}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {additionalNotes && (
-        <p className="font-body text-body-md text-text-on-light/80 text-center max-w-lg leading-relaxed whitespace-pre-line">
-          {additionalNotes}
-        </p>
       )}
     </div>
   );
