@@ -53,6 +53,7 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-fade-up: fade-up 0.7s ease-out forwards;
   --animate-connector-sway: connector-sway 6s ease-in-out infinite;
+  --animate-ken-burns: ken-burns 5s ease-out both;
 }
 
 @keyframes accordion-down {
@@ -95,6 +96,16 @@
   50% {
     transform: rotate(1.5deg);
   }
+}
+
+/* Ken Burns — slow zoom on the active photo while it's the focal
+   image in a chapter's crossfade cycle. Used by ChapterPhotoCrossfade.
+   `both` keeps the final scale held until the next photo takes over
+   so we never snap back to 1.0 visibly. Disabled by the global
+   `prefers-reduced-motion: reduce` block below. */
+@keyframes ken-burns {
+  0% { transform: scale(1.0); }
+  100% { transform: scale(1.06); }
 }
 
 @theme inline {
@@ -171,7 +182,7 @@
   --foreground: #1a1a1a;
   /* Section bg alternation. Sage is matcha-chiffon (#b2bf93) ~25% over cream. */
   --section-cream: #faf9f6;
-  --section-sage:  #e8eadd;
+  --section-sage:  #676930;
   /* ── shadcn/ui ── */
   --radius: 0.625rem;
   --card: oklch(1 0 0);
@@ -236,23 +247,30 @@
 }
 
 /*
+ * Dark-bg text readability is now handled inline on ChapterSection via
+ * Tailwind utilities (`even:[--text-on-light:#ffffff]` paired with the
+ * sage bg in the alternating class bundle). The previous CSS rule here
+ * targeted `[id^="story-"]:nth-child(even)`, but bundling text-color
+ * with bg-color in one place means special-case sections (e.g. the
+ * proposal's strawberry-milk bg) can ship their own text-color without
+ * fighting a global override.
+ */
+
+/*
  * Section watermark backdrop.
  *
- * Tiles `pattern-watermark.png` across every section at very low
- * opacity, giving the flat cream/sage backgrounds a painterly
- * "watermarked stationery" depth. Universal — applies to decorated
- * AND functional sections so the paper-like feel is consistent
- * across the whole experience.
+ * Tiles `pattern-watermark.png` at very low opacity across every
+ * section EXCEPT story chapters, giving the flat cream/sage
+ * functional backgrounds a painterly "watermarked stationery" feel.
+ *
+ * Story chapters opt out via `data-story-chapter` — they render
+ * their own full-page patterned-bg PageCard composition, which
+ * supplies its own paper texture and embossed ornament. Stacking
+ * the watermark under that would double-pattern the page.
  *
  * Layering: pseudo-element with `z-index: -1` + `isolation: isolate`
  * on the section. The watermark sits ABOVE the section's background
- * color but BELOW every child (text, photos, decorations, FABs) —
- * no JSX changes needed, no z-index work in any child component.
- *
- * Tune `opacity` (0.04–0.10 is the sensible range) — at the low end
- * it's barely-there paper texture, at the high end the motifs read
- * as visible scattered florals. Tune `background-size` to control
- * how often the pattern tiles per section.
+ * color but BELOW every child (text, photos, decorations, FABs).
  */
 #main-content > section {
   position: relative;
@@ -265,9 +283,12 @@
   background-image: url("/decorations/pattern-watermark.png");
   background-size: 800px;
   background-repeat: repeat;
-  opacity: 0.06;
+  opacity: 0.04;
   pointer-events: none;
   z-index: -1;
+}
+#main-content > section[data-story-chapter]::before {
+  display: none;
 }
 
 @utility container {

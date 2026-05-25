@@ -1,72 +1,114 @@
-import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { ProposalScrapbook } from "@/components/sections/ProposalScrapbook";
-import { ScallopedMat } from "@/components/ui/decorations/ScallopedMat";
-import type { StoryChapterResult } from "@/sanity/queries/storyChapters";
+import { ProposalStack } from "@/components/sections/ProposalStack";
+import { PageCard, type PageBg } from "@/components/ui/PageCard";
+import {
+  ChapterPhotoCrossfade,
+  type CrossfadePhoto,
+} from "@/components/ui/ChapterPhotoCrossfade";
+import type {
+  StoryChapterImage,
+  StoryChapterResult,
+} from "@/sanity/queries/storyChapters";
 
 interface StoryChapterProps {
   chapter: StoryChapterResult;
+  /**
+   * Which patterned page this year sits on. Picked by the parent
+   * (`WeddingExperience`) from the 3-way rotation across year chapters
+   * (cream → matcha → raspberry → ...). Proposal chapters branch into
+   * `ProposalStack` and never use this prop.
+   */
+  pageBg: PageBg;
+  /**
+   * Eager-load this chapter's PageCard PNG and first photo. Set true
+   * for the first story chapter to avoid LCP regression; false for
+   * the rest so they lazy-load as the user scrolls into them.
+   */
+  priority?: boolean;
 }
 
 /**
  * StoryChapter — Server Component
  *
- * Renders a single year of the love story. For most years that's one image
- * + one caption — restraint over density. The photo is framed by a
- * `ScallopedMat` so every chapter shares the lace-print treatment that
- * anchors the proposal scrapbook, just upright and centered rather than
- * scattered.
+ * Renders one year of the love story as a "page in the album":
+ * a centered portrait PageCard with year (large serif italic),
+ * photo crossfade (4:5 bare photo, soft shadow), and caption
+ * (DM Sans body) inside the page's inner safe area.
  *
- * The proposal year (`isProposal === true`) branches into
- * `ProposalScrapbook`, which trades the single print for a small scatter
- * of mats but keeps the same outer rhythm (year, caption, one snap point).
+ * The proposal year (`isProposal: true`) branches into ProposalStack,
+ * which trades the crossfade for the scroll-pinned accumulation
+ * mechanic and locks to the strawberry-milk page.
  *
- * Must be wrapped in <ChapterSection> for snap-scroll and palette accent.
+ * Must be wrapped in <ChapterSection story bg="page-..."> for the
+ * page-wing color, continuous-flow scroll, and watermark suppression.
  */
-export function StoryChapter({ chapter }: StoryChapterProps) {
+export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapterProps) {
   if (chapter.isProposal) {
-    return <ProposalScrapbook chapter={chapter} />;
+    return <ProposalStack chapter={chapter} />;
   }
 
-  const { year, caption, image } = chapter;
+  const { year, caption } = chapter;
+  const photos = toCrossfadePhotos(chapter, year);
 
   return (
-    <div className="relative flex flex-col items-center justify-center text-center px-(--chapter-padding-x) py-(--chapter-padding-y)">
-      <h2 className="font-body font-normal text-display-sm text-text-on-light/70 tracking-widest mb-5">
+    <PageCard bg={pageBg} priority={priority}>
+      <h2
+        className="font-display italic font-normal text-display-lg text-text-on-light leading-display px-5 py-1 rounded-md backdrop-blur-sm"
+        style={{ backgroundColor: 'var(--text-backdrop)' }}
+      >
         {year}
       </h2>
 
-      <ScallopedMat
-        className="aspect-3/4 w-72 drop-shadow-md md:w-96"
-        contentClassName="absolute inset-[6%] overflow-hidden rounded-[2px] bg-section-cream"
-      >
-        {image?.asset ? (
-          <Image
-            src={urlFor(image).width(800).url()}
-            alt={image.alt || `Jave and Nianne, ${year}`}
-            fill
-            sizes="(max-width: 768px) 18rem, 24rem"
-            loading="lazy"
-            className="object-cover"
-            placeholder={image.asset.metadata?.lqip ? "blur" : undefined}
-            blurDataURL={image.asset.metadata?.lqip}
+      <div className="my-(--gap-chapter-elements) flex w-full items-center justify-center">
+        {photos.length > 0 ? (
+          <ChapterPhotoCrossfade
+            photos={photos}
+            priorityFirst={priority}
+            className="aspect-4/5 w-full"
           />
         ) : (
           <div
-            className="absolute inset-0 flex items-center justify-center bg-matcha-latte/20"
+            className="aspect-4/5 w-full flex items-center justify-center bg-text-on-light/5"
             role="img"
             aria-label={`Placeholder for ${year}`}
           >
-            <span className="font-body font-normal text-display-lg text-matcha-latte/30 select-none">
+            <span className="font-display italic text-display-md text-text-on-light/30 select-none">
               {year}
             </span>
           </div>
         )}
-      </ScallopedMat>
+      </div>
 
-      <p className="font-body font-normal text-body-md text-text-on-light leading-relaxed mt-5 max-w-sm">
+      <p
+        className="font-body font-normal text-body-md text-text-on-light leading-relaxed max-w-sm px-5 py-2 rounded-md backdrop-blur-sm"
+        style={{ backgroundColor: 'var(--text-backdrop)' }}
+      >
         {caption}
       </p>
-    </div>
+    </PageCard>
   );
+}
+
+/**
+ * Build the list of photos to feed the crossfade. Prefer the gallery
+ * (`images[]`) if populated; otherwise fall back to the legacy single
+ * `image`. Cap at 3 — past that the slot timing makes a chapter dwell
+ * too long, and most years naturally have 2–3 keeper photos anyway.
+ */
+function toCrossfadePhotos(
+  chapter: StoryChapterResult,
+  year: number,
+): CrossfadePhoto[] {
+  const source: StoryChapterImage[] =
+    chapter.images && chapter.images.length > 0
+      ? chapter.images.slice(0, 3)
+      : chapter.image
+        ? [chapter.image]
+        : [];
+
+  return source.map((image, i) => ({
+    src: urlFor(image).width(800).url(),
+    alt: image.alt || `Jave and Nianne, ${year} (${i + 1})`,
+    blurDataURL: image.asset.metadata?.lqip,
+  }));
 }

@@ -38,4 +38,5 @@ next-env.d.ts
 # Spartan AI config (contains API keys)
 .spartan/ai.env
 
-.claude/
+.claude/.worktrees/
+.claude

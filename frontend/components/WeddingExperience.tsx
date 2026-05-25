@@ -1,10 +1,9 @@
 import { ChapterScrollContainer } from '@/components/ui/ChapterScrollContainer';
-import { ChapterSection } from '@/components/ui/ChapterSection';
+import { ChapterSection, type BgTone } from '@/components/ui/ChapterSection';
 import { ExperienceShell } from '@/components/ui/ExperienceShell';
 import { FloatingAnchorSet } from '@/components/ui/FloatingAnchorSet';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { StoryChapter } from '@/components/sections/StoryChapter';
-import { ChapterConnector, connectorVariantForChapter } from '@/components/ui/decorations/ChapterConnector';
 import { WeddingDetails } from '@/components/sections/WeddingDetails';
 import { DressCodeSection } from '@/components/sections/DressCodeSection';
 import { EntourageSection } from '@/components/sections/EntourageSection';
@@ -14,12 +13,50 @@ import { getWeddingDetails } from '@/sanity/queries/weddingDetails';
 import { getDressCode } from '@/sanity/queries/dressCode';
 import { getPadrinos, getWeddingParty } from '@/sanity/queries/entourage';
 import type { GuestResult } from '@/sanity/queries/guests';
+import type { PageBg } from '@/components/ui/PageCard';
 import { deriveRsvpViewState } from '@/lib/rsvp-view-state';
 
 export type WeddingGuest = NonNullable<GuestResult>;
 
 interface WeddingExperienceProps {
   guest: WeddingGuest | null;
+}
+
+/**
+ * 2-way bg rotation across year chapters. Alternates matcha ↔
+ * raspberry — every chapter lands on a deep, saturated page,
+ * trading deep-green and deep-wine in lockstep. The proposal is
+ * locked to strawberry-milk for tonal contrast at the climax and
+ * never participates in this cycle — see `bgForChapter` below.
+ */
+const YEAR_PAGE_ROTATION: ReadonlyArray<PageBg> = ['matcha', 'raspberry'];
+
+/**
+ * Map each story chapter to its patterned page bg. Proposal chapters
+ * always land on strawberry-milk regardless of position in the
+ * sequence — the climax color is reserved for the climax moment.
+ */
+function bgForChapter(chapter: { isProposal?: boolean }, yearIndex: number): PageBg {
+  if (chapter.isProposal) return 'strawberry-milk';
+  return YEAR_PAGE_ROTATION[yearIndex % YEAR_PAGE_ROTATION.length]!;
+}
+
+/**
+ * Lift the `PageBg` value to the `BgTone` ChapterSection expects.
+ * One-to-one mapping; the `page-*` tones set the section's wing
+ * color and text/mat tokens to match each patterned PNG.
+ */
+function bgToneForPage(bg: PageBg): BgTone {
+  switch (bg) {
+    case 'cream':
+      return 'page-cream';
+    case 'matcha':
+      return 'page-matcha';
+    case 'raspberry':
+      return 'page-raspberry';
+    case 'strawberry-milk':
+      return 'page-strawberry-milk';
+  }
 }
 
 export async function WeddingExperience({ guest }: WeddingExperienceProps) {
@@ -31,6 +68,10 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
     getWeddingParty(),
   ]);
 
+  // Year-only counter for the rotation — proposal chapters skip the
+  // counter so they don't shift the cream/matcha/raspberry cadence.
+  let yearIndex = 0;
+
   return (
     <ExperienceShell guestName={guest?.firstName}>
       <FloatingAnchorSet />
@@ -39,24 +80,27 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           <HeroSection />
         </ChapterSection>
 
-        {chapters.map((chapter, index) => {
-          const connectorVariant = connectorVariantForChapter(index);
+        {chapters.map((chapter) => {
+          const pageBg = bgForChapter(chapter, yearIndex);
+          if (!chapter.isProposal) yearIndex += 1;
+
           return (
             <ChapterSection
               key={chapter._id}
-              id={`story-${chapter.year}`}
+              // Append `-proposal` when this chapter is the engagement —
+              // lets a same-year anniversary chapter coexist with the
+              // proposal chapter without colliding on the HTML id.
+              id={`story-${chapter.year}${chapter.isProposal ? '-proposal' : ''}`}
               palette={chapter.isProposal ? 'strawberry-jam' : 'matcha-latte'}
               label={
                 chapter.isProposal
                   ? `The proposal — ${chapter.year}`
                   : `Our story — ${chapter.year}`
               }
-              decorate
+              bg={bgToneForPage(pageBg)}
+              story
             >
-              {connectorVariant !== null && (
-                <ChapterConnector variant={connectorVariant} swayOffset={index} />
-              )}
-              <StoryChapter chapter={chapter} />
+              <StoryChapter chapter={chapter} pageBg={pageBg} />
             </ChapterSection>
           );
         })}

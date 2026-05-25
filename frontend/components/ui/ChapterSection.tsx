@@ -2,7 +2,7 @@ import { SectionDecorations } from '@/components/ui/SectionDecorations';
 import { cn } from '@/lib/utils';
 
 /**
- * Palette color keys for the 8 wedding chapters.
+ * Palette color keys for the wedding chapters.
  * Maps to Tailwind utility classes generated from @theme tokens in globals.css.
  */
 export type PaletteColor =
@@ -17,7 +17,8 @@ export type PaletteColor =
 
 /**
  * Maps palette color keys to their Tailwind border-left color classes.
- * Uses design token utility classes — no hardcoded hex values.
+ * Used only on functional sections — story chapters drop the accent
+ * stripe entirely (their patterned-bg page-card encodes mood instead).
  */
 const paletteBorderClass: Record<PaletteColor, string> = {
   'deep-matcha': 'border-l-deep-matcha',
@@ -30,61 +31,143 @@ const paletteBorderClass: Record<PaletteColor, string> = {
   'strawberry-milk': 'border-l-strawberry-milk',
 };
 
+/**
+ * Background tones a `ChapterSection` can lock to via the `bg` prop.
+ *
+ * Functional sections (RSVP, details, dress code, etc.) use the flat
+ * `cream` / `sage` / `strawberry-milk` tones — solid color with the
+ * pattern-watermark overlay providing paper texture.
+ *
+ * Story chapters use the `page-*` tones — these set the section's
+ * underlying wing color, while the `PageCard` component renders the
+ * patterned PNG on top as the centered portrait page composition.
+ */
+export type BgTone =
+  | 'cream'
+  | 'sage'
+  | 'strawberry-milk'
+  | 'page-cream'
+  | 'page-matcha'
+  | 'page-raspberry'
+  | 'page-strawberry-milk';
+
+const bgToneClass: Record<BgTone, string> = {
+  // ── Functional section tones (flat fills, watermark overlay) ──
+  'cream':
+    'bg-section-cream [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
+  'sage':
+    'bg-section-sage [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)] [--text-backdrop:rgba(0,0,0,0.3)]',
+  'strawberry-milk':
+    'bg-strawberry-milk [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
+  // ── Story chapter page-wing tones (PageCard renders pattern on top) ──
+  // Wing color matches each patterned PNG's paper base so the page-card
+  // edge seams cleanly into the section on landscape viewports.
+  // `--text-backdrop` is a CONTRASTING semi-opaque overlay (lighter
+  // than light bgs, darker than dark bgs), paired with backdrop-blur
+  // on text wrappers to lift text off the embossed ornament and keep
+  // captions readable.
+  'page-cream':
+    'bg-section-cream [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
+  'page-matcha':
+    'bg-deep-matcha [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)] [--text-backdrop:rgba(0,0,0,0.3)]',
+  'page-raspberry':
+    'bg-raspberry [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)] [--text-backdrop:rgba(0,0,0,0.3)]',
+  'page-strawberry-milk':
+    'bg-strawberry-milk [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
+};
+
 interface ChapterSectionProps {
   /** Unique identifier for the chapter section */
   id: string;
-  /** Palette color token for the left-edge accent */
+  /** Palette color token (semantic — only renders as a stripe on non-story sections) */
   palette: PaletteColor;
   /** Accessible label for the section */
   label: string;
   /**
    * Render the floral/cat decoration layer in this section.
-   * Opt-in (defaults false) — currently only Hero and story chapters
-   * decorate; the functional sections (wedding details, dress code,
-   * entourage, RSVP, completion) and the proposal stay clean.
+   * Story chapters never decorate — their patterned PageCard supplies
+   * its own ornament. Functional sections opt in/out as before.
    */
   decorate?: boolean;
   /**
-   * When true, use the hero variant of the decoration layout — the
-   * middle callas grow much larger to fill the empty vertical space
-   * around the centered headline. Story chapters keep small middle
-   * callas because they have a photo in the side-strip zone.
-   * No effect when `decorate` is false.
+   * Apply the alternating cream/deep-matcha "heartbeat" via odd/even
+   * nth-child utilities. Used by functional sections only — story
+   * chapters pick their bg explicitly via the `bg` prop and the
+   * 3-way rotation in WeddingExperience. Ignored when `bg` is set.
+   */
+  alternating?: boolean;
+  /**
+   * Lock the section to a specific bg tone. Each tone bundles bg color +
+   * `--text-on-light` + `--mat-color` so the trio travels together.
+   * Story chapters pass `page-*` tones; functional sections pass the
+   * flat tones.
+   */
+  bg?: BgTone;
+  /**
+   * Hero variant of the decoration layout — large corner-anchor callas.
+   * Only relevant when `decorate` is true. Story chapters are not heroes.
    */
   hero?: boolean;
+  /**
+   * Story chapter mode. When true:
+   *  - drops `snap-start snap-always` (continuous flow scroll)
+   *  - drops `border-l-4` palette accent stripe
+   *  - sets `data-story-chapter` (CSS hook that suppresses the watermark)
+   * Functional sections leave this false to keep snap-scroll, the
+   * accent stripe, and the watermark intact.
+   */
+  story?: boolean;
   children: React.ReactNode;
 }
+
+// Alternating two-tone heartbeat — used by functional sections only.
+const alternatingClasses =
+  'odd:bg-section-cream odd:[--text-on-light:#1a1a1a] odd:[--mat-color:var(--color-deep-matcha)] ' +
+  'even:bg-section-sage even:[--text-on-light:#ffffff] even:[--mat-color:var(--color-strawberry-milk)]';
 
 export function ChapterSection({
   id,
   palette,
   label,
   decorate = false,
+  alternating = false,
+  bg,
   hero = false,
+  story = false,
   children,
 }: ChapterSectionProps) {
+  const bgClasses = bg
+    ? bgToneClass[bg]
+    : alternating
+      ? alternatingClasses
+      : bgToneClass['cream'];
+
   return (
     <section
       id={id}
       aria-label={label}
       data-palette={palette}
+      data-story-chapter={story ? '' : undefined}
       className={cn(
-        'min-h-dvh snap-start snap-always',
-        'flex items-center justify-center',
-        // Alternating two-tone heartbeat across sections. nth-child(odd)
-        // is the first, third, fifth section — starts with cream so the
-        // Hero (first section after arrival) lands on the lighter tone.
-        'odd:bg-section-cream even:bg-section-sage',
-        // Mat color for any `ScallopedMat` rendered inside this section
-        // tracks the bg alternation: deep-matcha (green) prints on cream,
-        // strawberry-milk (pink) prints on sage. Single source of truth —
-        // children read it via `text-(--mat-color)`.
-        'odd:[--mat-color:var(--color-deep-matcha)] even:[--mat-color:var(--color-strawberry-milk)]',
-        'border-l-4',
-        paletteBorderClass[palette],
-        // `relative overflow-hidden` only when decorated, so undecorated
-        // sections don't accidentally clip overflowing content.
-        decorate && 'relative overflow-hidden',
+        'min-h-dvh flex items-center justify-center',
+        // Snap-scroll only for non-story sections. Story chapters flow
+        // continuously inside the snap-mandatory container by simply
+        // not declaring themselves as snap targets.
+        !story && 'snap-start snap-always',
+        bgClasses,
+        // Accent stripe lives on functional sections only.
+        !story && cn('border-l-4', paletteBorderClass[palette]),
+        // `relative` for any section that needs absolute-positioned
+        // children (PageCard on story chapters, SectionDecorations on
+        // decorated sections).
+        (decorate || story) && 'relative',
+        // `overflow-hidden` ONLY on decorated sections (the hero with
+        // its corner-anchor CallaLily bleeds). NEVER on story sections —
+        // the proposal uses `position: sticky` inside, and sticky breaks
+        // when ANY ancestor has overflow:hidden. PageCard's contents are
+        // already self-contained via inset-0 / inset-[12%], so clipping
+        // at the section level isn't needed for story chapters.
+        decorate && 'overflow-hidden',
       )}
     >
       {decorate && <SectionDecorations hero={hero} />}

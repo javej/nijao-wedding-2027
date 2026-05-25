@@ -34,6 +34,14 @@ export function connectorVariantForChapter(chapterIndex: number): ConnectorVaria
 interface ChapterConnectorProps {
   variant: ConnectorVariant;
   /**
+   * Override the watercolor PNG resolved from `variant` with an arbitrary
+   * image URL. Used to swap in vector connectors (e.g. `vine-vector.png`)
+   * for dark-bg sections while keeping the same sway + layout behaviour.
+   * When set, `variant` is still required for typing but its asset path
+   * is ignored.
+   */
+  imageSrc?: string;
+  /**
    * Deterministic offset (in seconds) for the sway animation, so adjacent
    * chapters don't pendulum in lockstep. Pass the chapter index — the
    * component derives a stable per-chapter phase from it.
@@ -60,11 +68,17 @@ interface ChapterConnectorProps {
  * handles WebP conversion + responsive sizing at request time, matching
  * the existing SectionDivider convention.
  */
-export function ChapterConnector({ variant, swayOffset = 0, className }: ChapterConnectorProps) {
+export function ChapterConnector({
+  variant,
+  imageSrc,
+  swayOffset = 0,
+  className,
+}: ChapterConnectorProps) {
   // Stagger sway across chapters: each chapter offsets the animation by
   // ~0.7s × index, so the cycle is fully desynced after a few chapters
   // without ever lining up identically again.
   const animationDelay = `${-((swayOffset * 0.7) % 6)}s`;
+  const src = imageSrc ?? `/decorations/connector-${variant}.png`;
 
   return (
     <div
@@ -89,19 +103,24 @@ export function ChapterConnector({ variant, swayOffset = 0, className }: Chapter
       )}
     >
       <Image
-        src={`/decorations/connector-${variant}.png`}
+        src={src}
         alt=""
         width={400}
         height={600}
         sizes="(max-width: 768px) 144px, 176px"
         className="w-36 md:w-44"
       />
-      {/* Continuation thread — a thin watercolor-toned line that fades from
-          the charm down toward the year heading, closing the remaining
-          gap without redrawing the PNG. The faint sage gradient eases
-          into transparency so it dissolves into the section background
-          rather than terminating with a hard edge. */}
-      <div className="h-24 w-px bg-linear-to-b from-deep-matcha/35 to-transparent md:h-32" />
+      {/* Continuation thread — only for watercolor PNG variants whose
+          charms end with a hard edge. The CSS line is centered in the
+          flex column, but the painted vine in `vine-vector.png` sits
+          slightly off-center on the canvas, so on `imageSrc` variants
+          the thread reads as a stray line beside the cord rather than
+          a continuation. Vector connectors rely on their painted taper
+          instead — if the gap to the year feels too wide, regen the
+          PNG with a longer trailing stem. */}
+      {!imageSrc && (
+        <div className="h-24 w-px bg-linear-to-b from-deep-matcha/35 to-transparent md:h-32" />
+      )}
     </div>
   );
 }
