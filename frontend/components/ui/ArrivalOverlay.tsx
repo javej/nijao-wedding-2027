@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 
 /**
@@ -143,17 +144,31 @@ export function ArrivalOverlay({ visible, interactive, onDismiss, onExitComplete
           exit="exit"
           onClick={dismiss}
         >
-          {/* Greeting — radical negative space, pure typography */}
-          <motion.p
-            className="font-display text-display-lg font-light text-foreground px-8 text-center max-w-2xl leading-relaxed"
+          {/* Greeting framed by lace — text sits inside the lace's
+              transparent center (~17% border inset on all sides). */}
+          <motion.div
+            className="relative aspect-2/3 w-70 sm:w-80 md:w-90"
             variants={textVariants}
             initial={initialTextState}
             animate={animationState}
           >
-            {guestName ? <>Welcome, <span className="italic text-raspberry">{guestName}</span>.</> : 'Welcome.'}
-            <br />
-            We&rsquo;re so glad you&rsquo;re here.
-          </motion.p>
+            <Image
+              src="/decorations/lace-welcome-1.png"
+              alt=""
+              aria-hidden="true"
+              fill
+              priority
+              sizes="(min-width: 768px) 360px, (min-width: 640px) 320px, 280px"
+              className="pointer-events-none select-none object-contain"
+            />
+            <p className="absolute inset-x-[12%] inset-y-[18%] flex items-center justify-center text-center font-display text-base md:text-lg lg:text-xl font-light text-foreground leading-relaxed">
+              <span>
+                {guestName ? <>Welcome, <span className="italic text-raspberry">{guestName}</span>.</> : 'Welcome.'}
+                <br />
+                We&rsquo;re so glad you&rsquo;re here.
+              </span>
+            </p>
+          </motion.div>
 
           {/* Tap-to-begin affordance — ceremonial, not utilitarian */}
           <motion.p

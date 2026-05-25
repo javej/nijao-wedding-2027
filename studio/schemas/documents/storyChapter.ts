@@ -52,12 +52,11 @@ export default defineType({
     }),
     defineField({
       name: "image",
-      title: "Image",
+      title: "Image (legacy — single photo)",
       type: "image",
       description:
-        "Drag to reposition focal point after upload — the crop adjusts automatically across screen sizes.",
+        "Single-photo fallback. Used only when 'Gallery Images' below is empty. Prefer Gallery Images for new chapters — they support the cinematic crossfade with 2–3 photos per year.",
       options: { hotspot: true },
-      hidden: ({ parent }) => parent?.isProposal === true,
       fields: [
         defineField({
           name: "alt",
@@ -74,8 +73,7 @@ export default defineType({
       title: "Gallery Images",
       type: "array",
       description:
-        "Gallery photos for the proposal scrapbook layout. Used only when this chapter is marked as the proposal — other chapters should leave this empty and use the single `image` field above.",
-      hidden: ({ parent }) => parent?.isProposal !== true,
+        "Photos shown in this chapter. Year chapters use the first 2–3 in an auto-cycle crossfade with Ken Burns zoom. The proposal chapter uses up to 5 in the scroll-pinned stacking sequence. Leave empty to fall back to the legacy single 'Image' above.",
       of: [
         {
           type: "image",
@@ -94,10 +92,23 @@ export default defineType({
       ],
       validation: (rule) =>
         rule.custom((value, context) => {
-          const doc = context.document as { isProposal?: boolean } | undefined;
-          if (!doc?.isProposal) return true;
-          if (!value || value.length === 0)
-            return "The proposal chapter needs at least one gallery image";
+          const doc = context.document as
+            | { isProposal?: boolean; image?: unknown }
+            | undefined;
+          // Proposal must have at least one gallery image — the stacking
+          // mechanic has no single-image fallback rendering path.
+          if (doc?.isProposal) {
+            if (!value || value.length === 0)
+              return "The proposal chapter needs at least one gallery image";
+          }
+          // For year chapters, EITHER images OR the legacy single image
+          // must be populated — otherwise the chapter renders empty.
+          if (!doc?.isProposal) {
+            const hasGallery = value && value.length > 0;
+            const hasLegacy = !!doc?.image;
+            if (!hasGallery && !hasLegacy)
+              return "Add at least one Gallery Image or fill in the legacy single Image above";
+          }
           return true;
         }),
     }),

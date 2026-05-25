@@ -110,12 +110,17 @@ export function ChapterConnector({
         sizes="(max-width: 768px) 144px, 176px"
         className="w-36 md:w-44"
       />
-      {/* Continuation thread — a thin watercolor-toned line that fades from
-          the charm down toward the year heading, closing the remaining
-          gap without redrawing the PNG. The faint sage gradient eases
-          into transparency so it dissolves into the section background
-          rather than terminating with a hard edge. */}
-      <div className="h-24 w-px bg-linear-to-b from-deep-matcha/35 to-transparent md:h-32" />
+      {/* Continuation thread — only for watercolor PNG variants whose
+          charms end with a hard edge. The CSS line is centered in the
+          flex column, but the painted vine in `vine-vector.png` sits
+          slightly off-center on the canvas, so on `imageSrc` variants
+          the thread reads as a stray line beside the cord rather than
+          a continuation. Vector connectors rely on their painted taper
+          instead — if the gap to the year feels too wide, regen the
+          PNG with a longer trailing stem. */}
+      {!imageSrc && (
+        <div className="h-24 w-px bg-linear-to-b from-deep-matcha/35 to-transparent md:h-32" />
+      )}
     </div>
   );
 }
