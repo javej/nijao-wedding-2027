@@ -1,0 +1,33 @@
+frontend/components/WeddingExperience.tsx
+  s_378ed4e42dd3b2::t_cc6bb376eaf57b 79
+frontend/components/sections/WeddingDetails.tsx
+  s_378ed4e42dd3b2::t_4643e9065f72c6 26
+frontend/components/sections/DressCodeSection.tsx
+  s_378ed4e42dd3b2::t_f86f46caa19f90 50-51
+frontend/components/ui/RSVPChat.tsx
+  s_378ed4e42dd3b2::t_a32c532f5ba1a8 217-218
+frontend/components/ui/ChapterSection.tsx
+  s_378ed4e42dd3b2::t_07748f34e7d3a9 119-121,124-132
+  s_378ed4e42dd3b2::t_219bfc62c0c580 153
+  s_378ed4e42dd3b2::t_41b09a0995eae4 182-188
+frontend/components/ui/ChapterScrollContainer.tsx
+  s_378ed4e42dd3b2::t_5afedc8075b70d 17-25
+frontend/components/sections/ProposalScrapbook.tsx
+  s_378ed4e42dd3b2::t_8d12c1ee3b1b8c 30-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "20d5381a1e587176f3e7d5de439aaef58963da67",
+  "prompts": {},
+  "sessions": {
+    "s_378ed4e42dd3b2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2bbb0265-d609-40ef-b12b-0197de0ad0a9",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
