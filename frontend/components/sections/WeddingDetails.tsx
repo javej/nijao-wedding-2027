@@ -23,7 +23,7 @@ function formatWeddingDate(dateString: string): string {
  * Tone shifts from emotional (love story) to informational (logistics):
  * still beautiful, but prioritizing clarity for guests like Kuya Mark.
  *
- * Must be wrapped in <ChapterSection> for snap-scroll and palette accent.
+ * Must be wrapped in <ChapterSection> for bg tone and palette accent.
  */
 export function WeddingDetails({ details }: WeddingDetailsProps) {
   const {

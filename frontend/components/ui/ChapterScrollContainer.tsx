@@ -14,12 +14,15 @@ export function ChapterScrollContainer({
       id="main-content"
       tabIndex={-1}
       className={cn(
-        // `snap-proximity` (not `snap-mandatory`) — functional sections
-        // still snap when the user is close, but story chapters (which
-        // intentionally do NOT declare `snap-start`) remain free-scroll
-        // zones. With mandatory snap, any scroll position inside a
-        // non-snap section is immediately re-snapped to the nearest
-        // target, which makes continuous flow impossible to dwell in.
+        // Snap is opt-in per `ChapterSection` (see the `snap` prop on
+        // that component). Today only the hero opts in — every other
+        // section free-flows so long content remains reachable on
+        // mobile viewports. `snap-proximity` (not `snap-mandatory`) on
+        // the container means: when the user scrolls near the hero's
+        // top, the browser softly settles there; everywhere else the
+        // scroll is unconstrained. Mandatory snap would re-snap any
+        // intermediate scroll position into the nearest target, which
+        // makes continuous flow impossible to dwell in.
         'h-dvh overflow-y-scroll overflow-x-hidden snap-y snap-proximity',
         'scrollbar-none outline-none',
       )}

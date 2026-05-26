@@ -214,7 +214,8 @@ export function RSVPChat({
   }, [messages, showChips, showInput, shouldReduceMotion]);
 
   // Focus management: when new chips appear after interaction, focus the first chip button.
-  // Skipped on initial mount to prevent the snap-scroll container from jumping to RSVP.
+  // Skipped on initial mount so the page doesn't auto-scroll to RSVP before
+  // the guest has chosen to engage with the chat.
   useEffect(() => {
     if (!hasInteracted.current) return;
     if (!showChips || !chipContainerRef.current) return;
