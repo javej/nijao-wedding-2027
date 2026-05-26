@@ -1,0 +1,23 @@
+frontend/app/globals.css
+  s_84676fe988fd40::t_83665dfe141de8 262-264,266-275,296-298,302-312
+frontend/components/ui/ChapterSection.tsx
+  s_84676fe988fd40::t_7bb7a2f7242bf2 152-162,169
+  s_84676fe988fd40::t_f79a90c7fda750 128-130,132
+  s_84676fe988fd40::t_d98ee11f313184 37-41,57-59,61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "b755255c62a9e3ef9712a9236b4c6a7d6c570efb",
+  "prompts": {},
+  "sessions": {
+    "s_84676fe988fd40": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5435f062-9365-42a8-b813-2976fc18f30b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
