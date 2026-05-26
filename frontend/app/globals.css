@@ -259,14 +259,20 @@
 /*
  * Section watermark backdrop.
  *
- * Tiles `pattern-watermark.png` at very low opacity across every
- * section EXCEPT story chapters, giving the flat cream/sage
- * functional backgrounds a painterly "watermarked stationery" feel.
+ * Tiles `pattern-watermark.png` at very low opacity across functional
+ * sections that ship a flat color (currently the sage even rows),
+ * giving them a painterly "watermarked stationery" feel.
  *
- * Story chapters opt out via `data-story-chapter` — they render
- * their own full-page patterned-bg PageCard composition, which
- * supplies its own paper texture and embossed ornament. Stacking
- * the watermark under that would double-pattern the page.
+ * Sections opt out via attributes:
+ *  - `data-story-chapter` — story chapters render their own full-page
+ *    patterned-bg PageCard, which already supplies paper texture and
+ *    embossed ornament. Stacking the watermark would double-pattern.
+ *  - `data-paper-white="solid"` — section wears `bg-paper-white` directly
+ *    (e.g. functional cream sections); the paper texture replaces the
+ *    floral watermark.
+ *  - `data-paper-white="alt"` on `:nth-child(odd)` — alternating-mode
+ *    sections only render paper-white on odd rows, so suppress the
+ *    watermark only there. Even sage rows keep the watermark.
  *
  * Layering: pseudo-element with `z-index: -1` + `isolation: isolate`
  * on the section. The watermark sits ABOVE the section's background
@@ -287,8 +293,23 @@
   pointer-events: none;
   z-index: -1;
 }
-#main-content > section[data-story-chapter]::before {
+#main-content > section[data-story-chapter]::before,
+#main-content > section[data-paper-white="solid"]::before,
+#main-content > section[data-paper-white="alt"]:nth-child(odd)::before {
   display: none;
+}
+
+/*
+ * `bg-paper-white` — full-bleed paper-texture background for functional
+ * sections. Replaces the previous `bg-section-cream` + watermark combo:
+ * the textured PNG already carries the stationery feel, so paired CSS
+ * above hides the floral watermark on sections that wear this utility.
+ */
+@utility bg-paper-white {
+  background-image: url("/decorations/bg-paper-white.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 @utility container {
