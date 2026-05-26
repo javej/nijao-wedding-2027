@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { PadrinoResult, WeddingPartyResult } from "@/sanity/queries/entourage";
 
@@ -107,9 +108,9 @@ function EntourageCard({ name, role, colorKey }: EntourageCardProps) {
  *                      eyebrow + grid of seals
  *   2. Wedding Party — roman Cormorant heading + grid of seals
  *
- * A single Cormorant-italic floral-heart fleuron (❦) marks
- * the transition between groups. Berry-meringue chapter
- * accent flows from the ChapterSection wrapper in page.tsx.
+ * A small line-art divider illustration marks the transition
+ * between groups. Berry-meringue chapter accent flows from
+ * the ChapterSection wrapper in page.tsx.
  * ────────────────────────────────────────────────────────── */
 
 export function EntourageSection({ padrinos, weddingParty }: EntourageSectionProps) {
@@ -143,12 +144,14 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
       )}
 
       {hasPadrinos && hasWeddingParty && (
-        <div
-          className="font-display italic text-display-lg text-text-on-light/45 my-14 md:my-16 leading-none select-none"
+        <Image
+          src="/decorations/divider-icon.png"
+          alt=""
           aria-hidden="true"
-        >
-          ❦
-        </div>
+          width={188}
+          height={188}
+          className="w-20 h-20 md:w-24 md:h-24 my-12 md:my-14 opacity-60 select-none"
+        />
       )}
 
       {hasWeddingParty && (
