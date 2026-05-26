@@ -34,9 +34,11 @@ const paletteBorderClass: Record<PaletteColor, string> = {
 /**
  * Background tones a `ChapterSection` can lock to via the `bg` prop.
  *
- * Functional sections (RSVP, details, dress code, etc.) use the flat
- * `cream` / `sage` / `strawberry-milk` tones — solid color with the
- * pattern-watermark overlay providing paper texture.
+ * Functional sections (RSVP, details, dress code, etc.) come in two
+ * flavors:
+ *  - `cream` → full-bleed `bg-paper-white.png` paper texture (watermark
+ *    suppressed via `data-paper-white="solid"`).
+ *  - `sage` / `strawberry-milk` → flat fill + pattern-watermark overlay.
  *
  * Story chapters use the `page-*` tones — these set the section's
  * underlying wing color, while the `PageCard` component renders the
@@ -52,9 +54,11 @@ export type BgTone =
   | 'page-strawberry-milk';
 
 const bgToneClass: Record<BgTone, string> = {
-  // ── Functional section tones (flat fills, watermark overlay) ──
+  // ── Functional section tones ──
+  // `cream` wears the paper-white textured PNG; sage/strawberry-milk keep
+  // the flat fill + watermark stationery combo.
   'cream':
-    'bg-section-cream [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
+    'bg-paper-white [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
   'sage':
     'bg-section-sage [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)] [--text-backdrop:rgba(0,0,0,0.3)]',
   'strawberry-milk':
@@ -121,8 +125,11 @@ interface ChapterSectionProps {
 }
 
 // Alternating two-tone heartbeat — used by functional sections only.
+// Odd rows wear `bg-paper-white` (the textured PNG replaces the previous
+// cream-fill + watermark combo); even rows keep the flat sage fill with
+// the floral watermark intact.
 const alternatingClasses =
-  'odd:bg-section-cream odd:[--text-on-light:#1a1a1a] odd:[--mat-color:var(--color-deep-matcha)] ' +
+  'odd:bg-paper-white odd:[--text-on-light:#1a1a1a] odd:[--mat-color:var(--color-deep-matcha)] ' +
   'even:bg-section-sage even:[--text-on-light:#ffffff] even:[--mat-color:var(--color-strawberry-milk)]';
 
 export function ChapterSection({
@@ -142,12 +149,24 @@ export function ChapterSection({
       ? alternatingClasses
       : bgToneClass['cream'];
 
+  // Tag sections wearing `bg-paper-white` so the global watermark
+  // `::before` skips them. `solid` = always, `alt` = only on :nth-child(odd).
+  // `bg` undefined + no alternating defaults to cream (above), which is also
+  // a solid paper-white section.
+  const paperWhiteMode =
+    bg === 'cream' || (!bg && !alternating)
+      ? 'solid'
+      : !bg && alternating
+        ? 'alt'
+        : undefined;
+
   return (
     <section
       id={id}
       aria-label={label}
       data-palette={palette}
       data-story-chapter={story ? '' : undefined}
+      data-paper-white={paperWhiteMode}
       className={cn(
         'min-h-dvh flex items-center justify-center',
         // Snap-scroll only for non-story sections. Story chapters flow
