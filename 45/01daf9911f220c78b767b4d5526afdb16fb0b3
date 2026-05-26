@@ -1,0 +1,21 @@
+frontend/components/sections/EntourageSection.tsx
+  s_7ef30d9e095851::t_c3f1e0523e0c3b 147-149,151-154
+  s_7ef30d9e095851::t_a2d19e5c4a1731 1
+  s_7ef30d9e095851::t_105a1d3a803117 111-113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "4501daf9911f220c78b767b4d5526afdb16fb0b3",
+  "prompts": {},
+  "sessions": {
+    "s_7ef30d9e095851": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a3f69848-f8f3-4f3b-972a-c2ac291a074b",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
