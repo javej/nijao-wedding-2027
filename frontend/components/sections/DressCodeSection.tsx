@@ -47,8 +47,8 @@ const ILLUSTRATION_HEIGHT = 400;
  *
  * Three category cards stacked vertically (Sponsors → Entourage → Guests),
  * each linking to a full-size lightbox preview, with a single shared
- * makeup-palette pan beneath. Designed to fit in a single snap-scroll
- * viewport on mobile.
+ * makeup-palette pan beneath. Section is free-flow scroll — content
+ * may exceed the viewport on mobile and the guest scrolls naturally.
  *
  * Strawberry Milk is filtered out of the rendered pan by
  * `MakeupPalettePan` — bridesmaids learn that colour off-site.

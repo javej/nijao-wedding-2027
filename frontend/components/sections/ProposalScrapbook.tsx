@@ -27,7 +27,8 @@ interface ProposalScrapbookProps {
  * Falls back to the legacy single `image` field if the `images` gallery is
  * empty (e.g., the migration hasn't run yet on the active dataset).
  *
- * Must be wrapped in <ChapterSection> for snap-scroll and palette accent.
+ * Must be wrapped in <ChapterSection story> for the page-card wing tone
+ * and story-chapter visual rules.
  */
 export function ProposalScrapbook({ chapter }: ProposalScrapbookProps) {
   const { year, caption } = chapter;
