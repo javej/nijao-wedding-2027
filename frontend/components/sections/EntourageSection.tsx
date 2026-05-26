@@ -59,7 +59,12 @@ interface EntourageCardProps {
 function EntourageCard({ name, role, colorKey }: EntourageCardProps) {
   const borderClass = paletteBorderMap[colorKey] ?? paletteBorderMap[PADRINO_DEFAULT_COLOR];
   const textClass = paletteTextMap[colorKey] ?? paletteTextMap[PADRINO_DEFAULT_COLOR];
-  const initial = name.charAt(0).toUpperCase();
+  // Trim defensively — Sanity entries sometimes carry leading whitespace or
+  // trailing tabs from copy/paste, which would render the seal as an empty
+  // circle (charAt(0) returns the whitespace, not the first letter).
+  const displayName = name.trim();
+  const trimmedRole = role.trim();
+  const initial = displayName.charAt(0).toUpperCase();
 
   return (
     <div className="flex flex-col items-center text-center">
@@ -84,10 +89,10 @@ function EntourageCard({ name, role, colorKey }: EntourageCardProps) {
       </div>
 
       <p className="font-display font-normal text-lg md:text-xl lg:text-2xl leading-snug text-text-on-light mt-3 md:mt-4">
-        {name}
+        {displayName}
       </p>
       <p className="font-body text-body-sm text-text-on-light/60 tracking-widest uppercase mt-2">
-        {role}
+        {trimmedRole}
       </p>
     </div>
   );
