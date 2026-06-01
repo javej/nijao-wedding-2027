@@ -12,10 +12,12 @@ import {
 } from "@sanity/ui";
 import { useClient } from "sanity";
 import { Check, Copy, Search } from "lucide-react";
+import { fullName } from "../../lib/guestName";
 
 type GuestRow = {
   _id: string;
   firstName: string;
+  lastName: string | null;
   slug: string;
   plusOneEligible: boolean;
   plusOneType: "linked" | "open" | null;
@@ -28,6 +30,7 @@ type GuestRow = {
 const GUESTS_QUERY = `*[_type == "guest" && defined(slug.current) && !(_id in path("drafts.**"))] | order(firstName asc) {
   _id,
   firstName,
+  lastName,
   "slug": slug.current,
   plusOneEligible,
   plusOneType,
@@ -75,7 +78,7 @@ export function GuestLinksTool() {
     if (!q) return guests;
     return guests.filter(
       (g) =>
-        g.firstName?.toLowerCase().includes(q) ||
+        fullName(g).toLowerCase().includes(q) ||
         g.slug?.toLowerCase().includes(q),
     );
   }, [guests, filter]);
@@ -98,7 +101,7 @@ export function GuestLinksTool() {
   async function copyAll() {
     if (!filtered.length) return;
     const text = filtered
-      .map((g) => `${g.firstName}: ${siteUrl}/${g.slug}`)
+      .map((g) => `${fullName(g)}: ${siteUrl}/${g.slug}`)
       .join("\n");
     try {
       await navigator.clipboard.writeText(text);
@@ -179,7 +182,7 @@ export function GuestLinksTool() {
                   <Stack space={2} flex={1}>
                     <Flex align="center" gap={2} wrap="wrap">
                       <Text weight="semibold" size={2}>
-                        {g.firstName}
+                        {fullName(g)}
                       </Text>
                       {g.plusOneEligible && g.plusOneType === "linked" && (
                         <Badge tone="primary" fontSize={0}>
@@ -198,6 +201,11 @@ export function GuestLinksTool() {
                   </Stack>
                   <Button
                     text={copiedSlug === g.slug ? "Copied" : "Copy link"}
+                    aria-label={
+                      copiedSlug === g.slug
+                        ? `Copied link for ${fullName(g)}`
+                        : `Copy link for ${fullName(g)}`
+                    }
                     icon={copiedSlug === g.slug ? Check : Copy}
                     tone={copiedSlug === g.slug ? "positive" : "default"}
                     mode="ghost"
