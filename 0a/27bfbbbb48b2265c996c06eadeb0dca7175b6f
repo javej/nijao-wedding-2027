@@ -1,0 +1,19 @@
+frontend/components/WeddingExperience.tsx
+  s_0513ce1be09dd5::t_bcd061175fe1da 116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "0a27bfbbbb48b2265c996c06eadeb0dca7175b6f",
+  "prompts": {},
+  "sessions": {
+    "s_0513ce1be09dd5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98d369d2-7eb8-4b5c-8cf9-e2983c127d5f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
