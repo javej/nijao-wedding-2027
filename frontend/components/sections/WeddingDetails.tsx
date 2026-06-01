@@ -4,6 +4,13 @@ interface WeddingDetailsProps {
   details: NonNullable<WeddingDetailsResult>;
 }
 
+// Both watercolor PNGs share the same intrinsic size (3:2 landscape).
+// Declaring width/height lets the browser reserve layout space before
+// the lazy image loads, so it can't reflow mid-scroll (the shift that
+// fed the mobile auto-scroll bug).
+const ILLUSTRATION_WIDTH = 1536;
+const ILLUSTRATION_HEIGHT = 1024;
+
 /**
  * Format a date string using the Philippine English locale with long style.
  * Uses Intl.DateTimeFormat per architecture spec — never .toString().
@@ -56,6 +63,8 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
             src="/decorations/st.therese-watercolor.png"
             alt={`Watercolor illustration of ${ceremonyVenue ?? "the ceremony venue"}`}
             loading="lazy"
+            width={ILLUSTRATION_WIDTH}
+            height={ILLUSTRATION_HEIGHT}
             className="w-full max-w-[320px] h-auto mb-6 mask-[radial-gradient(ellipse_at_center,black_55%,transparent_95%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_95%)]"
           />
 
@@ -109,6 +118,8 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
             src="/decorations/1022-watercolor.png"
             alt={`Watercolor illustration of ${receptionVenue ?? "the reception venue"}`}
             loading="lazy"
+            width={ILLUSTRATION_WIDTH}
+            height={ILLUSTRATION_HEIGHT}
             className="w-full max-w-[320px] h-auto mb-6 mask-[radial-gradient(ellipse_at_center,black_55%,transparent_95%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_95%)]"
           />
 

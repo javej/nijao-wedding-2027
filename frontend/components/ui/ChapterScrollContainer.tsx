@@ -14,16 +14,14 @@ export function ChapterScrollContainer({
       id="main-content"
       tabIndex={-1}
       className={cn(
-        // Snap is opt-in per `ChapterSection` (see the `snap` prop on
-        // that component). Today only the hero opts in — every other
-        // section free-flows so long content remains reachable on
-        // mobile viewports. `snap-proximity` (not `snap-mandatory`) on
-        // the container means: when the user scrolls near the hero's
-        // top, the browser softly settles there; everywhere else the
-        // scroll is unconstrained. Mandatory snap would re-snap any
-        // intermediate scroll position into the nearest target, which
-        // makes continuous flow impossible to dwell in.
-        'h-dvh overflow-y-scroll overflow-x-hidden snap-y snap-proximity',
+        // No scroll-snap. A snap container re-runs snap selection on ANY
+        // layout change — and on mobile that fires constantly: the URL
+        // bar sliding in/out resizes `h-dvh`/`min-h-dvh`, and lazy images
+        // reflow as they load. Each re-snap yanked the viewport mid-read
+        // (auto-scroll-to-top bug). The hero's stable landing is already
+        // guaranteed by `main.scrollTop = 0` in ExperienceShell, so snap
+        // bought nothing while breaking continuous scroll. See ADR-0003.
+        'h-dvh overflow-y-scroll overflow-x-hidden',
         'scrollbar-none outline-none',
       )}
     >
