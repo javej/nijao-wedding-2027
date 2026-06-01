@@ -313,35 +313,60 @@
 }
 
 /*
- * `watercolor-wash` — paints a dress-code swatch as a translucent pigment
- * wash instead of a flat vector fill, so the makeup-palette pan sits in the
- * same medium as the watercolor illustrations around it.
+ * `watercolor-wash` — paints a dress-code swatch as a real pigment wash, not a
+ * flat fill, so the makeup-palette pan sits in the same medium as the
+ * watercolor illustrations around it. Colour is passed per-swatch via the
+ * `--swatch` custom property. Three effects stack:
  *
- *  - Colour is passed per-swatch via the `--swatch` custom property.
- *  - Two offset radial gradients give the pigment a pooled, uneven centre.
- *  - `mix-blend-mode: multiply` lets the paper grain of the cream tray read
- *    through the wash (the swatch must sit on `bg-paper-white`).
- *  - The feathered mask bleeds the edges into the gutters instead of stopping
- *    at a hard tile line — the single detail that read as "digital" before.
+ *  1. Pooling — an uneven body gradient (dense top-left → thin far edge) plus a
+ *     darker dried rim, the "cauliflower" pigment build-up real washes get.
+ *  2. Grain — a `::after` paper-texture overlay multiplied into the colour so
+ *     the paper tooth reads *inside* the swatch, not just in the gutters.
+ *  3. Ragged edges — the mask is the *union of four offset blobs*, not one
+ *     clean oval, so the silhouette is lumpy and non-rectangular. (A
+ *     displacement filter can't help here: `filter` runs before `mask`, so a
+ *     clean mask just irons the wobble back flat — the shape has to be
+ *     irregular at the mask itself.)
  */
 @utility watercolor-wash {
+  position: relative;
   background-color: transparent;
   background-image:
+    /* darker rim — pigment gathers at the perimeter as the wash dries */
     radial-gradient(
-      125% 110% at 32% 28%,
-      color-mix(in srgb, var(--swatch) 94%, transparent) 0%,
-      color-mix(in srgb, var(--swatch) 72%, transparent) 50%,
-      color-mix(in srgb, var(--swatch) 48%, transparent) 100%
+      100% 100% at 50% 50%,
+      transparent 50%,
+      color-mix(in srgb, var(--swatch) 78%, #3a2a1a) 95%
     ),
+    /* uneven body — dense at the top-left, thinning across the swatch */
     radial-gradient(
-      70% 80% at 72% 78%,
-      color-mix(in srgb, var(--swatch) 55%, transparent) 0%,
-      transparent 72%
+      135% 120% at 30% 26%,
+      color-mix(in srgb, var(--swatch) 97%, transparent) 0%,
+      color-mix(in srgb, var(--swatch) 70%, transparent) 55%,
+      color-mix(in srgb, var(--swatch) 46%, transparent) 100%
     );
-  mix-blend-mode: multiply;
-  border-radius: 6px;
-  -webkit-mask-image: radial-gradient(118% 118% at 50% 46%, #000 58%, transparent 100%);
-  mask-image: radial-gradient(118% 118% at 50% 46%, #000 58%, transparent 100%);
+  --wash-mask:
+    radial-gradient(64% 60% at 34% 38%, #000 60%, transparent 100%),
+    radial-gradient(60% 64% at 70% 33%, #000 58%, transparent 100%),
+    radial-gradient(62% 60% at 64% 72%, #000 60%, transparent 100%),
+    radial-gradient(58% 58% at 28% 70%, #000 58%, transparent 100%);
+  -webkit-mask-image: var(--wash-mask);
+  mask-image: var(--wash-mask);
+}
+
+@utility watercolor-wash {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("/decorations/bg-paper-white.png");
+    background-size: 220% 220%;
+    background-position: center;
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+    pointer-events: none;
+  }
 }
 
 @utility container {

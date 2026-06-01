@@ -65,20 +65,20 @@ export function MakeupPalettePan({ palette }: MakeupPalettePanProps) {
 
   return (
     <div
-      // Paper-textured tray: the watercolor washes blend (multiply) onto this
-      // grain so the swatches share the medium of the illustrations above.
-      // Gaps are wide enough for each wash to feather into the paper rather
-      // than butt against its neighbour at a hard line.
-      className="bg-paper-white rounded-md shadow-md p-2 flex flex-col gap-1.5 overflow-hidden"
+      // Paper-textured tray: each watercolor wash carries its own grain overlay
+      // and bleeds into this paper (lumpy blob mask) so the swatches share the
+      // medium of the illustrations above. Gaps give the irregular edges room
+      // so neighbouring washes don't collide.
+      className="bg-paper-white rounded-md shadow-md p-2 flex flex-col gap-2 overflow-hidden"
       role="group"
       aria-label="Wedding palette colours"
     >
-      <div className="grid grid-cols-8 gap-1.5">
+      <div className="grid grid-cols-8 gap-2">
         {topRow.map((swatch) => (
           <Swatch key={swatch._key} swatch={swatch} />
         ))}
       </div>
-      <div className="grid grid-cols-8 gap-1.5">
+      <div className="grid grid-cols-8 gap-2">
         <div aria-hidden="true" />
         {bottomRow.map((swatch) => (
           <Swatch key={swatch._key} swatch={swatch} />
