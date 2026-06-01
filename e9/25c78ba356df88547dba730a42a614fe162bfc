@@ -1,0 +1,27 @@
+frontend/hooks/useFirstScrollComplete.ts
+  s_95b1047df17dca::t_54288ebb665e52 1-26
+frontend/components/ui/HeroJumpNav.tsx
+  s_95b1047df17dca::t_7a6380ada41661 6,9-14,18-20
+frontend/components/sections/HeroSection.tsx
+  s_95b1047df17dca::t_5f4fd72b6e15bd 25-26
+frontend/components/ui/FloatingAnchorSet.tsx
+  s_95b1047df17dca::t_ae1166ac036b7c 92-94
+  s_95b1047df17dca::t_c3a080b9ec2ea4 8
+  s_95b1047df17dca::t_3de942dcee8141 27,34,37-40,57-61,69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "e925c78ba356df88547dba730a42a614fe162bfc",
+  "prompts": {},
+  "sessions": {
+    "s_95b1047df17dca": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5f54fc4b-498e-4618-b4c5-872529b8fa0a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
