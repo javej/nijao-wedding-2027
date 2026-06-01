@@ -121,15 +121,6 @@ interface ChapterSectionProps {
    * prop below.
    */
   story?: boolean;
-  /**
-   * Opt this section into scroll-snap as a snap target. Default is
-   * false (free-flow scroll). Only the hero opts in today — its
-   * snap-start gives the landing a stable resting position on first
-   * load and on scroll-to-top. Long content-rich sections must stay
-   * free-flow so the bottom of the section remains reachable on
-   * mobile viewports that can't contain a full section.
-   */
-  snap?: boolean;
   children: React.ReactNode;
 }
 
@@ -150,7 +141,6 @@ export function ChapterSection({
   bg,
   hero = false,
   story = false,
-  snap = false,
   children,
 }: ChapterSectionProps) {
   const bgClasses = bg
@@ -179,13 +169,6 @@ export function ChapterSection({
       data-paper-white={paperWhiteMode}
       className={cn(
         'min-h-dvh flex items-center justify-center',
-        // Snap is opt-in. Only sections that pass `snap` declare
-        // themselves as snap targets inside the snap-proximity
-        // container. Today that's just the hero — its landing benefits
-        // from a stable resting position on first load and on
-        // scroll-to-top. Every other section free-flows so content
-        // that exceeds the viewport remains reachable on mobile.
-        snap && 'snap-start snap-always',
         bgClasses,
         // Accent stripe lives on functional sections only.
         !story && cn('border-l-4', paletteBorderClass[palette]),
