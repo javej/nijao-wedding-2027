@@ -1,0 +1,28 @@
+studio/plugins/rsvp-dashboard/RsvpDashboardTool.tsx
+  s_22120fded752de::t_f6787171ab5335 47
+  s_22120fded752de::t_6f26310eb1a6b2 94-100,110
+  s_22120fded752de::t_37d70dbb8ffa82 22
+frontend/components/WeddingExperience.tsx
+  s_22120fded752de::t_53d9da733c4415 76
+frontend/sanity/queries/guests.ts
+  s_22120fded752de::t_70bf72fd3d073d 13
+  s_22120fded752de::t_ebf9283366d25b 40
+studio/schemas/documents/guest.ts
+  s_22120fded752de::t_5d90bbc4b21d17 21,24-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "e013157d9fa488663432e0cb5900ed870be77869",
+  "prompts": {},
+  "sessions": {
+    "s_22120fded752de": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1d11800d-fadd-4e42-a5d3-e837add8ae17",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
