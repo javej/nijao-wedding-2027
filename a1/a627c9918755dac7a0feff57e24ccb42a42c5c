@@ -1,0 +1,25 @@
+frontend/components/sections/WeddingDetails.tsx
+  s_7909310973cd45::t_2ef3ba2f362ec3 121-122
+  s_7909310973cd45::t_ad0c9faed30560 66-67
+  s_7909310973cd45::t_ec9dc1a775ffae 7-13
+frontend/components/ui/ChapterScrollContainer.tsx
+  s_7909310973cd45::t_54bb23f01d784c 17-24
+frontend/components/WeddingExperience.tsx
+  s_7909310973cd45::t_99275be7f65aa0 79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "a1a627c9918755dac7a0feff57e24ccb42a42c5c",
+  "prompts": {},
+  "sessions": {
+    "s_7909310973cd45": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b830d8f0-6695-480e-82c1-0862533ec33c",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
