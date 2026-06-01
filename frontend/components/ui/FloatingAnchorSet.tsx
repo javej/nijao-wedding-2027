@@ -5,6 +5,7 @@ import { Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { quickNavAnchors, scrollToAnchor } from '@/lib/quick-nav';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useFirstScrollComplete } from '@/hooks/useFirstScrollComplete';
 import type { PaletteColor } from '@/components/ui/ChapterSection';
 
 /** Maps palette keys to Tailwind ring-color classes for the FAB accent. */
@@ -23,16 +24,20 @@ const paletteRingClass: Record<PaletteColor, string> = {
 const HERO_SECTION_ID = 'hero';
 
 export function FloatingAnchorSet() {
+  const { isComplete, markComplete } = useFirstScrollComplete();
   const [activePalette, setActivePalette] = useState<PaletteColor>('raspberry');
   // Default to the hero so the FAB starts hidden on the landing screen and
   // only appears once the guest scrolls into a content section.
   const [activeSectionId, setActiveSectionId] = useState<string>(HERO_SECTION_ID);
   const [open, setOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const rsvpObservedRef = useRef(false);
   const navRef = useRef<HTMLElement>(null);
 
-  // Track the active section to drive both the palette accent and the
-  // hide-on-hero behavior.
+  // Track the active section to drive palette + hide-on-hero behavior, and
+  // mark the first-scroll flag the first time RSVP comes into view (the
+  // gate that unhides both this FAB and the Hero ghost pills on future
+  // visits).
   useEffect(() => {
     const scrollRoot = document.getElementById('main-content');
     if (!scrollRoot) return;
@@ -49,6 +54,11 @@ export function FloatingAnchorSet() {
 
           const palette = entry.target.getAttribute('data-palette') as PaletteColor | null;
           if (palette) setActivePalette(palette);
+
+          if (entry.target.id === 'rsvp' && !rsvpObservedRef.current) {
+            rsvpObservedRef.current = true;
+            markComplete();
+          }
         }
       },
       { root: scrollRoot, threshold: 0.3 },
@@ -56,7 +66,7 @@ export function FloatingAnchorSet() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [markComplete]);
 
   // Close on Escape key or click outside
   useEffect(() => {
@@ -79,8 +89,9 @@ export function FloatingAnchorSet() {
     };
   }, [open]);
 
-  // Hidden on the hero — HeroJumpNav covers wayfinding there.
-  if (activeSectionId === HERO_SECTION_ID) return null;
+  // Stay hidden until the guest has scrolled through to RSVP at least once,
+  // and stay hidden on the hero (HeroJumpNav covers wayfinding there).
+  if (!isComplete || activeSectionId === HERO_SECTION_ID) return null;
 
   const ringClass = paletteRingClass[activePalette] ?? '';
 

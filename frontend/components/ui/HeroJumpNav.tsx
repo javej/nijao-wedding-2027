@@ -3,15 +3,21 @@
 import { cn } from '@/lib/utils';
 import { quickNavAnchors, scrollToAnchor } from '@/lib/quick-nav';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useFirstScrollComplete } from '@/hooks/useFirstScrollComplete';
 
 /**
- * Always-visible wayfinding under the Hero names. Static ghost pills that
- * belong to the invitation's aesthetic (thin outline, raspberry icon accent)
- * rather than floating above it like the FAB. The FAB takes over once the
- * guest scrolls past the Hero.
+ * Wayfinding under the Hero names, shown only after the guest has scrolled
+ * through to RSVP at least once. On the first visit the invitation reads
+ * as a continuous story with no jump chrome; on every visit after that
+ * these ghost pills are there for quick access. Styled to echo the names
+ * line — part of the invitation, not bolted-on app chrome. The floating
+ * FAB takes over once the guest scrolls past the Hero.
  */
 export function HeroJumpNav() {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const { isComplete } = useFirstScrollComplete();
+
+  if (!isComplete) return null;
 
   return (
     <nav
