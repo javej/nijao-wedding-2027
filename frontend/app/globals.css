@@ -312,6 +312,38 @@
   background-repeat: no-repeat;
 }
 
+/*
+ * `watercolor-wash` — paints a dress-code swatch as a translucent pigment
+ * wash instead of a flat vector fill, so the makeup-palette pan sits in the
+ * same medium as the watercolor illustrations around it.
+ *
+ *  - Colour is passed per-swatch via the `--swatch` custom property.
+ *  - Two offset radial gradients give the pigment a pooled, uneven centre.
+ *  - `mix-blend-mode: multiply` lets the paper grain of the cream tray read
+ *    through the wash (the swatch must sit on `bg-paper-white`).
+ *  - The feathered mask bleeds the edges into the gutters instead of stopping
+ *    at a hard tile line — the single detail that read as "digital" before.
+ */
+@utility watercolor-wash {
+  background-color: transparent;
+  background-image:
+    radial-gradient(
+      125% 110% at 32% 28%,
+      color-mix(in srgb, var(--swatch) 94%, transparent) 0%,
+      color-mix(in srgb, var(--swatch) 72%, transparent) 50%,
+      color-mix(in srgb, var(--swatch) 48%, transparent) 100%
+    ),
+    radial-gradient(
+      70% 80% at 72% 78%,
+      color-mix(in srgb, var(--swatch) 55%, transparent) 0%,
+      transparent 72%
+    );
+  mix-blend-mode: multiply;
+  border-radius: 6px;
+  -webkit-mask-image: radial-gradient(118% 118% at 50% 46%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(118% 118% at 50% 46%, #000 58%, transparent 100%);
+}
+
 @utility container {
   width: 100%;
   margin-left: auto;
