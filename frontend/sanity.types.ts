@@ -198,6 +198,7 @@ export type Guest = {
   _updatedAt: string;
   _rev: string;
   firstName?: string;
+  lastName?: string;
   nickname?: string;
   description?: string;
   slug?: Slug;

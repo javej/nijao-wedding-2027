@@ -12,12 +12,14 @@ import {
 } from "@sanity/ui";
 import { useClient } from "sanity";
 import { Download, RefreshCw } from "lucide-react";
+import { fullName } from "../../lib/guestName";
 
 type RsvpStatus = "pending" | "attending" | "declined";
 
 type GuestRow = {
   _id: string;
   firstName: string;
+  lastName: string | null;
   slug: string;
   description: string | null;
   plusOneEligible: boolean | null;
@@ -43,6 +45,7 @@ const GUEST_DASHBOARD_QUERY = `*[
 ]{
   _id,
   firstName,
+  lastName,
   "slug": slug.current,
   description,
   plusOneEligible,
@@ -103,7 +106,7 @@ function buildCsv(rows: GuestRow[]): string {
     const status = normalizeStatus(r.rsvpStatus);
     lines.push(
       [
-        escapeCsvCell(r.firstName),
+        escapeCsvCell(fullName(r)),
         status === "attending" ? "yes" : status === "declined" ? "no" : "",
         escapeCsvCell(plusOneDisplay(r)),
         escapeCsvCell(r.rsvpUpdatedAt ?? ""),
@@ -198,12 +201,12 @@ export function RsvpDashboardTool() {
     copy.sort((a, b) => {
       let cmp = 0;
       if (sortKey === "name") {
-        cmp = a.firstName.localeCompare(b.firstName);
+        cmp = fullName(a).localeCompare(fullName(b));
         if (cmp === 0)
           cmp = (a.rsvpUpdatedAt ?? "").localeCompare(b.rsvpUpdatedAt ?? "");
       } else {
         cmp = (a.rsvpUpdatedAt ?? "").localeCompare(b.rsvpUpdatedAt ?? "");
-        if (cmp === 0) cmp = a.firstName.localeCompare(b.firstName);
+        if (cmp === 0) cmp = fullName(a).localeCompare(fullName(b));
       }
       return sortDir === "asc" ? cmp : -cmp;
     });
@@ -330,7 +333,7 @@ export function RsvpDashboardTool() {
                     <Stack space={2} flex={1}>
                       <Flex align="center" gap={2} wrap="wrap">
                         <Text weight="semibold" size={2}>
-                          {g.firstName}
+                          {fullName(g)}
                         </Text>
                         <Badge
                           tone={

@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { User } from "lucide-react";
+import { fullName } from "../../lib/guestName";
 
 export default defineType({
   name: "guest",
@@ -19,6 +20,14 @@ export default defineType({
       title: "First Name",
       type: "string",
       description: "Guest's first name — used in the personalized arrival greeting when no nickname is set.",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "lastName",
+      title: "Last Name",
+      type: "string",
+      description:
+        "Guest's last name. Shown in the Studio guest list, RSVP Dashboard, and Guest Links tool to tell guests with the same first name apart. Not used on the public site or in the RSVP/email flow.",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -173,12 +182,13 @@ export default defineType({
   preview: {
     select: {
       firstName: "firstName",
+      lastName: "lastName",
       slug: "slug.current",
       plusOneEligible: "plusOneEligible",
       plusOneType: "plusOneType",
       linkedFirstName: "plusOneLinkedGuest.firstName",
     },
-    prepare({ firstName, slug, plusOneEligible, plusOneType, linkedFirstName }) {
+    prepare({ firstName, lastName, slug, plusOneEligible, plusOneType, linkedFirstName }) {
       let subtitle = slug ? `/${slug}` : "(no slug yet)";
       if (plusOneEligible) {
         if (plusOneType === "linked" && linkedFirstName) {
@@ -190,7 +200,7 @@ export default defineType({
         }
       }
       return {
-        title: firstName || "(no name)",
+        title: fullName({ firstName, lastName }) || "(no name)",
         subtitle,
       };
     },
@@ -205,6 +215,22 @@ export default defineType({
       title: "First name, Z–A",
       name: "firstNameDesc",
       by: [{ field: "firstName", direction: "desc" }],
+    },
+    {
+      title: "Last name, A–Z",
+      name: "lastNameAsc",
+      by: [
+        { field: "lastName", direction: "asc" },
+        { field: "firstName", direction: "asc" },
+      ],
+    },
+    {
+      title: "Last name, Z–A",
+      name: "lastNameDesc",
+      by: [
+        { field: "lastName", direction: "desc" },
+        { field: "firstName", direction: "desc" },
+      ],
     },
   ],
 });
