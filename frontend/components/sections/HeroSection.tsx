@@ -1,3 +1,5 @@
+import { HeroJumpNav } from '@/components/ui/HeroJumpNav';
+
 /**
  * HeroSection — Server Component
  *
@@ -19,6 +21,9 @@ export function HeroSection() {
       <h1 className="font-display font-normal text-display-sm text-text-on-light/70 tracking-widest mt-8">
         Jave &amp; Nianne &middot; January 8, 2027 &middot; Lipa, Batangas
       </h1>
+
+      {/* Always-visible jump-nav — first-time wayfinding from the landing screen */}
+      <HeroJumpNav />
     </div>
   );
 }

@@ -42,7 +42,7 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
   return (
     <div className="flex flex-col items-center justify-center w-full px-(--chapter-padding-x) py-(--chapter-padding-y)">
       <h2 className="font-body font-normal text-display-md text-text-on-light tracking-wide mb-12">
-        Wedding Details
+        When &amp; Where
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 w-full max-w-4xl">
