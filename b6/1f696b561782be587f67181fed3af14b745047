@@ -1,0 +1,28 @@
+frontend/app/layout.tsx
+  s_3e0c297020a904::t_1bfa0b9c462d14 64
+  s_3e0c297020a904::t_39ee1ae869c134 23-30,37
+  s_3e0c297020a904::t_41d03ae293b465 19,31-36
+frontend/public/gem.svg
+  s_3e0c297020a904::t_15697b2a9686a9 1-6
+  s_3e0c297020a904::t_6ab522962c67a9 7-10
+frontend/components/ui/ArrivalOverlay.tsx
+  s_3e0c297020a904::t_233e2cffd6f933 150
+  s_3e0c297020a904::t_e90e5326edf7be 161
+  s_3e0c297020a904::t_ed397b24647633 164
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b61f696b561782be587f67181fed3af14b745047",
+  "prompts": {},
+  "sessions": {
+    "s_3e0c297020a904": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "335fe582-a7df-4920-94a6-74cd3706ae59",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
