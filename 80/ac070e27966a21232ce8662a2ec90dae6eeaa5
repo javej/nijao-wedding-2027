@@ -1,0 +1,23 @@
+frontend/app/globals.css
+  s_1d8800be9c401c::t_95dc615bc1c5b9 316-319,321-324,332,335,337,341,343-344,355-369
+  s_1d8800be9c401c::t_37b500adef6ec1 325-329,338-339,345-346,348-354
+frontend/components/sections/dress-code/MakeupPalettePan.tsx
+  s_1d8800be9c401c::t_ca9942af523a9c 69-71
+  s_1d8800be9c401c::t_4d3e2d6b379642 68,72,76,81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "80ac070e27966a21232ce8662a2ec90dae6eeaa5",
+  "prompts": {},
+  "sessions": {
+    "s_1d8800be9c401c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b892b20b-7e34-46cb-82d8-325804123c5d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
