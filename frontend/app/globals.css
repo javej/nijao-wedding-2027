@@ -312,6 +312,63 @@
   background-repeat: no-repeat;
 }
 
+/*
+ * `watercolor-wash` — paints a dress-code swatch as a real pigment wash, not a
+ * flat fill, so the makeup-palette pan sits in the same medium as the
+ * watercolor illustrations around it. Colour is passed per-swatch via the
+ * `--swatch` custom property. Three effects stack:
+ *
+ *  1. Pooling — an uneven body gradient (dense top-left → thin far edge) plus a
+ *     darker dried rim, the "cauliflower" pigment build-up real washes get.
+ *  2. Grain — a `::after` paper-texture overlay multiplied into the colour so
+ *     the paper tooth reads *inside* the swatch, not just in the gutters.
+ *  3. Ragged edges — the mask is the *union of four offset blobs*, not one
+ *     clean oval, so the silhouette is lumpy and non-rectangular. (A
+ *     displacement filter can't help here: `filter` runs before `mask`, so a
+ *     clean mask just irons the wobble back flat — the shape has to be
+ *     irregular at the mask itself.)
+ */
+@utility watercolor-wash {
+  position: relative;
+  background-color: transparent;
+  background-image:
+    /* darker rim — pigment gathers at the perimeter as the wash dries */
+    radial-gradient(
+      100% 100% at 50% 50%,
+      transparent 50%,
+      color-mix(in srgb, var(--swatch) 78%, #3a2a1a) 95%
+    ),
+    /* uneven body — dense at the top-left, thinning across the swatch */
+    radial-gradient(
+      135% 120% at 30% 26%,
+      color-mix(in srgb, var(--swatch) 97%, transparent) 0%,
+      color-mix(in srgb, var(--swatch) 70%, transparent) 55%,
+      color-mix(in srgb, var(--swatch) 46%, transparent) 100%
+    );
+  --wash-mask:
+    radial-gradient(64% 60% at 34% 38%, #000 60%, transparent 100%),
+    radial-gradient(60% 64% at 70% 33%, #000 58%, transparent 100%),
+    radial-gradient(62% 60% at 64% 72%, #000 60%, transparent 100%),
+    radial-gradient(58% 58% at 28% 70%, #000 58%, transparent 100%);
+  -webkit-mask-image: var(--wash-mask);
+  mask-image: var(--wash-mask);
+}
+
+@utility watercolor-wash {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("/decorations/bg-paper-white.png");
+    background-size: 220% 220%;
+    background-position: center;
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+}
+
 @utility container {
   width: 100%;
   margin-left: auto;

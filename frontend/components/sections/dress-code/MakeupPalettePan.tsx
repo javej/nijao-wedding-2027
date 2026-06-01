@@ -1,19 +1,21 @@
-import { cn } from "@/lib/utils";
+import type { CSSProperties } from "react";
 import type { PaletteColorEntry } from "@/sanity/queries/dressCode";
 
 /**
- * Static mapping of palette color keys to Tailwind bg classes.
- * Tailwind purges dynamic classes — every class must be present verbatim in source.
+ * Maps each palette color key to its CSS custom-property reference. The value
+ * is fed to the `watercolor-wash` utility via the `--swatch` property so the
+ * swatch is painted as a translucent wash rather than a flat fill — one shared
+ * utility class keeps this Tailwind-purge-safe (no dynamically-built classes).
  */
-const PALETTE_BG: Record<string, string> = {
-  "deep-matcha": "bg-deep-matcha",
-  raspberry: "bg-raspberry",
-  "golden-matcha": "bg-golden-matcha",
-  "strawberry-jam": "bg-strawberry-jam",
-  "matcha-chiffon": "bg-matcha-chiffon",
-  "berry-meringue": "bg-berry-meringue",
-  "matcha-latte": "bg-matcha-latte",
-  "strawberry-milk": "bg-strawberry-milk",
+const PALETTE_VAR: Record<string, string> = {
+  "deep-matcha": "var(--deep-matcha)",
+  raspberry: "var(--raspberry)",
+  "golden-matcha": "var(--golden-matcha)",
+  "strawberry-jam": "var(--strawberry-jam)",
+  "matcha-chiffon": "var(--matcha-chiffon)",
+  "berry-meringue": "var(--berry-meringue)",
+  "matcha-latte": "var(--matcha-latte)",
+  "strawberry-milk": "var(--strawberry-milk)",
 };
 
 // Strawberry Milk is the bridesmaids-only colour; bridesmaids learn it through
@@ -63,18 +65,20 @@ export function MakeupPalettePan({ palette }: MakeupPalettePanProps) {
 
   return (
     <div
-      // Hairline dividers — the cream tray peeks through 1px gaps between
-      // swatches without breaking the "single-object" gestalt.
-      className="bg-section-cream rounded-md shadow-md p-px flex flex-col gap-px overflow-hidden"
+      // Paper-textured tray: each watercolor wash carries its own grain overlay
+      // and bleeds into this paper (lumpy blob mask) so the swatches share the
+      // medium of the illustrations above. Gaps give the irregular edges room
+      // so neighbouring washes don't collide.
+      className="bg-paper-white rounded-md shadow-md p-2 flex flex-col gap-2 overflow-hidden"
       role="group"
       aria-label="Wedding palette colours"
     >
-      <div className="grid grid-cols-8 gap-px">
+      <div className="grid grid-cols-8 gap-2">
         {topRow.map((swatch) => (
           <Swatch key={swatch._key} swatch={swatch} />
         ))}
       </div>
-      <div className="grid grid-cols-8 gap-px">
+      <div className="grid grid-cols-8 gap-2">
         <div aria-hidden="true" />
         {bottomRow.map((swatch) => (
           <Swatch key={swatch._key} swatch={swatch} />
@@ -88,7 +92,8 @@ export function MakeupPalettePan({ palette }: MakeupPalettePanProps) {
 function Swatch({ swatch }: { swatch: PaletteColorEntry }) {
   return (
     <div
-      className={cn("col-span-2 aspect-square", PALETTE_BG[swatch.colorKey])}
+      className="col-span-2 aspect-square watercolor-wash"
+      style={{ "--swatch": PALETTE_VAR[swatch.colorKey] } as CSSProperties}
       role="img"
       aria-label={swatch.colorLabel}
     />
