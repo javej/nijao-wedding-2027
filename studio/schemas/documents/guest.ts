@@ -18,8 +18,23 @@ export default defineType({
       name: "firstName",
       title: "First Name",
       type: "string",
-      description: "Guest's first name — used in the personalized arrival greeting.",
+      description: "Guest's first name — used in the personalized arrival greeting when no nickname is set.",
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "nickname",
+      title: "Nickname",
+      type: "string",
+      description:
+        "Optional. Shown in the arrival greeting (\"Welcome, <nickname>\") in place of the first name. Leave empty to greet by first name.",
+    }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+      rows: 3,
+      description:
+        "Optional. Internal note about this guest — included as a column in the RSVP export sheet. Not shown on the site.",
     }),
     defineField({
       name: "slug",

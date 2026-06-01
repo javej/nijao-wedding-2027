@@ -10,6 +10,7 @@ const isSanityConfigured =
 export const GUEST_BY_SLUG_QUERY = groq`
   *[_type == "guest" && slug.current == $slug][0] {
     firstName,
+    nickname,
     "slug": slug.current,
     plusOneEligible,
     plusOneType,
@@ -36,6 +37,7 @@ export type RsvpStatus = "pending" | "attending" | "declined";
 
 export type GuestResult = {
   firstName: string;
+  nickname: string | null;
   slug: string;
   plusOneEligible: boolean | null;
   plusOneType: "linked" | "open" | null;

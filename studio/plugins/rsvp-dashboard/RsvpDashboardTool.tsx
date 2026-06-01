@@ -19,6 +19,7 @@ type GuestRow = {
   _id: string;
   firstName: string;
   slug: string;
+  description: string | null;
   plusOneEligible: boolean | null;
   plusOneType: "linked" | "open" | null;
   rsvpStatus: RsvpStatus | null;
@@ -43,6 +44,7 @@ const GUEST_DASHBOARD_QUERY = `*[
   _id,
   firstName,
   "slug": slug.current,
+  description,
   plusOneEligible,
   plusOneType,
   rsvpStatus,
@@ -89,7 +91,13 @@ function plusOneDisplay(guest: GuestRow): string {
 }
 
 function buildCsv(rows: GuestRow[]): string {
-  const header = ["guest name", "attending", "plus-one name", "timestamp"];
+  const header = [
+    "guest name",
+    "attending",
+    "plus-one name",
+    "timestamp",
+    "description",
+  ];
   const lines = [header.join(",")];
   for (const r of rows) {
     const status = normalizeStatus(r.rsvpStatus);
@@ -99,6 +107,7 @@ function buildCsv(rows: GuestRow[]): string {
         status === "attending" ? "yes" : status === "declined" ? "no" : "",
         escapeCsvCell(plusOneDisplay(r)),
         escapeCsvCell(r.rsvpUpdatedAt ?? ""),
+        escapeCsvCell(r.description ?? ""),
       ].join(","),
     );
   }

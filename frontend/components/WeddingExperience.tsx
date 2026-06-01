@@ -73,7 +73,7 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
   let yearIndex = 0;
 
   return (
-    <ExperienceShell guestName={guest?.firstName}>
+    <ExperienceShell guestName={guest?.nickname || guest?.firstName}>
       <FloatingAnchorSet />
       <ChapterScrollContainer>
         <ChapterSection id="hero" palette="raspberry" label="Jave and Nianne" decorate hero snap>
