@@ -1,0 +1,19 @@
+frontend/components/ui/FloatingAnchorSet.tsx
+  s_95b1047df17dca::t_c7975e46722c4e 41-48,56-60,64-65,67-74,76,78-85,88-91
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "49529cabeec2d2e2118a4626743bc481ac1bc046",
+  "prompts": {},
+  "sessions": {
+    "s_95b1047df17dca": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5f54fc4b-498e-4618-b4c5-872529b8fa0a",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
