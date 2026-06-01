@@ -1,0 +1,45 @@
+studio/schema.json
+  s_0a992cd27b864d::t_faf604204279a5 1071-1077
+studio/plugins/rsvp-dashboard/RsvpDashboardTool.tsx
+  s_0a992cd27b864d::t_634fb1a79a7b8b 15
+  s_0a992cd27b864d::t_fb8b95e9f515db 109
+  s_0a992cd27b864d::t_f094f7c81330f7 22
+  s_0a992cd27b864d::t_b3284a3fdca891 204,209
+  s_0a992cd27b864d::t_22e52869f8f052 48
+  s_0a992cd27b864d::t_bd8a98d4cc4654 336
+studio/plugins/guest-link-generator/GuestLinksTool.tsx
+  s_0a992cd27b864d::t_a10df0effc0507 81
+  s_0a992cd27b864d::t_d79dc5b3fab869 104
+  s_0a992cd27b864d::t_74c74f09d2042b 204-208
+  s_0a992cd27b864d::t_d456c02f900dbc 20
+  s_0a992cd27b864d::t_93ab6dfd8556f1 185
+  s_0a992cd27b864d::t_b19d602a352f79 15
+  s_0a992cd27b864d::t_5f5bef3c6bb04f 33
+studio/lib/guestName.ts
+  s_0a992cd27b864d::t_09c69ee2515f45 1-13
+frontend/sanity.types.ts
+  s_0a992cd27b864d::t_faf604204279a5 201
+studio/schemas/documents/guest.ts
+  s_0a992cd27b864d::t_d5371bfd674d7e 30
+  s_0a992cd27b864d::t_5a0a0fe1bbe6fa 3
+  s_0a992cd27b864d::t_224c58379935cb 26-29,31-32
+  s_0a992cd27b864d::t_2aa7bdc09315cb 185,191
+  s_0a992cd27b864d::t_a193d9527f4482 203
+  s_0a992cd27b864d::t_84a2f20a73389b 219-234
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "632c1698ca8798fc1ec439be0867ded1d30aed80",
+  "prompts": {},
+  "sessions": {
+    "s_0a992cd27b864d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a03f241a-767a-465e-965d-0555bd94ef38",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
