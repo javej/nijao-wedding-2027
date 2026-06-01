@@ -22,7 +22,8 @@ export function HeroSection() {
         Jave &amp; Nianne &middot; January 8, 2027 &middot; Lipa, Batangas
       </h1>
 
-      {/* Always-visible jump-nav — first-time wayfinding from the landing screen */}
+      {/* Returning-guest jump-nav — hidden on first visit, surfaces under the names
+          once the guest has been all the way through. */}
       <HeroJumpNav />
     </div>
   );

@@ -5,6 +5,7 @@ import { Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { quickNavAnchors, scrollToAnchor } from '@/lib/quick-nav';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useFirstScrollComplete } from '@/hooks/useFirstScrollComplete';
 import type { PaletteColor } from '@/components/ui/ChapterSection';
 
 /** Maps palette keys to Tailwind ring-color classes for the FAB accent. */
@@ -23,16 +24,28 @@ const paletteRingClass: Record<PaletteColor, string> = {
 const HERO_SECTION_ID = 'hero';
 
 export function FloatingAnchorSet() {
+  const { isComplete, markComplete } = useFirstScrollComplete();
   const [activePalette, setActivePalette] = useState<PaletteColor>('raspberry');
   // Default to the hero so the FAB starts hidden on the landing screen and
   // only appears once the guest scrolls into a content section.
   const [activeSectionId, setActiveSectionId] = useState<string>(HERO_SECTION_ID);
   const [open, setOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const rsvpObservedRef = useRef(false);
   const navRef = useRef<HTMLElement>(null);
 
-  // Track the active section to drive both the palette accent and the
-  // hide-on-hero behavior.
+  // Track the active section to drive palette + hide-on-hero behavior, and
+  // mark the first-scroll flag the first time RSVP comes into view (the
+  // gate that unhides both this FAB and the Hero ghost pills on future
+  // visits).
+  //
+  // We maintain a per-section ratio map and always activate the section
+  // with the HIGHEST `intersectionRatio`. A single-threshold observer
+  // would just hand us whichever entry crossed last, which is unstable
+  // on snap-scroll layouts — the FAB would flicker on mid-transition,
+  // stick to the wrong section after scrolling back to the hero, or
+  // sometimes vanish entirely. Picking max ratio converges to the
+  // dominant section regardless of callback order or scroll direction.
   useEffect(() => {
     const scrollRoot = document.getElementById('main-content');
     if (!scrollRoot) return;
@@ -40,23 +53,47 @@ export function FloatingAnchorSet() {
     const sections = scrollRoot.querySelectorAll<HTMLElement>('section[data-palette]');
     if (sections.length === 0) return;
 
+    const sectionMap = new Map<string, HTMLElement>();
+    sections.forEach((section) => sectionMap.set(section.id, section));
+
+    const ratios = new Map<string, number>();
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
+          ratios.set(entry.target.id, entry.intersectionRatio);
+        }
 
-          setActiveSectionId(entry.target.id);
+        let topId = HERO_SECTION_ID;
+        let topRatio = 0;
+        for (const [id, ratio] of ratios) {
+          if (ratio > topRatio) {
+            topId = id;
+            topRatio = ratio;
+          }
+        }
 
-          const palette = entry.target.getAttribute('data-palette') as PaletteColor | null;
-          if (palette) setActivePalette(palette);
+        setActiveSectionId(topId);
+
+        const palette = sectionMap.get(topId)?.getAttribute('data-palette') as
+          | PaletteColor
+          | null;
+        if (palette) setActivePalette(palette);
+
+        if (topId === 'rsvp' && !rsvpObservedRef.current) {
+          rsvpObservedRef.current = true;
+          markComplete();
         }
       },
-      { root: scrollRoot, threshold: 0.3 },
+      // Multiple thresholds so the observer re-fires as ratios change, not
+      // only when a single 30 % line is crossed — the map needs frequent
+      // updates to stay accurate during snap transitions.
+      { root: scrollRoot, threshold: [0, 0.25, 0.5, 0.75, 1] },
     );
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [markComplete]);
 
   // Close on Escape key or click outside
   useEffect(() => {
@@ -79,8 +116,9 @@ export function FloatingAnchorSet() {
     };
   }, [open]);
 
-  // Hidden on the hero — HeroJumpNav covers wayfinding there.
-  if (activeSectionId === HERO_SECTION_ID) return null;
+  // Stay hidden until the guest has scrolled through to RSVP at least once,
+  // and stay hidden on the hero (HeroJumpNav covers wayfinding there).
+  if (!isComplete || activeSectionId === HERO_SECTION_ID) return null;
 
   const ringClass = paletteRingClass[activePalette] ?? '';
 
