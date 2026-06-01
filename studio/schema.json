@@ -1236,46 +1236,55 @@
       "role": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "colorAssignment": {
-        "type": "objectAttribute",
-        "value": {
           "type": "union",
           "of": [
             {
               "type": "string",
-              "value": "deep-matcha"
+              "value": "Ninong"
             },
             {
               "type": "string",
-              "value": "raspberry"
+              "value": "Ninang"
             },
             {
               "type": "string",
-              "value": "golden-matcha"
+              "value": "Best Man"
             },
             {
               "type": "string",
-              "value": "strawberry-jam"
+              "value": "Maid of Honor"
             },
             {
               "type": "string",
-              "value": "matcha-chiffon"
+              "value": "Groomsman"
             },
             {
               "type": "string",
-              "value": "berry-meringue"
+              "value": "Bridesmaid"
             },
             {
               "type": "string",
-              "value": "matcha-latte"
+              "value": "Candle Sponsor"
             },
             {
               "type": "string",
-              "value": "strawberry-milk"
+              "value": "Veil Sponsor"
+            },
+            {
+              "type": "string",
+              "value": "Cord Sponsor"
+            },
+            {
+              "type": "string",
+              "value": "Ring Bearer"
+            },
+            {
+              "type": "string",
+              "value": "Bible & Coin Bearer"
+            },
+            {
+              "type": "string",
+              "value": "Flower Girl"
             }
           ]
         },
@@ -1332,13 +1341,6 @@
               }
             }
           }
-        },
-        "optional": true
-      },
-      "isPadrino": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "boolean"
         },
         "optional": true
       },

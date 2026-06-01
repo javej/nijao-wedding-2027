@@ -223,16 +223,19 @@ export type EntourageMember = {
   _updatedAt: string;
   _rev: string;
   name?: string;
-  role?: string;
-  colorAssignment?:
-    | "deep-matcha"
-    | "raspberry"
-    | "golden-matcha"
-    | "strawberry-jam"
-    | "matcha-chiffon"
-    | "berry-meringue"
-    | "matcha-latte"
-    | "strawberry-milk";
+  role?:
+    | "Ninong"
+    | "Ninang"
+    | "Best Man"
+    | "Maid of Honor"
+    | "Groomsman"
+    | "Bridesmaid"
+    | "Candle Sponsor"
+    | "Veil Sponsor"
+    | "Cord Sponsor"
+    | "Ring Bearer"
+    | "Bible & Coin Bearer"
+    | "Flower Girl";
   photo?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -241,7 +244,6 @@ export type EntourageMember = {
     alt?: string;
     _type: "image";
   };
-  isPadrino?: boolean;
   orderRank?: string;
 };
 
@@ -522,10 +524,8 @@ export type ALL_ANNOUNCEMENTS_QUERY_RESULT = Array<{
 
 // Source: ../frontend/sanity/queries/dressCode.ts
 // Variable: DRESS_CODE_QUERY
-// Query: *[_type == "dressCode"][0] {    label,    description,    paletteColors[] {      _key,      colorKey,      colorLabel    },    inspirationImages[] {      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    additionalNotes  }
+// Query: *[_type == "dressCode"][0] {    paletteColors[] {      _key,      colorKey,      colorLabel    }  }
 export type DRESS_CODE_QUERY_RESULT = {
-  label: string | null;
-  description: BlockContent | null;
   paletteColors: Array<{
     _key: string;
     colorKey:
@@ -540,83 +540,49 @@ export type DRESS_CODE_QUERY_RESULT = {
       | null;
     colorLabel: string | null;
   }> | null;
-  inspirationImages: Array<{
-    asset: {
-      _id: string;
-      url: string | null;
-      mimeType: string | null;
-      metadata: {
-        lqip: string | null;
-        dimensions: {
-          width: number | null;
-          height: number | null;
-        } | null;
-      } | null;
-    } | null;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-    _key: string;
-  }> | null;
-  additionalNotes: string | null;
 } | null;
 
 // Source: ../frontend/sanity/queries/entourage.ts
 // Variable: PADRINOS_QUERY
-// Query: *[_type == "entourageMember" && isPadrino == true] | order(orderRank asc, name asc) {    _id, name, role, colorAssignment,    photo {      ...,      alt,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions { width, height }        }      }    }  }
+// Query: *[_type == "entourageMember" && role in ["Ninong", "Ninang"]] | order(name asc) {    _id, name, role  }
 export type PADRINOS_QUERY_RESULT = Array<{
   _id: string;
   name: string | null;
-  role: string | null;
-  colorAssignment:
-    | "berry-meringue"
-    | "deep-matcha"
-    | "golden-matcha"
-    | "matcha-chiffon"
-    | "matcha-latte"
-    | "raspberry"
-    | "strawberry-jam"
-    | "strawberry-milk"
+  role:
+    | "Best Man"
+    | "Bible & Coin Bearer"
+    | "Bridesmaid"
+    | "Candle Sponsor"
+    | "Cord Sponsor"
+    | "Flower Girl"
+    | "Groomsman"
+    | "Maid of Honor"
+    | "Ninang"
+    | "Ninong"
+    | "Ring Bearer"
+    | "Veil Sponsor"
     | null;
-  photo: {
-    asset: {
-      _id: string;
-      url: string | null;
-      mimeType: string | null;
-      metadata: {
-        lqip: string | null;
-        dimensions: {
-          width: number | null;
-          height: number | null;
-        } | null;
-      } | null;
-    } | null;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt: string | null;
-    _type: "image";
-  } | null;
 }>;
 
 // Source: ../frontend/sanity/queries/entourage.ts
 // Variable: WEDDING_PARTY_QUERY
-// Query: *[_type == "entourageMember" && isPadrino != true] | order(orderRank asc, role asc, name asc) {    _id, name, role, colorAssignment  }
+// Query: *[_type == "entourageMember" && defined(role) && !(role in ["Ninong", "Ninang"])] | order(name asc) {    _id, name, role  }
 export type WEDDING_PARTY_QUERY_RESULT = Array<{
   _id: string;
   name: string | null;
-  role: string | null;
-  colorAssignment:
-    | "berry-meringue"
-    | "deep-matcha"
-    | "golden-matcha"
-    | "matcha-chiffon"
-    | "matcha-latte"
-    | "raspberry"
-    | "strawberry-jam"
-    | "strawberry-milk"
+  role:
+    | "Best Man"
+    | "Bible & Coin Bearer"
+    | "Bridesmaid"
+    | "Candle Sponsor"
+    | "Cord Sponsor"
+    | "Flower Girl"
+    | "Groomsman"
+    | "Maid of Honor"
+    | "Ninang"
+    | "Ninong"
+    | "Ring Bearer"
+    | "Veil Sponsor"
     | null;
 }>;
 
@@ -820,9 +786,9 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '\n  *[_type == "announcement" && (scheduledAt == null || scheduledAt <= now())]\n    | order(publishedAt desc) {\n      _id,\n      title,\n      body,\n      publishedAt,\n      scheduledAt\n    }\n': ANNOUNCEMENTS_QUERY_RESULT;
     '\n  *[_type == "announcement"] | order(publishedAt desc) {\n    _id,\n    title,\n    publishedAt,\n    scheduledAt\n  }\n': ALL_ANNOUNCEMENTS_QUERY_RESULT;
-    '\n  *[_type == "dressCode"][0] {\n    label,\n    description,\n    paletteColors[] {\n      _key,\n      colorKey,\n      colorLabel\n    },\n    inspirationImages[] {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    additionalNotes\n  }\n': DRESS_CODE_QUERY_RESULT;
-    '\n  *[_type == "entourageMember" && isPadrino == true] | order(orderRank asc, name asc) {\n    _id, name, role, colorAssignment,\n    photo {\n      ...,\n      alt,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions { width, height }\n        }\n      }\n    }\n  }\n': PADRINOS_QUERY_RESULT;
-    '\n  *[_type == "entourageMember" && isPadrino != true] | order(orderRank asc, role asc, name asc) {\n    _id, name, role, colorAssignment\n  }\n': WEDDING_PARTY_QUERY_RESULT;
+    '\n  *[_type == "dressCode"][0] {\n    paletteColors[] {\n      _key,\n      colorKey,\n      colorLabel\n    }\n  }\n': DRESS_CODE_QUERY_RESULT;
+    '\n  *[_type == "entourageMember" && role in ["Ninong", "Ninang"]] | order(name asc) {\n    _id, name, role\n  }\n': PADRINOS_QUERY_RESULT;
+    '\n  *[_type == "entourageMember" && defined(role) && !(role in ["Ninong", "Ninang"])] | order(name asc) {\n    _id, name, role\n  }\n': WEDDING_PARTY_QUERY_RESULT;
     '\n  *[_type == "guest" && slug.current == $slug][0] {\n    firstName,\n    "slug": slug.current,\n    plusOneEligible,\n    plusOneType,\n    plusOneLinkedGuest->{\n      firstName,\n      "slug": slug.current,\n      rsvpStatus\n    },\n    rsvpStatus,\n    rsvpUpdatedAt,\n    openPlusOne\n  }\n': GUEST_BY_SLUG_QUERY_RESULT;
     '\n  *[_type == "guest" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': ALL_GUEST_SLUGS_QUERY_RESULT;
     '\n  *[_type == "navigation"]{\n    _type,\n    _key,\n    links\n  }\n': NAVIGATION_QUERY_RESULT;

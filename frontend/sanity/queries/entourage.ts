@@ -5,81 +5,38 @@ const isSanityConfigured =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== "placeholder" &&
   !!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 
-/** Padrinos/Madrinas — ninongs and ninangs for the Digital Padrino Wall. */
+/** Roles that belong to the Padrino Wall. Everything else is Wedding Party. */
+const PADRINO_ROLES = '["Ninong", "Ninang"]';
+
+/**
+ * Padrinos — ninongs and ninangs for the Padrino Wall. Names only; the
+ * section/group split and ordering are derived from `role` in the component.
+ * Sorted by name here so each role group reads alphabetically.
+ */
 export const PADRINOS_QUERY = groq`
-  *[_type == "entourageMember" && isPadrino == true] | order(orderRank asc, name asc) {
-    _id, name, role, colorAssignment,
-    photo {
-      ...,
-      alt,
-      asset->{
-        _id,
-        url,
-        mimeType,
-        metadata {
-          lqip,
-          dimensions { width, height }
-        }
-      }
-    }
+  *[_type == "entourageMember" && role in ${PADRINO_ROLES}] | order(name asc) {
+    _id, name, role
   }
 `;
 
-/** Wedding Party — non-padrino entourage members (best man, maid of honor, etc.). */
+/** Wedding Party — every entourage member whose role is not a padrino role. */
 export const WEDDING_PARTY_QUERY = groq`
-  *[_type == "entourageMember" && isPadrino != true] | order(orderRank asc, role asc, name asc) {
-    _id, name, role, colorAssignment
+  *[_type == "entourageMember" && defined(role) && !(role in ${PADRINO_ROLES})] | order(name asc) {
+    _id, name, role
   }
 `;
 
-/** Shape of a padrino/madrina entry. */
-export type PadrinoResult = {
+/** Shape of an entourage member entry (names only). */
+export type EntourageMemberResult = {
   _id: string;
   name: string;
   role: string;
-  colorAssignment?:
-    | "deep-matcha"
-    | "raspberry"
-    | "golden-matcha"
-    | "strawberry-jam"
-    | "matcha-chiffon"
-    | "berry-meringue"
-    | "matcha-latte"
-    | "strawberry-milk";
-  photo: {
-    asset: {
-      _id: string;
-      url: string;
-      mimeType: string;
-      metadata: {
-        lqip: string;
-        dimensions: { width: number; height: number };
-      };
-    };
-    hotspot?: { x: number; y: number; width: number; height: number };
-    crop?: { top: number; bottom: number; left: number; right: number };
-    alt?: string;
-    _type: "image";
-  } | null;
 };
 
-/** Shape of a wedding party member entry. */
-export type WeddingPartyResult = {
-  _id: string;
-  name: string;
-  role: string;
-  colorAssignment?:
-    | "deep-matcha"
-    | "raspberry"
-    | "golden-matcha"
-    | "strawberry-jam"
-    | "matcha-chiffon"
-    | "berry-meringue"
-    | "matcha-latte"
-    | "strawberry-milk";
-};
+export type PadrinoResult = EntourageMemberResult;
+export type WeddingPartyResult = EntourageMemberResult;
 
-/** Fetch all padrinos/madrinas for the Digital Padrino Wall. */
+/** Fetch all padrinos/madrinas for the Padrino Wall. */
 export async function getPadrinos(): Promise<PadrinoResult[]> {
   if (!isSanityConfigured) return [];
 
