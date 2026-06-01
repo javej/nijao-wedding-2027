@@ -38,6 +38,14 @@ export function FloatingAnchorSet() {
   // mark the first-scroll flag the first time RSVP comes into view (the
   // gate that unhides both this FAB and the Hero ghost pills on future
   // visits).
+  //
+  // We maintain a per-section ratio map and always activate the section
+  // with the HIGHEST `intersectionRatio`. A single-threshold observer
+  // would just hand us whichever entry crossed last, which is unstable
+  // on snap-scroll layouts — the FAB would flicker on mid-transition,
+  // stick to the wrong section after scrolling back to the hero, or
+  // sometimes vanish entirely. Picking max ratio converges to the
+  // dominant section regardless of callback order or scroll direction.
   useEffect(() => {
     const scrollRoot = document.getElementById('main-content');
     if (!scrollRoot) return;
@@ -45,23 +53,42 @@ export function FloatingAnchorSet() {
     const sections = scrollRoot.querySelectorAll<HTMLElement>('section[data-palette]');
     if (sections.length === 0) return;
 
+    const sectionMap = new Map<string, HTMLElement>();
+    sections.forEach((section) => sectionMap.set(section.id, section));
+
+    const ratios = new Map<string, number>();
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
+          ratios.set(entry.target.id, entry.intersectionRatio);
+        }
 
-          setActiveSectionId(entry.target.id);
-
-          const palette = entry.target.getAttribute('data-palette') as PaletteColor | null;
-          if (palette) setActivePalette(palette);
-
-          if (entry.target.id === 'rsvp' && !rsvpObservedRef.current) {
-            rsvpObservedRef.current = true;
-            markComplete();
+        let topId = HERO_SECTION_ID;
+        let topRatio = 0;
+        for (const [id, ratio] of ratios) {
+          if (ratio > topRatio) {
+            topId = id;
+            topRatio = ratio;
           }
         }
+
+        setActiveSectionId(topId);
+
+        const palette = sectionMap.get(topId)?.getAttribute('data-palette') as
+          | PaletteColor
+          | null;
+        if (palette) setActivePalette(palette);
+
+        if (topId === 'rsvp' && !rsvpObservedRef.current) {
+          rsvpObservedRef.current = true;
+          markComplete();
+        }
       },
-      { root: scrollRoot, threshold: 0.3 },
+      // Multiple thresholds so the observer re-fires as ratios change, not
+      // only when a single 30 % line is crossed — the map needs frequent
+      // updates to stay accurate during snap transitions.
+      { root: scrollRoot, threshold: [0, 0.25, 0.5, 0.75, 1] },
     );
 
     sections.forEach((section) => observer.observe(section));
