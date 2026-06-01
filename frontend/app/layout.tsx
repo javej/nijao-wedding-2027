@@ -16,9 +16,25 @@ export const metadata: Metadata = {
     title: "Jave & Nianne — January 8, 2027",
     description:
       "Ten years. One more day. Join us as we celebrate our wedding at Casa 10 22, Lipa, Batangas.",
+    url: "/",
     type: "website",
     locale: "en_PH",
     siteName: "Jave & Nianne Wedding",
+    images: [
+      {
+        url: "/decorations/proposal-og.jpg",
+        width: 1418,
+        height: 945,
+        alt: "Jave & Nianne — January 8, 2027",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Jave & Nianne — January 8, 2027",
+    description:
+      "Ten years. One more day. Join us as we celebrate our wedding at Casa 10 22, Lipa, Batangas.",
+    images: ["/decorations/proposal-og.jpg"],
   },
   robots: { index: false, follow: false },
 };
@@ -45,7 +61,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={cn(cormorantGaramond.variable, dmSans.variable)}>
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" type="image/svg+xml" href="/gem.svg" />
       <body
         className="min-h-screen bg-background font-body antialiased overscroll-none"
       >
