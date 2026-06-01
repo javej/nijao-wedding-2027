@@ -2,6 +2,31 @@ import { defineField, defineType } from "sanity";
 import { Users } from "lucide-react";
 import { orderRankField } from "@sanity/orderable-document-list";
 
+/**
+ * Canonical role list, in cultural display order. The dropdown `value`s
+ * are the exact title-case strings already stored on existing documents,
+ * so converting `role` from free text to this enum requires no data
+ * migration — only the rare typo/casing straggler needs a manual re-pick.
+ *
+ * The frontend derives BOTH the section (Ninong/Ninang → Padrino Wall,
+ * everything else → Wedding Party) and the within-section group order from
+ * this same order, so there is no separate `isPadrino` toggle to drift.
+ */
+const ROLE_OPTIONS = [
+  { title: "Ninong", value: "Ninong" },
+  { title: "Ninang", value: "Ninang" },
+  { title: "Best Man", value: "Best Man" },
+  { title: "Maid of Honor", value: "Maid of Honor" },
+  { title: "Groomsman", value: "Groomsman" },
+  { title: "Bridesmaid", value: "Bridesmaid" },
+  { title: "Candle Sponsor", value: "Candle Sponsor" },
+  { title: "Veil Sponsor", value: "Veil Sponsor" },
+  { title: "Cord Sponsor", value: "Cord Sponsor" },
+  { title: "Ring Bearer", value: "Ring Bearer" },
+  { title: "Bible & Coin Bearer", value: "Bible & Coin Bearer" },
+  { title: "Flower Girl", value: "Flower Girl" },
+] as const;
+
 export default defineType({
   name: "entourageMember",
   title: "Entourage Member",
@@ -19,34 +44,18 @@ export default defineType({
       title: "Role",
       type: "string",
       description:
-        'e.g., "Ninong", "Ninang", "Best Man", "Maid of Honor", "Groomsman", "Bridesmaid"',
+        "Ninongs and Ninangs appear in the Padrino Wall; every other role appears in the Wedding Party. Names are grouped under their role on the site.",
+      options: {
+        list: [...ROLE_OPTIONS],
+      },
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "colorAssignment",
-      title: "Color Assignment",
-      type: "string",
-      description:
-        "Accent color used for this member's card on the site. Rotate through the palette so adjacent cards look distinct.",
-      options: {
-        list: [
-          { title: "Deep Matcha", value: "deep-matcha" },
-          { title: "Raspberry", value: "raspberry" },
-          { title: "Golden Matcha", value: "golden-matcha" },
-          { title: "Strawberry Jam", value: "strawberry-jam" },
-          { title: "Matcha Chiffon", value: "matcha-chiffon" },
-          { title: "Berry Meringue", value: "berry-meringue" },
-          { title: "Matcha Latte", value: "matcha-latte" },
-          { title: "Strawberry Milk", value: "strawberry-milk" },
-        ],
-      },
-    }),
-    defineField({
       name: "photo",
-      title: "Photo",
+      title: "Photo (deprecated)",
       type: "image",
       description:
-        "Square-ish headshot works best. Drag to reposition the focal point so the face stays centered when cropped to a circle.",
+        "No longer shown on the site — the entourage now displays names only. Kept so previously uploaded photos are not lost.",
       options: { hotspot: true },
       fields: [
         defineField({
@@ -58,21 +67,12 @@ export default defineType({
         }),
       ],
     }),
-    defineField({
-      name: "isPadrino",
-      title: "Is Padrino",
-      type: "boolean",
-      description:
-        "Enable for Ninongs and Ninangs — they will appear in the Digital Padrino Wall. Leave off for the wedding party (best man, maid of honor, groomsmen, bridesmaids).",
-      initialValue: false,
-    }),
     orderRankField({ type: "entourageMember" }),
   ],
   preview: {
     select: {
       title: "name",
       subtitle: "role",
-      media: "photo",
     },
   },
 });
