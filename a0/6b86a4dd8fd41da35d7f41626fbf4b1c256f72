@@ -1,0 +1,59 @@
+frontend/sanity.types.ts
+  s_cc164a4885057d::t_32288718e77230 226-236,238,527,547,551-552,554-563,569,573-574,576-585,789-791
+  s_cc164a4885057d::t_b4b6dfb3d038b2 237,553,575
+studio/schema.json
+  s_cc164a4885057d::t_32288718e77230 1243-1251,1255,1259,1263,1267,1271,1275,1279,1287
+  s_cc164a4885057d::t_b4b6dfb3d038b2 1283
+studio/schemas/documents/entourageMember.ts
+  s_cc164a4885057d::t_80daddb3fffb97 26
+  s_cc164a4885057d::t_a14ab53c2db566 5-25,27-29,47,49,51,55,58
+frontend/components/sections/EntourageSection.tsx
+  s_cc164a4885057d::t_004801d5fe9ce1 241-250
+  s_cc164a4885057d::t_cd09ca064c8d98 128,149
+  s_cc164a4885057d::t_a12db277fd1b06 311-312
+  s_cc164a4885057d::t_b669749e048126 159,163-166,169,171-193
+  s_cc164a4885057d::t_924aa604d8ce8c 284
+  s_cc164a4885057d::t_ff40f442036d72 114-116,121-125,127,133
+  s_cc164a4885057d::t_bf03b82846d2dc 263-269
+  s_cc164a4885057d::t_769e02f735f16b 41
+  s_cc164a4885057d::t_a685ca981c4978 225-228,231-240
+  s_cc164a4885057d::t_22fef6e87e4293 278
+  s_cc164a4885057d::t_b2b967c10569f3 205-206,215,229-230
+  s_cc164a4885057d::t_800eabe55bb7f0 119-120,126,130-132,145
+  s_cc164a4885057d::t_b84b9bc7460a73 257
+  s_cc164a4885057d::t_e629f7b3598aad 282-283,285-298,301-302,304-310
+  s_cc164a4885057d::t_bbaa6febfaf8e2 299-300
+  s_cc164a4885057d::t_06c77b012ca73a 303
+  s_cc164a4885057d::t_d6fbddf4eea5ca 68
+  s_cc164a4885057d::t_26e7a746ffc11b 216-224
+  s_cc164a4885057d::t_5950b2600d5478 270
+  s_cc164a4885057d::t_82e708e2b80ba9 277
+  s_cc164a4885057d::t_154311084ad424 37-39
+  s_cc164a4885057d::t_75c6320f306ee6 160-162,167-168,170
+  s_cc164a4885057d::t_4f8a15f5ae64ae 98-99,101
+  s_cc164a4885057d::t_48f4e0a5290687 2,9-36,40,42-44,72-97,100,102-111,136-137,139-140,143-144,146-148,150-154,201-204,210-214,258,261-262
+  s_cc164a4885057d::t_6cc7469f253eb6 46-51,53-55,57-67,69
+frontend/sanity/queries/entourage.ts
+  s_cc164a4885057d::t_2bd97c95d09a9a 8-15,17-18,22,24-25,29-30,36-37,39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "a06b86a4dd8fd41da35d7f41626fbf4b1c256f72",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_cc164a4885057d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cdac5fb0-5c80-403c-bc81-dde4c93e831d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
