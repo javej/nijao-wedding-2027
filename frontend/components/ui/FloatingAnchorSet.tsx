@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Calendar, Palette, Heart, Compass } from 'lucide-react';
+import { Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useFirstScrollComplete } from '@/hooks/useFirstScrollComplete';
+import { quickNavAnchors, scrollToAnchor } from '@/lib/quick-nav';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import type { PaletteColor } from '@/components/ui/ChapterSection';
 
 /** Maps palette keys to Tailwind ring-color classes for the FAB accent. */
@@ -18,35 +19,20 @@ const paletteRingClass: Record<PaletteColor, string> = {
   'strawberry-milk': 'ring-strawberry-milk',
 };
 
-const anchors = [
-  { id: 'wedding-details', label: 'Jump to Wedding Details', shortLabel: 'Details', Icon: Calendar },
-  { id: 'dress-code', label: 'Jump to Dress Code', shortLabel: 'Attire', Icon: Palette },
-  { id: 'rsvp', label: 'Jump to RSVP', shortLabel: 'RSVP', Icon: Heart },
-] as const;
-
-function usePrefersReducedMotion() {
-  const [prefersReduced, setPrefersReduced] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReduced(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-
-  return prefersReduced;
-}
+/** The Hero owns its own static jump-nav (HeroJumpNav); the FAB stays out of its way. */
+const HERO_SECTION_ID = 'hero';
 
 export function FloatingAnchorSet() {
-  const { isComplete, markComplete } = useFirstScrollComplete();
   const [activePalette, setActivePalette] = useState<PaletteColor>('raspberry');
+  // Default to the hero so the FAB starts hidden on the landing screen and
+  // only appears once the guest scrolls into a content section.
+  const [activeSectionId, setActiveSectionId] = useState<string>(HERO_SECTION_ID);
   const [open, setOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
-  const rsvpObservedRef = useRef(false);
   const navRef = useRef<HTMLElement>(null);
 
-  // Observe sections for palette tracking + RSVP first-scroll detection
+  // Track the active section to drive both the palette accent and the
+  // hide-on-hero behavior.
   useEffect(() => {
     const scrollRoot = document.getElementById('main-content');
     if (!scrollRoot) return;
@@ -59,13 +45,10 @@ export function FloatingAnchorSet() {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
 
+          setActiveSectionId(entry.target.id);
+
           const palette = entry.target.getAttribute('data-palette') as PaletteColor | null;
           if (palette) setActivePalette(palette);
-
-          if (entry.target.id === 'rsvp' && !rsvpObservedRef.current) {
-            rsvpObservedRef.current = true;
-            markComplete();
-          }
         }
       },
       { root: scrollRoot, threshold: 0.3 },
@@ -73,7 +56,7 @@ export function FloatingAnchorSet() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, [markComplete]);
+  }, []);
 
   // Close on Escape key or click outside
   useEffect(() => {
@@ -96,9 +79,9 @@ export function FloatingAnchorSet() {
     };
   }, [open]);
 
-  if (!isComplete) return null;
+  // Hidden on the hero — HeroJumpNav covers wayfinding there.
+  if (activeSectionId === HERO_SECTION_ID) return null;
 
-  const scrollBehavior = prefersReducedMotion ? 'instant' : 'smooth';
   const ringClass = paletteRingClass[activePalette] ?? '';
 
   return (
@@ -110,15 +93,14 @@ export function FloatingAnchorSet() {
           open ? 'visible translate-y-0 opacity-100' : 'invisible translate-y-2 opacity-0',
         )}
       >
-        {anchors.map(({ id, label, shortLabel, Icon }) => (
+        {quickNavAnchors.map(({ id, label, shortLabel, Icon }) => (
           <button
             key={id}
             type="button"
             aria-label={label}
             tabIndex={open ? 0 : -1}
             onClick={() => {
-              const target = document.getElementById(id);
-              target?.scrollIntoView({ behavior: scrollBehavior });
+              scrollToAnchor(id, prefersReducedMotion);
               setOpen(false);
             }}
             className={cn(

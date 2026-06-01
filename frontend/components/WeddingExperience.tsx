@@ -105,11 +105,11 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           );
         })}
 
-        <ChapterSection id="wedding-details" palette="matcha-chiffon" label="Wedding Details">
+        <ChapterSection id="wedding-details" palette="matcha-chiffon" label="When & Where">
           {weddingDetails ? (
             <WeddingDetails details={weddingDetails} />
           ) : (
-            <p className="font-display text-display-md">Wedding Details</p>
+            <p className="font-display text-display-md">When &amp; Where</p>
           )}
         </ChapterSection>
 
