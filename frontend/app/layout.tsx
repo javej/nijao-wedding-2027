@@ -13,9 +13,9 @@ export const metadata: Metadata = {
   description:
     "Ten years. One more day. Join us as we celebrate our wedding at Casa 10 22, Lipa, Batangas.",
   openGraph: {
-    title: "Jave & Nianne — January 8, 2027",
+    title: "Spoiler Alert: We're getting married! 💍",
     description:
-      "Ten years. One more day. Join us as we celebrate our wedding at Casa 10 22, Lipa, Batangas.",
+      "We'd love to tell you exactly when and where, but we spent way too much time coding this custom website for you not to look at it. Click to find out!",
     url: "/",
     type: "website",
     locale: "en_PH",
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jave & Nianne — January 8, 2027",
+    title: "Spoiler Alert: We're getting married! 💍",
     description:
-      "Ten years. One more day. Join us as we celebrate our wedding at Casa 10 22, Lipa, Batangas.",
+      "We'd love to tell you exactly when and where, but we spent way too much time coding this custom website for you not to look at it. Click to find out!",
     images: ["/decorations/proposal-og.jpg"],
   },
   robots: { index: false, follow: false },
