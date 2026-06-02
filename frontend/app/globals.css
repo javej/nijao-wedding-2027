@@ -415,6 +415,20 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* The root must NOT scroll. `<main id="main-content">` is the sole scroll
+   * container (h-dvh overflow-y-scroll). If the root is left scrollable, mobile
+   * Chrome ends up with two competing scrollers — body at `min-height: 100vh`
+   * (large viewport, taller than the visible area while the address bar shows)
+   * plus the inner `100dvh` main. The dynamic toolbar then drives the root,
+   * resizing `dvh` on every toggle and snapping the inner scroller back toward
+   * the top (the random scroll-to-top bug). Pinning html/body to one dvh box
+   * with overflow hidden removes the second scroller entirely. See ADR-0003. */
+  html,
+  body {
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
   body {
     @apply bg-background text-foreground;
   }

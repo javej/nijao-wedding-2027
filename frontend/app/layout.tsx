@@ -63,7 +63,7 @@ export default function RootLayout({
     <html lang="en" className={cn(cormorantGaramond.variable, dmSans.variable)}>
       <link rel="icon" type="image/svg+xml" href="/gem.svg" />
       <body
-        className="min-h-screen bg-background font-body antialiased overscroll-none"
+        className="h-dvh bg-background font-body antialiased overscroll-none"
       >
           {children}
         <Toaster position="top-center" richColors />
