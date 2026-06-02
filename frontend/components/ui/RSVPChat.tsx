@@ -183,11 +183,20 @@ export function RSVPChat({
 
     function handleResize() {
       if (!containerRef.current) return;
-      // When the virtual keyboard opens, visualViewport.height shrinks.
-      // Apply a negative translateY to lift the chat above the keyboard.
-      const offsetFromBottom = window.innerHeight - vv!.height - vv!.offsetTop;
-      if (offsetFromBottom > 0) {
-        containerRef.current.style.transform = `translateY(-${offsetFromBottom}px)`;
+      // Lift the chat above the VIRTUAL KEYBOARD only. The keyboard is the gap
+      // between the layout viewport and the visual viewport. Measure the layout
+      // viewport with documentElement.clientHeight (the 100dvh root box), NOT
+      // window.innerHeight: on mobile, innerHeight stays at the large-viewport
+      // height while the address bar is showing, so the old formula treated the
+      // address bar as keyboard inset and shoved the chat up during normal
+      // scrolling. clientHeight tracks the dynamic viewport, so it differs from
+      // the visual viewport only when the keyboard is actually open.
+      const keyboardInset =
+        document.documentElement.clientHeight - vv!.height - vv!.offsetTop;
+      // > 1 (not > 0) absorbs sub-pixel viewport rounding so we don't apply a
+      // translateY(-0.x px) when no keyboard is present.
+      if (keyboardInset > 1) {
+        containerRef.current.style.transform = `translateY(-${keyboardInset}px)`;
       } else {
         containerRef.current.style.transform = '';
       }
