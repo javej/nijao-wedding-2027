@@ -1,4 +1,5 @@
 import type { WeddingDetailsResult } from "@/sanity/queries/weddingDetails";
+import { AddToCalendarMenu } from "@/components/sections/AddToCalendarMenu";
 
 interface WeddingDetailsProps {
   details: NonNullable<WeddingDetailsResult>;
@@ -159,6 +160,13 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
             </a>
           )}
         </div>
+      </div>
+
+      {/* Single combined event for the whole wedding (ceremony→reception),
+          offered per provider so each guest lands in their own calendar app.
+          See ADR-0005. */}
+      <div className="mt-12 md:mt-16 flex justify-center">
+        <AddToCalendarMenu />
       </div>
     </div>
   );

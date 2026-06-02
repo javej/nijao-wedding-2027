@@ -22,6 +22,11 @@ When state could live in either Sanity or Sheets:
 - **Sanity is authoritative** for the current state of a guest (including their RSVP).
 - **Sheets is derived/historical** — every submission appends; nothing is updated in place.
 
+## Wedding Details & Calendar
+
+- **Wedding details** — The ceremony and reception logistics shown in the "When & Where" scroll chapter, stored on the singleton Sanity `weddingDetails` document. Ceremony and reception are *two distinct blocks* (different venues, different times) in the display.
+- **Calendar event** — For the "Add to Calendar" feature, the whole wedding is modelled as a *single combined event* (one ceremony-to-reception span), not two. The event is pinned to the ceremony venue with the reception described in its notes. This is intentional: it mirrors how the couple think of the day (one event) and keeps a guest's calendar uncluttered, even though the display shows two blocks.
+
 ## Story & Chapters
 
 - **Story chapter** — A year-anchored entry in the love-story scroll, stored in Sanity as a `storyChapter` document. Each chapter has a `year` (between 2017 and 2027), a `caption`, and an image. Chapters are ordered manually by an `order` field.
