@@ -1,0 +1,36 @@
+frontend/app/wedding.ics/route.ts
+  s_af4081d3ea7957::t_9220abfa749f53 1-16,22-25
+  s_af4081d3ea7957::t_884ac739639edf 17-21
+CONTEXT.md
+  s_af4081d3ea7957::t_7839749c8a20f5 25-29
+docs/adr/0005-calendar-event-hardcoded-not-from-sanity.md
+  s_af4081d3ea7957::t_cb96cda0adc33d 9
+  s_af4081d3ea7957::t_f24e24480beace 1-8,10-47
+frontend/components/sections/WeddingDetails.tsx
+  s_af4081d3ea7957::t_5923cdaf390b76 165-167,169
+  s_af4081d3ea7957::t_1a8b1fd51da994 2
+  s_af4081d3ea7957::t_64cb395019b572 164,168,170
+frontend/lib/wedding-event.ts
+  s_af4081d3ea7957::t_9138627c93f5a0 1-36,59-97
+  s_af4081d3ea7957::t_a7997faed1fd23 37-58
+frontend/components/sections/AddToCalendarMenu.tsx
+  s_af4081d3ea7957::t_f9c7eef3ee924b 1-2,5-10,12-28,47-49,57,74,91,102-103
+  s_af4081d3ea7957::t_aaef9282495ff2 3-4,29-46,50-56,58-73,75-90,92-101
+  s_af4081d3ea7957::t_a69eac40b2b024 11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b5895d92cb128d80862449117e6be8384fd6aadf",
+  "prompts": {},
+  "sessions": {
+    "s_af4081d3ea7957": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "851cc5c7-679b-4295-affc-a3bc5a8c7dc6",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
