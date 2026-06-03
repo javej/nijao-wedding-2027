@@ -1,0 +1,39 @@
+CONTEXT.md
+  s_36ef3b050d1761::t_8cea4af57b8113 33-37
+frontend/components/sections/FAQSection.tsx
+  s_36ef3b050d1761::t_9f5be1eaf69a7e 1-33
+frontend/components/sections/faq/FAQAccordion.tsx
+  s_36ef3b050d1761::t_fd44c13e138509 1-52
+frontend/lib/quick-nav.ts
+  s_36ef3b050d1761::t_c1229fd78730fd 1
+  s_36ef3b050d1761::t_4525f0ef986abf 23
+frontend/sanity/queries/faqs.ts
+  s_36ef3b050d1761::t_454aa5e8338be7 1-44
+frontend/components/WeddingExperience.tsx
+  s_36ef3b050d1761::t_64b829a3580883 65,71
+  s_36ef3b050d1761::t_4a5693a051603f 146-149
+  s_36ef3b050d1761::t_eebe0875ccb59c 11,16
+frontend/components/portable-text-renderer.tsx
+  s_36ef3b050d1761::t_dd291346722dc5 108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "aa90c61c4c2be25834e565a8a6f53e13ff7db4e9",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_36ef3b050d1761": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "017795a7-25bb-494a-a1fd-31b807d7e843",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
