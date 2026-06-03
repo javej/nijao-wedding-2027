@@ -1,0 +1,25 @@
+frontend/components/ui/RSVPChat.tsx
+  s_4d14ae23ec9335::t_e643e4a8abb12c 835
+  s_4d14ae23ec9335::t_a80277d05e6ee4 824
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "0c4512fe908462b34c996f7206b7311f8c3ce6c4",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_4d14ae23ec9335": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5e5ac8a9-5972-4828-b7bf-a912d2bdcb99",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
