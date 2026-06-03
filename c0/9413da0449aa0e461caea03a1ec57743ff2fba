@@ -1,0 +1,41 @@
+frontend/hooks/useManagedTimeouts.test.ts
+  s_a0c9ded53a4214::t_e48a1d4079e9a4 1-49
+frontend/components/ui/RSVPChat.tsx
+  s_a0c9ded53a4214::t_a16d60bb8ea222 5,14-18
+  s_a0c9ded53a4214::t_44af6c30d59d9d 6-10
+  s_a0c9ded53a4214::t_09484aa2a85597 11
+  s_a0c9ded53a4214::t_189b8fdb50e194 13
+  s_a0c9ded53a4214::t_370e54b641d858 190-193
+  s_a0c9ded53a4214::t_e0167b5d90c861 198-199
+  s_a0c9ded53a4214::t_3190cb15f3e61f 238-239
+  s_a0c9ded53a4214::t_25a8770fc7526e 327-328
+  s_a0c9ded53a4214::t_5f535af5d38569 344-345
+  s_a0c9ded53a4214::t_19f4b4bcb27983 406,411,413
+  s_a0c9ded53a4214::t_3db32a266d1e4e 418,420
+  s_a0c9ded53a4214::t_77bd4288f75a45 425,429
+  s_a0c9ded53a4214::t_1f52aee4c40509 436,447,449,453
+  s_a0c9ded53a4214::t_5f266cd202a5e7 458,462
+  s_a0c9ded53a4214::t_3195c26c569751 476
+  s_a0c9ded53a4214::t_7891f680c781a6 563
+  s_a0c9ded53a4214::t_665bddfb9e4120 578
+  s_a0c9ded53a4214::t_4c4e04c23f4190 632-647,651-670
+  s_a0c9ded53a4214::t_9b4e454643307e 649
+frontend/hooks/useManagedTimeouts.ts
+  s_a0c9ded53a4214::t_185c18107cf8db 1-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "c09413da0449aa0e461caea03a1ec57743ff2fba",
+  "prompts": {},
+  "sessions": {
+    "s_a0c9ded53a4214": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "792138ac-2295-4508-a9ab-b63335b3db32",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
