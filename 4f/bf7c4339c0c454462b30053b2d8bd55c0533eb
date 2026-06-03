@@ -1,0 +1,20 @@
+frontend/app/layout.tsx
+  s_1f6dd6776e6f46::t_9020d2d58e8972 16,18
+  s_1f6dd6776e6f46::t_e3e55618b8d007 34,36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "4fbf7c4339c0c454462b30053b2d8bd55c0533eb",
+  "prompts": {},
+  "sessions": {
+    "s_1f6dd6776e6f46": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "74c4a3ca-49c5-46c1-acd1-a145d908dd75",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
