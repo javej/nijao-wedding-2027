@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     siteName: "Jave & Nianne Wedding",
     images: [
       {
-        url: "/decorations/proposal-og.jpg",
-        width: 1418,
-        height: 945,
+        url: "/decorations/preview-og.jfif",
+        width: 2252,
+        height: 1689,
         alt: "Jave & Nianne — January 8, 2027",
       },
     ],
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: "Dearest Gentle Reader, ✨",
     description:
       "A decade of courtship leads to a wedding. Tap to uncover the details.",
-    images: ["/decorations/proposal-og.jpg"],
+    images: ["/decorations/preview-og.jfif"],
   },
   robots: { index: false, follow: false },
 };
