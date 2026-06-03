@@ -43,3 +43,9 @@ next-env.d.ts
 
 # git worktrees (local only)
 .worktrees/
+
+# playwright
+test-results/
+playwright-report/
+playwright/.cache/
+.playwright-mcp/
