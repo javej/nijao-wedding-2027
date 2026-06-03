@@ -51,7 +51,7 @@ export const DressCodeLightbox = forwardRef<DressCodeLightboxHandle, DressCodeLi
         ref={dialogRef}
         onClick={handleBackdropClick}
         aria-label={`${label} dress code — full size`}
-        className="m-0 max-w-none max-h-none w-screen h-screen bg-black/80 p-0 overflow-hidden"
+        className="m-0 max-w-none max-h-none w-screen h-dvh bg-black/80 p-0 overflow-hidden"
       >
         <div className="relative w-full h-full flex items-center justify-center p-4">
           <Image
@@ -66,7 +66,7 @@ export const DressCodeLightbox = forwardRef<DressCodeLightboxHandle, DressCodeLi
             type="button"
             onClick={close}
             aria-label="Close dress code preview"
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-text-on-light flex items-center justify-center text-xl leading-none focus:outline-none focus:ring-2 focus:ring-white"
+            className="absolute top-[calc(1rem+env(safe-area-inset-top))] right-[calc(1rem+env(safe-area-inset-right))] w-11 h-11 rounded-full bg-white/90 hover:bg-white text-text-on-light flex items-center justify-center text-xl leading-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             {/* Visual glyph only — screen readers get the aria-label above. */}
             <span aria-hidden="true">×</span>

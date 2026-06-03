@@ -179,7 +179,7 @@ function SponsorPairsBlock({ groups }: { groups: RoleGroup[] }) {
           >
             {group.heading}
           </h4>
-          <ul className="grid grid-cols-2 gap-x-6 max-w-xl mx-auto">
+          <ul className="grid grid-cols-1 gap-y-2 sm:grid-cols-2 sm:gap-y-0 gap-x-6 max-w-xl mx-auto">
             {group.members.map((member) => (
               <li
                 key={member._id}
@@ -261,7 +261,7 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
 
           <div className="flex flex-col gap-10 md:gap-12">
             {ninongs && ninangs && (
-              <div className="grid grid-cols-2 gap-x-4 md:gap-x-6 items-start">
+              <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 sm:gap-y-0 gap-x-4 md:gap-x-6 items-start">
                 <RoleGroupBlock group={ninongs} flow="column" />
                 <RoleGroupBlock group={ninangs} flow="column" />
               </div>
@@ -285,13 +285,13 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
             {hasPairedLeaders && (
               <div className="flex flex-col gap-10 md:gap-12">
                 {bestMan && maidOfHonor && (
-                  <div className="grid grid-cols-2 gap-x-4 md:gap-x-6">
+                  <div className="grid grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-y-0 gap-x-4 md:gap-x-6">
                     <RoleGroupBlock group={bestMan} />
                     <RoleGroupBlock group={maidOfHonor} />
                   </div>
                 )}
                 {groomsmen && bridesmaids && (
-                  <div className="grid grid-cols-2 gap-x-4 md:gap-x-6 items-start">
+                  <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 sm:gap-y-0 gap-x-4 md:gap-x-6 items-start">
                     <RoleGroupBlock group={groomsmen} flow="column" />
                     <RoleGroupBlock group={bridesmaids} flow="column" />
                   </div>
