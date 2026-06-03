@@ -33,7 +33,7 @@ When state could live in either Sanity or Sheets:
 
 ## FAQ & Closing
 
-- **FAQ** — A guest-facing question-and-answer entry, stored in Sanity as a standalone `faq` document with a `title` (the question) and a portable-text `body` (the answer). FAQs are ordered manually via `orderRank` and live as a top-level Studio list (alongside Pages), *not* inside the "Wedding Content" grouping. They surface as the **FAQ** scroll chapter, placed after RSVP and before Completion.
-- **Completion** — The final scroll chapter, after FAQ. Reserved for a countdown timer to the wedding day. Currently a placeholder.
+- **FAQ** — A guest-facing question-and-answer entry, stored in Sanity as a standalone `faq` document with a `title` (the question) and a portable-text `body` (the answer). FAQs are ordered manually via `orderRank` and live as a top-level Studio list (alongside Pages), *not* inside the "Wedding Content" grouping. They surface as the **FAQ** scroll chapter, placed after RSVP and before Countdown.
+- **Countdown** — The final scroll chapter, after FAQ. Before the wedding it is a live countdown to the moment the ceremony begins; the instant that moment passes it becomes a permanent celebration ("married") state for the rest of the site's life. It counts to an absolute instant, so the time remaining reads identically for every guest regardless of their location. (Formerly named "Completion" while it was a placeholder.)
 - **Proposal chapter** — A `storyChapter` document with `isProposal = true` that represents the proposal moment. Today it has no `year` and renders in its own snap-scroll section between the year chapters and the wedding details. Planned to be merged into the year-2025 chapter with a multi-image gallery in a later phase.
 - **8th anniversary** *(informal)* — Refers to the proposal year (2025), eight years after the couple started dating in 2017. Prefer "proposal chapter" in code and docs.
