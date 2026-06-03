@@ -25,11 +25,6 @@ export function normalizeEmail(raw: string): string {
 
 // --- PH mobile ---
 
-// Canonical storage form for a Philippine mobile number. SMS gateways
-// (Semaphore, Twilio, Movider) all want E.164, so storing it canonical means
-// the future blast needs zero cleanup.
-const PH_MOBILE_E164_RE = /^\+639\d{9}$/;
-
 /**
  * Normalize a Philippine mobile number to E.164 (`+639XXXXXXXXX`), or return
  * null if it isn't a valid PH mobile.
@@ -60,13 +55,4 @@ export function normalizePhMobile(raw: string): string | null {
   }
 
   return `+63${national}`;
-}
-
-export function isValidPhMobile(raw: string): boolean {
-  return normalizePhMobile(raw) !== null;
-}
-
-/** True only for the canonical E.164 form — used by Studio field validation. */
-export function isE164PhMobile(value: string): boolean {
-  return PH_MOBILE_E164_RE.test(value);
 }

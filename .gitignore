@@ -40,3 +40,6 @@ next-env.d.ts
 
 .claude/.worktrees/
 .claude
+
+# git worktrees (local only)
+.worktrees/
