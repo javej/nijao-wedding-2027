@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { WeddingDetailsResult } from "@/sanity/queries/weddingDetails";
 import { AddToCalendarMenu } from "@/components/sections/AddToCalendarMenu";
 
@@ -60,12 +61,13 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
             Ceremony
           </h3>
 
-          <img
+          <Image
             src="/decorations/st.therese-watercolor.png"
             alt={`Watercolor illustration of ${ceremonyVenue ?? "the ceremony venue"}`}
             loading="lazy"
             width={ILLUSTRATION_WIDTH}
             height={ILLUSTRATION_HEIGHT}
+            sizes="320px"
             className="w-full max-w-[320px] h-auto mb-6 mask-[radial-gradient(ellipse_at_center,black_55%,transparent_95%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_95%)]"
           />
 
@@ -108,19 +110,21 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
 
         {/* Reception Block — paintings replace the mobile hairline divider that used to sit here. */}
         <div className="relative flex flex-col items-center text-center">
-          {/* Divider — visible on desktop only (left border) */}
-          <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 h-2/3 w-px bg-matcha-chiffon" aria-hidden="true" />
+          {/* Divider — desktop only. Sit it in the centre of the column gutter
+              (half of md:gap-16 = 2rem) rather than on the column's edge. */}
+          <div className="hidden md:block absolute -left-8 top-1/2 -translate-y-1/2 h-2/3 w-px bg-matcha-chiffon" aria-hidden="true" />
 
           <h3 className="font-body font-medium text-display-sm text-deep-matcha tracking-widest uppercase mb-4">
             Reception
           </h3>
 
-          <img
+          <Image
             src="/decorations/1022-watercolor.png"
             alt={`Watercolor illustration of ${receptionVenue ?? "the reception venue"}`}
             loading="lazy"
             width={ILLUSTRATION_WIDTH}
             height={ILLUSTRATION_HEIGHT}
+            sizes="320px"
             className="w-full max-w-[320px] h-auto mb-6 mask-[radial-gradient(ellipse_at_center,black_55%,transparent_95%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_95%)]"
           />
 
