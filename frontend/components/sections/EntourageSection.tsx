@@ -199,7 +199,7 @@ function SponsorPairsBlock({ groups }: { groups: RoleGroup[] }) {
  * EntourageSection — Server Component.
  *
  * Names only, categorized by role. Two sections derived from
- * role: the Padrino Wall (Ninongs, Ninangs) and the Wedding
+ * role: the Principal Sponsors (Ninongs, Ninangs) and the Wedding
  * Party (everyone else). Within each section, names are
  * grouped under their role heading in cultural order, listed
  * alphabetically. Heading tints follow the role's gender
@@ -256,7 +256,7 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
       {hasPadrinos && (
         <div className="w-full max-w-3xl">
           <h3 className="font-display italic font-normal text-display-md text-text-on-light tracking-wide text-center mb-10 md:mb-12">
-            The Padrino Wall
+            Principal Sponsors
           </h3>
 
           <div className="flex flex-col gap-10 md:gap-12">
