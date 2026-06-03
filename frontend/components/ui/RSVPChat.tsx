@@ -821,7 +821,7 @@ export function RSVPChat({
             placeholder={inputPlaceholder}
             aria-label={inputAriaLabel}
             className={cn(
-              'flex-1 min-h-11 rounded-full border border-foreground/20 bg-background px-4 py-2',
+              'min-w-0 flex-1 min-h-11 rounded-full border border-foreground/20 bg-background px-4 py-2',
               'font-body text-body-md text-foreground placeholder:text-foreground/40',
               'focus-visible:ring-4 focus-visible:ring-golden-matcha/30 focus-visible:outline-1 focus-visible:outline-golden-matcha',
             )}
@@ -832,7 +832,7 @@ export function RSVPChat({
             disabled={!inputValue.trim()}
             aria-label="Send"
             className={cn(
-              'min-h-11 min-w-11 rounded-full bg-golden-matcha text-text-on-dark',
+              'min-h-11 min-w-11 shrink-0 rounded-full bg-golden-matcha text-text-on-dark',
               'flex items-center justify-center',
               'transition-colors hover:bg-golden-matcha/90',
               'focus-visible:ring-4 focus-visible:ring-golden-matcha/30 focus-visible:outline-1 focus-visible:outline-golden-matcha',
