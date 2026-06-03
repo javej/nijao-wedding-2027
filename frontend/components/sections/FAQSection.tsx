@@ -6,7 +6,7 @@ interface FAQSectionProps {
 }
 
 /**
- * FAQ scroll chapter — sits between RSVP and Completion. Mirrors the centered
+ * FAQ scroll chapter — sits between RSVP and Countdown. Mirrors the centered
  * composition of the other functional sections: an sr-only section heading, a
  * visible display heading, and a width-constrained body. The questions render
  * as a multiple-open accordion (all collapsed on load). Falls back to the same

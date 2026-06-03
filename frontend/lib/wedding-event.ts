@@ -38,6 +38,16 @@ export const WEDDING_ICS_FILENAME = "jave-and-nianne-wedding.ics";
 export const WEDDING_ICS_PATH = "/wedding.ics";
 
 /**
+ * Ceremony-start instant as epoch milliseconds — the single value the
+ * Countdown chapter ticks down to. Derived from the SAME instant as
+ * `startUtc` above (2:00 PM Asia/Manila = 06:00 UTC, Jan 8 2027) so the
+ * countdown and the calendar event can never drift apart. An absolute
+ * instant, so the remaining time reads identically for every guest
+ * regardless of their location. See ADR-0005.
+ */
+export const WEDDING_START_MS = Date.parse("2027-01-08T06:00:00Z");
+
+/**
  * Google Calendar "create event" deep link, pre-filled from the same event
  * constant. Opens an editable event page in the guest's Google Calendar
  * (one tap to save) — the smooth path for the Android/Gmail majority.

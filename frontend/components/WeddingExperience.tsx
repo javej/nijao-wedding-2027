@@ -9,6 +9,7 @@ import { DressCodeSection } from '@/components/sections/DressCodeSection';
 import { EntourageSection } from '@/components/sections/EntourageSection';
 import { RSVPSection } from '@/components/sections/RSVPSection';
 import { FAQSection } from '@/components/sections/FAQSection';
+import { CountdownSection } from '@/components/sections/CountdownSection';
 import { getStoryChapters } from '@/sanity/queries/storyChapters';
 import { getWeddingDetails } from '@/sanity/queries/weddingDetails';
 import { getDressCode } from '@/sanity/queries/dressCode';
@@ -147,8 +148,13 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           <FAQSection faqs={faqs} />
         </ChapterSection>
 
-        <ChapterSection id="completion" palette="strawberry-milk" label="Completion">
-          <p className="font-display text-display-md">Completion</p>
+        <ChapterSection
+          id="countdown"
+          palette="strawberry-milk"
+          label="Countdown to the wedding"
+          decorate
+        >
+          <CountdownSection />
         </ChapterSection>
       </ChapterScrollContainer>
     </ExperienceShell>
