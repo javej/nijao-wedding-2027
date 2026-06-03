@@ -7,6 +7,7 @@ This file is the glossary for the wedding website project. Terms here are canoni
 - **Guest** — A person invited to the wedding, represented as a `guest` document in Sanity with a unique non-guessable slug. Each guest has their own personalized URL (`/[slug]`).
 - **Linked plus-one** — A guest whose `plusOneType = "linked"` has a partner who is *also* a separate `guest` document. The partner has their own slug and own page.
 - **Open plus-one** — A guest whose `plusOneType = "open"` may bring an unnamed companion. The companion's name is collected as free text during RSVP and is *not* a separate `guest` document.
+- **Guest contact** — A guest's email address and PH mobile number, stored as durable attributes on the `guest` document (alongside `firstName`, `slug`). Contact is a property of *the person*, not of any single RSVP — it persists across RSVP edits and is captured/pre-filled during the RSVP flow. It exists to support email RSVP confirmation and a future SMS blast. Distinct from the **RSVP**, which is fully replaced on each submission. Contact is captured only for the guest actually interacting with the flow — a submitter is never asked for a linked partner's contact; the partner supplies their own if/when they open their personalized link. Gaps (e.g. a linked partner who never visits) are backfilled manually in Studio.
 
 ## RSVP
 

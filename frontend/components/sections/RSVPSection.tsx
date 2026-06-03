@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { RSVPChat, type RSVPSubmissionResult } from '@/components/ui/RSVPChat';
 import { RSVPSummaryCard } from '@/components/ui/RSVPSummaryCard';
+import { RSVPContactNudge } from '@/components/ui/RSVPContactNudge';
 import { RSVPClosedPanel } from '@/components/ui/RSVPClosedPanel';
 import { PetalBurst } from '@/components/ui/PetalBurst';
 import type { WeddingGuest } from '@/components/WeddingExperience';
@@ -34,6 +35,13 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
   const [optimisticDetail, setOptimisticDetail] = useState<string | null>(
     rsvpViewState.detailLine,
   );
+  // Session-only: hide the contact nudge once saved or dismissed. It re-appears
+  // on the next visit if contact is still missing (ADR-0006).
+  const [contactNudgeHandled, setContactNudgeHandled] = useState(false);
+
+  const needsEmail = !guest.email;
+  const needsMobile = !guest.mobile;
+  const contactMissing = needsEmail || needsMobile;
 
   // Auto-unmount PetalBurst after the animation completes to reclaim DOM nodes
   useEffect(() => {
@@ -112,6 +120,15 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
               RSVPs are now closed.
             </p>
           )}
+          {optimisticStatus === 'attending' && contactMissing && !contactNudgeHandled && (
+            <RSVPContactNudge
+              guestSlug={guest.slug}
+              needsEmail={needsEmail}
+              needsMobile={needsMobile}
+              onSaved={() => setContactNudgeHandled(true)}
+              onDismiss={() => setContactNudgeHandled(true)}
+            />
+          )}
         </div>
       )}
 
@@ -125,6 +142,8 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
           plusOneType={guest.plusOneType ?? null}
           plusOneLinkedGuestName={guest.plusOneLinkedGuest?.firstName ?? null}
           plusOneLinkedGuestSlug={guest.plusOneLinkedGuest?.slug ?? null}
+          needsEmail={needsEmail}
+          needsMobile={needsMobile}
           onConfirm={() => setShowConfetti(true)}
           onComplete={handleChatComplete}
         />

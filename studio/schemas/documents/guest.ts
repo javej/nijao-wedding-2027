@@ -9,6 +9,11 @@ export default defineType({
   icon: User,
   fieldsets: [
     {
+      name: "contact",
+      title: "Contact",
+      options: { collapsible: true, collapsed: false },
+    },
+    {
       name: "rsvp",
       title: "RSVP (managed by site — do not edit)",
       options: { collapsible: true, collapsed: true },
@@ -44,6 +49,36 @@ export default defineType({
       rows: 3,
       description:
         "Optional. Internal note about this guest — included as a column in the RSVP export sheet. Not shown on the site.",
+    }),
+    defineField({
+      name: "email",
+      title: "Email",
+      type: "string",
+      fieldset: "contact",
+      description:
+        "Guest's email for the RSVP confirmation. Filled by the site when the guest RSVPs — you may add or correct it.",
+      validation: (rule) =>
+        rule.custom((value) => {
+          if (!value) return true;
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
+            ? true
+            : "Enter a valid email address.";
+        }),
+    }),
+    defineField({
+      name: "mobile",
+      title: "Mobile",
+      type: "string",
+      fieldset: "contact",
+      description:
+        "PH mobile in E.164 format: +639XXXXXXXXX (e.g. +639171234567). Filled by the site when the guest RSVPs — you may add or correct it for the SMS blast.",
+      validation: (rule) =>
+        rule.custom((value) => {
+          if (!value) return true;
+          return /^\+639\d{9}$/.test(value.trim())
+            ? true
+            : "Use E.164 format: +639XXXXXXXXX.";
+        }),
     }),
     defineField({
       name: "slug",

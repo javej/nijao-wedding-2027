@@ -6,6 +6,7 @@ import { appendRsvpRows } from "@/lib/sheets";
 import { sendRsvpConfirmation } from "@/lib/resend";
 import { writeClient } from "@/sanity/lib/write";
 import { isRsvpClosed } from "@/lib/rsvp-cutoff";
+import { normalizeEmail, normalizePhMobile } from "@/lib/contact";
 
 // --- Types ---
 
@@ -20,6 +21,7 @@ export interface RSVPPayload {
   plusOneAttending?: boolean;
   linkedPartnerSlug?: string;
   guestEmail?: string;
+  guestMobile?: string;
 }
 
 export type RSVPErrorCode =
@@ -87,6 +89,74 @@ export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
   return { success: true };
 }
 
+// --- Contact-only update (summary-card nudge) ---
+
+export interface GuestContactPayload {
+  guestSlug: string;
+  guestEmail?: string;
+  guestMobile?: string;
+}
+
+export type ContactResult =
+  | { success: true }
+  | { success: false; error: "invalid" | "sanity_unavailable" };
+
+/**
+ * Backfill a guest's contact without touching their RSVP. Used by the
+ * summary-card nudge (ADR-0006) for attending guests who have no contact on
+ * file — notably a linked partner answered-for by their submitter, who never
+ * sees the chat. Sets only the provided fields; never unsets, never mutates
+ * rsvpStatus or the audit log.
+ */
+export async function submitGuestContact(
+  payload: GuestContactPayload,
+): Promise<ContactResult> {
+  const email = payload.guestEmail ? normalizeEmail(payload.guestEmail) : null;
+  const mobile = payload.guestMobile
+    ? normalizePhMobile(payload.guestMobile)
+    : null;
+
+  if (!email && !mobile) {
+    return { success: false, error: "invalid" };
+  }
+
+  let status: GuestLookup["rsvpStatus"];
+  let guestName = "";
+  try {
+    const guest = await writeClient.fetch<
+      (GuestLookup & { firstName?: string }) | null
+    >(
+      `*[_type == "guest" && slug.current == $slug][0]{ _id, _rev, rsvpStatus, firstName }`,
+      { slug: payload.guestSlug },
+    );
+
+    if (!guest) {
+      throw new Error(`Guest with slug ${payload.guestSlug} not found`);
+    }
+
+    const patch = writeClient.patch(guest._id);
+    if (email) patch.set({ email });
+    if (mobile) patch.set({ mobile });
+    await patch.commit();
+
+    status = guest.rsvpStatus;
+    guestName = guest.firstName ?? "";
+  } catch (error) {
+    console.error("[submitGuestContact] Sanity write failed:", error);
+    return { success: false, error: "sanity_unavailable" };
+  }
+
+  revalidateTag(`guest:${payload.guestSlug}`, { expire: 0 });
+
+  // The nudge only appears for attending guests who skipped email at RSVP time,
+  // so a newly-added email is the first chance to send their confirmation.
+  if (email && status === "attending") {
+    void sendRsvpConfirmation({ guestName, guestEmail: email });
+  }
+
+  return { success: true };
+}
+
 // ADR-0002: Linked plus-one cross-mutation is conditional on the partner
 // still being `pending`. An explicit decline must not be silently overridden
 // by a partner's optimistic "yes both" submission.
@@ -115,6 +185,17 @@ async function writeSanityRsvp(payload: RSVPPayload): Promise<void> {
   const submitterPatch = writeClient
     .patch(submitter._id)
     .set({ rsvpStatus: submitterStatus, rsvpUpdatedAt: now });
+
+  // Contact is a durable Guest attribute (ADR-0006): set only the fields the
+  // guest actually provided, normalized canonical. Never unset — a skipped
+  // field must not wipe a value already on file (e.g. a couple's backfill).
+  if (payload.guestEmail) {
+    submitterPatch.set({ email: normalizeEmail(payload.guestEmail) });
+  }
+  if (payload.guestMobile) {
+    const mobile = normalizePhMobile(payload.guestMobile);
+    if (mobile) submitterPatch.set({ mobile });
+  }
 
   // openPlusOne: set when attending with an open plus-one name; unset
   // otherwise so the summary card stops showing a stale plus-one name when
