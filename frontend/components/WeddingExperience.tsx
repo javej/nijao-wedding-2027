@@ -8,10 +8,12 @@ import { WeddingDetails } from '@/components/sections/WeddingDetails';
 import { DressCodeSection } from '@/components/sections/DressCodeSection';
 import { EntourageSection } from '@/components/sections/EntourageSection';
 import { RSVPSection } from '@/components/sections/RSVPSection';
+import { FAQSection } from '@/components/sections/FAQSection';
 import { getStoryChapters } from '@/sanity/queries/storyChapters';
 import { getWeddingDetails } from '@/sanity/queries/weddingDetails';
 import { getDressCode } from '@/sanity/queries/dressCode';
 import { getPadrinos, getWeddingParty } from '@/sanity/queries/entourage';
+import { getFaqs } from '@/sanity/queries/faqs';
 import type { GuestResult } from '@/sanity/queries/guests';
 import type { PageBg } from '@/components/ui/PageCard';
 import { deriveRsvpViewState } from '@/lib/rsvp-view-state';
@@ -60,12 +62,13 @@ function bgToneForPage(bg: PageBg): BgTone {
 }
 
 export async function WeddingExperience({ guest }: WeddingExperienceProps) {
-  const [chapters, weddingDetails, dressCode, padrinos, weddingParty] = await Promise.all([
+  const [chapters, weddingDetails, dressCode, padrinos, weddingParty, faqs] = await Promise.all([
     getStoryChapters(),
     getWeddingDetails(),
     getDressCode(),
     getPadrinos(),
     getWeddingParty(),
+    getFaqs(),
   ]);
 
   // Year-only counter for the rotation — proposal chapters skip the
@@ -138,6 +141,10 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           ) : (
             <p className="font-display text-display-md">RSVP</p>
           )}
+        </ChapterSection>
+
+        <ChapterSection id="faq" palette="berry-meringue" label="FAQ">
+          <FAQSection faqs={faqs} />
         </ChapterSection>
 
         <ChapterSection id="completion" palette="strawberry-milk" label="Completion">

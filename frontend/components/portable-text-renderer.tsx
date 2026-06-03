@@ -105,7 +105,7 @@ const portableTextComponents: PortableTextProps["components"] = {
           href={value?.href || "#"}
           target={target}
           rel={target ? "noopener" : undefined}
-          style={{ textDecoration: "underline" }}
+          className="text-deep-matcha underline underline-offset-2 decoration-deep-matcha/40 hover:decoration-deep-matcha transition-colors"
         >
           {children}
         </Link>

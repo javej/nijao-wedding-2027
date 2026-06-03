@@ -1,4 +1,4 @@
-import { Calendar, Palette, Heart, type LucideIcon } from 'lucide-react';
+import { Calendar, Palette, Heart, HelpCircle, type LucideIcon } from 'lucide-react';
 
 /** A jump-navigation destination shared by the Hero nav and the floating FAB. */
 export interface QuickNavAnchor {
@@ -20,6 +20,7 @@ export const quickNavAnchors: readonly QuickNavAnchor[] = [
   { id: 'wedding-details', label: 'Jump to Location', shortLabel: 'Location', Icon: Calendar },
   { id: 'dress-code', label: 'Jump to Dress Code', shortLabel: 'Attire', Icon: Palette },
   { id: 'rsvp', label: 'Jump to RSVP', shortLabel: 'RSVP', Icon: Heart },
+  { id: 'faq', label: 'Jump to FAQ', shortLabel: 'FAQ', Icon: HelpCircle },
 ] as const;
 
 /** Scroll a section into view, honoring the guest's reduced-motion preference. */
