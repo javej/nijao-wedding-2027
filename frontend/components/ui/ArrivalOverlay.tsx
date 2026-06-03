@@ -146,8 +146,13 @@ export function ArrivalOverlay({ visible, interactive, onDismiss, onExitComplete
         >
           {/* Greeting framed by lace — text sits inside the lace's
               transparent center (~17% border inset on all sides). */}
+          {/* Width is the min of a viewport-width budget and a height-derived
+              cap: at aspect-2/3 the frame is 1.5× as tall as it is wide, so on
+              short desktop windows we shrink it (keeping aspect, so the welcome
+              text inset still tracks the lace) to reserve ~12rem at the bottom
+              for the "tap to begin" hint instead of overlapping it. */}
           <motion.div
-            className="relative aspect-2/3 w-[88vw] max-w-104 sm:w-104 md:max-w-120 md:w-120"
+            className="@container relative aspect-2/3 w-[min(88vw,calc((100svh-12rem)*2/3))] max-w-104 md:max-w-120"
             variants={textVariants}
             initial={initialTextState}
             animate={animationState}
@@ -161,7 +166,12 @@ export function ArrivalOverlay({ visible, interactive, onDismiss, onExitComplete
               sizes="(min-width: 768px) 480px, (min-width: 640px) 416px, 88vw"
               className="pointer-events-none select-none object-contain"
             />
-            <p className="absolute inset-x-[16%] inset-y-[18%] flex items-center justify-center text-center font-display text-xl md:text-2xl lg:text-3xl font-light text-foreground leading-relaxed">
+            {/* Font scales with the FRAME (container-query inline units), not
+                viewport breakpoints — the frame can shrink on short windows, so
+                viewport-based text would overflow the lace center. 6.25cqi keeps
+                the text at ~30px when the frame is at its 480px max, clamped for
+                legibility on tiny frames and to not overrun on large ones. */}
+            <p className="absolute inset-x-[16%] inset-y-[18%] flex items-center justify-center text-center font-display text-[clamp(0.9rem,6.25cqi,1.875rem)] font-light text-foreground leading-relaxed">
               <span>
                 {guestName ? <>Welcome, <span className="italic text-raspberry">{guestName}</span>.</> : 'Welcome.'}
                 <br />

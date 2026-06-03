@@ -190,7 +190,7 @@ Claude Opus 4.6
 
 ### Action Items
 - [x] [HIGH] Address text `text-text-on-light/60` fails WCAG AA 4.5:1 (was ~4.04:1) — changed to `/70` (~5.5:1)
-- [x] [MED] "View on Map" links indistinguishable by screen readers — added `aria-label` to both
+- [x] [MED] "View on Maps" links indistinguishable by screen readers — added `aria-label` to both
 - [x] [MED] `text-display-sm` undefined in theme — added `--text-display-sm: clamp(1rem, 2vw, 1.25rem)` to globals.css
 - [x] [MED] Import ordering in page.tsx — grouped components then queries
 - [x] [LOW] Prop type unnecessarily nullable — narrowed to `NonNullable<WeddingDetailsResult>`
