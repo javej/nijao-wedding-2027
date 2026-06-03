@@ -1,0 +1,39 @@
+frontend/components/ui/rsvp-chat/ChatChips.tsx
+  s_a0c9ded53a4214::t_a30e3f91973b9d 1-58
+frontend/components/ui/rsvp-chat/variants.ts
+  s_a0c9ded53a4214::t_e9fad5bce2b6ae 1-31
+frontend/components/ui/RSVPChat.tsx
+  s_a0c9ded53a4214::t_a16d60bb8ea222 5,13-17
+  s_a0c9ded53a4214::t_44af6c30d59d9d 6-10
+  s_a0c9ded53a4214::t_189b8fdb50e194 12
+  s_a0c9ded53a4214::t_e0167b5d90c861 146-147,193-194
+  s_a0c9ded53a4214::t_3190cb15f3e61f 186-187,233-234
+  s_a0c9ded53a4214::t_7a544dd9a4ff60 264-268
+  s_a0c9ded53a4214::t_e837fa1b4c558b 519-520,539-540
+  s_a0c9ded53a4214::t_665bddfb9e4120 572
+  s_a0c9ded53a4214::t_0c7cf02ca23886 599-600,602
+  s_a0c9ded53a4214::t_4c4e04c23f4190 626-641,645-664
+  s_a0c9ded53a4214::t_9b4e454643307e 643
+frontend/components/ui/rsvp-chat/ChatInputBar.tsx
+  s_a0c9ded53a4214::t_7d9879b68be531 1-94
+frontend/components/ui/rsvp-chat/types.ts
+  s_a0c9ded53a4214::t_844656d6137d74 1-15
+frontend/components/ui/rsvp-chat/ChatMessageLog.tsx
+  s_a0c9ded53a4214::t_45ac4e8f5d6018 1-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "7fb29ae4e924a74403666cdee3682e4fc8e57ea0",
+  "prompts": {},
+  "sessions": {
+    "s_a0c9ded53a4214": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "792138ac-2295-4508-a9ab-b63335b3db32",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
