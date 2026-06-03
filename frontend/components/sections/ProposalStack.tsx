@@ -1,9 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react';
 import { urlFor } from '@/sanity/lib/image';
 import { PageCard } from '@/components/ui/PageCard';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { cn } from '@/lib/utils';
 import type {
   StoryChapterImage,
@@ -105,59 +106,86 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
   const photos = useMemo(() => pickGalleryImages(chapter), [chapter]);
   const N = photos.length;
 
-  const outerRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
+  const outerRef = useRef<HTMLDivElement>(null);
+  // Photo + caption nodes are driven imperatively from the scroll handler so a
+  // scroll frame writes transforms directly to the DOM instead of triggering a
+  // React re-render of every StackPhoto. This is the hot path on mobile.
+  const photoRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const captionRef = useRef<HTMLParagraphElement>(null);
+
+  const applyProgress = useCallback(
+    (p: number) => {
+      for (let i = 0; i < photoRefs.current.length; i++) {
+        const el = photoRefs.current[i];
+        if (!el) continue;
+        const { transform, opacity, zIndex } = computePhotoStyle(i, N, p);
+        el.style.transform = transform;
+        el.style.opacity = String(opacity);
+        el.style.zIndex = String(zIndex);
+        el.setAttribute('aria-hidden', opacity < 0.5 ? 'true' : 'false');
+      }
+      const cap = captionRef.current;
+      if (cap) cap.style.opacity = String(computeCaptionOpacity(p));
+    },
+    [N],
+  );
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      setProgress(1);
+      applyProgress(1);
       return;
     }
     const outer = outerRef.current;
     const scroller = document.getElementById('main-content');
     if (!outer || !scroller) return;
 
-    function update() {
-      if (!outer || !scroller) return;
-      const outerRect = outer.getBoundingClientRect();
-      const scrollerRect = scroller.getBoundingClientRect();
-      const offsetTop = outerRect.top - scrollerRect.top;
-      const travel = outer.offsetHeight - scroller.clientHeight;
-      if (travel <= 0) {
-        setProgress(0);
-        return;
-      }
-      const p = Math.min(1, Math.max(0, -offsetTop / travel));
-      setProgress(p);
+    // Cache the layout reads that only change on resize; the per-frame work is
+    // then a single getBoundingClientRect (outer.top) plus arithmetic.
+    let travel = 0;
+    let scrollerTop = 0;
+    let rafId: number | null = null;
+
+    function measure() {
+      travel = outer!.offsetHeight - scroller!.clientHeight;
+      scrollerTop = scroller!.getBoundingClientRect().top;
     }
 
-    update();
-    scroller.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
+    function compute() {
+      rafId = null;
+      if (travel <= 0) {
+        applyProgress(0);
+        return;
+      }
+      const offsetTop = outer!.getBoundingClientRect().top - scrollerTop;
+      const p = Math.min(1, Math.max(0, -offsetTop / travel));
+      applyProgress(p);
+    }
+
+    // Coalesce bursts of scroll events into one update per animation frame.
+    function onScroll() {
+      if (rafId === null) rafId = requestAnimationFrame(compute);
+    }
+    function onResize() {
+      measure();
+      onScroll();
+    }
+
+    measure();
+    compute();
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
     return () => {
-      scroller.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      scroller.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
     };
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, applyProgress]);
 
   const outerMinHeight = prefersReducedMotion
     ? '100dvh'
     : `${(PER_PHOTO_VH * N + TAIL_VH) * 100}dvh`;
-
-  const accumulationEnd = 1 - CAPTION_TAIL;
-  const captionOpacity =
-    progress <= accumulationEnd
-      ? 0
-      : Math.min(1, (progress - accumulationEnd) / CAPTION_TAIL);
 
   return (
     <div ref={outerRef} style={{ minHeight: outerMinHeight }} className="relative w-full">
@@ -184,10 +212,12 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
                   // (e.g., before a fresh upload during content editing),
                   // so the asset _id alone is not guaranteed unique.
                   key={`${photo.asset._id ?? 'proposal'}-${i}`}
+                  ref={(el) => {
+                    photoRefs.current[i] = el;
+                  }}
                   image={photo}
                   index={i}
                   total={N}
-                  progress={progress}
                   year={year}
                 />
               ))}
@@ -195,9 +225,10 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
           </div>
 
           <p
+            ref={captionRef}
             className="font-body font-normal text-body-md text-text-on-light leading-relaxed max-w-sm whitespace-pre-line px-5 py-2 rounded-md backdrop-blur-sm"
             style={{
-              opacity: captionOpacity,
+              opacity: 0,
               transition: prefersReducedMotion ? 'none' : 'opacity 200ms linear',
               backgroundColor: 'var(--text-backdrop)',
             }}
@@ -210,23 +241,23 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
   );
 }
 
-interface StackPhotoProps {
-  image: StoryChapterImage;
-  index: number;
-  total: number;
-  progress: number;
-  year: number;
-}
-
-function StackPhoto({ image, index, total, progress, year }: StackPhotoProps) {
+/**
+ * Pure geometry for one photo at a given scroll progress (0..1). Shared by the
+ * initial render (p=0) and the imperative scroll updates so both stay in sync.
+ *
+ * Each photo's drop slot is the SMALLER of MAX_SLOT_FRACTION and an even share
+ * of the accumulation phase. With few photos this caps the slot length so the
+ * photo lands quickly and then dwells, rather than stretching its drop across
+ * most of the scroll. With many photos the slot shrinks proportionally so every
+ * photo still fits before the caption-tail fade-in begins.
+ */
+function computePhotoStyle(
+  index: number,
+  total: number,
+  progress: number,
+): { transform: string; opacity: number; zIndex: number } {
   const slot = STACK_SLOTS[index % STACK_SLOTS.length]!;
 
-  // Each photo's drop slot is the SMALLER of MAX_SLOT_FRACTION and
-  // an even share of the accumulation phase. With few photos this
-  // caps the slot length so the photo lands quickly and then dwells,
-  // rather than stretching its drop animation across most of the
-  // scroll. With many photos the slot shrinks proportionally so
-  // every photo still fits before the caption-tail fade-in begins.
   const accumulationEnd = 1 - CAPTION_TAIL;
   const evenShare = accumulationEnd / total;
   const slotFraction = Math.min(MAX_SLOT_FRACTION, evenShare);
@@ -237,32 +268,62 @@ function StackPhoto({ image, index, total, progress, year }: StackPhotoProps) {
     Math.max(0, (progress - slotStart) / (slotEnd - slotStart)),
   );
 
-  // Interpolate from pre-stack position (below the stack) to final
-  // stacked slot. `riseY` starts positive (below centre) and decays
-  // toward 0 as slotProgress → 1, so the photo rises into place.
+  // Interpolate from pre-stack position (below the stack) to final stacked
+  // slot. `riseY` starts positive (below centre) and decays toward 0 as
+  // slotProgress → 1, so the photo rises into place.
   const riseY = (1 - slotProgress) * RISE_FROM_PX;
   const rotate = slot.rotate * slotProgress;
   const tx = slot.offsetX * slotProgress;
   const ty = riseY + slot.offsetY * slotProgress;
-  // Fade-in occupies the first ~30% of the slot so the photo is
-  // already visible by the time it's finishing its rotation.
+  // Fade-in occupies the first ~30% of the slot so the photo is already
+  // visible by the time it's finishing its rotation.
   const opacity = Math.min(1, slotProgress * 3.3);
+
+  return {
+    transform: `translate(${tx}px, ${ty}px) rotate(${rotate}deg)`,
+    opacity,
+    zIndex: slot.z,
+  };
+}
+
+function computeCaptionOpacity(progress: number): number {
+  const accumulationEnd = 1 - CAPTION_TAIL;
+  return progress <= accumulationEnd
+    ? 0
+    : Math.min(1, (progress - accumulationEnd) / CAPTION_TAIL);
+}
+
+interface StackPhotoProps {
+  image: StoryChapterImage;
+  index: number;
+  total: number;
+  year: number;
+}
+
+const StackPhoto = forwardRef<HTMLDivElement, StackPhotoProps>(function StackPhoto(
+  { image, index, total, year },
+  ref,
+) {
+  // Initial paint at progress 0; the parent's scroll handler drives every
+  // subsequent transform/opacity update imperatively via this ref.
+  const initial = computePhotoStyle(index, total, 0);
 
   return (
     <div
+      ref={ref}
       className={cn(
         'absolute inset-0 flex items-center justify-center',
         'pointer-events-none',
       )}
       style={{
-        zIndex: slot.z,
-        transform: `translate(${tx}px, ${ty}px) rotate(${rotate}deg)`,
-        opacity,
+        zIndex: initial.zIndex,
+        transform: initial.transform,
+        opacity: initial.opacity,
         // No CSS transition — transform is driven directly by scroll
         // progress, so any transition would smear the response and
         // make the reverse-scroll feel rubbery.
       }}
-      aria-hidden={opacity < 0.5}
+      aria-hidden={initial.opacity < 0.5}
     >
       <div
         className={cn(
@@ -288,7 +349,7 @@ function StackPhoto({ image, index, total, progress, year }: StackPhotoProps) {
       </div>
     </div>
   );
-}
+});
 
 /**
  * Prefer the `images` gallery; fall back to the legacy single `image`
