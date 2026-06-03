@@ -42,7 +42,7 @@ export function DressCodeCategoryCard({
         type="button"
         onClick={() => lightboxRef.current?.open()}
         aria-label={`View ${label} dress code at full size`}
-        className="block w-full rounded-md overflow-hidden focus:outline-none focus:ring-2 focus:ring-deep-matcha/40 cursor-zoom-in"
+        className="block w-full rounded-md overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-deep-matcha/40 cursor-zoom-in"
       >
         <Image
           src={imageSrc}

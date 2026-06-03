@@ -30,9 +30,24 @@ export type RSVPErrorCode =
   | "sheets_unavailable"
   | "unexpected";
 
+/**
+ * The audit-log subset of an RSVP. This — not the full {@link RSVPPayload} — is
+ * what the client queues for retry when the Sheets append fails, so a replay
+ * only re-appends the row(s); it never re-writes Sanity or re-sends the email.
+ * `linkedGuest` is present only when the partner cross-mutation actually landed
+ * (see {@link writeSanityRsvp}), keeping the sheet consistent with Sanity.
+ */
+export interface RsvpAuditPayload {
+  guestName: string;
+  guestSlug: string;
+  attending: boolean;
+  plusOneName?: string;
+  linkedGuest?: { name: string; slug?: string; attending: boolean };
+}
+
 export type ActionResult =
   | { success: true }
-  | { success: false; error: RSVPErrorCode };
+  | { success: false; error: RSVPErrorCode; retryAudit?: RsvpAuditPayload };
 
 interface GuestLookup {
   _id: string;
@@ -55,27 +70,33 @@ export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
   // }
 
   // 3. Write to Sanity (authoritative). Sheets append + email follow.
+  let partnerWritten = false;
   try {
-    await writeSanityRsvp(payload);
+    ({ partnerWritten } = await writeSanityRsvp(payload));
   } catch (error) {
     console.error("[submitRsvp] Sanity write failed:", error);
     return { success: false, error: "sanity_unavailable" };
   }
 
-  // 4. Append the audit log row(s). Best-effort — Sanity already committed,
-  // so a Sheets failure surfaces an error so the client can retry the append
-  // without re-writing Sanity. The localStorage retry queue handles this.
+  // The audit row mirrors Sanity: include the linked partner's row only when
+  // their cross-mutation actually committed, so the sheet never claims a "yes"
+  // the guest doc doesn't reflect.
+  const auditPayload: RsvpAuditPayload = {
+    guestName: payload.guestName,
+    guestSlug: payload.guestSlug,
+    attending: payload.attending,
+    ...(payload.plusOneName && { plusOneName: payload.plusOneName }),
+    ...(partnerWritten && payload.linkedGuest && { linkedGuest: payload.linkedGuest }),
+  };
+
+  // 4. Append the audit log row(s). Best-effort — Sanity already committed, so a
+  // Sheets failure returns the audit payload for the client to queue. The retry
+  // (`retryRsvpAudit`) re-appends ONLY; it never re-writes Sanity or re-emails.
   try {
-    await appendRsvpRows({
-      guestName: payload.guestName,
-      guestSlug: payload.guestSlug,
-      attending: payload.attending,
-      plusOneName: payload.plusOneName,
-      linkedGuest: payload.linkedGuest,
-    });
+    await appendRsvpRows(auditPayload);
   } catch (error) {
     console.error("[submitRsvp] Sheets write failed:", error);
-    return { success: false, error: "sheets_unavailable" };
+    return { success: false, error: "sheets_unavailable", retryAudit: auditPayload };
   }
 
   // 5. Send confirmation email (best-effort — never blocks success).
@@ -86,6 +107,25 @@ export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
     });
   }
 
+  return { success: true };
+}
+
+/**
+ * Retry a failed audit-log append in isolation. Called by the client's
+ * localStorage retry queue after a {@link submitRsvp} `sheets_unavailable`.
+ * Idempotent w.r.t. Sanity and email: it touches neither. A duplicate row is
+ * still possible if the original append partially succeeded, but that is far
+ * cheaper to reconcile than a duplicate guest mutation or confirmation email.
+ */
+export async function retryRsvpAudit(
+  payload: RsvpAuditPayload,
+): Promise<ActionResult> {
+  try {
+    await appendRsvpRows(payload);
+  } catch (error) {
+    console.error("[retryRsvpAudit] Sheets write failed:", error);
+    return { success: false, error: "sheets_unavailable" };
+  }
   return { success: true };
 }
 
@@ -122,11 +162,12 @@ export async function submitGuestContact(
 
   let status: GuestLookup["rsvpStatus"];
   let guestName = "";
+  let hadEmailBefore = false;
   try {
     const guest = await writeClient.fetch<
-      (GuestLookup & { firstName?: string }) | null
+      (GuestLookup & { firstName?: string; email?: string }) | null
     >(
-      `*[_type == "guest" && slug.current == $slug][0]{ _id, _rev, rsvpStatus, firstName }`,
+      `*[_type == "guest" && slug.current == $slug][0]{ _id, _rev, rsvpStatus, firstName, email }`,
       { slug: payload.guestSlug },
     );
 
@@ -141,6 +182,7 @@ export async function submitGuestContact(
 
     status = guest.rsvpStatus;
     guestName = guest.firstName ?? "";
+    hadEmailBefore = Boolean(guest.email);
   } catch (error) {
     console.error("[submitGuestContact] Sanity write failed:", error);
     return { success: false, error: "sanity_unavailable" };
@@ -148,9 +190,9 @@ export async function submitGuestContact(
 
   revalidateTag(`guest:${payload.guestSlug}`, { expire: 0 });
 
-  // The nudge only appears for attending guests who skipped email at RSVP time,
-  // so a newly-added email is the first chance to send their confirmation.
-  if (email && status === "attending") {
+  // Send the confirmation only the FIRST time an email lands on file — a guest
+  // re-saving the nudge to fix a typo'd mobile must not trigger a second email.
+  if (email && !hadEmailBefore && status === "attending") {
     void sendRsvpConfirmation({ guestName, guestEmail: email });
   }
 
@@ -167,7 +209,9 @@ export async function submitGuestContact(
 // between our read and our commit, their revision changes and the
 // precondition fails — we then drop the partner patch and only commit the
 // submitter's. Bob's explicit act wins, per ADR-0002.
-async function writeSanityRsvp(payload: RSVPPayload): Promise<void> {
+async function writeSanityRsvp(
+  payload: RSVPPayload,
+): Promise<{ partnerWritten: boolean }> {
   const submitter = await writeClient.fetch<GuestLookup | null>(
     `*[_type == "guest" && slug.current == $slug][0]{ _id, _rev, rsvpStatus }`,
     { slug: payload.guestSlug },
@@ -262,6 +306,10 @@ async function writeSanityRsvp(payload: RSVPPayload): Promise<void> {
   if (partnerSlugForRevalidation) {
     revalidateTag(`guest:${partnerSlugForRevalidation}`, { expire: 0 });
   }
+
+  // partnerSlugForRevalidation survives only when the partner patch was both
+  // attached and committed (it's nulled on the revision-conflict fallback).
+  return { partnerWritten: partnerSlugForRevalidation !== null };
 }
 
 function isRevisionConflict(err: unknown): boolean {

@@ -1,7 +1,4 @@
 import { CallaLily } from '@/components/ui/decorations/CallaLily';
-// import { CatStrawberry } from '@/components/ui/decorations/CatStrawberry';
-// import { SectionDivider } from '@/components/ui/decorations/SectionDivider';
-// import { SiameseMatcha } from '@/components/ui/decorations/SiameseMatcha';
 
 /**
  * SectionDecorations — ornamental layer for decorated sections.
@@ -76,7 +73,6 @@ type SectionDecorationsProps = {
   hero?: boolean;
 };
 
-// const cornerWidth = 'w-24 md:w-36';
 const chapterMiddleWidth = 'w-12 md:w-24';
 const baseOpacity = 'opacity-70';
 const heroOpacity = 'opacity-50';
@@ -136,12 +132,6 @@ export function SectionDecorations({ hero = false }: SectionDecorationsProps) {
         className="section-decor-cream pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
-        {/* <SiameseMatcha
-          className={`absolute top-10 left-10 rotate-6 md:top-16 md:left-16 ${cornerWidth} ${baseOpacity}`}
-        />
-        <CatStrawberry
-          className={`absolute top-10 right-10 -rotate-6 md:top-16 md:right-16 ${cornerWidth} ${baseOpacity}`}
-        /> */}
         {callas}
       </div>
 
@@ -150,23 +140,8 @@ export function SectionDecorations({ hero = false }: SectionDecorationsProps) {
         className="section-decor-sage pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
-        {/* <CatStrawberry
-          className={`absolute top-10 left-10 rotate-6 md:top-16 md:left-16 ${cornerWidth} ${baseOpacity}`}
-        />
-        <SiameseMatcha
-          className={`absolute top-10 right-10 -rotate-6 md:top-16 md:right-16 ${cornerWidth} ${baseOpacity}`}
-        /> */}
         {callas}
       </div>
-
-      {/* ── Shared divider — same on both variants, sits above the FAB zone, lifted off the bottom edge so it reads connected to the content above ── */}
-      {/* Slight rightward nudge compensates for the 4px left palette
-          border on ChapterSection plus any off-center painting inside
-          the divider PNG canvas. Vertical position is hero-aware
-          (see `dividerBottom` above). */}
-      {/* <SectionDivider
-        className={`pointer-events-none absolute right-0 left-0 mx-auto w-3/4 max-w-sm translate-x-2 md:max-w-lg ${dividerBottom}`}
-      /> */}
     </>
   );
 }

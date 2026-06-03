@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -37,6 +37,13 @@ export const metadata: Metadata = {
     images: ["/decorations/proposal-og.jpg"],
   },
   robots: { index: false, follow: false },
+};
+
+// viewport-fit: cover makes env(safe-area-inset-*) resolve to real values on
+// notched / gesture-bar devices, so the fixed FAB, audio toggle, and lightbox
+// can pad themselves clear of the home indicator and notch.
+export const viewport: Viewport = {
+  viewportFit: "cover",
 };
 
 const cormorantGaramond = Cormorant_Garamond({

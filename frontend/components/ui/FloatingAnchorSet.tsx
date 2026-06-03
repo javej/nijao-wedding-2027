@@ -123,7 +123,11 @@ export function FloatingAnchorSet() {
   const ringClass = paletteRingClass[activePalette] ?? '';
 
   return (
-    <nav ref={navRef} aria-label="Quick navigation" className="fixed bottom-6 right-4 z-40">
+    <nav
+      ref={navRef}
+      aria-label="Quick navigation"
+      className="fixed right-[calc(1rem+env(safe-area-inset-right))] bottom-[calc(1.5rem+env(safe-area-inset-bottom))] z-40"
+    >
       {/* Expanded anchor options */}
       <div
         className={cn(

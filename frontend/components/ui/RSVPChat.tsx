@@ -4,8 +4,8 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 // import Script from 'next/script';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
-import { submitRsvp } from '@/app/actions/rsvp';
-import type { RSVPPayload } from '@/app/actions/rsvp';
+import { submitRsvp, retryRsvpAudit } from '@/app/actions/rsvp';
+import type { RSVPPayload, RsvpAuditPayload } from '@/app/actions/rsvp';
 import { getLocalItem, setLocalItem, removeLocalItem } from '@/lib/localStorage';
 import { isValidEmail, normalizeEmail, normalizePhMobile } from '@/lib/contact';
 
@@ -107,24 +107,50 @@ const chipVariants = {
 
 // --- Natural Language Recognition ---
 
-// Leading-word patterns — high confidence when the response starts with these
-const AFFIRMATIVE_START = /^(yes|yeah|yep|yup|oo|of\s*course|sure|absolutely|sige|opo|definitely|ok|okay|let'?s\s*go)/i;
+// Strong leading words — an unambiguous yes/no when the response opens with one.
+const AFFIRMATIVE_START = /^(yes|yeah|yep|yup|oo|of\s*course|sure|absolutely|sige|opo|definitely|let'?s\s*go)/i;
 const NEGATIVE_START = /^(no|nah|nope|hindi\s*po|hindi|can'?t|cannot|won'?t|unable)/i;
 
-// Keyword patterns — catch intent expressed mid-sentence ("I will attend", "count me in")
+// Weak lead-in — "ok" is only a yes when nothing stronger contradicts it, so it
+// must NOT override a negative phrase like "ok, I can't make it".
+const WEAK_AFFIRMATIVE_START = /^(ok|okay|k)\b/i;
+
+// Keyword phrases — intent expressed mid-sentence ("I will attend", "count me in").
 const AFFIRMATIVE_KEYWORDS = /\b(attend|coming|be\s*there|count\s*me\s*in|join|present|pumunta|punta)/i;
 const NEGATIVE_KEYWORDS = /\b(can'?t\s*(make|attend|come|go)|won'?t\s*(make|attend|come|go)|not\s*(coming|attending|going)|decline|regret|sorry.{0,10}(can'?t|cannot|won'?t|unable))/i;
 
+/**
+ * Classify a free-text RSVP reply. Specific keyword phrases are the strongest
+ * signal and win over a leading word, which fixes first-word-wins misreads like
+ * "ok I can't make it" (→ no) and "no problem, I'll be there" (→ yes). A reply
+ * carrying both signals, or neither, returns null so the chat asks to clarify.
+ */
+function classifyResponse(input: string): 'yes' | 'no' | null {
+  const t = input.trim();
+
+  const affKeyword = AFFIRMATIVE_KEYWORDS.test(t);
+  const negKeyword = NEGATIVE_KEYWORDS.test(t);
+  if (affKeyword && !negKeyword) return 'yes';
+  if (negKeyword && !affKeyword) return 'no';
+  if (affKeyword && negKeyword) return null; // mixed — let the guest clarify
+
+  const affStart = AFFIRMATIVE_START.test(t);
+  const negStart = NEGATIVE_START.test(t);
+  if (affStart && !negStart) return 'yes';
+  if (negStart && !affStart) return 'no';
+  if (affStart && negStart) return null;
+
+  // Nothing stronger present — a bare "ok"/"okay" counts as yes.
+  if (WEAK_AFFIRMATIVE_START.test(t)) return 'yes';
+  return null;
+}
+
 function isAffirmative(input: string): boolean {
-  const trimmed = input.trim();
-  if (NEGATIVE_START.test(trimmed)) return false; // "no" at start takes priority
-  return AFFIRMATIVE_START.test(trimmed) || AFFIRMATIVE_KEYWORDS.test(trimmed);
+  return classifyResponse(input) === 'yes';
 }
 
 function isNegative(input: string): boolean {
-  const trimmed = input.trim();
-  if (AFFIRMATIVE_START.test(trimmed)) return false; // "yes" at start takes priority
-  return NEGATIVE_START.test(trimmed) || NEGATIVE_KEYWORDS.test(trimmed);
+  return classifyResponse(input) === 'no';
 }
 
 // --- Confirmation Constants ---
@@ -271,10 +297,13 @@ export function RSVPChat({
 
   useEffect(() => {
     function retryQueued() {
-      const queued = getLocalItem<RSVPPayload | null>('rsvpQueue', null);
+      const queued = getLocalItem<RsvpAuditPayload | null>('rsvpQueue', null);
       if (!queued) return;
 
-      submitRsvp(queued)
+      // Audit-only retry: re-appends the Sheets row(s), never re-writes Sanity
+      // or re-sends the confirmation email (those already happened on the
+      // original submit). See `retryRsvpAudit`.
+      retryRsvpAudit(queued)
         .then((result) => {
           if (result.success) {
             removeLocalItem('rsvpQueue');
@@ -369,8 +398,11 @@ export function RSVPChat({
           setChatState('closed');
           addSystemMessage(CLOSED_MESSAGE);
         } else if (result.error === 'sheets_unavailable') {
-          // Sanity already wrote — queue the Sheets payload for retry only.
-          setLocalItem('rsvpQueue', payload);
+          // Sanity already wrote — queue the audit-only payload (built server
+          // side, partner row already reconciled) for a Sheets-only retry.
+          if (result.retryAudit) {
+            setLocalItem('rsvpQueue', result.retryAudit);
+          }
           if (data.attending) {
             setChatState('confirmed');
             addSystemMessage(
@@ -621,7 +653,8 @@ export function RSVPChat({
       } else {
         unrecognizedCount.current += 1;
         addSystemMessage("I didn't quite catch that. You can tap one of the options above.");
-        if (unrecognizedCount.current >= 1) {
+        // Allow one retry; only fall back to chips-only after a second miss.
+        if (unrecognizedCount.current >= 2) {
           setShowInput(false);
         }
       }
@@ -640,7 +673,8 @@ export function RSVPChat({
       } else {
         unrecognizedCount.current += 1;
         addSystemMessage("I didn't quite catch that. You can tap one of the options above.");
-        if (unrecognizedCount.current >= 1) {
+        // Allow one retry; only fall back to chips-only after a second miss.
+        if (unrecognizedCount.current >= 2) {
           setShowInput(false);
         }
       }
@@ -699,9 +733,10 @@ export function RSVPChat({
     chatState === 'confirmed' ||
     chatState === 'declined' ||
     chatState === 'closed';
-  // showInput is explicitly false after re-prompt limit; otherwise show for chat states that accept text
+  // showInput is explicitly false only after the second miss; until then keep
+  // the free-text box available for the chat states that accept typed answers.
   const showFreeTextInput =
-    showInput || (unrecognizedCount.current === 0 && (chatState === 'asked-attendance' || chatState === 'asked-plusone'));
+    showInput || (unrecognizedCount.current < 2 && (chatState === 'asked-attendance' || chatState === 'asked-plusone'));
 
   const isContactStep = chatState === 'asked-email' || chatState === 'asked-phone';
   const inputType =
