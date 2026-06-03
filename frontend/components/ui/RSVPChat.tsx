@@ -4,9 +4,11 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 // import Script from 'next/script';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
-import { submitRsvp, retryRsvpAudit } from '@/app/actions/rsvp';
-import type { RSVPPayload, RsvpAuditPayload } from '@/app/actions/rsvp';
-import { getLocalItem, setLocalItem, removeLocalItem } from '@/lib/localStorage';
+import { submitRsvp } from '@/app/actions/rsvp';
+import type { RSVPPayload } from '@/app/actions/rsvp';
+import { setLocalItem } from '@/lib/localStorage';
+import { useVisualViewportOffset } from '@/hooks/useVisualViewportOffset';
+import { useRsvpRetryQueue } from '@/hooks/useRsvpRetryQueue';
 import { isValidEmail, normalizeEmail, normalizePhMobile } from '@/lib/contact';
 
 // --- Turnstile global type ---
@@ -222,39 +224,8 @@ export function RSVPChat({
   const animInitial = shouldReduceMotion ? 'reduced' : 'hidden';
   const animAnimate = shouldReduceMotion ? 'reduced' : 'visible';
 
-  // Mobile keyboard handling via visualViewport API
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv || !containerRef.current) return;
-
-    function handleResize() {
-      if (!containerRef.current) return;
-      // Lift the chat above the VIRTUAL KEYBOARD only. The keyboard is the gap
-      // between the layout viewport and the visual viewport. Measure the layout
-      // viewport with documentElement.clientHeight (the 100dvh root box), NOT
-      // window.innerHeight: on mobile, innerHeight stays at the large-viewport
-      // height while the address bar is showing, so the old formula treated the
-      // address bar as keyboard inset and shoved the chat up during normal
-      // scrolling. clientHeight tracks the dynamic viewport, so it differs from
-      // the visual viewport only when the keyboard is actually open.
-      const keyboardInset =
-        document.documentElement.clientHeight - vv!.height - vv!.offsetTop;
-      // > 1 (not > 0) absorbs sub-pixel viewport rounding so we don't apply a
-      // translateY(-0.x px) when no keyboard is present.
-      if (keyboardInset > 1) {
-        containerRef.current.style.transform = `translateY(-${keyboardInset}px)`;
-      } else {
-        containerRef.current.style.transform = '';
-      }
-    }
-
-    vv.addEventListener('resize', handleResize);
-    vv.addEventListener('scroll', handleResize);
-    return () => {
-      vv.removeEventListener('resize', handleResize);
-      vv.removeEventListener('scroll', handleResize);
-    };
-  }, []);
+  // Mobile keyboard handling via the visualViewport API.
+  useVisualViewportOffset(containerRef);
 
   // Turnstile initialization — temporarily disabled
   // const handleTurnstileLoad = useCallback(() => { /* ... */ }, []);
@@ -293,35 +264,8 @@ export function RSVPChat({
     setMessages((prev) => [...prev, { id, sender: 'guest', text }]);
   }, []);
 
-  // --- localStorage retry queue for Sheets failures ---
-
-  useEffect(() => {
-    function retryQueued() {
-      const queued = getLocalItem<RsvpAuditPayload | null>('rsvpQueue', null);
-      if (!queued) return;
-
-      // Audit-only retry: re-appends the Sheets row(s), never re-writes Sanity
-      // or re-sends the confirmation email (those already happened on the
-      // original submit). See `retryRsvpAudit`.
-      retryRsvpAudit(queued)
-        .then((result) => {
-          if (result.success) {
-            removeLocalItem('rsvpQueue');
-          }
-          // If still failing, leave in queue for next retry
-        })
-        .catch(() => {
-          // Silently ignore — will retry on next reconnect
-        });
-    }
-
-    // Retry on page load
-    retryQueued();
-
-    // Retry when coming back online
-    window.addEventListener('online', retryQueued);
-    return () => window.removeEventListener('online', retryQueued);
-  }, []);
+  // localStorage retry queue for Sheets failures (drains on mount + reconnect).
+  useRsvpRetryQueue();
 
   // --- Confirmation closing bubble (fresh confirmation only) ---
 
@@ -774,7 +718,7 @@ export function RSVPChat({
               variants={bubbleVariants}
               initial={animInitial}
               animate={animAnimate}
-              layout
+              layout={!shouldReduceMotion}
               className={cn(
                 'max-w-[85%] px-4 py-3 font-body text-body-md',
                 msg.sender === 'system'
