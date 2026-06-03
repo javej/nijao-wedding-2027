@@ -113,16 +113,21 @@ export function SectionDecorations({ hero = false }: SectionDecorationsProps) {
       <CallaLily className={`${heroAnchorBR} ${heroOpacity}`} variant={2} />
     </>
   ) : (
-    <>
+    // Flank the centered content column, not the raw viewport edges. Pinning
+    // the callas to `inset-0` stranded them at the far screen edges on wide
+    // desktops (the countdown content is centered and narrow). A centered
+    // max-width track keeps them a consistent distance from the content at any
+    // width; on mobile the track is full-width so they still hug the edges.
+    <div className="absolute inset-y-0 left-1/2 w-full max-w-5xl -translate-x-1/2">
       <CallaLily
-        className={`absolute left-2 top-1/2 -translate-y-1/2 rotate-12 md:left-8 ${chapterMiddleWidth} ${baseOpacity}`}
+        className={`absolute left-2 top-1/2 -translate-y-1/2 rotate-12 md:left-4 ${chapterMiddleWidth} ${baseOpacity}`}
         variant={2}
       />
       <CallaLily
-        className={`absolute top-1/2 right-2 -translate-y-1/2 -rotate-12 md:right-8 ${chapterMiddleWidth} ${baseOpacity}`}
+        className={`absolute top-1/2 right-2 -translate-y-1/2 -rotate-12 md:right-4 ${chapterMiddleWidth} ${baseOpacity}`}
         variant={2}
       />
-    </>
+    </div>
   );
 
   return (

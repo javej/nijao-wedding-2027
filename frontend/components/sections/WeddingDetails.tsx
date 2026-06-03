@@ -103,7 +103,7 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
               aria-label="View ceremony venue on map"
               className="inline-block mt-4 text-body-sm text-deep-matcha underline underline-offset-4 hover:text-matcha-latte transition-colors focus-visible:ring-2 focus-visible:ring-raspberry focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
             >
-              View on Map
+              View on Maps
             </a>
           )}
         </div>
@@ -160,7 +160,7 @@ export function WeddingDetails({ details }: WeddingDetailsProps) {
               aria-label="View reception venue on map"
               className="inline-block mt-4 text-body-sm text-deep-matcha underline underline-offset-4 hover:text-matcha-latte transition-colors focus-visible:ring-2 focus-visible:ring-raspberry focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
             >
-              View on Map
+              View on Maps
             </a>
           )}
         </div>
