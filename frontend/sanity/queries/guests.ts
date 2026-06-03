@@ -12,6 +12,8 @@ export const GUEST_BY_SLUG_QUERY = groq`
     firstName,
     nickname,
     "slug": slug.current,
+    email,
+    mobile,
     plusOneEligible,
     plusOneType,
     plusOneLinkedGuest->{
@@ -39,6 +41,8 @@ export type GuestResult = {
   firstName: string;
   nickname: string | null;
   slug: string;
+  email: string | null;
+  mobile: string | null;
   plusOneEligible: boolean | null;
   plusOneType: "linked" | "open" | null;
   plusOneLinkedGuest: {

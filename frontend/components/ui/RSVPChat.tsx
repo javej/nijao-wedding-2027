@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { submitRsvp } from '@/app/actions/rsvp';
 import type { RSVPPayload } from '@/app/actions/rsvp';
 import { getLocalItem, setLocalItem, removeLocalItem } from '@/lib/localStorage';
+import { isValidEmail, normalizeEmail, normalizePhMobile } from '@/lib/contact';
 
 // --- Turnstile global type ---
 
@@ -36,6 +37,8 @@ type ChatState =
   | 'asked-attendance'
   | 'asked-plusone'
   | 'asked-plusone-name'
+  | 'asked-email'
+  | 'asked-phone'
   | 'submitting'
   | 'confirmed'
   | 'declined'
@@ -60,6 +63,10 @@ export interface RSVPChatProps {
   plusOneType: 'linked' | 'open' | null;
   plusOneLinkedGuestName: string | null;
   plusOneLinkedGuestSlug: string | null;
+  /** Ask for the guest's email during the flow (attending only) when absent. */
+  needsEmail: boolean;
+  /** Ask for the guest's mobile during the flow (attending only) when absent. */
+  needsMobile: boolean;
   /** Called when the final confirmation moment fires (petal burst, haptic) */
   onConfirm?: () => void;
   /** Called once a submission has been accepted by the server (success). */
@@ -135,6 +142,8 @@ export function RSVPChat({
   plusOneType,
   plusOneLinkedGuestName,
   plusOneLinkedGuestSlug,
+  needsEmail,
+  needsMobile,
   onConfirm,
   onComplete,
 }: RSVPChatProps) {
@@ -166,6 +175,17 @@ export function RSVPChat({
 
   // Message ID counter (avoids Date.now() collisions)
   const msgIdCounter = useRef(1);
+
+  // Contact collected mid-flow (attending only). Held in refs so the final
+  // handleSubmit reads them without an extra render/state-timing hop. The
+  // pending attendance answer parks here while we ask for contact.
+  const collectedEmailRef = useRef<string | null>(null);
+  const collectedMobileRef = useRef<string | null>(null);
+  const pendingSubmissionRef = useRef<{
+    attending: boolean;
+    plusOneName: string | null;
+    plusOneAttending: boolean;
+  } | null>(null);
 
   // Outer container ref for mobile keyboard offset
   const containerRef = useRef<HTMLDivElement>(null);
@@ -321,6 +341,8 @@ export function RSVPChat({
             attending: true,
           },
         }),
+        ...(collectedEmailRef.current && { guestEmail: collectedEmailRef.current }),
+        ...(collectedMobileRef.current && { guestMobile: collectedMobileRef.current }),
       };
 
       const completion: RSVPSubmissionResult = {
@@ -387,12 +409,74 @@ export function RSVPChat({
     ],
   );
 
+  // --- Flow: Contact collection (attending only, when missing) ---
+
+  const finishContact = useCallback(() => {
+    const data = pendingSubmissionRef.current;
+    if (!data) return;
+    pendingSubmissionRef.current = null;
+    handleSubmit(data);
+  }, [handleSubmit]);
+
+  const askPhone = useCallback(() => {
+    setChatState('asked-phone');
+    setShowInput(true);
+    addSystemMessage(
+      'And a mobile number for day-of updates? Type it, or tap Skip.',
+    );
+    setTimeout(() => inputRef.current?.focus(), 100);
+  }, [addSystemMessage]);
+
+  const advanceFromEmail = useCallback(() => {
+    if (needsMobile) {
+      askPhone();
+    } else {
+      finishContact();
+    }
+  }, [needsMobile, askPhone, finishContact]);
+
+  const askEmail = useCallback(() => {
+    setChatState('asked-email');
+    setShowInput(true);
+    addSystemMessage(
+      'Want your confirmation emailed? Drop your email, or tap Skip.',
+    );
+    setTimeout(() => inputRef.current?.focus(), 100);
+  }, [addSystemMessage]);
+
+  const beginContactOrSubmit = useCallback(
+    (data: { attending: boolean; plusOneName: string | null; plusOneAttending: boolean }) => {
+      // Decliners and guests who already have contact on file submit straight away.
+      if (!data.attending || (!needsEmail && !needsMobile)) {
+        handleSubmit(data);
+        return;
+      }
+      pendingSubmissionRef.current = data;
+      if (needsEmail) {
+        askEmail();
+      } else {
+        askPhone();
+      }
+    },
+    [needsEmail, needsMobile, handleSubmit, askEmail, askPhone],
+  );
+
+  const handleContactSkip = useCallback(() => {
+    if (chatState === 'asked-email') {
+      addGuestMessage('Skip');
+      advanceFromEmail();
+    } else if (chatState === 'asked-phone') {
+      addGuestMessage('Skip');
+      finishContact();
+    }
+  }, [chatState, addGuestMessage, advanceFromEmail, finishContact]);
+
   // --- Flow: Advance to plus-one or submission ---
 
   const advanceAfterAttendance = useCallback(() => {
     if (!plusOneEligible) {
-      // No plus-one — go straight to submission
-      handleSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
+      // No plus-one — go to contact collection or straight to submission
+      beginContactOrSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
       return;
     }
 
@@ -406,9 +490,9 @@ export function RSVPChat({
       addSystemMessage('Will you be bringing a plus-one?');
     } else {
       // Fallback: no plus-one config
-      handleSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
+      beginContactOrSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
     }
-  }, [plusOneEligible, plusOneType, plusOneLinkedGuestName, addSystemMessage, handleSubmit]);
+  }, [plusOneEligible, plusOneType, plusOneLinkedGuestName, addSystemMessage, beginContactOrSubmit]);
 
   // --- Chip Handlers ---
 
@@ -450,7 +534,7 @@ export function RSVPChat({
       if (plusOneType === 'linked') {
         addGuestMessage("Yes, we'll both be there");
         setTimeout(() => {
-          handleSubmit({
+          beginContactOrSubmit({
             attending: true,
             plusOneName: plusOneLinkedGuestName,
             plusOneAttending: true,
@@ -466,16 +550,16 @@ export function RSVPChat({
         }, 400);
       }
     });
-  }, [selectChipAndHide, plusOneType, plusOneLinkedGuestName, addGuestMessage, addSystemMessage, handleSubmit]);
+  }, [selectChipAndHide, plusOneType, plusOneLinkedGuestName, addGuestMessage, addSystemMessage, beginContactOrSubmit]);
 
   const handlePlusOneNo = useCallback(() => {
     selectChipAndHide('Just me', () => {
       addGuestMessage('Just me');
       setTimeout(() => {
-        handleSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
+        beginContactOrSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
       }, 400);
     });
-  }, [selectChipAndHide, addGuestMessage, handleSubmit]);
+  }, [selectChipAndHide, addGuestMessage, beginContactOrSubmit]);
 
   // --- Free-Text Input Handler ---
 
@@ -490,8 +574,39 @@ export function RSVPChat({
       setShowInput(false);
 
       setTimeout(() => {
-        handleSubmit({ attending: true, plusOneName: name, plusOneAttending: true });
+        beginContactOrSubmit({ attending: true, plusOneName: name, plusOneAttending: true });
       }, 400);
+      return;
+    }
+
+    if (chatState === 'asked-email') {
+      if (!isValidEmail(name)) {
+        addSystemMessage("That doesn't look like an email. Check it, or tap Skip.");
+        setInputValue('');
+        return;
+      }
+      collectedEmailRef.current = normalizeEmail(name);
+      addGuestMessage(name);
+      setInputValue('');
+      setShowInput(false);
+      advanceFromEmail();
+      return;
+    }
+
+    if (chatState === 'asked-phone') {
+      const mobile = normalizePhMobile(name);
+      if (!mobile) {
+        addSystemMessage(
+          "That doesn't look like a PH mobile. Try 0917 123 4567, or tap Skip.",
+        );
+        setInputValue('');
+        return;
+      }
+      collectedMobileRef.current = mobile;
+      addGuestMessage(name);
+      setInputValue('');
+      setShowInput(false);
+      finishContact();
       return;
     }
 
@@ -540,7 +655,9 @@ export function RSVPChat({
     handleAttendanceNo,
     handlePlusOneYes,
     handlePlusOneNo,
-    handleSubmit,
+    beginContactOrSubmit,
+    advanceFromEmail,
+    finishContact,
   ]);
 
   const handleKeyDown = useCallback(
@@ -585,6 +702,26 @@ export function RSVPChat({
   // showInput is explicitly false after re-prompt limit; otherwise show for chat states that accept text
   const showFreeTextInput =
     showInput || (unrecognizedCount.current === 0 && (chatState === 'asked-attendance' || chatState === 'asked-plusone'));
+
+  const isContactStep = chatState === 'asked-email' || chatState === 'asked-phone';
+  const inputType =
+    chatState === 'asked-email' ? 'email' : chatState === 'asked-phone' ? 'tel' : 'text';
+  const inputPlaceholder =
+    chatState === 'asked-plusone-name'
+      ? "Enter your plus-one's name..."
+      : chatState === 'asked-email'
+        ? 'you@example.com'
+        : chatState === 'asked-phone'
+          ? '0917 123 4567'
+          : 'Type your response...';
+  const inputAriaLabel =
+    chatState === 'asked-plusone-name'
+      ? "Plus-one's name"
+      : chatState === 'asked-email'
+        ? 'Email address'
+        : chatState === 'asked-phone'
+          ? 'Mobile number'
+          : 'RSVP response';
 
   return (
     <div ref={containerRef} className="relative flex w-full max-w-lg flex-col mx-auto transition-transform duration-150">
@@ -653,22 +790,36 @@ export function RSVPChat({
       {/* Free-text input */}
       {showFreeTextInput && !isTerminal && (
         <div className="flex gap-2">
+          {isContactStep && (
+            <button
+              type="button"
+              onClick={handleContactSkip}
+              className={cn(
+                'min-h-11 shrink-0 rounded-full border border-foreground/20 px-4 py-2',
+                'font-body text-body-sm text-foreground/60',
+                'transition-colors hover:bg-foreground/5',
+                'focus-visible:ring-4 focus-visible:ring-golden-matcha/30 focus-visible:outline-1 focus-visible:outline-golden-matcha',
+              )}
+            >
+              Skip
+            </button>
+          )}
           <input
             ref={inputRef}
-            type="text"
+            type={inputType}
+            inputMode={chatState === 'asked-phone' ? 'tel' : undefined}
+            autoComplete={
+              chatState === 'asked-email'
+                ? 'email'
+                : chatState === 'asked-phone'
+                  ? 'tel'
+                  : undefined
+            }
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={
-              chatState === 'asked-plusone-name'
-                ? "Enter your plus-one's name..."
-                : 'Type your response...'
-            }
-            aria-label={
-              chatState === 'asked-plusone-name'
-                ? "Plus-one's name"
-                : 'RSVP response'
-            }
+            placeholder={inputPlaceholder}
+            aria-label={inputAriaLabel}
             className={cn(
               'flex-1 min-h-11 rounded-full border border-foreground/20 bg-background px-4 py-2',
               'font-body text-body-md text-foreground placeholder:text-foreground/40',
