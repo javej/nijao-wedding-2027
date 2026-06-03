@@ -2,8 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 // import Script from 'next/script';
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { cn } from '@/lib/utils';
+import { motion, useReducedMotion } from 'motion/react';
 import { submitRsvp } from '@/app/actions/rsvp';
 import type { RSVPPayload } from '@/app/actions/rsvp';
 import { setLocalItem } from '@/lib/localStorage';
@@ -11,6 +10,11 @@ import { useVisualViewportOffset } from '@/hooks/useVisualViewportOffset';
 import { useRsvpRetryQueue } from '@/hooks/useRsvpRetryQueue';
 import { isValidEmail, normalizeEmail, normalizePhMobile } from '@/lib/contact';
 import { isAffirmative, isNegative } from '@/lib/attendance-parser';
+import { ChatMessageLog } from '@/components/ui/rsvp-chat/ChatMessageLog';
+import { ChatChips } from '@/components/ui/rsvp-chat/ChatChips';
+import { ChatInputBar } from '@/components/ui/rsvp-chat/ChatInputBar';
+import { bubbleVariants } from '@/components/ui/rsvp-chat/variants';
+import type { ChatMessage, Chip } from '@/components/ui/rsvp-chat/types';
 
 // --- Turnstile global type ---
 
@@ -47,12 +51,6 @@ type ChatState =
   | 'declined'
   | 'closed';
 
-interface ChatMessage {
-  id: string;
-  sender: 'system' | 'guest';
-  text: string;
-}
-
 export interface RSVPSubmissionResult {
   attending: boolean;
   plusOneName: string | null;
@@ -75,38 +73,6 @@ export interface RSVPChatProps {
   /** Called once a submission has been accepted by the server (success). */
   onComplete?: (result: RSVPSubmissionResult) => void;
 }
-
-// --- Framer Motion Variants (outside component body) ---
-
-const bubbleVariants = {
-  hidden: { opacity: 0, y: 8, scale: 0.96 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.3, ease: 'easeOut' as const },
-  },
-  reduced: { opacity: 1, y: 0, scale: 1 },
-};
-
-const chipContainerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.2 },
-  },
-  reduced: { opacity: 1 },
-};
-
-const chipVariants = {
-  hidden: { opacity: 0, y: 6 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.25, ease: 'easeOut' as const },
-  },
-  reduced: { opacity: 1, y: 0 },
-};
 
 // --- Confirmation Constants ---
 
@@ -603,7 +569,7 @@ export function RSVPChat({
 
   // --- Chip Configuration ---
 
-  const getChips = (): { label: string; onClick: () => void }[] => {
+  const getChips = (): Chip[] => {
     if (chatState === 'asked-attendance') {
       return [
         { label: "Yes, I'll be there", onClick: handleAttendanceYes },
@@ -657,131 +623,45 @@ export function RSVPChat({
 
   return (
     <div ref={containerRef} className="relative flex w-full max-w-lg flex-col mx-auto transition-transform duration-150">
-      {/* Chat message log */}
-      <div
-        role="log"
-        aria-live="polite"
-        aria-label="RSVP conversation"
-        className="flex flex-col gap-3 pb-4"
-      >
-        <AnimatePresence mode="popLayout">
-          {messages.map((msg) => (
-            <motion.div
-              key={msg.id}
-              variants={bubbleVariants}
-              initial={animInitial}
-              animate={animAnimate}
-              layout={!shouldReduceMotion}
-              className={cn(
-                'max-w-[85%] px-4 py-3 font-body text-body-md',
-                msg.sender === 'system'
-                  ? 'self-start rounded-[16px_16px_16px_4px] bg-background border border-foreground/10 text-foreground'
-                  : 'self-end rounded-[16px_16px_4px_16px] bg-golden-matcha text-text-on-dark',
-              )}
-            >
-              {msg.text}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        <div ref={chatEndRef} />
-      </div>
+      <ChatMessageLog
+        messages={messages}
+        animInitial={animInitial}
+        animAnimate={animAnimate}
+        shouldReduceMotion={Boolean(shouldReduceMotion)}
+        endRef={chatEndRef}
+      />
 
-      {/* Quick-reply chips */}
-      {showChips && chips.length > 0 && !isTerminal && (
-        <motion.div
-          ref={chipContainerRef}
-          role="group"
-          aria-label="Quick reply options"
-          variants={chipContainerVariants}
-          initial={animInitial}
-          animate={animAnimate}
-          className="flex flex-wrap gap-2 pb-3"
-        >
-          {chips.map((chip) => (
-            <motion.button
-              key={chip.label}
-              variants={chipVariants}
-              type="button"
-              onClick={chip.onClick}
-              className={cn(
-                'min-h-11 min-w-11 rounded-full border border-raspberry px-5 py-2.5',
-                'font-body text-body-md',
-                'transition-colors duration-150 hover:bg-raspberry hover:text-text-on-dark',
-                'focus-visible:ring-4 focus-visible:ring-raspberry/30 focus-visible:outline-1 focus-visible:outline-raspberry',
-                selectedChip === chip.label
-                  ? 'bg-raspberry text-text-on-dark'
-                  : 'text-raspberry',
-              )}
-            >
-              {chip.label}
-            </motion.button>
-          ))}
-        </motion.div>
+      {showChips && !isTerminal && (
+        <ChatChips
+          chips={chips}
+          selectedChip={selectedChip}
+          animInitial={animInitial}
+          animAnimate={animAnimate}
+          containerRef={chipContainerRef}
+        />
       )}
 
-      {/* Free-text input */}
       {showFreeTextInput && !isTerminal && (
-        <div className="flex gap-2">
-          {isContactStep && (
-            <button
-              type="button"
-              onClick={handleContactSkip}
-              className={cn(
-                'min-h-11 shrink-0 rounded-full border border-foreground/20 px-4 py-2',
-                'font-body text-body-sm text-foreground/60',
-                'transition-colors hover:bg-foreground/5',
-                'focus-visible:ring-4 focus-visible:ring-golden-matcha/30 focus-visible:outline-1 focus-visible:outline-golden-matcha',
-              )}
-            >
-              Skip
-            </button>
-          )}
-          <input
-            ref={inputRef}
-            type={inputType}
-            inputMode={chatState === 'asked-phone' ? 'tel' : undefined}
-            autoComplete={
-              chatState === 'asked-email'
-                ? 'email'
-                : chatState === 'asked-phone'
-                  ? 'tel'
-                  : undefined
-            }
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={inputPlaceholder}
-            aria-label={inputAriaLabel}
-            className={cn(
-              'min-w-0 flex-1 min-h-11 rounded-full border border-foreground/20 bg-background px-4 py-2',
-              'font-body text-body-md text-foreground placeholder:text-foreground/40',
-              'focus-visible:ring-4 focus-visible:ring-golden-matcha/30 focus-visible:outline-1 focus-visible:outline-golden-matcha',
-            )}
-          />
-          <button
-            type="button"
-            onClick={handleInputSubmit}
-            disabled={!inputValue.trim()}
-            aria-label="Send"
-            className={cn(
-              'min-h-11 min-w-11 shrink-0 rounded-full bg-golden-matcha text-text-on-dark',
-              'flex items-center justify-center',
-              'transition-colors hover:bg-golden-matcha/90',
-              'focus-visible:ring-4 focus-visible:ring-golden-matcha/30 focus-visible:outline-1 focus-visible:outline-golden-matcha',
-              'disabled:opacity-40 disabled:pointer-events-none',
-            )}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="size-5"
-              aria-hidden="true"
-            >
-              <path d="M3.105 2.288a.75.75 0 0 0-.826.95l1.414 4.926A1.5 1.5 0 0 0 5.135 9.25h6.115a.75.75 0 0 1 0 1.5H5.135a1.5 1.5 0 0 0-1.442 1.086l-1.414 4.926a.75.75 0 0 0 .826.95l15.5-6.25a.75.75 0 0 0 0-1.394l-15.5-6.25Z" />
-            </svg>
-          </button>
-        </div>
+        <ChatInputBar
+          inputRef={inputRef}
+          value={inputValue}
+          onChange={setInputValue}
+          onKeyDown={handleKeyDown}
+          onSubmit={handleInputSubmit}
+          inputType={inputType}
+          inputMode={chatState === 'asked-phone' ? 'tel' : undefined}
+          autoComplete={
+            chatState === 'asked-email'
+              ? 'email'
+              : chatState === 'asked-phone'
+                ? 'tel'
+                : undefined
+          }
+          placeholder={inputPlaceholder}
+          ariaLabel={inputAriaLabel}
+          showSkip={isContactStep}
+          onSkip={handleContactSkip}
+        />
       )}
 
       {/* Submitting state */}
