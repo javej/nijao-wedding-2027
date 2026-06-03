@@ -1,0 +1,24 @@
+frontend/components/sections/EntourageSection.tsx
+  s_7a6e51bcd8a9ec::t_aa3ceabd6cdf30 259
+  s_7a6e51bcd8a9ec::t_6fd9f20b7f62d8 202
+frontend/components/sections/DressCodeSection.tsx
+  s_7a6e51bcd8a9ec::t_7c18fd8284bd05 27,30
+  s_7a6e51bcd8a9ec::t_a6cd423eec0415 12
+  s_7a6e51bcd8a9ec::t_3f07be52219d2e 48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "dd3323a5cfe6c3bbb222291ec425289560281c79",
+  "prompts": {},
+  "sessions": {
+    "s_7a6e51bcd8a9ec": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2d40c0ce-f969-45c1-bab2-af9ded61dfac",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
