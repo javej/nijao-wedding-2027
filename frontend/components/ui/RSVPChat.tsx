@@ -10,6 +10,7 @@ import { setLocalItem } from '@/lib/localStorage';
 import { useVisualViewportOffset } from '@/hooks/useVisualViewportOffset';
 import { useRsvpRetryQueue } from '@/hooks/useRsvpRetryQueue';
 import { isValidEmail, normalizeEmail, normalizePhMobile } from '@/lib/contact';
+import { isAffirmative, isNegative } from '@/lib/attendance-parser';
 
 // --- Turnstile global type ---
 
@@ -106,54 +107,6 @@ const chipVariants = {
   },
   reduced: { opacity: 1, y: 0 },
 };
-
-// --- Natural Language Recognition ---
-
-// Strong leading words — an unambiguous yes/no when the response opens with one.
-const AFFIRMATIVE_START = /^(yes|yeah|yep|yup|oo|of\s*course|sure|absolutely|sige|opo|definitely|let'?s\s*go)/i;
-const NEGATIVE_START = /^(no|nah|nope|hindi\s*po|hindi|can'?t|cannot|won'?t|unable)/i;
-
-// Weak lead-in — "ok" is only a yes when nothing stronger contradicts it, so it
-// must NOT override a negative phrase like "ok, I can't make it".
-const WEAK_AFFIRMATIVE_START = /^(ok|okay|k)\b/i;
-
-// Keyword phrases — intent expressed mid-sentence ("I will attend", "count me in").
-const AFFIRMATIVE_KEYWORDS = /\b(attend|coming|be\s*there|count\s*me\s*in|join|present|pumunta|punta)/i;
-const NEGATIVE_KEYWORDS = /\b(can'?t\s*(make|attend|come|go)|won'?t\s*(make|attend|come|go)|not\s*(coming|attending|going)|decline|regret|sorry.{0,10}(can'?t|cannot|won'?t|unable))/i;
-
-/**
- * Classify a free-text RSVP reply. Specific keyword phrases are the strongest
- * signal and win over a leading word, which fixes first-word-wins misreads like
- * "ok I can't make it" (→ no) and "no problem, I'll be there" (→ yes). A reply
- * carrying both signals, or neither, returns null so the chat asks to clarify.
- */
-function classifyResponse(input: string): 'yes' | 'no' | null {
-  const t = input.trim();
-
-  const affKeyword = AFFIRMATIVE_KEYWORDS.test(t);
-  const negKeyword = NEGATIVE_KEYWORDS.test(t);
-  if (affKeyword && !negKeyword) return 'yes';
-  if (negKeyword && !affKeyword) return 'no';
-  if (affKeyword && negKeyword) return null; // mixed — let the guest clarify
-
-  const affStart = AFFIRMATIVE_START.test(t);
-  const negStart = NEGATIVE_START.test(t);
-  if (affStart && !negStart) return 'yes';
-  if (negStart && !affStart) return 'no';
-  if (affStart && negStart) return null;
-
-  // Nothing stronger present — a bare "ok"/"okay" counts as yes.
-  if (WEAK_AFFIRMATIVE_START.test(t)) return 'yes';
-  return null;
-}
-
-function isAffirmative(input: string): boolean {
-  return classifyResponse(input) === 'yes';
-}
-
-function isNegative(input: string): boolean {
-  return classifyResponse(input) === 'no';
-}
 
 // --- Confirmation Constants ---
 
