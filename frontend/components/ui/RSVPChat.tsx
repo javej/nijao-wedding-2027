@@ -8,6 +8,7 @@ import type { RSVPPayload } from '@/app/actions/rsvp';
 import { setLocalItem } from '@/lib/localStorage';
 import { useVisualViewportOffset } from '@/hooks/useVisualViewportOffset';
 import { useRsvpRetryQueue } from '@/hooks/useRsvpRetryQueue';
+import { useManagedTimeouts } from '@/hooks/useManagedTimeouts';
 import { isValidEmail, normalizeEmail, normalizePhMobile } from '@/lib/contact';
 import { isAffirmative, isNegative } from '@/lib/attendance-parser';
 import { ChatMessageLog } from '@/components/ui/rsvp-chat/ChatMessageLog';
@@ -186,6 +187,10 @@ export function RSVPChat({
   // localStorage retry queue for Sheets failures (drains on mount + reconnect).
   useRsvpRetryQueue();
 
+  // setTimeout that auto-clears on unmount — the chip→hide→submit chains below
+  // must not fire setState after the chat is swapped out.
+  const schedule = useManagedTimeouts();
+
   // --- Confirmation closing bubble (fresh confirmation only) ---
 
   useEffect(() => {
@@ -319,8 +324,8 @@ export function RSVPChat({
     addSystemMessage(
       'And a mobile number for day-of updates? Type it, or tap Skip.',
     );
-    setTimeout(() => inputRef.current?.focus(), 100);
-  }, [addSystemMessage]);
+    schedule(() => inputRef.current?.focus(), 100);
+  }, [addSystemMessage, schedule]);
 
   const advanceFromEmail = useCallback(() => {
     if (needsMobile) {
@@ -336,8 +341,8 @@ export function RSVPChat({
     addSystemMessage(
       'Want your confirmation emailed? Drop your email, or tap Skip.',
     );
-    setTimeout(() => inputRef.current?.focus(), 100);
-  }, [addSystemMessage]);
+    schedule(() => inputRef.current?.focus(), 100);
+  }, [addSystemMessage, schedule]);
 
   const beginContactOrSubmit = useCallback(
     (data: { attending: boolean; plusOneName: string | null; plusOneAttending: boolean }) => {
@@ -398,37 +403,37 @@ export function RSVPChat({
     hasInteracted.current = true;
     setSelectedChip(chipLabel);
     // Let the fill animation render (150ms), then hide chips and proceed
-    setTimeout(() => {
+    schedule(() => {
       setShowChips(false);
       setSelectedChip(null);
       afterHide();
       // Re-enable processing after the flow advances
-      setTimeout(() => { isProcessing.current = false; }, 200);
+      schedule(() => { isProcessing.current = false; }, 200);
     }, 200);
-  }, []);
+  }, [schedule]);
 
   const handleAttendanceYes = useCallback(() => {
     selectChipAndHide("Yes, I'll be there", () => {
       addGuestMessage("Yes, I'll be there");
-      setTimeout(() => advanceAfterAttendance(), 400);
+      schedule(() => advanceAfterAttendance(), 400);
     });
-  }, [selectChipAndHide, addGuestMessage, advanceAfterAttendance]);
+  }, [selectChipAndHide, addGuestMessage, advanceAfterAttendance, schedule]);
 
   const handleAttendanceNo = useCallback(() => {
     selectChipAndHide("Sorry, I can't make it", () => {
       addGuestMessage("Sorry, I can't make it");
-      setTimeout(() => {
+      schedule(() => {
         handleSubmit({ attending: false, plusOneName: null, plusOneAttending: false });
       }, 400);
     });
-  }, [selectChipAndHide, addGuestMessage, handleSubmit]);
+  }, [selectChipAndHide, addGuestMessage, handleSubmit, schedule]);
 
   const handlePlusOneYes = useCallback(() => {
     const label = plusOneType === 'linked' ? "Yes, we'll both be there" : 'Yes, bringing someone';
     selectChipAndHide(label, () => {
       if (plusOneType === 'linked') {
         addGuestMessage("Yes, we'll both be there");
-        setTimeout(() => {
+        schedule(() => {
           beginContactOrSubmit({
             attending: true,
             plusOneName: plusOneLinkedGuestName,
@@ -439,22 +444,22 @@ export function RSVPChat({
         addGuestMessage('Yes, bringing someone');
         setChatState('asked-plusone-name');
         setShowInput(true);
-        setTimeout(() => {
+        schedule(() => {
           addSystemMessage("Great! What's your plus-one's name?");
-          setTimeout(() => inputRef.current?.focus(), 100);
+          schedule(() => inputRef.current?.focus(), 100);
         }, 400);
       }
     });
-  }, [selectChipAndHide, plusOneType, plusOneLinkedGuestName, addGuestMessage, addSystemMessage, beginContactOrSubmit]);
+  }, [selectChipAndHide, plusOneType, plusOneLinkedGuestName, addGuestMessage, addSystemMessage, beginContactOrSubmit, schedule]);
 
   const handlePlusOneNo = useCallback(() => {
     selectChipAndHide('Just me', () => {
       addGuestMessage('Just me');
-      setTimeout(() => {
+      schedule(() => {
         beginContactOrSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
       }, 400);
     });
-  }, [selectChipAndHide, addGuestMessage, beginContactOrSubmit]);
+  }, [selectChipAndHide, addGuestMessage, beginContactOrSubmit, schedule]);
 
   // --- Free-Text Input Handler ---
 
@@ -468,7 +473,7 @@ export function RSVPChat({
       setInputValue('');
       setShowInput(false);
 
-      setTimeout(() => {
+      schedule(() => {
         beginContactOrSubmit({ attending: true, plusOneName: name, plusOneAttending: true });
       }, 400);
       return;
@@ -555,6 +560,7 @@ export function RSVPChat({
     beginContactOrSubmit,
     advanceFromEmail,
     finishContact,
+    schedule,
   ]);
 
   const handleKeyDown = useCallback(
