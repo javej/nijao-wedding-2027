@@ -1,6 +1,14 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
+
+// On small screens, render fewer petals and drop the 3D tumble: 28 elements
+// each animating rotateY with preserve-3d forces 28 compositor layers, which is
+// the heaviest thing on the page on a phone. The first PETALS entries already
+// cover all burst directions, so a slice keeps the effect balanced.
+const MOBILE_PETAL_COUNT = 14;
+const MOBILE_QUERY = '(max-width: 640px)';
 
 // --- Palette colors from design tokens ---
 
@@ -121,6 +129,21 @@ const petalVariants = {
 export function PetalBurst() {
   const shouldReduceMotion = useReducedMotion();
 
+  // Read the viewport once on mount — PetalBurst only renders after a click
+  // (the RSVP confirmation), so window is available and there's no flash.
+  const [isMobile] = useState(
+    () =>
+      typeof window !== 'undefined' && window.matchMedia(MOBILE_QUERY).matches,
+  );
+
+  const petals = useMemo(
+    () =>
+      isMobile
+        ? PETALS.slice(0, MOBILE_PETAL_COUNT).map((p) => ({ ...p, tumble: 0 }))
+        : PETALS,
+    [isMobile],
+  );
+
   // AC 5: Suppress entirely when prefers-reduced-motion is set
   if (shouldReduceMotion) return null;
 
@@ -131,7 +154,7 @@ export function PetalBurst() {
       style={{ perspective: 800 }}
       aria-hidden="true"
     >
-      {PETALS.map((petal, i) => (
+      {petals.map((petal, i) => (
         <motion.div
           key={i}
           custom={petal}
@@ -144,7 +167,8 @@ export function PetalBurst() {
             height: petal.size * 1.5,
             borderRadius: PETAL_SHAPES[petal.shapeIndex],
             backgroundColor: PETAL_COLORS[petal.colorIndex],
-            transformStyle: 'preserve-3d',
+            // 3D tumble (and its compositor layer) only on larger screens.
+            transformStyle: isMobile ? undefined : 'preserve-3d',
             willChange: 'transform, opacity',
           }}
         />
