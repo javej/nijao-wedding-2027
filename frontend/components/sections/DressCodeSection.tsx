@@ -9,7 +9,7 @@ interface DressCodeSectionProps {
 /**
  * Three category cards for a Filipino wedding, in seniority order:
  *   1. Principal Sponsors (Ninongs & Ninangs) — the most formal tier.
- *   2. Entourage — bridesmaids, groomsmen, secondary sponsors.
+ *   2. Wedding Party — bridesmaids, groomsmen, secondary sponsors.
  *   3. Guests — broadest latitude, formal attire from the palette.
  *
  * Illustrations live in /public/decorations/ — they are static brand
@@ -24,10 +24,10 @@ const CATEGORIES = [
     imageAlt: "Principal Sponsors dress code: women in deep matcha gowns, men in dark suits with green ties",
   },
   {
-    label: "Entourage",
+    label: "Wedding Party",
     attire: "Suits & Dresses",
     imageSrc: "/decorations/dress-entourage.png",
-    imageAlt: "Entourage dress code: bridesmaids in blush gowns, groomsmen in dark suits with pink ties",
+    imageAlt: "Wedding Party dress code: bridesmaids in blush gowns, groomsmen in dark suits with pink ties",
   },
   {
     label: "Guests",
@@ -45,7 +45,7 @@ const ILLUSTRATION_HEIGHT = 400;
 /**
  * DressCodeSection — Server Component
  *
- * Three category cards stacked vertically (Sponsors → Entourage → Guests),
+ * Three category cards stacked vertically (Sponsors → Wedding Party → Guests),
  * each linking to a full-size lightbox preview, with a single shared
  * makeup-palette pan beneath. Section is free-flow scroll — content
  * may exceed the viewport on mobile and the guest scrolls naturally.
