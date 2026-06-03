@@ -1,0 +1,63 @@
+frontend/lib/localStorage.test.ts
+  s_a0c9ded53a4214::t_8c58b625746b72 1-28
+.gitignore
+  s_a0c9ded53a4214::t_6f365d9a1ad62e 46-51
+frontend/components/sections/proposal-stack-geometry.test.ts
+  s_a0c9ded53a4214::t_f655dce50bb8dc 51-53
+  s_a0c9ded53a4214::t_719917c059dba0 1-50,54-55
+frontend/package.json
+  s_a0c9ded53a4214::t_69866300f0dec4 13-16
+  s_a0c9ded53a4214::t_96bb92baafdd66 46
+  s_a0c9ded53a4214::t_02dc922a493674 49-52,58,63-65
+frontend/vitest.setup.ts
+  s_a0c9ded53a4214::t_35b159b6bdd09b 1-27
+frontend/vitest.config.ts
+  s_a0c9ded53a4214::t_b548851a924691 1-4,10-15,18-19
+  s_a0c9ded53a4214::t_491036fea11f62 5-9
+  s_a0c9ded53a4214::t_8655ca8b89a444 16-17
+frontend/components/sections/proposal-stack-geometry.ts
+  s_a0c9ded53a4214::t_8dfa4e0714b833 1-94
+frontend/components/sections/ProposalStack.tsx
+  s_a0c9ded53a4214::t_17101d51402d79 8-12,30-31
+frontend/components/ui/RSVPChat.test.tsx
+  s_a0c9ded53a4214::t_03501929849320 1-148
+frontend/e2e/smoke.spec.ts
+  s_a0c9ded53a4214::t_bd0584a088037d 1-34,56,63,67,77-78
+  s_a0c9ded53a4214::t_60c4d438d61afd 40,73
+  s_a0c9ded53a4214::t_067be045db30bf 35-39,41-55,57-62,64-66,68-72,74-76
+frontend/components/ui/RSVPChat.tsx
+  s_a0c9ded53a4214::t_189b8fdb50e194 13
+frontend/lib/attendance-parser.test.ts
+  s_a0c9ded53a4214::t_8d76e23578c59a 2
+frontend/lib/attendance-parser.ts
+  s_a0c9ded53a4214::t_1119ababebb602 1-20,24,26-29,34-37,42-60
+  s_a0c9ded53a4214::t_32f05dc3b38d37 21-23,25,30-33,38-41
+frontend/playwright.config.ts
+  s_a0c9ded53a4214::t_ce894622d4381c 1-26
+frontend/lib/rsvp-cutoff.test.ts
+  s_a0c9ded53a4214::t_a1d3e0c368185b 1-27
+frontend/lib/contact.test.ts
+  s_a0c9ded53a4214::t_8f520bdc0ebce0 54-56
+  s_a0c9ded53a4214::t_ce9388da362ab3 1-53,57-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "631c7e5d8052902f34fe05ef0c3d18b24cc3440a",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_a0c9ded53a4214": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "792138ac-2295-4508-a9ab-b63335b3db32",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
