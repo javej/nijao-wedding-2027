@@ -23,8 +23,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/decorations/preview-og.jpg",
-        width: 6500,
-        height: 4333,
+        width: 1200,
+        height: 630,
         alt: "Jave & Nianne — January 8, 2027",
       },
     ],
