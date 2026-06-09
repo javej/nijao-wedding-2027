@@ -86,7 +86,7 @@ export const AudioController = forwardRef<
   return (
     <>
       {/* Audio element — preloads during monogram, never autoplays */}
-      <audio ref={audioRef} src="/audio/ambient.mp3" preload="auto" loop />
+      <audio ref={audioRef} src="/audio/sonican-positive-classical-music-453836.mp3" preload="auto" loop />
 
       {/* Mute/unmute toggle — fixed bottom-left, appears after overlay dismisses */}
       <AnimatePresence>
