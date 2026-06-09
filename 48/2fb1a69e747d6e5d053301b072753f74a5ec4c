@@ -1,0 +1,24 @@
+frontend/components/ui/AudioController.tsx
+  s_cf4f9df9663e38::t_790e92a1b4b42a 89
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "482fb1a69e747d6e5d053301b072753f74a5ec4c",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_cf4f9df9663e38": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "230ebf49-d6b1-428b-ad16-db77b431d71a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
