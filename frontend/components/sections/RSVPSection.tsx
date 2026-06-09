@@ -107,6 +107,11 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
     <div className="relative flex flex-col items-center justify-center w-full px-(--chapter-padding-x) py-(--chapter-padding-y)">
       {showConfetti && <PetalBurst />}
 
+      <h2 className="font-display italic font-normal text-display-md text-text-on-light tracking-wide text-center mb-10 md:mb-12">
+        RSVP
+      </h2>
+
+
       {viewMode === 'summary' && optimisticStatus !== 'pending' && (
         <div className="flex flex-col items-center gap-3">
           <RSVPSummaryCard
