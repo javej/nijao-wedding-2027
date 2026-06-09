@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans, Newsreader } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
@@ -61,13 +61,23 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+// Scoped to the love-story chapter captions only (an editorial text serif
+// that pairs with the Cormorant year without clashing). Body/UI stay DM Sans.
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn(cormorantGaramond.variable, dmSans.variable)}>
+    <html lang="en" className={cn(cormorantGaramond.variable, dmSans.variable, newsreader.variable)}>
       <link rel="icon" type="image/svg+xml" href="/gem.svg" />
       <body
         className="h-dvh bg-background font-body antialiased overscroll-none"
