@@ -251,7 +251,9 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
 
   return (
     <div className="flex flex-col items-center w-full px-(--chapter-padding-x) py-(--chapter-padding-y)">
-      <h2 className="sr-only">Entourage</h2>
+      <h2 className="font-body font-normal text-display-md text-text-on-light tracking-wide text-center mb-12 md:mb-16">
+        Entourage
+      </h2>
 
       {hasPadrinos && (
         <div className="w-full max-w-3xl">
@@ -312,12 +314,6 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
             )}
           </div>
         </div>
-      )}
-
-      {!hasPadrinos && !hasWeddingParty && (
-        <p className="font-body text-display-md text-text-on-light/40">
-          Entourage
-        </p>
       )}
     </div>
   );
