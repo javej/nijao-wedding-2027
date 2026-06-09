@@ -60,7 +60,7 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
     <PageCard bg={pageBg} priority={priority}>
       {/* Year band — fixed top zone, prominent serif title. */}
       <div className="flex h-[16%] w-full shrink-0 items-center justify-center">
-        <h2 className="chapter-lift font-display italic font-normal text-display-lg text-text-on-light leading-display px-8 py-1">
+        <h2 className="chapter-lift rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-display italic font-normal text-display-lg text-text-on-light leading-display px-8 py-1">
           {year}
         </h2>
       </div>
@@ -95,7 +95,7 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
           for a legacy >140-char caption (never an ellipsis) — the real cap
           lives in the Sanity schema. */}
       <div className="flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
-        <p className="chapter-lift font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm px-8 py-2">
+        <p className="chapter-lift rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm px-8 py-2">
           {caption}
         </p>
       </div>

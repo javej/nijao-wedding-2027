@@ -43,7 +43,7 @@ export function ChatMessageLog({
               'max-w-[85%] px-4 py-3 font-body text-body-md',
               msg.sender === 'system'
                 ? 'self-start rounded-[16px_16px_16px_4px] bg-background border border-foreground/10 text-foreground'
-                : 'self-end rounded-[16px_16px_4px_16px] bg-golden-matcha text-text-on-dark',
+                : 'self-end rounded-[16px_16px_4px_16px] bg-golden-matcha text-text-on-light',
             )}
           >
             {msg.text}

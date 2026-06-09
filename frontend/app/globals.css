@@ -171,7 +171,7 @@
   --deep-matcha:      #676930;
   --raspberry:        #9c4051;
   --golden-matcha:    #baaf2f;
-  --strawberry-jam:   #b55a64;
+  --strawberry-jam:   #b0505a;
   --matcha-chiffon:   #b2bf93;
   --berry-meringue:   #c98d8e;
   --matcha-latte:     #9fc768;
@@ -227,13 +227,19 @@
 
 /*
  * Chapter type lift — readability treatment for a story chapter's year
- * and caption over the embossed patterned page (see ADR-0007). NOT a
- * background: a soft shadow halo lifts the type off the ornament so it
- * reads as print on the album page, with no pill (too UI) and no
- * feathered wash (read as a smudge on the paper). Tone travels with
+ * and caption over the embossed patterned page (see ADR-0007). The halo
+ * itself is NOT a background: a soft shadow lifts the type off the
+ * ornament so it reads as print on the album page. Tone travels with
  * `--text-halo`, set per page in ChapterSection — dark halo under white
  * type on deep pages, light halo under dark type on cream/strawberry
  * pages. The fallback covers the deep pages that don't set it.
+ *
+ * For WCAG legibility the halo is paired (in StoryChapter) with a frosted
+ * `--text-backdrop` plate + `backdrop-blur` behind the year and caption:
+ * text-shadow earns no SC 1.4.3 credit and the type sits over a patterned
+ * PNG, so the blurred semi-opaque plate is what actually guarantees
+ * contrast against the embossing. The opaque `chapter-card` plate stays
+ * reserved for the proposal climax (highest-readability tier).
  */
 @utility chapter-lift {
   text-shadow:

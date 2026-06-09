@@ -72,7 +72,7 @@ export function ChatInputBar({
         disabled={!value.trim()}
         aria-label="Send"
         className={cn(
-          'min-h-11 min-w-11 shrink-0 rounded-full bg-golden-matcha text-text-on-dark',
+          'min-h-11 min-w-11 shrink-0 rounded-full bg-golden-matcha text-text-on-light',
           'flex items-center justify-center',
           'transition-colors hover:bg-golden-matcha/90',
           'focus-visible:ring-4 focus-visible:ring-golden-matcha/30 focus-visible:outline-1 focus-visible:outline-golden-matcha',
