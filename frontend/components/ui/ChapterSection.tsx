@@ -71,13 +71,13 @@ const bgToneClass: Record<BgTone, string> = {
   // on text wrappers to lift text off the embossed ornament and keep
   // captions readable.
   'page-cream':
-    'bg-section-cream [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
+    'bg-section-cream [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)] [--text-halo:rgba(255,255,255,0.7)]',
   'page-matcha':
     'bg-deep-matcha [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)] [--text-backdrop:rgba(0,0,0,0.3)]',
   'page-raspberry':
     'bg-raspberry [--text-on-light:#ffffff] [--mat-color:var(--color-strawberry-milk)] [--text-backdrop:rgba(0,0,0,0.3)]',
   'page-strawberry-milk':
-    'bg-strawberry-milk [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)]',
+    'bg-strawberry-milk [--text-on-light:#1a1a1a] [--mat-color:var(--color-deep-matcha)] [--text-backdrop:rgba(255,255,255,0.45)] [--text-halo:rgba(255,255,255,0.7)]',
 };
 
 interface ChapterSectionProps {

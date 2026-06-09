@@ -6,6 +6,8 @@
   /* ── Typography ── */
   --font-display: var(--font-cormorant-garamond), serif;
   --font-body: var(--font-dm-sans), sans-serif;
+  /* Editorial text serif, scoped to love-story chapter captions. */
+  --font-caption: var(--font-newsreader), Georgia, serif;
 
   /* ── Type Scale ── */
   --text-display-2xl: clamp(4rem, 10vw, 8rem);
@@ -221,6 +223,37 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+/*
+ * Chapter type lift — readability treatment for a story chapter's year
+ * and caption over the embossed patterned page (see ADR-0007). NOT a
+ * background: a soft shadow halo lifts the type off the ornament so it
+ * reads as print on the album page, with no pill (too UI) and no
+ * feathered wash (read as a smudge on the paper). Tone travels with
+ * `--text-halo`, set per page in ChapterSection — dark halo under white
+ * type on deep pages, light halo under dark type on cream/strawberry
+ * pages. The fallback covers the deep pages that don't set it.
+ */
+@utility chapter-lift {
+  text-shadow:
+    0 1px 12px var(--text-halo, rgba(0, 0, 0, 0.55)),
+    0 0 3px var(--text-halo, rgba(0, 0, 0, 0.55));
+}
+
+/*
+ * Chapter caption card — a warm-ivory plate behind the PROPOSAL chapter's
+ * year and caption (see ADR-0007). The climax sits on the light
+ * strawberry-milk page, where a shadow-lift can't separate the dark serif
+ * from the busy embossing and photo-stack shadows — so the proposal alone
+ * gets an opaque card that reads like a paper label tucked into the album.
+ * Highest readability for the most important chapter. Year chapters keep
+ * `chapter-lift`. Proposal-specific: assumes dark text on a light page.
+ */
+@utility chapter-card {
+  background: rgba(250, 246, 239, 0.94);
+  border-radius: 0.625rem;
+  box-shadow: 0 6px 22px -6px rgba(0, 0, 0, 0.22);
 }
 
 /*

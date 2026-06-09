@@ -152,10 +152,11 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
     <div ref={outerRef} style={{ minHeight: outerMinHeight }} className="relative w-full">
       <div className="sticky top-0 flex h-dvh w-full items-center justify-center">
         <PageCard bg="strawberry-milk">
-          <div
-            className="flex flex-col items-center px-5 py-2 rounded-md backdrop-blur-sm"
-            style={{ backgroundColor: 'var(--text-backdrop)' }}
-          >
+          {/* The climax sits on a light page where the year chapters'
+              shadow-lift can't hold readability over the embossing + stack
+              shadows — so the proposal alone gets an ivory caption card
+              (ADR-0007). Keeps its own stacked-photo mechanic below. */}
+          <div className="chapter-card flex flex-col items-center px-8 py-2">
             <h2 className="font-display italic font-normal text-display-lg text-text-on-light leading-display">
               {year}
             </h2>
@@ -187,11 +188,10 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
 
           <p
             ref={captionRef}
-            className="font-body font-normal text-body-md text-text-on-light leading-relaxed max-w-sm whitespace-pre-line px-5 py-2 rounded-md backdrop-blur-sm"
+            className="chapter-card font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm whitespace-pre-line px-8 py-2"
             style={{
               opacity: 0,
               transition: prefersReducedMotion ? 'none' : 'opacity 200ms linear',
-              backgroundColor: 'var(--text-backdrop)',
             }}
           >
             {caption}

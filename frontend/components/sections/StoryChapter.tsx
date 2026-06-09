@@ -50,25 +50,34 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
   const { year, caption } = chapter;
   const photos = toCrossfadePhotos(chapter, year);
 
+  // Three fixed-height zones that sum to the page-card's inner area
+  // (see ADR-0007). The photo band is the anchor: a height-driven 4:5
+  // print at the same size + position in every chapter, so caption
+  // length never resizes or shifts it. The caption band is reserved
+  // and top-aligned — a short caption leaves space at the BOTTOM of
+  // its band rather than re-centering and dragging the photo up.
   return (
     <PageCard bg={pageBg} priority={priority}>
-      <h2
-        className="font-display italic font-normal text-display-lg text-text-on-light leading-display px-5 py-1 rounded-md backdrop-blur-sm"
-        style={{ backgroundColor: 'var(--text-backdrop)' }}
-      >
-        {year}
-      </h2>
+      {/* Year band — fixed top zone, prominent serif title. */}
+      <div className="flex h-[16%] w-full shrink-0 items-center justify-center">
+        <h2 className="chapter-lift font-display italic font-normal text-display-lg text-text-on-light leading-display px-8 py-1">
+          {year}
+        </h2>
+      </div>
 
-      <div className="my-(--gap-chapter-elements) flex w-full items-center justify-center">
+      {/* Photo band — the anchor. `h-full w-auto` sizes the 4:5 print by
+          the band height; `max-w-full` caps it so on portrait it widens
+          toward the frame and on landscape it floats with side margin. */}
+      <div className="flex h-[54%] w-full shrink-0 items-center justify-center">
         {photos.length > 0 ? (
           <ChapterPhotoCrossfade
             photos={photos}
             priorityFirst={priority}
-            className="aspect-4/5 w-full"
+            className="aspect-4/5 h-full w-auto max-w-full"
           />
         ) : (
           <div
-            className="aspect-4/5 w-full flex items-center justify-center bg-text-on-light/5"
+            className="aspect-4/5 h-full w-auto max-w-full flex items-center justify-center bg-text-on-light/5"
             role="img"
             aria-label={`Placeholder for ${year}`}
           >
@@ -79,12 +88,17 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
         )}
       </div>
 
-      <p
-        className="font-body font-normal text-body-md text-text-on-light leading-relaxed max-w-sm px-5 py-2 rounded-md backdrop-blur-sm"
-        style={{ backgroundColor: 'var(--text-backdrop)' }}
-      >
-        {caption}
-      </p>
+      {/* Caption band — absorbs the remaining space below the fixed photo
+          (text top-aligned, so a short caption leaves room beneath it and
+          the photo above never moves). `flex-1` gives captions maximum
+          room on short windows; `overflow-hidden` is a clean-edge backstop
+          for a legacy >140-char caption (never an ellipsis) — the real cap
+          lives in the Sanity schema. */}
+      <div className="flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
+        <p className="chapter-lift font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm px-8 py-2">
+          {caption}
+        </p>
+      </div>
     </PageCard>
   );
 }
