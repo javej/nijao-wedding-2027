@@ -94,7 +94,7 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
           room on short windows; `overflow-hidden` is a clean-edge backstop
           for a legacy >140-char caption (never an ellipsis) — the real cap
           lives in the Sanity schema. */}
-      <div className="flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden">
+      <div className="flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden pt-4 md:pt-6">
         <p className="chapter-lift rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm px-8 py-2">
           {caption}
         </p>
