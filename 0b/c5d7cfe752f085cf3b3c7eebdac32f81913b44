@@ -1,0 +1,48 @@
+frontend/components/sections/ProposalStack.tsx
+  s_97df6dec7293f2::t_c5b548bde01767 191
+  s_97df6dec7293f2::t_66d585e6a1dc2d 155-159
+frontend/components/sections/StoryChapter.tsx
+  s_97df6dec7293f2::t_6cf96e4998a7d3 62,71
+  s_97df6dec7293f2::t_051a1903265a93 91-97
+  s_97df6dec7293f2::t_4602c4498a69cf 63
+  s_97df6dec7293f2::t_75a4f4c86f8505 98
+  s_97df6dec7293f2::t_d5d9faa5a6c3d2 53-58,61,64-66,68-70,76,80,99-101
+studio/schemas/documents/storyChapter.ts
+  s_97df6dec7293f2::t_e7ca73c5c3c778 50-57
+frontend/app/layout.tsx
+  s_97df6dec7293f2::t_fc985f8cac31aa 2
+  s_97df6dec7293f2::t_f2e7ac409a3cdf 64-73
+  s_97df6dec7293f2::t_fa3e40832f3212 80
+frontend/components/ui/ChapterSection.tsx
+  s_97df6dec7293f2::t_378b66beb7c3fd 74,80
+docs/adr/0007-story-chapter-fixed-photo-anchor-bounded-caption.md
+  s_97df6dec7293f2::t_9bfd09b3d0c2e7 33-35
+  s_97df6dec7293f2::t_acbd9a12dd128c 37
+  s_97df6dec7293f2::t_c30716d9bda800 1-32,36,38-59
+frontend/app/globals.css
+  s_97df6dec7293f2::t_387bf77e7df3be 229-236,238-241
+  s_97df6dec7293f2::t_aa8d8d577f394f 237,242-244
+  s_97df6dec7293f2::t_6fb735bb477857 9-10
+  s_97df6dec7293f2::t_6174bf0897d28f 245-258
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "0bc5d7cfe752f085cf3b3c7eebdac32f81913b44",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_97df6dec7293f2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eca06653-2c33-4ec5-abee-c7fd6de28a39",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
