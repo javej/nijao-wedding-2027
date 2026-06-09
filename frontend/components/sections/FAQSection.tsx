@@ -20,7 +20,7 @@ export function FAQSection({ faqs }: FAQSectionProps) {
 
       {faqs.length > 0 ? (
         <div className="w-full max-w-3xl">
-          <h3 className="font-display italic font-normal text-display-md text-text-on-light tracking-wide text-center mb-10 md:mb-12">
+          <h3 className="font-body font-normal text-display-md text-text-on-light tracking-wide text-center mb-10 md:mb-12">
             Frequently Asked Questions
           </h3>
           <FAQAccordion items={faqs} />
