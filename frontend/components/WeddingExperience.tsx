@@ -132,7 +132,7 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
               rsvpViewState={deriveRsvpViewState(guest)}
             />
           ) : (
-            <p className="font-display text-display-md">RSVP</p>
+            <p className="font-body font-normal text-display-md text-text-on-light tracking-wide">RSVP</p>
           )}
         </ChapterSection>
 
