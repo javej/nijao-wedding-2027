@@ -125,14 +125,6 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           )}
         </ChapterSection>
 
-        <ChapterSection id="entourage" palette="berry-meringue" label="Entourage">
-          {padrinos.length > 0 || weddingParty.length > 0 ? (
-            <EntourageSection padrinos={padrinos} weddingParty={weddingParty} />
-          ) : (
-            <p className="font-display text-display-md">Entourage</p>
-          )}
-        </ChapterSection>
-
         <ChapterSection id="rsvp" palette="golden-matcha" label="RSVP">
           {guest ? (
             <RSVPSection
@@ -141,6 +133,14 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
             />
           ) : (
             <p className="font-display text-display-md">RSVP</p>
+          )}
+        </ChapterSection>
+
+        <ChapterSection id="entourage" palette="berry-meringue" label="Entourage">
+          {padrinos.length > 0 || weddingParty.length > 0 ? (
+            <EntourageSection padrinos={padrinos} weddingParty={weddingParty} />
+          ) : (
+            <p className="font-display text-display-md">Entourage</p>
           )}
         </ChapterSection>
 
