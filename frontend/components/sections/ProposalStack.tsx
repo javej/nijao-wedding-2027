@@ -152,11 +152,17 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
     <div ref={outerRef} style={{ minHeight: outerMinHeight }} className="relative w-full">
       <div className="sticky top-0 flex h-dvh w-full items-center justify-center">
         <PageCard bg="strawberry-milk">
-          {/* The climax sits on a light page where the year chapters'
+          {/* Same three-zone fit as the year chapters (ADR-0007) so the
+              climax sits inside the page card on laptop instead of running
+              tall: natural year card, a fixed-height stack band, then the
+              caption card. The stack is height-driven (`h-full w-auto`) so
+              the hand-tuned stacking scales down intact — its slot offsets
+              and rise are fixed px, independent of container size.
+              The climax sits on a light page where the year chapters'
               shadow-lift can't hold readability over the embossing + stack
-              shadows — so the proposal alone gets an ivory caption card
-              (ADR-0007). Keeps its own stacked-photo mechanic below. */}
-          <div className="chapter-card flex flex-col items-center px-8 py-2">
+              shadows — so the proposal alone gets ivory cards (ADR-0007),
+              and keeps its own stacked-photo mechanic below. */}
+          <div className="chapter-card flex shrink-0 flex-col items-center px-8 py-2">
             <h2 className="font-display italic font-normal text-display-lg text-text-on-light leading-display">
               {year}
             </h2>
@@ -165,8 +171,8 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
             </p>
           </div>
 
-          <div className="relative my-(--gap-chapter-elements) flex w-full items-center justify-center">
-            <div className="relative aspect-4/5 w-full">
+          <div className="relative my-2 flex h-[48%] w-full shrink-0 items-center justify-center">
+            <div className="relative aspect-4/5 h-full w-auto max-w-full">
               {photos.map((photo, i) => (
                 <StackPhoto
                   // Index is part of the key — the same Sanity asset can
@@ -186,16 +192,20 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
             </div>
           </div>
 
-          <p
-            ref={captionRef}
-            className="chapter-card font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm whitespace-pre-line px-8 py-2"
-            style={{
-              opacity: 0,
-              transition: prefersReducedMotion ? 'none' : 'opacity 200ms linear',
-            }}
-          >
-            {caption}
-          </p>
+          {/* z-30 lifts the caption card above the stacked photos (z 1–5)
+              so the tilted bottom photo can't occlude the caption. */}
+          <div className="relative z-30 flex w-full min-h-0 flex-1 items-start justify-center">
+            <p
+              ref={captionRef}
+              className="chapter-card font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm whitespace-pre-line px-8 py-2"
+              style={{
+                opacity: 0,
+                transition: prefersReducedMotion ? 'none' : 'opacity 200ms linear',
+              }}
+            >
+              {caption}
+            </p>
+          </div>
         </PageCard>
       </div>
     </div>
