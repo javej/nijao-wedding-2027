@@ -1,0 +1,26 @@
+frontend/components/sections/ProposalStack.tsx
+  s_97df6dec7293f2::t_e69879aa30e867 155-161,163-165,175,198-208
+  s_97df6dec7293f2::t_c035b67c676eeb 195-197
+  s_97df6dec7293f2::t_5617a526f6dd64 174
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "74c832e005cab16cf888e53871b064409e44aed2",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_97df6dec7293f2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eca06653-2c33-4ec5-abee-c7fd6de28a39",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
