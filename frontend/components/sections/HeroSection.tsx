@@ -23,7 +23,7 @@ export function HeroSection() {
       <h1 className="mt-8 flex flex-col items-center gap-1 font-display font-normal text-display-sm text-text-on-light/70 tracking-widest md:flex-row md:gap-3">
         <span>Jave &amp; Nianne</span>
         <span aria-hidden="true" className="hidden md:inline">&middot;</span>
-        <span>January 8, 2027</span>
+        <span className="whitespace-nowrap">Friday, January 8, 2027</span>
         <span aria-hidden="true" className="hidden md:inline">&middot;</span>
         <span className="whitespace-nowrap">Lipa, Batangas</span>
       </h1>
