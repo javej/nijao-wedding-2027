@@ -194,7 +194,7 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
 
           {/* z-30 lifts the caption card above the stacked photos (z 1–5)
               so the tilted bottom photo can't occlude the caption. */}
-          <div className="relative z-30 flex w-full min-h-0 flex-1 items-start justify-center">
+          <div className="relative z-30 flex w-full min-h-0 flex-1 items-start justify-center pt-4 md:pt-6">
             <p
               ref={captionRef}
               className="chapter-card font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm whitespace-pre-line px-8 py-2"

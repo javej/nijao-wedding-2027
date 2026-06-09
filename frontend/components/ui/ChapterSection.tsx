@@ -168,7 +168,17 @@ export function ChapterSection({
       data-story-chapter={story ? '' : undefined}
       data-paper-white={paperWhiteMode}
       className={cn(
-        'min-h-dvh flex items-center justify-center',
+        // Hero and story chapters fill the viewport: the hero is the
+        // landing stage, and story chapters render a full-bleed PageCard
+        // sized to the viewport (its portrait `absolute inset-0` needs the
+        // section to be full height). Functional sections size to their
+        // content instead — each inner section already carries its own
+        // `py-(--chapter-padding-y)` — so short ones like RSVP, FAQ, and
+        // the countdown no longer reserve a whole empty screen and stack
+        // with normal spacing rather than a viewport-sized gap between them.
+        story || hero
+          ? 'min-h-dvh flex items-center justify-center'
+          : 'flex items-center justify-center',
         bgClasses,
         // Accent stripe lives on functional sections only.
         !story && cn('border-l-4', paletteBorderClass[palette]),

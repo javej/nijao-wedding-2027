@@ -22,7 +22,10 @@ export function HeroJumpNav() {
   return (
     <nav
       aria-label="Wedding sections"
-      className="mt-12 flex flex-wrap items-center justify-center gap-3"
+      // Mobile: balanced 2×2 grid (all four pills don't fit one row at phone
+      // widths, and a 3+1 wrap orphans the last pill). sm+ has room for a
+      // single centered row.
+      className="mt-12 mx-auto grid w-fit grid-cols-2 place-items-center gap-3 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:justify-center"
     >
       {quickNavAnchors.map(({ id, label, shortLabel }) => (
         <button

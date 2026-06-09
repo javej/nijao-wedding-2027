@@ -153,7 +153,7 @@ export function FloatingAnchorSet() {
             )}
           >
             <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
-            <span className="text-xs font-medium">{shortLabel}</span>
+            <span className="text-ui-sm font-medium">{shortLabel}</span>
           </button>
         ))}
       </div>

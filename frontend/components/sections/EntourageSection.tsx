@@ -47,8 +47,8 @@ const WEDDING_PARTY_ROLE_ORDER: readonly RoleGroupConfig[] = [
  * roles read wine (raspberry), and the couple sponsor roles read rose
  * (strawberry-jam). Only these three palette colors are used because,
  * on the paper-white chapter bg (#faf9f6), they are the ones that clear
- * WCAG AA as text (deep-matcha ~5.6:1, raspberry ~6.7:1, strawberry-jam
- * ~4.6:1). The lighter palette shades fail contrast and are excluded.
+ * WCAG AA as text (deep-matcha ~5.5:1, raspberry ~6.1:1, strawberry-jam
+ * ~4.8:1). The lighter palette shades fail contrast and are excluded.
  */
 const MEN_TINT = "text-deep-matcha";
 const WOMEN_TINT = "text-raspberry";

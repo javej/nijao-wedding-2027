@@ -160,7 +160,7 @@ export function RSVPContactNudge({
           onClick={handleSave}
           disabled={saving}
           className={cn(
-            'min-h-11 rounded-full bg-golden-matcha px-6 py-2 font-body text-body-md text-text-on-dark',
+            'min-h-11 rounded-full bg-golden-matcha px-6 py-2 font-body text-body-md text-text-on-light',
             'transition-colors hover:bg-golden-matcha/90 disabled:opacity-40 disabled:pointer-events-none',
             'focus-visible:ring-4 focus-visible:ring-golden-matcha/30 focus-visible:outline-1 focus-visible:outline-golden-matcha',
           )}

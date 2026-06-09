@@ -10,7 +10,7 @@ export default function TokenPreviewPage() {
           <ColorSwatch name="deep-matcha" hex="#676930" className="bg-deep-matcha" />
           <ColorSwatch name="raspberry" hex="#9c4051" className="bg-raspberry" />
           <ColorSwatch name="golden-matcha" hex="#baaf2f" className="bg-golden-matcha" />
-          <ColorSwatch name="strawberry-jam" hex="#b55a64" className="bg-strawberry-jam" />
+          <ColorSwatch name="strawberry-jam" hex="#b0505a" className="bg-strawberry-jam" />
           <ColorSwatch name="matcha-chiffon" hex="#b2bf93" className="bg-matcha-chiffon" />
           <ColorSwatch name="berry-meringue" hex="#c98d8e" className="bg-berry-meringue" />
           <ColorSwatch name="matcha-latte" hex="#9fc768" className="bg-matcha-latte" />

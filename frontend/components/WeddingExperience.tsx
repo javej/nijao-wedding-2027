@@ -109,7 +109,7 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           );
         })}
 
-        <ChapterSection id="wedding-details" palette="matcha-chiffon" label="When & Where">
+        <ChapterSection id="wedding-details" palette="deep-matcha" label="When & Where">
           {weddingDetails ? (
             <WeddingDetails details={weddingDetails} />
           ) : (
@@ -117,19 +117,11 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           )}
         </ChapterSection>
 
-        <ChapterSection id="dress-code" palette="deep-matcha" label="Dress Code">
+        <ChapterSection id="dress-code" palette="strawberry-jam" label="Dress Code">
           {dressCode ? (
             <DressCodeSection dressCode={dressCode} />
           ) : (
             <p className="font-display text-display-md">Dress Code</p>
-          )}
-        </ChapterSection>
-
-        <ChapterSection id="entourage" palette="berry-meringue" label="Entourage">
-          {padrinos.length > 0 || weddingParty.length > 0 ? (
-            <EntourageSection padrinos={padrinos} weddingParty={weddingParty} />
-          ) : (
-            <p className="font-display text-display-md">Entourage</p>
           )}
         </ChapterSection>
 
@@ -144,7 +136,15 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           )}
         </ChapterSection>
 
-        <ChapterSection id="faq" palette="berry-meringue" label="FAQ">
+        <ChapterSection id="entourage" palette="berry-meringue" label="Entourage">
+          {padrinos.length > 0 || weddingParty.length > 0 ? (
+            <EntourageSection padrinos={padrinos} weddingParty={weddingParty} />
+          ) : (
+            <p className="font-display text-display-md">Entourage</p>
+          )}
+        </ChapterSection>
+
+        <ChapterSection id="faq" palette="matcha-chiffon" label="FAQ">
           <FAQSection faqs={faqs} />
         </ChapterSection>
 
