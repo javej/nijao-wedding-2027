@@ -36,7 +36,8 @@
     font-family: "DM Sans", sans-serif;
     color: var(--text-on-light);
     background-color: var(--cream);
-    background-image: url("../frontend/public/decorations/patterned-bg-cream.png");
+    /* Same full-bleed paper texture the Hero section wears (`bg-paper-white`) */
+    background-image: url("../frontend/public/decorations/bg-paper-white.png");
     background-size: cover;
     background-position: center;
     -webkit-print-color-adjust: exact;
@@ -186,16 +187,20 @@
     color: rgba(26, 26, 26, 0.65);
   }
 
-  /* ── Footer — the couple's cats flank the RSVP line ── */
+  /* ── Footer — flanking calla lilies, as in the countdown chapter ── */
   .footer {
     margin-top: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 18px;
     width: 100%;
   }
-  .footer img.cat { width: 44px; height: auto; }
+  /* Same treatment as SectionDecorations' chapter layout: variant-2
+     line-art callas, gentle inward lean, 70% opacity. */
+  .footer img.calla { width: 46px; height: auto; opacity: 0.7; }
+  .footer img.calla.left { transform: rotate(12deg); }
+  .footer img.calla.right { transform: rotate(-12deg); }
   .rsvp { display: flex; flex-direction: column; gap: 3px; }
   .rsvp .kindly {
     font-size: 8.5px;
@@ -258,12 +263,12 @@
     </div>
 
     <div class="footer">
-      <img class="cat" src="../frontend/public/decorations/cat-strawberry.png" alt="" />
+      <img class="calla left" src="../frontend/public/decorations/calla-lily-2.png" alt="" />
       <div class="rsvp">
         <p class="kindly">Kindly RSVP at</p>
         <p class="url">javeandnianne.wedding</p>
       </div>
-      <img class="cat" src="../frontend/public/decorations/siamese-matcha.png" alt="" />
+      <img class="calla right" src="../frontend/public/decorations/calla-lily-2.png" alt="" />
     </div>
   </div>
 </body>
