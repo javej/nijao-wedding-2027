@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Jave &amp; Nianne — Wedding Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  /*
+   * 5in × 7in portrait invitation — the standard invitation trim size.
+   * Designed at CSS 96dpi (480 × 672 px); the render script captures the
+   * JPG at 3× device pixels (≈288 DPI) and the PDF at true 5×7in.
+   *
+   * Tokens mirror frontend/app/globals.css (the live site):
+   *   deep-matcha #676930 · raspberry #9c4051 · strawberry-milk #e8bcbc
+   *   matcha-chiffon #b2bf93 · cream #faf9f6 · text-on-light #1a1a1a
+   * Type: Cormorant Garamond (display) · DM Sans (body) · Newsreader (captions)
+   */
+  :root {
+    --deep-matcha: #676930;
+    --raspberry: #9c4051;
+    --strawberry-milk: #e8bcbc;
+    --matcha-chiffon: #b2bf93;
+    --berry-meringue: #c98d8e;
+    --text-on-light: #1a1a1a;
+    --cream: #faf9f6;
+  }
+  @page { size: 5in 7in; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 480px; height: 672px; }
+  body {
+    font-family: "DM Sans", sans-serif;
+    color: var(--text-on-light);
+    background-color: var(--cream);
+    background-image: url("../frontend/public/decorations/patterned-bg-cream.png");
+    background-size: cover;
+    background-position: center;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .card {
+    width: 100%;
+    height: 100%;
+    padding: 34px 40px 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* ── The .jn monogram, exactly the MonogramLoader paths ── */
+  .monogram { width: 44px; height: 55px; flex-shrink: 0; }
+
+  .eyebrow {
+    margin-top: 14px;
+    font-size: 8.5px;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--deep-matcha);
+  }
+
+  .names {
+    margin-top: 10px;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 300;
+    font-size: 54px;
+    line-height: 1.05;
+    color: var(--text-on-light);
+  }
+  .names .amp {
+    font-style: italic;
+    color: var(--raspberry);
+    font-size: 0.72em;
+    padding: 0 2px;
+  }
+
+  /* Hero tagline — "Ten years. One more day." */
+  .tagline {
+    margin-top: 8px;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 400;
+    font-size: 17px;
+    letter-spacing: 0.04em;
+    color: var(--text-on-light);
+  }
+  .tagline em { color: var(--raspberry); }
+
+  .request {
+    margin-top: 14px;
+    max-width: 330px;
+    font-family: "Newsreader", Georgia, serif;
+    font-style: italic;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: rgba(26, 26, 26, 0.78);
+  }
+
+  /* Date line — mirrors the hero h1's dot-separated tracking-widest row */
+  .dateline {
+    margin-top: 13px;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--text-on-light);
+  }
+  .dateline .dot { color: var(--raspberry); padding: 0 5px; }
+
+  /* The garland artwork sits in the vertical middle of a mostly-transparent
+     3:2 PNG — crop to just the band. */
+  .garland {
+    margin-top: 8px;
+    width: 260px;
+    height: 62px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* ── When & Where — two blocks, like the site's WeddingDetails ── */
+  .venues {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+  }
+  .venues::before {
+    /* the matcha-chiffon hairline divider between the two blocks */
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 14%;
+    height: 72%;
+    width: 1px;
+    background: var(--matcha-chiffon);
+  }
+  .venue { display: flex; flex-direction: column; align-items: center; }
+  .venue h3 {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--deep-matcha);
+  }
+  .venue img.watercolor {
+    margin-top: 7px;
+    width: 168px;
+    height: 112px;
+    object-fit: cover;
+    -webkit-mask-image: radial-gradient(ellipse at center, black 55%, transparent 95%);
+    mask-image: radial-gradient(ellipse at center, black 55%, transparent 95%);
+  }
+  .venue .name {
+    margin-top: 5px;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.35;
+    max-width: 185px;
+    /* reserve two lines so both columns' time/place rows stay level */
+    min-height: 31px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .venue .time {
+    margin-top: 3px;
+    font-family: "Newsreader", Georgia, serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--raspberry);
+  }
+  .venue .place {
+    margin-top: 2px;
+    font-size: 9.5px;
+    color: rgba(26, 26, 26, 0.65);
+  }
+
+  /* ── Footer — the couple's cats flank the RSVP line ── */
+  .footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+  }
+  .footer img.cat { width: 44px; height: auto; }
+  .rsvp { display: flex; flex-direction: column; gap: 3px; }
+  .rsvp .kindly {
+    font-size: 8.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--deep-matcha);
+  }
+  .rsvp .url {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--raspberry);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <!-- .jn monogram — same paths as MonogramLoader.tsx -->
+    <svg class="monogram" viewBox="0 0 120 150" fill="none" aria-hidden="true">
+      <circle cx="50" cy="14" r="6" stroke="#676930" stroke-width="2" fill="#676930" />
+      <path d="M 50 36 L 50 105 Q 50 130 32 130 Q 18 130 18 116"
+            stroke="#676930" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 50 72 Q 50 46 72 46 Q 98 46 98 72 L 98 105"
+            stroke="#e8bcbc" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+
+    <p class="eyebrow">Together with their families</p>
+
+    <h1 class="names">Jave <span class="amp">&amp;</span> Nianne</h1>
+
+    <p class="tagline">Ten years. <em>One more day.</em></p>
+
+    <p class="request">
+      joyfully request the honour of your presence as they exchange vows
+      and celebrate the start of forever
+    </p>
+
+    <p class="dateline">
+      Friday <span class="dot">&middot;</span> January 8, 2027 <span class="dot">&middot;</span> Lipa, Batangas
+    </p>
+
+    <img class="garland" src="../frontend/public/decorations/divider.png" alt="" />
+
+    <div class="venues">
+      <div class="venue">
+        <h3>Ceremony</h3>
+        <img class="watercolor" src="../frontend/public/decorations/st.therese-watercolor.png" alt="" />
+        <p class="name">St. Therese of the Child Jesus and the Holy Face Parish Church</p>
+        <p class="time">two o&rsquo;clock in the afternoon</p>
+        <p class="place">Lipa, Batangas</p>
+      </div>
+      <div class="venue">
+        <h3>Reception</h3>
+        <img class="watercolor" src="../frontend/public/decorations/1022-watercolor.png" alt="" />
+        <p class="name">Casa 10 22</p>
+        <p class="time">four o&rsquo;clock in the afternoon</p>
+        <p class="place">Lipa, Batangas</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <img class="cat" src="../frontend/public/decorations/cat-strawberry.png" alt="" />
+      <div class="rsvp">
+        <p class="kindly">Kindly RSVP at</p>
+        <p class="url">javeandnianne.wedding</p>
+      </div>
+      <img class="cat" src="../frontend/public/decorations/siamese-matcha.png" alt="" />
+    </div>
+  </div>
+</body>
+</html>
