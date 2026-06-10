@@ -49,12 +49,12 @@ export default defineType({
       type: "text",
       rows: 3,
       description:
-        "Short caption shown under the chapter image. One or two sentences, 140 characters max — the album page reserves a fixed caption zone so the photo stays the same size in every chapter (see ADR-0007).",
+        "Short caption shown under the chapter image. A few sentences, 280 characters max — the album page reserves a fixed caption zone so the photo stays the same size in every chapter (see ADR-0007).",
       validation: (rule) =>
         rule
           .required()
-          .max(140)
-          .error("Keep the caption to 140 characters so it fits the album page without crowding the photo."),
+          .max(280)
+          .error("Keep the caption to 280 characters so it fits the album page without crowding the photo."),
     }),
     defineField({
       name: "image",
