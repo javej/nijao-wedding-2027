@@ -2,12 +2,9 @@ import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   BookOpen,
   CalendarHeart,
-  Files,
   Heart,
   ListCollapse,
   Megaphone,
-  Menu,
-  Settings,
   Shirt,
   User,
   Users,
@@ -73,14 +70,6 @@ export const structure = (S: any, context: any) =>
             ]),
         ),
       S.divider(),
-      // Pages
-      orderableDocumentListDeskItem({
-        type: "page",
-        title: "Pages",
-        icon: Files,
-        S,
-        context,
-      }),
       orderableDocumentListDeskItem({
         type: "faq",
         title: "FAQs",
@@ -88,24 +77,4 @@ export const structure = (S: any, context: any) =>
         S,
         context,
       }),
-      S.divider(),
-      // Global
-      S.listItem()
-        .title("Navigation")
-        .icon(Menu)
-        .child(
-          S.editor()
-            .id("navigation")
-            .schemaType("navigation")
-            .documentId("navigation"),
-        ),
-      S.listItem()
-        .title("Settings")
-        .icon(Settings)
-        .child(
-          S.editor()
-            .id("settings")
-            .schemaType("settings")
-            .documentId("settings"),
-        ),
     ]);

@@ -56,6 +56,10 @@ export default defineType({
       type: "image",
       description:
         "No longer shown on the site — the entourage now displays names only. Kept so previously uploaded photos are not lost.",
+      // Hidden from the Studio form (the site never renders it), but the field
+      // stays in the schema so existing photo data is preserved without
+      // triggering "unknown field" warnings.
+      hidden: true,
       options: { hotspot: true },
       fields: [
         defineField({

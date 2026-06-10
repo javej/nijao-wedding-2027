@@ -7,12 +7,8 @@ export const resolve: PresentationPluginOptions["resolve"] = {
   locations: {},
   mainDocuments: defineDocuments([
     {
-      route: "/",
-      filter: `_type == 'page' && slug.current == 'index'`,
-    },
-    {
       route: "/:slug",
-      filter: `_type == 'page' && slug.current == $slug`,
+      filter: `_type == 'guest' && slug.current == $slug`,
     },
   ]),
 };

@@ -34,23 +34,9 @@ export default defineType({
             title: "Link",
             fields: [
               {
-                name: "isExternal",
-                type: "boolean",
-                title: "Is External",
-                initialValue: false,
-              },
-              {
-                name: "internalLink",
-                type: "reference",
-                title: "Internal Link",
-                to: [{ type: "page" }],
-                hidden: ({ parent }) => parent?.isExternal,
-              },
-              {
                 name: "href",
-                title: "href",
+                title: "URL",
                 type: "url",
-                hidden: ({ parent }) => !parent?.isExternal,
                 validation: (Rule) =>
                   Rule.uri({
                     allowRelative: true,
@@ -62,7 +48,6 @@ export default defineType({
                 type: "boolean",
                 title: "Open in new tab",
                 initialValue: false,
-                hidden: ({ parent }) => !parent?.isExternal,
               },
             ],
           },
@@ -100,32 +85,6 @@ export default defineType({
       },
       components: {
         preview: YouTubePreview,
-      },
-    }),
-    defineArrayMember({
-      name: "code",
-      type: "code",
-      options: {
-        withFilename: true,
-        language: "typescript",
-        languageAlternatives: [
-          { title: "TypeScript", value: "typescript" },
-          { title: "JavaScript", value: "javascript" },
-          { title: "JSX", value: "jsx" },
-          { title: "TSX", value: "tsx" },
-          { title: "HTML", value: "html" },
-          { title: "CSS", value: "css" },
-          { title: "SCSS", value: "scss" },
-          { title: "JSON", value: "json" },
-          { title: "Python", value: "python" },
-          { title: "PHP", value: "php" },
-          { title: "Ruby", value: "ruby" },
-          { title: "Shell", value: "shell" },
-          { title: "Markdown", value: "markdown" },
-          { title: "YAML", value: "yaml" },
-          { title: "GraphQL", value: "graphql" },
-          { title: "SQL", value: "sql" },
-        ],
       },
     }),
   ],

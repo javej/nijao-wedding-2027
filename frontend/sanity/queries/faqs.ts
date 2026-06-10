@@ -9,9 +9,9 @@ const isSanityConfigured =
 
 /**
  * All FAQs in the order set by the Studio drag-rank (`orderRank`). Each FAQ's
- * `body` is portable text — `bodyQuery` expands link hrefs and image assets so
- * the frontend renderer can draw bold/italic/lists/links plus inline images and
- * YouTube embeds without a second fetch.
+ * `body` is portable text — `bodyQuery` expands image assets so the frontend
+ * renderer can draw bold/italic/lists/links plus inline images and YouTube
+ * embeds without a second fetch.
  */
 export const FAQS_QUERY = groq`
   *[_type == "faq"] | order(orderRank asc) {
