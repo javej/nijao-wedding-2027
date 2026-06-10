@@ -15,46 +15,6 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
-export type SectionPadding = {
-  _type: "section-padding";
-  top?: boolean;
-  bottom?: boolean;
-};
-
-export type ButtonVariant =
-  | "default"
-  | "destructive"
-  | "outline"
-  | "secondary"
-  | "ghost"
-  | "link";
-
-export type ColorVariant =
-  | "background"
-  | "primary"
-  | "secondary"
-  | "card"
-  | "accent"
-  | "destructive"
-  | "muted";
-
-export type PageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "page";
-};
-
-export type Link = {
-  _type: "link";
-  isExternal?: boolean;
-  internalLink?: PageReference;
-  title?: string;
-  href?: string;
-  target?: boolean;
-  buttonVariant?: ButtonVariant;
-};
-
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -73,8 +33,6 @@ export type BlockContent = Array<
       style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
       listItem?: "bullet" | "number";
       markDefs?: Array<{
-        isExternal?: boolean;
-        internalLink?: PageReference;
         href?: string;
         target?: boolean;
         _type: "link";
@@ -98,9 +56,6 @@ export type BlockContent = Array<
       _type: "youtube";
       _key: string;
     }
-  | ({
-      _key: string;
-    } & Code)
 >;
 
 export type DressCode = {
@@ -201,6 +156,8 @@ export type Guest = {
   lastName?: string;
   nickname?: string;
   description?: string;
+  email?: string;
+  mobile?: string;
   slug?: Slug;
   plusOneEligible?: boolean;
   plusOneType?: "linked" | "open";
@@ -281,47 +238,6 @@ export type StoryChapter = {
   orderRank?: string;
 };
 
-export type Settings = {
-  _id: string;
-  _type: "settings";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  logo?: {
-    dark?: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    };
-    light?: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    };
-    width?: number;
-    height?: number;
-  };
-  siteName?: string;
-  copyright?: BlockContent;
-};
-
-export type Navigation = {
-  _id: string;
-  _type: "navigation";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  links?: Array<
-    {
-      _key: string;
-    } & Link
-  >;
-};
-
 export type Faq = {
   _id: string;
   _type: "faq";
@@ -333,30 +249,6 @@ export type Faq = {
   orderRank?: string;
 };
 
-export type Page = {
-  _id: string;
-  _type: "page";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  blocks?: null;
-  meta?: {
-    title?: string;
-    description?: string;
-    noindex?: boolean;
-    image?: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    };
-  };
-  orderRank?: string;
-};
-
 export type MediaTag = {
   _id: string;
   _type: "media.tag";
@@ -364,14 +256,6 @@ export type MediaTag = {
   _updatedAt: string;
   _rev: string;
   name?: Slug;
-};
-
-export type Code = {
-  _type: "code";
-  language?: string;
-  filename?: string;
-  code?: string;
-  highlightedLines?: Array<number>;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -472,11 +356,6 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
-  | SectionPadding
-  | ButtonVariant
-  | ColorVariant
-  | PageReference
-  | Link
   | SanityImageAssetReference
   | BlockContent
   | DressCode
@@ -489,12 +368,8 @@ export type AllSanitySchemaTypes =
   | Slug
   | EntourageMember
   | StoryChapter
-  | Settings
-  | Navigation
   | Faq
-  | Page
   | MediaTag
-  | Code
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -591,11 +466,13 @@ export type WEDDING_PARTY_QUERY_RESULT = Array<{
 
 // Source: ../frontend/sanity/queries/guests.ts
 // Variable: GUEST_BY_SLUG_QUERY
-// Query: *[_type == "guest" && slug.current == $slug][0] {    firstName,    nickname,    "slug": slug.current,    plusOneEligible,    plusOneType,    plusOneLinkedGuest->{      firstName,      "slug": slug.current,      rsvpStatus    },    rsvpStatus,    rsvpUpdatedAt,    openPlusOne  }
+// Query: *[_type == "guest" && slug.current == $slug][0] {    firstName,    nickname,    "slug": slug.current,    email,    mobile,    plusOneEligible,    plusOneType,    plusOneLinkedGuest->{      firstName,      "slug": slug.current,      rsvpStatus    },    rsvpStatus,    rsvpUpdatedAt,    openPlusOne  }
 export type GUEST_BY_SLUG_QUERY_RESULT = {
   firstName: string | null;
   nickname: string | null;
   slug: string | null;
+  email: string | null;
+  mobile: string | null;
   plusOneEligible: boolean | null;
   plusOneType: "linked" | "open" | null;
   plusOneLinkedGuest: {
@@ -617,105 +494,6 @@ export type GUEST_BY_SLUG_QUERY_RESULT = {
 export type ALL_GUEST_SLUGS_QUERY_RESULT = Array<{
   slug: string | null;
 }>;
-
-// Source: ../frontend/sanity/queries/navigation.ts
-// Variable: NAVIGATION_QUERY
-// Query: *[_type == "navigation"]{    _type,    _key,    links  }
-export type NAVIGATION_QUERY_RESULT = Array<{
-  _type: "navigation";
-  _key: null;
-  links: Array<
-    {
-      _key: string;
-    } & Link
-  > | null;
-}>;
-
-// Source: ../frontend/sanity/queries/page.ts
-// Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0]{    blocks[]{      _type,      _key,    },      meta{    title,    description,    noindex,    image{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  },  }
-export type PAGE_QUERY_RESULT = {
-  blocks: null;
-  meta: {
-    title: string | null;
-    description: string | null;
-    noindex: boolean | null;
-    image: {
-      asset: {
-        _id: string;
-        url: string | null;
-        mimeType: string | null;
-        metadata: {
-          lqip: string | null;
-          dimensions: {
-            width: number | null;
-            height: number | null;
-          } | null;
-        } | null;
-      } | null;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    } | null;
-  } | null;
-} | null;
-
-// Source: ../frontend/sanity/queries/page.ts
-// Variable: PAGES_SLUGS_QUERY
-// Query: *[_type == "page" && defined(slug)]{slug}
-export type PAGES_SLUGS_QUERY_RESULT = Array<{
-  slug: Slug;
-}>;
-
-// Source: ../frontend/sanity/queries/settings.ts
-// Variable: SETTINGS_QUERY
-// Query: *[_type == "settings"][0]{  _type,  siteName,  logo{    dark{      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    light{      ...,      asset->{        _id,        url,        mimeType,        metadata {          lqip,          dimensions {            width,            height          }        }      }    },    width,    height,  },  copyright}
-export type SETTINGS_QUERY_RESULT = {
-  _type: "settings";
-  siteName: string | null;
-  logo: {
-    dark: {
-      asset: {
-        _id: string;
-        url: string | null;
-        mimeType: string | null;
-        metadata: {
-          lqip: string | null;
-          dimensions: {
-            width: number | null;
-            height: number | null;
-          } | null;
-        } | null;
-      } | null;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    } | null;
-    light: {
-      asset: {
-        _id: string;
-        url: string | null;
-        mimeType: string | null;
-        metadata: {
-          lqip: string | null;
-          dimensions: {
-            width: number | null;
-            height: number | null;
-          } | null;
-        } | null;
-      } | null;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    } | null;
-    width: number | null;
-    height: number | null;
-  } | null;
-  copyright: BlockContent | null;
-} | null;
 
 // Source: ../frontend/sanity/queries/storyChapters.ts
 // Variable: STORY_CHAPTERS_QUERY
@@ -793,12 +571,8 @@ declare module "@sanity/client" {
     '\n  *[_type == "dressCode"][0] {\n    paletteColors[] {\n      _key,\n      colorKey,\n      colorLabel\n    }\n  }\n': DRESS_CODE_QUERY_RESULT;
     '\n  *[_type == "entourageMember" && role in ["Ninong", "Ninang"]] | order(name asc) {\n    _id, name, role\n  }\n': PADRINOS_QUERY_RESULT;
     '\n  *[_type == "entourageMember" && defined(role) && !(role in ["Ninong", "Ninang"])] | order(name asc) {\n    _id, name, role\n  }\n': WEDDING_PARTY_QUERY_RESULT;
-    '\n  *[_type == "guest" && slug.current == $slug][0] {\n    firstName,\n    nickname,\n    "slug": slug.current,\n    plusOneEligible,\n    plusOneType,\n    plusOneLinkedGuest->{\n      firstName,\n      "slug": slug.current,\n      rsvpStatus\n    },\n    rsvpStatus,\n    rsvpUpdatedAt,\n    openPlusOne\n  }\n': GUEST_BY_SLUG_QUERY_RESULT;
+    '\n  *[_type == "guest" && slug.current == $slug][0] {\n    firstName,\n    nickname,\n    "slug": slug.current,\n    email,\n    mobile,\n    plusOneEligible,\n    plusOneType,\n    plusOneLinkedGuest->{\n      firstName,\n      "slug": slug.current,\n      rsvpStatus\n    },\n    rsvpStatus,\n    rsvpUpdatedAt,\n    openPlusOne\n  }\n': GUEST_BY_SLUG_QUERY_RESULT;
     '\n  *[_type == "guest" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': ALL_GUEST_SLUGS_QUERY_RESULT;
-    '\n  *[_type == "navigation"]{\n    _type,\n    _key,\n    links\n  }\n': NAVIGATION_QUERY_RESULT;
-    '\n  *[_type == "page" && slug.current == $slug][0]{\n    blocks[]{\n      _type,\n      _key,\n    },\n    \n  meta{\n    title,\n    description,\n    noindex,\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n,\n  }\n': PAGE_QUERY_RESULT;
-    '*[_type == "page" && defined(slug)]{slug}': PAGES_SLUGS_QUERY_RESULT;
-    '*[_type == "settings"][0]{\n  _type,\n  siteName,\n  logo{\n    dark{\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    light{\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    width,\n    height,\n  },\n  copyright\n}': SETTINGS_QUERY_RESULT;
     '\n  *[_type == "storyChapter"] | order(order asc) {\n    _id,\n    year,\n    caption,\n    isProposal,\n    image {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    images[] {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    order,\n    publishedAt\n  }\n': STORY_CHAPTERS_QUERY_RESULT;
     '\n  *[_type == "weddingDetails"][0] {\n    ceremonyVenue,\n    ceremonyDate,\n    ceremonyTime,\n    ceremonyAddress,\n    ceremonyMapUrl,\n    receptionVenue,\n    receptionDate,\n    receptionTime,\n    receptionAddress,\n    receptionMapUrl\n  }\n': WEDDING_DETAILS_QUERY_RESULT;
   }

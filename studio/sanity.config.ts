@@ -6,8 +6,6 @@ import { media } from "sanity-plugin-media";
 import { schemaTypes } from "./schema-types";
 import { resolve } from "./presentation/resolve";
 import { structure } from "./structure";
-import { defaultDocumentNode } from "./defaultDocumentNode";
-import { codeInput } from "@sanity/code-input";
 import { guestLinkGenerator } from "./plugins/guest-link-generator";
 import { rsvpDashboard } from "./plugins/rsvp-dashboard";
 
@@ -21,12 +19,7 @@ const singletonActions = new Set([
 
 // Define the singleton document types — one document per type, not a list.
 // These are surfaced directly from `structure.ts` via `S.editor().documentId(...)`.
-const singletonTypes = new Set([
-  "settings",
-  "navigation",
-  "weddingDetails",
-  "dressCode",
-]);
+const singletonTypes = new Set(["weddingDetails", "dressCode"]);
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || "your-project-id";
 const dataset = process.env.SANITY_STUDIO_DATASET || "production";
@@ -36,10 +29,9 @@ const SANITY_STUDIO_PREVIEW_URL =
   process.env.SANITY_STUDIO_PREVIEW_URL || "http://localhost:3000";
 
 export default defineConfig({
-  title: "Schema UI: Starter",
+  title: "Jave & Nianne Wedding",
   projectId,
   dataset,
-  // Add and edit the content schema in the './sanity/schema' folder
   schema: {
     types: schemaTypes,
     // Filter out singleton types from the global "New document" menu options
@@ -55,7 +47,7 @@ export default defineConfig({
         : input,
   },
   plugins: [
-    structureTool({ structure, defaultDocumentNode }),
+    structureTool({ structure }),
     presentationTool({
       previewUrl: {
         origin: SANITY_STUDIO_PREVIEW_URL,
@@ -68,7 +60,6 @@ export default defineConfig({
     // Vision is a tool that lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
-    codeInput(),
     media(),
     guestLinkGenerator(),
     rsvpDashboard(),
