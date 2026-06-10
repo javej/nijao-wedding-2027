@@ -36,6 +36,10 @@ The chapter **caption font** also changes from the body sans (DM Sans) to **News
 
 The **proposal chapter** ([ProposalStack.tsx](../../frontend/components/sections/ProposalStack.tsx)) keeps its distinct scroll-pinned photo-stacking mechanic, **and gets its own readability treatment.** The climax sits on the light strawberry-milk page, where the shadow-lift fails — a light halo cannot separate dark serif type from a light background, and the type reads faint over the embossing plus the photo-stack shadows. Since it is the most important chapter before the wedding, readability wins over consistency: the proposal's year and caption sit on an **ivory caption card** (`chapter-card`) — a warm-white opaque plate that reads like a paper label tucked into the album. It is also the only chapter with a card, so the treatment doubles as the climax's signature. A bolder deep-matcha plate (cream on green, tying the palette) was considered and set aside as heavier against the delicate embossing.
 
+## Amendments
+
+- **2026-06-10 — caption cap raised 140 → 280.** The bounded-caption principle stands; only the bound changed. Captions running a touch long against the original 140-character limit warranted a little more room, so the schema `max()` and editor copy now allow 280. The reserved photo-anchor zones and the `overflow-hidden` backstop are unchanged — the caption band still flexes only into the empty space below a short caption, and the cap is still enforced at authoring time, never by ellipsis. References to "140" below describe the original decision.
+
 ## Consequences
 
 ### Positive
