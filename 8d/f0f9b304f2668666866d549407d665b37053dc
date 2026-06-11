@@ -1,0 +1,24 @@
+frontend/components/sections/StoryChapter.tsx
+  s_6f1f33cef9b574::t_a7095fac48ce5a 63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "8df0f9b304f2668666866d549407d665b37053dc",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_6f1f33cef9b574": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "279e59ed-dad0-4aa7-8c90-627d2f58e609",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
