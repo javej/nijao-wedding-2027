@@ -60,7 +60,7 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
     <PageCard bg={pageBg} priority={priority}>
       {/* Year band — fixed top zone, prominent serif title. */}
       <div className="flex h-[16%] w-full shrink-0 items-center justify-center">
-        <h2 className="chapter-lift flex items-center justify-center rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-display italic font-normal text-display-lg text-text-on-light leading-none px-8 py-3">
+        <h2 className="chapter-lift flex items-center justify-center rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-display italic font-normal text-[clamp(1.375rem,4.5dvh,2.25rem)] text-text-on-light leading-none px-6 py-[clamp(0.3rem,1dvh,0.55rem)]">
           {year}
         </h2>
       </div>
