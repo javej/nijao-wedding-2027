@@ -118,19 +118,22 @@ function groupByRole(members: EntourageMemberResult[], order: readonly RoleGroup
 
 /**
  * `flow` controls how names lay out beneath the heading:
- *  - "wrap"   — centered wrapping row; sparse groups (e.g. two Flower
- *               Girls) stay balanced at every breakpoint instead of
- *               left-shifting in a fixed grid.
- *  - "column" — single centered column flowing downward, used inside a
- *               side-by-side paired row (e.g. Ninongs | Ninangs).
+ *  - "wrap"        — centered wrapping row; sparse groups stay balanced at
+ *                    every breakpoint instead of left-shifting in a fixed grid.
+ *  - "column"      — single centered column flowing downward, used inside a
+ *                    side-by-side paired row (e.g. Ninongs | Ninangs).
+ *  - "stackMobile" — stacks vertically on mobile, then becomes a centered
+ *                    wrapping row from sm+ so the desktop layout matches "wrap".
  */
-function RoleGroupBlock({ group, flow = "wrap" }: { group: RoleGroup; flow?: "wrap" | "column" }) {
+function RoleGroupBlock({ group, flow = "wrap" }: { group: RoleGroup; flow?: "wrap" | "column" | "stackMobile" }) {
   const tintClass = ROLE_TINT[group.role] ?? MEN_TINT;
 
   const listClass =
     flow === "column"
       ? "flex flex-col items-center gap-y-2 md:gap-y-3"
-      : "flex flex-wrap justify-center gap-x-8 sm:gap-x-10 gap-y-2 md:gap-y-3";
+      : flow === "stackMobile"
+        ? "flex flex-col items-center sm:flex-row sm:flex-wrap sm:justify-center gap-x-8 sm:gap-x-10 gap-y-2 md:gap-y-3"
+        : "flex flex-wrap justify-center gap-x-8 sm:gap-x-10 gap-y-2 md:gap-y-3";
 
   return (
     <div className="w-full">
@@ -146,7 +149,7 @@ function RoleGroupBlock({ group, flow = "wrap" }: { group: RoleGroup; flow?: "wr
         {group.members.map((member) => (
           <li
             key={member._id}
-            className="font-display font-normal text-lg md:text-xl lg:text-2xl leading-snug text-center"
+            className="font-display font-medium md:font-normal text-xl lg:text-2xl leading-snug text-center"
           >
             {member.name.trim()}
           </li>
@@ -183,7 +186,7 @@ function SponsorPairsBlock({ groups }: { groups: RoleGroup[] }) {
             {group.members.map((member) => (
               <li
                 key={member._id}
-                className="font-display font-normal text-lg md:text-xl lg:text-2xl leading-snug text-text-on-light text-center"
+                className="font-display font-medium md:font-normal text-xl lg:text-2xl leading-snug text-text-on-light text-center"
               >
                 {member.name.trim()}
               </li>
@@ -308,7 +311,11 @@ export function EntourageSection({ padrinos, weddingParty }: EntourageSectionPro
             {otherWeddingPartyGroups.length > 0 && (
               <div className="flex flex-col gap-10 md:gap-12">
                 {otherWeddingPartyGroups.map((group) => (
-                  <RoleGroupBlock key={group.role} group={group} />
+                  <RoleGroupBlock
+                    key={group.role}
+                    group={group}
+                    flow={group.role === "Flower Girl" ? "stackMobile" : "wrap"}
+                  />
                 ))}
               </div>
             )}
