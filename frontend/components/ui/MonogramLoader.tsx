@@ -8,41 +8,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
  * Architecture mandate: variants must not be inline objects.
  */
 
-// j tittle (dot above the j — deep-matcha)
-const tittleVariants = {
-  hidden: { pathLength: 0, fillOpacity: 0, opacity: 0 },
-  visible: {
-    pathLength: 1,
-    fillOpacity: 1,
-    opacity: 1,
-    transition: { duration: 0.3, delay: 0.35, ease: 'easeInOut' as const, fillOpacity: { duration: 0.2, delay: 0.55 } },
-  },
-  reduced: { pathLength: 1, fillOpacity: 1, opacity: 1 },
-};
-
-// j stem + descender (deep-matcha)
-const jVariants = {
-  hidden: { pathLength: 0, opacity: 0 },
-  visible: {
-    pathLength: 1,
-    opacity: 1,
-    transition: { duration: 0.9, delay: 0.4, ease: 'easeInOut' as const },
-  },
-  reduced: { pathLength: 1, opacity: 1 },
-};
-
-// n hump — draws last, triggers completion (strawberry-milk)
-const nVariants = {
-  hidden: { pathLength: 0, opacity: 0 },
-  visible: {
-    pathLength: 1,
-    opacity: 1,
-    transition: { duration: 0.9, delay: 1.3, ease: 'easeInOut' as const },
-  },
-  reduced: { pathLength: 1, opacity: 1 },
-};
-
-// Overlay fade-out after draw-on completes
+// Overlay fade-out after the monogram video finishes
 const overlayVariants = {
   visible: { opacity: 1 },
   exit: { opacity: 0, transition: { duration: 0.3, ease: 'easeOut' as const } },
@@ -54,8 +20,22 @@ const overlayReducedVariants = {
   exit: { opacity: 0, transition: { duration: 0 } },
 };
 
-/** Maximum time before loader force-exits, preventing permanent page lock. */
-const SAFETY_TIMEOUT_MS = 5000;
+// Monogram videos. The `&` in the filenames is percent-encoded so the path is
+// a valid URL. Portrait fills phones; landscape fills desktops. No poster: both
+// clips fade in from blank white, so the warm-white loader background already
+// matches the clip's opening while it buffers — a poster of the finished mark
+// would flash the completed monogram, then jump back to blank when playback
+// starts. The loader background (matching --background, near-white) is what
+// covers the buffering gap and any object-cover crop edge.
+const PORTRAIT_VIDEO = '/video/Nianne%26Jave_Monogram_1080x1920_8s.mp4';
+const LANDSCAPE_VIDEO = '/video/Nianne%26Jave_Monogram_1920x1080_8s.mp4';
+
+/**
+ * Maximum time before the loader force-exits, preventing a permanent page lock
+ * if the video stalls or autoplay is blocked without firing onError. The clips
+ * are 8s, so this sits comfortably past their natural end.
+ */
+const SAFETY_TIMEOUT_MS = 9500;
 
 interface MonogramLoaderProps {
   /** Called after the exit animation completes and the loader fully unmounts. */
@@ -64,11 +44,9 @@ interface MonogramLoaderProps {
 
 export function MonogramLoader({ onComplete }: MonogramLoaderProps) {
   const [isComplete, setIsComplete] = useState(false);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const hasExited = useRef(false);
-
-  const animationState = shouldReduceMotion ? 'reduced' : 'visible';
-  const initialState = shouldReduceMotion ? 'reduced' : 'hidden';
 
   function exitLoader() {
     if (hasExited.current) return;
@@ -76,14 +54,22 @@ export function MonogramLoader({ onComplete }: MonogramLoaderProps) {
     setIsComplete(true);
   }
 
-  // Safety timeout — force-exit if animation never completes
+  // Pick the orientation-matched clip on the client only (avoids a hydration
+  // mismatch — the server can't know the viewport orientation). matchMedia is
+  // more reliable cross-browser than <source media> for choosing the source.
+  useEffect(() => {
+    const portrait = window.matchMedia('(orientation: portrait)').matches;
+    setVideoSrc(portrait ? PORTRAIT_VIDEO : LANDSCAPE_VIDEO);
+  }, []);
+
+  // Safety timeout — force-exit if the video never reaches its end
   useEffect(() => {
     const timer = setTimeout(exitLoader, SAFETY_TIMEOUT_MS);
     return () => clearTimeout(timer);
 
   }, []);
 
-  // Reduced motion: exit immediately after mount (monogram renders fully drawn)
+  // Reduced motion: skip the motion video and exit immediately
   useEffect(() => {
     if (shouldReduceMotion) {
       exitLoader();
@@ -91,68 +77,32 @@ export function MonogramLoader({ onComplete }: MonogramLoaderProps) {
 
   }, [shouldReduceMotion]);
 
-  function handleDrawComplete() {
-    // 500ms hold so the mark is seen before fade-out (normal motion only)
-    setTimeout(exitLoader, 500);
-  }
-
   return (
     <AnimatePresence onExitComplete={onComplete}>
       {!isComplete && (
         <motion.div
           role="status"
           aria-label="Loading"
-          className="fixed inset-0 z-60 flex items-center justify-center bg-black"
+          className="fixed inset-0 z-60 flex items-center justify-center overflow-hidden bg-background"
           variants={shouldReduceMotion ? overlayReducedVariants : overlayVariants}
           initial="visible"
           exit="exit"
         >
-          <svg
-            viewBox="0 0 120 150"
-            className="h-48 w-48 sm:h-60 sm:w-60"
-            fill="none"
-            aria-hidden="true"
-          >
-            {/* j tittle (large filled dot above j) */}
-            <motion.circle
-              cx="50"
-              cy="14"
-              r="6"
-              stroke="var(--color-deep-matcha)"
-              strokeWidth="2"
-              fill="var(--color-deep-matcha)"
-              initial={initialState}
-              animate={animationState}
-              variants={tittleVariants}
-            />
-
-            {/* j stem + descender with ball terminal */}
-            <motion.path
-              d="M 50 36 L 50 105 Q 50 130 32 130 Q 18 130 18 116"
-              stroke="var(--color-deep-matcha)"
-              strokeWidth="24"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              initial={initialState}
-              animate={animationState}
-              variants={jVariants}
-            />
-
-            {/* n: rises from j stem, bold arch, descends to baseline */}
-            <motion.path
-              d="M 50 72 Q 50 46 72 46 Q 98 46 98 72 L 98 105"
-              stroke="var(--color-strawberry-milk)"
-              strokeWidth="22"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              initial={initialState}
-              animate={animationState}
-              variants={nVariants}
-              onAnimationComplete={handleDrawComplete}
-            />
-          </svg>
+          {videoSrc && !shouldReduceMotion && (
+            <video
+              key={videoSrc}
+              className="h-full w-full object-cover"
+              autoPlay
+              muted
+              playsInline
+              preload="auto"
+              aria-hidden="true"
+              onEnded={exitLoader}
+              onError={exitLoader}
+            >
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+          )}
         </motion.div>
       )}
     </AnimatePresence>
