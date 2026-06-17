@@ -1,0 +1,28 @@
+frontend/components/ui/MonogramLoader.tsx
+  s_2057b43aced411::t_816d973086fa9e 23-29
+  s_2057b43aced411::t_234934a7f5eab2 62
+  s_2057b43aced411::t_0484fe8c129c95 86,91,93,103
+  s_2057b43aced411::t_d52cc2d7d45366 47
+  s_2057b43aced411::t_2fcd782b12e165 11,30-38,57-61,63-65,72,92,94-102,104-105
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "044ed0c9e369d2662853f8e063ff2d201687c19c",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_2057b43aced411": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e74af3f7-f907-48e3-8df4-0de7d578b05b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
