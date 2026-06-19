@@ -1,0 +1,32 @@
+docs/adr/0007-story-chapter-fixed-photo-anchor-bounded-caption.md
+  s_522a2f998e817e::t_1df84249dfb7fd 45,47,49
+  s_522a2f998e817e::t_ac35297fc1c70b 50
+  s_522a2f998e817e::t_697f1e4cfd86b7 43-44,46,48
+frontend/components/sections/StoryChapter.tsx
+  s_522a2f998e817e::t_9eb2360dd39f01 70
+  s_522a2f998e817e::t_cc0e336f9a2ff8 101
+  s_522a2f998e817e::t_d93a9c34c328dc 71-75
+  s_522a2f998e817e::t_036c47c837d7e1 102
+  s_522a2f998e817e::t_b2bd1a846d1943 62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "26946319b1cd0e8d53f0e603129bff77291df64a",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_522a2f998e817e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fffdf294-a7ed-4801-b83a-a6473e919070",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
