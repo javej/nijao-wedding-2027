@@ -59,7 +59,7 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
   return (
     <PageCard bg={pageBg} priority={priority}>
       {/* Year band — fixed top zone, prominent serif title. */}
-      <div className="flex h-[16%] w-full shrink-0 items-center justify-center">
+      <div className="flex h-[14%] w-full shrink-0 items-center justify-center">
         <h2 className="chapter-lift flex items-center justify-center rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-display italic font-normal text-[clamp(1.375rem,4.5dvh,2.25rem)] text-text-on-light leading-none px-6 py-[clamp(0.3rem,1dvh,0.55rem)]">
           {year}
         </h2>
@@ -67,8 +67,12 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
 
       {/* Photo band — the anchor. `h-full w-auto` sizes the 4:5 print by
           the band height; `max-w-full` caps it so on portrait it widens
-          toward the frame and on landscape it floats with side margin. */}
-      <div className="flex h-[54%] w-full shrink-0 items-center justify-center">
+          toward the frame and on landscape it floats with side margin.
+          48% is tuned so the photo is as large as possible while a
+          full-length (~280-char) caption still clears the band below it on
+          the worst case — a narrow-and-tall phone, where the caption wraps
+          to the most lines. */}
+      <div className="flex h-[48%] w-full shrink-0 items-center justify-center">
         {photos.length > 0 ? (
           <ChapterPhotoCrossfade
             photos={photos}
@@ -94,8 +98,8 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
           room on short windows; `overflow-hidden` is a clean-edge backstop
           for a legacy >280-char caption (never an ellipsis) — the real cap
           lives in the Sanity schema. */}
-      <div className="flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden pt-4 md:pt-6">
-        <p className="chapter-lift rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm px-8 py-2">
+      <div className="flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden pt-4 md:pt-3">
+        <p className="chapter-lift rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-caption font-normal text-[clamp(0.75rem,1.85dvh,0.9375rem)] text-text-on-light leading-snug max-w-sm px-6 py-2">
           {caption}
         </p>
       </div>
