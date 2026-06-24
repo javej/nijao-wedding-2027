@@ -79,7 +79,7 @@ export default defineType({
       title: "Gallery Images",
       type: "array",
       description:
-        "Photos shown in this chapter. Year chapters use the first 2–3 in an auto-cycle crossfade with Ken Burns zoom. The proposal chapter uses up to 5 in the scroll-pinned stacking sequence. Leave empty to fall back to the legacy single 'Image' above.",
+        "Photos shown in this chapter. Year chapters use the first 5 in an auto-cycle crossfade with Ken Burns zoom. The proposal chapter uses up to 5 in the scroll-pinned stacking sequence. Leave empty to fall back to the legacy single 'Image' above.",
       of: [
         {
           type: "image",
