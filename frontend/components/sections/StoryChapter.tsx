@@ -110,8 +110,8 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
 /**
  * Build the list of photos to feed the crossfade. Prefer the gallery
  * (`images[]`) if populated; otherwise fall back to the legacy single
- * `image`. Cap at 3 — past that the slot timing makes a chapter dwell
- * too long, and most years naturally have 2–3 keeper photos anyway.
+ * `image`. Cap at 5 — enough room for a richer year while keeping the
+ * crossfade cycle from dwelling too long on any one chapter.
  */
 function toCrossfadePhotos(
   chapter: StoryChapterResult,
@@ -119,7 +119,7 @@ function toCrossfadePhotos(
 ): CrossfadePhoto[] {
   const source: StoryChapterImage[] =
     chapter.images && chapter.images.length > 0
-      ? chapter.images.slice(0, 3)
+      ? chapter.images.slice(0, 5)
       : chapter.image
         ? [chapter.image]
         : [];
