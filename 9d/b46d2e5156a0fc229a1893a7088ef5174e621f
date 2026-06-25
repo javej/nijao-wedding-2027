@@ -1,0 +1,27 @@
+docs/adr/0007-story-chapter-fixed-photo-anchor-bounded-caption.md
+  s_46ccb77b733934::t_e2266946b7b724 51-58
+frontend/components/sections/ProposalStack.tsx
+  s_46ccb77b733934::t_558f699718fcfc 174-180
+  s_46ccb77b733934::t_a131840932502d 202-209,212
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.1",
+  "base_commit_sha": "9db46d2e5156a0fc229a1893a7088ef5174e621f",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_46ccb77b733934": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3a4746cd-86ed-4bb1-9298-cec9cd1b8553",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
