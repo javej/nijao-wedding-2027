@@ -48,6 +48,14 @@ The **proposal chapter** ([ProposalStack.tsx](../../frontend/components/sections
 
   The binding case for "how big can the photo be" is a **narrow-and-tall phone** (e.g. 360×800): narrow width wraps the caption to the most lines, and a tall viewport pushes the responsive font toward its cap — together the worst squeeze on the caption band. 48% is the largest photo band that still clears a ~280-char caption there with margin. (An earlier attempt at 56% looked right only because the test viewport was artificially short — ~732px, where the font shrank enough to fit — and clipped ~37px on a real 844px phone. The fix was verified afterward with Playwright driving true device-sized viewports.) Verified at 360–1440px across portrait and short landscape: a ~270–284-char caption is fully contained with margin everywhere. The "~56% photo band" figure in *Consequences* below predates this retune.
 
+- **2026-06-25 — proposal chapter gets the same caption treatment, with a smaller photo band.** The 2026-06-19 retune fixed the *year* chapters ([StoryChapter.tsx](../../frontend/components/sections/StoryChapter.tsx)) but the **proposal** ([ProposalStack.tsx](../../frontend/components/sections/ProposalStack.tsx)) still used the pre-retune caption styling (fixed `text-body-md` ≈ 16px, `leading-relaxed`, `px-8`, **no `overflow-hidden` backstop**), so a full-length caption ran past the bottom of the ivory caption card — worst on a short landscape laptop. Two changes bring it in line:
+
+  1. **Caption matches the year chapters.** The proposal caption is now the responsive `clamp(0.75rem, 1.85dvh, 0.9375rem)` with `leading-snug`, `px-6`, and the `overflow-hidden` clean-edge backstop — identical to the year-chapter caption band.
+
+  2. **Photo band 48% → 42% (proposal only).** Unlike a year chapter's single-line header, the proposal header is two lines ("2025" + "The Proposal") at display sizes, so it is taller and leaves the caption band less room. Trimming the photo band hands that difference back to the caption so a full-length caption clears the card. The stacked-photo mechanic is unaffected — its slot offsets and rise are fixed px, independent of the band size; the photos just render slightly smaller.
+
+  Verified in-browser with the production ~281-char caption injected at 1440×820 and 1366×768 (landscape) and 541-wide portrait: caption renders ~146px in a ~154px band on the binding short laptop — 0px clipped, ≥74px clearance below — and fits with more room in portrait. The binding case for the proposal is the **short landscape laptop** (fixed 90dvh card + the taller two-line header), not the narrow-tall phone that bounds the year chapters.
+
 ## Consequences
 
 ### Positive
