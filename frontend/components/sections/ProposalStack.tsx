@@ -171,7 +171,13 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
             </p>
           </div>
 
-          <div className="relative my-2 flex h-[48%] w-full shrink-0 items-center justify-center">
+          {/* Photo band 42% (vs the year chapters' 48%): the proposal's
+              header is two lines ("2025" + "The Proposal") at display sizes,
+              so it's taller than a year chapter's single-line header. A
+              smaller photo band hands that difference back to the caption
+              band so a full-length (~280-char) caption still clears the card
+              on a short laptop. */}
+          <div className="relative my-2 flex h-[42%] w-full shrink-0 items-center justify-center">
             <div className="relative aspect-4/5 h-full w-auto max-w-full">
               {photos.map((photo, i) => (
                 <StackPhoto
@@ -193,11 +199,17 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
           </div>
 
           {/* z-30 lifts the caption card above the stacked photos (z 1–5)
-              so the tilted bottom photo can't occlude the caption. */}
-          <div className="relative z-30 flex w-full min-h-0 flex-1 items-start justify-center pt-4 md:pt-6">
+              so the tilted bottom photo can't occlude the caption.
+              Caption sizing mirrors the year chapters (ADR-0007 retune):
+              a responsive font (`clamp`) shrinks the text on shorter
+              viewports instead of letting a full-length caption run past
+              the card, `leading-snug` + `px-6` tighten it, and
+              `overflow-hidden` is the clean-edge backstop against a legacy
+              over-cap caption — never an ellipsis. */}
+          <div className="relative z-30 flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden pt-4 md:pt-3">
             <p
               ref={captionRef}
-              className="chapter-card font-caption font-normal text-body-md text-text-on-light leading-relaxed max-w-sm whitespace-pre-line px-8 py-2"
+              className="chapter-card font-caption font-normal text-[clamp(0.75rem,1.85dvh,0.9375rem)] text-text-on-light leading-snug max-w-sm whitespace-pre-line px-6 py-2"
               style={{
                 opacity: 0,
                 transition: prefersReducedMotion ? 'none' : 'opacity 200ms linear',
