@@ -57,10 +57,11 @@ const TAIL_VH = 0.8;
  * positions, drop the sticky pin, collapse outer container to a
  * single viewport height. Same composition, no animation that built it.
  *
- * Photo treatment: thin warm-white matte (~10px) — a localised
- * deviation from Q7's bare-photo rule, justified because the stack
- * gesture only reads if each layer has a visible boundary against
- * the layers beneath it.
+ * Photo treatment: thin warm-white matte (~8px). It started here as a
+ * local deviation from Q7's bare-photo rule — the stack gesture only
+ * reads if each layer has a visible boundary against the layers
+ * beneath it — and is now the album-wide treatment, shared with the
+ * year chapters via ChapterPhotoCrossfade.
  */
 export function ProposalStack({ chapter }: ProposalStackProps) {
   const { year, caption } = chapter;
@@ -161,23 +162,33 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
               The climax sits on a light page where the year chapters'
               shadow-lift can't hold readability over the embossing + stack
               shadows — so the proposal alone gets ivory cards (ADR-0007),
-              and keeps its own stacked-photo mechanic below. */}
+              and keeps its own stacked-photo mechanic below.
+
+              The header type is height-capped, not just width-driven: the
+              `text-display-*` tokens scale on `vw` alone, so on a wide-but-
+              short laptop the two-line header hit its 3rem/2rem maximum
+              while the card itself was short — it took ~26% of the card and
+              pushed the caption past the bottom edge. `min(token, Ndvh)`
+              keeps the phone rendering identical (where the tokens already
+              sit at their minimum) and shrinks the header only on short
+              viewports, which is where the caption band needs the room. */}
           <div className="chapter-card flex shrink-0 flex-col items-center px-8 py-2">
-            <h2 className="font-display italic font-normal text-display-lg text-text-on-light leading-display">
+            <h2 className="font-display italic font-normal text-[min(clamp(1.75rem,4vw,3rem),4.6dvh)] text-text-on-light leading-display">
               {year}
             </h2>
-            <p className="font-display italic font-normal text-display-md text-text-on-light/80 mt-1">
+            <p className="font-display italic font-normal text-[min(clamp(1.25rem,3vw,2rem),2.9dvh)] text-text-on-light/80 mt-1">
               The Proposal
             </p>
           </div>
 
-          {/* Photo band 42% (vs the year chapters' 48%): the proposal's
+          {/* Photo band 39% (vs the year chapters' 45%): the proposal's
               header is two lines ("2025" + "The Proposal") at display sizes,
               so it's taller than a year chapter's single-line header. A
               smaller photo band hands that difference back to the caption
               band so a full-length (~280-char) caption still clears the card
-              on a short laptop. */}
-          <div className="relative my-2 flex h-[42%] w-full shrink-0 items-center justify-center">
+              on a short laptop. Trimmed 42% → 39% alongside the year
+              chapters' 48% → 45% when the caption moved to Montserrat. */}
+          <div className="relative my-2 flex h-[39%] w-full shrink-0 items-center justify-center">
             <div className="relative aspect-4/5 h-full w-auto max-w-full">
               {photos.map((photo, i) => (
                 <StackPhoto
@@ -203,13 +214,13 @@ export function ProposalStack({ chapter }: ProposalStackProps) {
               Caption sizing mirrors the year chapters (ADR-0007 retune):
               a responsive font (`clamp`) shrinks the text on shorter
               viewports instead of letting a full-length caption run past
-              the card, `leading-snug` + `px-6` tighten it, and
+              the card, `leading-ui` + `px-6` set it, and
               `overflow-hidden` is the clean-edge backstop against a legacy
               over-cap caption — never an ellipsis. */}
           <div className="relative z-30 flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden pt-4 md:pt-3">
             <p
               ref={captionRef}
-              className="chapter-card font-caption font-normal text-[clamp(0.75rem,1.85dvh,0.9375rem)] text-text-on-light leading-snug max-w-sm whitespace-pre-line px-6 py-2"
+              className="chapter-card font-caption font-normal text-[clamp(0.75rem,1.9dvh,0.9375rem)] text-text-on-light leading-ui max-w-sm whitespace-pre-line px-6 py-2"
               style={{
                 opacity: 0,
                 transition: prefersReducedMotion ? 'none' : 'opacity 200ms linear',

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans, Newsreader } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans, Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
@@ -61,13 +61,14 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-// Scoped to the love-story chapter captions only (an editorial text serif
-// that pairs with the Cormorant year without clashing). Body/UI stay DM Sans.
-const newsreader = Newsreader({
+// Scoped to the love-story chapter captions only. A geometric sans against
+// the Cormorant year: the deliberate contrast carries the pairing, and the
+// large x-height is what keeps a 280-char caption legible over the embossed
+// page at caption size (see ADR-0007). Body/UI stay DM Sans.
+const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -77,7 +78,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn(cormorantGaramond.variable, dmSans.variable, newsreader.variable)}>
+    <html lang="en" className={cn(cormorantGaramond.variable, dmSans.variable, montserrat.variable)}>
       <link rel="icon" type="image/svg+xml" href="/gem.svg" />
       <body
         className="h-dvh bg-background font-body antialiased overscroll-none"
