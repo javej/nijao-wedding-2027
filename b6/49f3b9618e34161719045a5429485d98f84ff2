@@ -1,0 +1,26 @@
+frontend/components/ui/ChapterPhotoCrossfade.tsx
+  s_9994bec19ba371::t_027104cabc30c2 94-103,108-111
+  s_9994bec19ba371::t_f5a96651f84281 112-117,119-120,122-147
+  s_9994bec19ba371::t_43cdda463f4032 50-53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "b649f3b9618e34161719045a5429485d98f84ff2",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_9994bec19ba371": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9d76e598-5b37-4816-aacf-bd1b56ecf81b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
