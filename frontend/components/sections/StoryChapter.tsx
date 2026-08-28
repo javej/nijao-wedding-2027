@@ -68,11 +68,14 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
       {/* Photo band — the anchor. `h-full w-auto` sizes the 4:5 print by
           the band height; `max-w-full` caps it so on portrait it widens
           toward the frame and on landscape it floats with side margin.
-          48% is tuned so the photo is as large as possible while a
+          45% is tuned so the photo is as large as possible while a
           full-length (~280-char) caption still clears the band below it on
           the worst case — a narrow-and-tall phone, where the caption wraps
-          to the most lines. */}
-      <div className="flex h-[48%] w-full shrink-0 items-center justify-center">
+          to the most lines. Trimmed 48% → 45% when the caption moved to
+          Montserrat (ADR-0007): Montserrat's advance widths are ~18% wider
+          than Newsreader's at the same size, so the same caption wraps to
+          more lines and the band needs the height back. */}
+      <div className="flex h-[45%] w-full shrink-0 items-center justify-center">
         {photos.length > 0 ? (
           <ChapterPhotoCrossfade
             photos={photos}
@@ -99,7 +102,7 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
           for a legacy >280-char caption (never an ellipsis) — the real cap
           lives in the Sanity schema. */}
       <div className="flex w-full min-h-0 flex-1 items-start justify-center overflow-hidden pt-4 md:pt-3">
-        <p className="chapter-lift rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-caption font-normal text-[clamp(0.75rem,1.85dvh,0.9375rem)] text-text-on-light leading-snug max-w-sm px-6 py-2">
+        <p className="chapter-lift rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-caption font-normal text-[clamp(0.75rem,1.9dvh,0.9375rem)] text-text-on-light leading-ui max-w-sm px-6 py-2">
           {caption}
         </p>
       </div>
