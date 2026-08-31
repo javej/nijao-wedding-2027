@@ -1,0 +1,45 @@
+studio/migrations/0002-bearer-roles.ts
+  s_cb76eb76a5cca7::t_6902df0399ed80 66
+  s_cb76eb76a5cca7::t_5fc96ff02894b3 1-65,67-76
+frontend/sanity/queries/entourage.ts
+  s_cb76eb76a5cca7::t_514eb21c0bc0f5 3
+  s_cb76eb76a5cca7::t_87f07e73d4aaa6 36
+  s_cb76eb76a5cca7::t_4620ca63d92a07 15-16,19-20,26-27,51,63
+frontend/sanity.types.ts
+  s_cb76eb76a5cca7::t_f5adc3ccfd6721 196-197,425,431,434,443,448,454,457,466,574-575
+studio/schemas/documents/entourageMember.ts
+  s_cb76eb76a5cca7::t_522ad0d7e1102c 6-13
+  s_cb76eb76a5cca7::t_af194b8c7c12fa 29-30
+frontend/components/sections/EntourageSection.tsx
+  s_cb76eb76a5cca7::t_2e7560d9357a43 40-41,67-68
+  s_cb76eb76a5cca7::t_522ad0d7e1102c 79-83
+studio/schema.json
+  s_cb76eb76a5cca7::t_f5adc3ccfd6721 1094,1098
+frontend/sanity/queries/entourage.test.ts
+  s_cb76eb76a5cca7::t_c7e4e354dd7ffe 1,3-6,9-10,12-76
+  s_cb76eb76a5cca7::t_514eb21c0bc0f5 2,7,11
+  s_cb76eb76a5cca7::t_b4fc5e52c89335 8
+frontend/sanity/queries/entourage-order.ts
+  s_cb76eb76a5cca7::t_514eb21c0bc0f5 1-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "6687544e707620bd4f667384c77bde4f08994571",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_cb76eb76a5cca7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc9e356-789f-4e8c-b933-6957872b75a6",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
