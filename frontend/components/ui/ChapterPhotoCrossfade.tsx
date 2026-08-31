@@ -24,6 +24,14 @@ interface ChapterPhotoCrossfadeProps {
    * Hero sits above the fold elsewhere). Default false.
    */
   priorityFirst?: boolean;
+  /**
+   * Stable per-chapter number (the chapter's year) used to pick this
+   * chapter's Ken Burns treatment. Deterministic on purpose — a random
+   * pick would differ between the server and client renders and trip
+   * hydration, and would also change every reload, so a guest scrolling
+   * back would find a different motion than the one they just saw.
+   */
+  seed?: number;
 }
 
 /**
@@ -33,6 +41,64 @@ interface ChapterPhotoCrossfadeProps {
  */
 const SLOT_MS = 4500;
 const FADE_MS = 1200;
+
+/**
+ * How much of the wrapper must be on screen for this chapter to count as
+ * "open". Above half means only ONE chapter can be open at a time, so
+ * entering a chapter is an unambiguous event — which is what lets the
+ * cycle restart cleanly (see the reset effect below). The previous 0.3
+ * could hold two chapters open at once mid-scroll.
+ */
+const OPEN_RATIO = 0.55;
+
+/**
+ * Ken Burns treatments, cycled per chapter and per photo within a chapter.
+ *
+ * Every chapter used to run the identical move — `scale(1 → 1.06)` from
+ * dead centre — so twelve chapters of the album drifted in exactly the same
+ * direction for exactly the same duration. Varying the origin and the
+ * direction costs nothing and stops the set reading as machine-generated.
+ *
+ * `push` zooms in, `pull` starts wide and settles back; the origin decides
+ * which way the frame drifts while it does. Origins stay within ~20% of
+ * centre because the scale is only 1.06 — pushing further would crop a
+ * face at the frame edge.
+ */
+const KEN_BURNS_MOVES: ReadonlyArray<{ direction: 'push' | 'pull'; origin: string }> = [
+  { direction: 'push', origin: '50% 50%' },
+  { direction: 'pull', origin: '32% 34%' },
+  { direction: 'push', origin: '68% 38%' },
+  { direction: 'pull', origin: '38% 66%' },
+  { direction: 'push', origin: '64% 64%' },
+  { direction: 'pull', origin: '50% 30%' },
+  { direction: 'push', origin: '34% 52%' },
+];
+
+/**
+ * Coprime with the move count, so consecutive years jump across the table
+ * (0 → 5 → 3 → 1 → …) instead of stepping through it in order.
+ *
+ * Walking the table one step at a time — which is what a plain
+ * `seed + photoIndex` does, since the seeds are consecutive years — made
+ * push and pull alternate perfectly down the album. Trading one machine-like
+ * pattern (every chapter identical) for another (every chapter the opposite
+ * of its neighbour) wasn't the point. A 7-entry table with a stride of 5
+ * visits all seven before repeating, and the twelve chapters never land on
+ * two neighbours that share a move.
+ */
+const MOVE_STRIDE = 5;
+
+function kenBurnsMove(seed: number, photoIndex: number) {
+  // `+ photoIndex` so a chapter with several photos varies within itself
+  // too, rather than replaying one move N times.
+  const i = Math.abs(seed * MOVE_STRIDE + photoIndex) % KEN_BURNS_MOVES.length;
+  const move = KEN_BURNS_MOVES[i]!;
+  return {
+    animation:
+      move.direction === 'push' ? 'var(--animate-ken-burns)' : 'var(--animate-ken-burns-out)',
+    transformOrigin: move.origin,
+  };
+}
 
 /**
  * ChapterPhotoCrossfade — Client Component
@@ -56,10 +122,11 @@ export function ChapterPhotoCrossfade({
   photos,
   className,
   priorityFirst = false,
+  seed = 0,
 }: ChapterPhotoCrossfadeProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const isVisibleRef = useRef(true);
+  const [isOpen, setIsOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -67,23 +134,34 @@ export function ChapterPhotoCrossfade({
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry) isVisibleRef.current = entry.isIntersecting;
+        if (entry) setIsOpen(entry.intersectionRatio >= OPEN_RATIO);
       },
-      { threshold: 0.3 },
+      { threshold: [0, OPEN_RATIO, 1] },
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
 
+  // Restart the cycle every time the chapter is opened, rather than
+  // letting index and timer phase persist across visits.
+  //
+  // Previously both survived: the interval kept its phase while the
+  // chapter was off screen (it only skipped *advancing*), so arriving
+  // could trigger a swap a fraction of a second later, and scrolling back
+  // to a chapter showed whichever photo you happened to leave it on. An
+  // album page should always open on the photo the couple put first, then
+  // give it a full slot before moving.
   useEffect(() => {
+    if (!isOpen) return;
+
+    setActiveIndex(0);
     if (prefersReducedMotion || photos.length <= 1) return;
+
     const id = window.setInterval(() => {
-      if (isVisibleRef.current) {
-        setActiveIndex((i) => (i + 1) % photos.length);
-      }
+      setActiveIndex((i) => (i + 1) % photos.length);
     }, SLOT_MS);
     return () => window.clearInterval(id);
-  }, [prefersReducedMotion, photos.length]);
+  }, [isOpen, prefersReducedMotion, photos.length]);
 
   if (photos.length === 0) return null;
 
@@ -133,13 +211,14 @@ export function ChapterPhotoCrossfade({
                 className="object-cover"
                 // Ken Burns plays once per slot (5s) when this photo is
                 // active. Setting animation back to 'none' when inactive
-                // resets the rule, so re-entry replays from scale(1.0).
-                style={{
-                  animation:
-                    isActive && !prefersReducedMotion
-                      ? 'var(--animate-ken-burns)'
-                      : 'none',
-                }}
+                // resets the rule, so re-entry replays from the start.
+                // Origin and direction come from the chapter's seed, so
+                // each chapter drifts its own way (see KEN_BURNS_MOVES).
+                style={
+                  isActive && !prefersReducedMotion
+                    ? kenBurnsMove(seed, i)
+                    : { animation: 'none' }
+                }
               />
             </div>
           );

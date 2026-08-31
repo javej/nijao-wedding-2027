@@ -56,6 +56,8 @@
   --animate-fade-up: fade-up 0.7s ease-out forwards;
   --animate-connector-sway: connector-sway 6s ease-in-out infinite;
   --animate-ken-burns: ken-burns 5s ease-out both;
+  --animate-ken-burns-out: ken-burns-out 5s ease-out both;
+  --animate-page-settle: page-settle 700ms cubic-bezier(0, 0, 0.2, 1) both;
 }
 
 @keyframes accordion-down {
@@ -108,6 +110,26 @@
 @keyframes ken-burns {
   0% { transform: scale(1.0); }
   100% { transform: scale(1.06); }
+}
+
+/* The reverse move — starts wide and settles back. Paired with a per-chapter
+   `transform-origin` (see KEN_BURNS_MOVES in ChapterPhotoCrossfade) so the
+   album's twelve chapters don't all drift the same direction for the same
+   duration. Disabled by the global `prefers-reduced-motion: reduce` block. */
+@keyframes ken-burns-out {
+  0% { transform: scale(1.06); }
+  100% { transform: scale(1.0); }
+}
+
+/* Page settle — a story chapter's PageCard eases up to full size as the
+   chapter opens, so the page behaves like paper being laid down instead of
+   appearing already-placed. Deliberately small: at 0.985 the shrink reveals
+   ~1.5% of the section's wing color at the card edge, and the wing color is
+   matched to each patterned PNG's paper base (see ChapterSection), so the
+   movement reads as the page settling rather than as a gap opening. */
+@keyframes page-settle {
+  0% { transform: scale(0.985); }
+  100% { transform: scale(1); }
 }
 
 @theme inline {
@@ -260,6 +282,95 @@
   background: rgba(250, 246, 239, 0.94);
   border-radius: 0.625rem;
   box-shadow: 0 6px 22px -6px rgba(0, 0, 0, 0.22);
+}
+
+/*
+ * Velvet drape — the cloth for the ActCard theatre bookends around the
+ * love story (CurtainDrapes).
+ *
+ * Plain classes, not `@utility`: these are one-off component textures for
+ * a single component, and nothing wants a variant of them (`md:velvet-drape`
+ * is meaningless). Tailwind v4 also declined to emit them as utilities here,
+ * which pushed the decision the right way.
+ *
+ * The folds are a repeating gradient rather than an image: a drape spans
+ * half the viewport at every size, so any bitmap would either tile
+ * visibly or ship at a resolution nothing else on the page needs. Three
+ * stacked layers do the work — irregular fold darks and highlights, a
+ * top/bottom vertical falloff so the cloth reads as hanging rather than
+ * painted, and a horizontal base gradient that darkens both edges.
+ *
+ * Built from `--color-raspberry` and `--color-primary-dark` deliberately:
+ * a stage curtain wants to be crimson, and reaching for a generic crimson
+ * would put the only off-palette color on the whole site right at the
+ * loudest moment in the scroll.
+ */
+.velvet-drape {
+  background-color: var(--color-raspberry);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.3) 0 2px,
+      rgba(0, 0, 0, 0) 2px 13px,
+      rgba(255, 255, 255, 0.07) 13px 16px,
+      rgba(0, 0, 0, 0) 16px 27px,
+      rgba(0, 0, 0, 0.18) 27px 29px,
+      rgba(0, 0, 0, 0) 29px 44px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.36) 0%,
+      rgba(0, 0, 0, 0) 24%,
+      rgba(0, 0, 0, 0) 72%,
+      rgba(0, 0, 0, 0.32) 100%
+    ),
+    linear-gradient(
+      90deg,
+      var(--color-primary-dark) 0%,
+      var(--color-raspberry) 44%,
+      var(--color-primary-dark) 100%
+    );
+}
+
+/*
+ * Valance — the scalloped pelmet the drapes hang from. Same cloth, with a
+ * mask that keeps a row of semicircles hanging below the bar: one radial
+ * layer tiled every 28px for the bumps, one linear layer for the bar
+ * itself, composited additively (the CSS default for a mask layer list).
+ *
+ * If a browser drops the mask the valance degrades to a plain velvet bar,
+ * which still reads correctly — so no fallback is needed.
+ */
+.velvet-valance {
+  background-color: var(--color-raspberry);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.26) 0 2px,
+      rgba(0, 0, 0, 0) 2px 13px,
+      rgba(255, 255, 255, 0.08) 13px 16px,
+      rgba(0, 0, 0, 0) 16px 28px
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-primary-dark) 0%,
+      var(--color-raspberry) 70%,
+      var(--color-primary-dark) 100%
+    );
+  -webkit-mask-image:
+    radial-gradient(circle 14px at 14px calc(100% - 14px), #000 0 14px, transparent 14px),
+    linear-gradient(#000 0 calc(100% - 14px), transparent calc(100% - 14px));
+  -webkit-mask-size:
+    28px 100%,
+    100% 100%;
+  -webkit-mask-repeat: repeat-x, no-repeat;
+  mask-image:
+    radial-gradient(circle 14px at 14px calc(100% - 14px), #000 0 14px, transparent 14px),
+    linear-gradient(#000 0 calc(100% - 14px), transparent calc(100% - 14px));
+  mask-size:
+    28px 100%,
+    100% 100%;
+  mask-repeat: repeat-x, no-repeat;
 }
 
 /*

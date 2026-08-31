@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 /**
@@ -16,6 +19,13 @@ const pageBgSrc: Record<PageBg, string> = {
   'strawberry-milk': '/decorations/patterned-bg-strawberry-milk.png',
 };
 
+/**
+ * How much of the card must be on screen before it settles. Below the
+ * crossfade's `OPEN_RATIO` on purpose: the paper should be down before the
+ * photo inside it starts moving, not at the same moment.
+ */
+const SETTLE_RATIO = 0.4;
+
 interface PageCardProps {
   /** Which patterned paper this page renders on. */
   bg: PageBg;
@@ -24,13 +34,32 @@ interface PageCardProps {
    * the first story chapter to avoid LCP regression; false otherwise.
    */
   priority?: boolean;
+  /**
+   * Play the one-shot `page-settle` animation the first time this card is
+   * scrolled into view — the page easing up to full size, so it reads as
+   * paper being laid down rather than as having always been there.
+   *
+   * Opt-in, and off by default: the proposal already earns its own motion
+   * from the stacking mechanic, and the ActCard plates have the curtain, so
+   * only the year chapters want this.
+   */
+  settle?: boolean;
   /** Optional class override. */
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 /**
- * PageCard — Server Component
+ * PageCard — Client Component
+ *
+ * (It was a Server Component until the `settle` animation arrived. The
+ * trigger has to be "this card entered the viewport", which needs an
+ * IntersectionObserver on the card's own root element — and the root is
+ * the element being animated, so no wrapper can stand in for it without
+ * taking over the orientation positioning below. The cost is near zero:
+ * the markup is small, next/image is already in the client bundle via
+ * ChapterPhotoCrossfade, and ProposalStack already rendered this
+ * component on the client anyway.)
  *
  * Renders one of the four patterned-bg pages with orientation-aware
  * sizing — the PNG is portrait-aspect (1024×1536), so we render it
@@ -56,9 +85,42 @@ interface PageCardProps {
  * automatically. The portrait variant's `absolute inset-0` opts out of
  * flex layout entirely and fills the section.
  */
-export function PageCard({ bg, priority = false, className, children }: PageCardProps) {
+export function PageCard({
+  bg,
+  priority = false,
+  settle = false,
+  className,
+  children,
+}: PageCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [hasSettled, setHasSettled] = useState(false);
+
+  useEffect(() => {
+    if (!settle) return;
+    const el = cardRef.current;
+    if (!el) return;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry && entry.intersectionRatio >= SETTLE_RATIO) {
+          setHasSettled(true);
+          // One-shot. A page gets laid down once and then stays put;
+          // replaying it on every scroll-back would fight the Ken Burns
+          // restart happening inside it at the same moment. Drop the
+          // disconnect to make it replay per visit instead.
+          obs.disconnect();
+        }
+      },
+      { threshold: [0, SETTLE_RATIO, 1] },
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [settle]);
+
   return (
     <div
+      ref={cardRef}
       className={cn(
         // Portrait: full-bleed — fills the parent section.
         'portrait:absolute portrait:inset-0',
@@ -72,6 +134,11 @@ export function PageCard({ bg, priority = false, className, children }: PageCard
         'landscape:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.18)]',
         className,
       )}
+      // `both` holds the end state, so the card stays at scale(1) after
+      // the settle. Under `prefers-reduced-motion` the global block in
+      // globals.css collapses the duration to 0.01ms, which lands the
+      // same end state immediately — hence no hook needed here.
+      style={hasSettled ? { animation: 'var(--animate-page-settle)' } : undefined}
     >
       <Image
         src={pageBgSrc[bg]}
