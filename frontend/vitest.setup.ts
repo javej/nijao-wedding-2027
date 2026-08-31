@@ -25,3 +25,20 @@ if (typeof window.matchMedia !== 'function') {
 if (typeof Element.prototype.scrollIntoView !== 'function') {
   Element.prototype.scrollIntoView = vi.fn();
 }
+
+// Components that pace themselves off viewport visibility (CurtainDrapes,
+// ChapterPhotoCrossfade, FloatingAnchorSet) construct one on mount. The stub
+// never fires a callback, so those components render in their initial state.
+if (typeof window.IntersectionObserver !== 'function') {
+  class StubIntersectionObserver implements IntersectionObserver {
+    readonly root = null;
+    readonly rootMargin = '';
+    readonly thresholds: ReadonlyArray<number> = [];
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
+    takeRecords = vi.fn(() => []);
+  }
+  window.IntersectionObserver = StubIntersectionObserver as unknown as typeof IntersectionObserver;
+  globalThis.IntersectionObserver = window.IntersectionObserver;
+}

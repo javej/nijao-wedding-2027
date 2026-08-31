@@ -57,7 +57,7 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
   // and top-aligned — a short caption leaves space at the BOTTOM of
   // its band rather than re-centering and dragging the photo up.
   return (
-    <PageCard bg={pageBg} priority={priority}>
+    <PageCard bg={pageBg} priority={priority} settle>
       {/* Year band — fixed top zone, prominent serif title. */}
       <div className="flex h-[14%] w-full shrink-0 items-center justify-center">
         <h2 className="chapter-lift flex items-center justify-center rounded-2xl bg-[var(--text-backdrop)] backdrop-blur-sm font-display italic font-normal text-[clamp(1.375rem,4.5dvh,2.25rem)] text-text-on-light leading-none px-6 py-[clamp(0.3rem,1dvh,0.55rem)]">
@@ -80,6 +80,10 @@ export function StoryChapter({ chapter, pageBg, priority = false }: StoryChapter
           <ChapterPhotoCrossfade
             photos={photos}
             priorityFirst={priority}
+            // The year is the seed for this chapter's Ken Burns move, so
+            // each chapter drifts its own way and a given chapter always
+            // drifts the same way.
+            seed={year}
             className="aspect-4/5 h-full w-auto max-w-full"
           />
         ) : (

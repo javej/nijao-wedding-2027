@@ -3,6 +3,7 @@ import { ChapterSection, type BgTone } from '@/components/ui/ChapterSection';
 import { ExperienceShell } from '@/components/ui/ExperienceShell';
 import { FloatingAnchorSet } from '@/components/ui/FloatingAnchorSet';
 import { HeroSection } from '@/components/sections/HeroSection';
+import { ActCard } from '@/components/sections/ActCard';
 import { StoryChapter } from '@/components/sections/StoryChapter';
 import { WeddingDetails } from '@/components/sections/WeddingDetails';
 import { DressCodeSection } from '@/components/sections/DressCodeSection';
@@ -84,6 +85,22 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
           <HeroSection />
         </ChapterSection>
 
+        {/* Opening bookend — the curtain rises on the love story. Paired
+            with the intermission plate below; the two are added together
+            deliberately, since adding an EVEN number of sections keeps the
+            nth-child parity that drives `.section-decor-*` visibility in
+            globals.css, so the hero and countdown keep their floral
+            variants. Drop one and the countdown's decoration swaps. */}
+        <ChapterSection
+          id="story-prologue"
+          palette="raspberry"
+          label="Act One — our story begins"
+          bg="page-cream"
+          story
+        >
+          <ActCard variant="prologue" />
+        </ChapterSection>
+
         {chapters.map((chapter) => {
           const pageBg = bgForChapter(chapter, yearIndex);
           if (!chapter.isProposal) yearIndex += 1;
@@ -108,6 +125,18 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
             </ChapterSection>
           );
         })}
+
+        {/* Closing bookend — the curtain falls and hands the guest to the
+            logistics. See the prologue's note on section parity. */}
+        <ChapterSection
+          id="story-intermission"
+          palette="deep-matcha"
+          label="Intermission — Act Two begins January 8, 2027"
+          bg="page-matcha"
+          story
+        >
+          <ActCard variant="intermission" />
+        </ChapterSection>
 
         <ChapterSection id="wedding-details" palette="deep-matcha" label="When & Where">
           {weddingDetails ? (
