@@ -3,10 +3,14 @@ import { Users } from "lucide-react";
 import { orderRankField } from "@sanity/orderable-document-list";
 
 /**
- * Canonical role list, in cultural display order. The dropdown `value`s
- * are the exact title-case strings already stored on existing documents,
- * so converting `role` from free text to this enum requires no data
- * migration — only the rare typo/casing straggler needs a manual re-pick.
+ * Canonical role list, in cultural display order. The dropdown `value`s are
+ * the exact title-case strings stored on the documents themselves, so the
+ * frontend can match on them directly.
+ *
+ * Renaming a value here orphans the documents still holding the old string
+ * (the frontend drops them into an "unknown role" bucket), so every rename
+ * needs a paired remap script — see `migrations/0002-bearer-roles.ts` for
+ * the Ring Bearer / Bible & Coin Bearer split.
  *
  * The frontend derives BOTH the section (Ninong/Ninang → Padrino Wall,
  * everything else → Wedding Party) and the within-section group order from
@@ -22,8 +26,8 @@ const ROLE_OPTIONS = [
   { title: "Candle Sponsor", value: "Candle Sponsor" },
   { title: "Veil Sponsor", value: "Veil Sponsor" },
   { title: "Cord Sponsor", value: "Cord Sponsor" },
-  { title: "Ring Bearer", value: "Ring Bearer" },
-  { title: "Bible & Coin Bearer", value: "Bible & Coin Bearer" },
+  { title: "Coin & Ring Bearer", value: "Coin & Ring Bearer" },
+  { title: "Bible Bearer", value: "Bible Bearer" },
   { title: "Flower Girl", value: "Flower Girl" },
 ] as const;
 

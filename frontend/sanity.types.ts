@@ -193,8 +193,8 @@ export type EntourageMember = {
     | "Candle Sponsor"
     | "Veil Sponsor"
     | "Cord Sponsor"
-    | "Ring Bearer"
-    | "Bible & Coin Bearer"
+    | "Coin & Ring Bearer"
+    | "Bible Bearer"
     | "Flower Girl";
   photo?: {
     asset?: SanityImageAssetReference;
@@ -422,46 +422,48 @@ export type DRESS_CODE_QUERY_RESULT = {
 
 // Source: ../frontend/sanity/queries/entourage.ts
 // Variable: PADRINOS_QUERY
-// Query: *[_type == "entourageMember" && role in ["Ninong", "Ninang"]] | order(name asc) {    _id, name, role  }
+// Query: *[_type == "entourageMember" && role in ["Ninong", "Ninang"]] | order(orderRank asc) {    _id, name, role, orderRank  }
 export type PADRINOS_QUERY_RESULT = Array<{
   _id: string;
   name: string | null;
   role:
     | "Best Man"
-    | "Bible & Coin Bearer"
+    | "Bible Bearer"
     | "Bridesmaid"
     | "Candle Sponsor"
+    | "Coin & Ring Bearer"
     | "Cord Sponsor"
     | "Flower Girl"
     | "Groomsman"
     | "Maid of Honor"
     | "Ninang"
     | "Ninong"
-    | "Ring Bearer"
     | "Veil Sponsor"
     | null;
+  orderRank: string | null;
 }>;
 
 // Source: ../frontend/sanity/queries/entourage.ts
 // Variable: WEDDING_PARTY_QUERY
-// Query: *[_type == "entourageMember" && defined(role) && !(role in ["Ninong", "Ninang"])] | order(name asc) {    _id, name, role  }
+// Query: *[_type == "entourageMember" && defined(role) && !(role in ["Ninong", "Ninang"])] | order(orderRank asc) {    _id, name, role, orderRank  }
 export type WEDDING_PARTY_QUERY_RESULT = Array<{
   _id: string;
   name: string | null;
   role:
     | "Best Man"
-    | "Bible & Coin Bearer"
+    | "Bible Bearer"
     | "Bridesmaid"
     | "Candle Sponsor"
+    | "Coin & Ring Bearer"
     | "Cord Sponsor"
     | "Flower Girl"
     | "Groomsman"
     | "Maid of Honor"
     | "Ninang"
     | "Ninong"
-    | "Ring Bearer"
     | "Veil Sponsor"
     | null;
+  orderRank: string | null;
 }>;
 
 // Source: ../frontend/sanity/queries/guests.ts
@@ -569,8 +571,8 @@ declare module "@sanity/client" {
     '\n  *[_type == "announcement" && (scheduledAt == null || scheduledAt <= now())]\n    | order(publishedAt desc) {\n      _id,\n      title,\n      body,\n      publishedAt,\n      scheduledAt\n    }\n': ANNOUNCEMENTS_QUERY_RESULT;
     '\n  *[_type == "announcement"] | order(publishedAt desc) {\n    _id,\n    title,\n    publishedAt,\n    scheduledAt\n  }\n': ALL_ANNOUNCEMENTS_QUERY_RESULT;
     '\n  *[_type == "dressCode"][0] {\n    paletteColors[] {\n      _key,\n      colorKey,\n      colorLabel\n    }\n  }\n': DRESS_CODE_QUERY_RESULT;
-    '\n  *[_type == "entourageMember" && role in ["Ninong", "Ninang"]] | order(name asc) {\n    _id, name, role\n  }\n': PADRINOS_QUERY_RESULT;
-    '\n  *[_type == "entourageMember" && defined(role) && !(role in ["Ninong", "Ninang"])] | order(name asc) {\n    _id, name, role\n  }\n': WEDDING_PARTY_QUERY_RESULT;
+    '\n  *[_type == "entourageMember" && role in ["Ninong", "Ninang"]] | order(orderRank asc) {\n    _id, name, role, orderRank\n  }\n': PADRINOS_QUERY_RESULT;
+    '\n  *[_type == "entourageMember" && defined(role) && !(role in ["Ninong", "Ninang"])] | order(orderRank asc) {\n    _id, name, role, orderRank\n  }\n': WEDDING_PARTY_QUERY_RESULT;
     '\n  *[_type == "guest" && slug.current == $slug][0] {\n    firstName,\n    nickname,\n    "slug": slug.current,\n    email,\n    mobile,\n    plusOneEligible,\n    plusOneType,\n    plusOneLinkedGuest->{\n      firstName,\n      "slug": slug.current,\n      rsvpStatus\n    },\n    rsvpStatus,\n    rsvpUpdatedAt,\n    openPlusOne\n  }\n': GUEST_BY_SLUG_QUERY_RESULT;
     '\n  *[_type == "guest" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': ALL_GUEST_SLUGS_QUERY_RESULT;
     '\n  *[_type == "storyChapter"] | order(order asc) {\n    _id,\n    year,\n    caption,\n    isProposal,\n    image {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    images[] {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    order,\n    publishedAt\n  }\n': STORY_CHAPTERS_QUERY_RESULT;
