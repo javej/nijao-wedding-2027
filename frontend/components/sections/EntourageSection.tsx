@@ -37,8 +37,8 @@ const WEDDING_PARTY_ROLE_ORDER: readonly RoleGroupConfig[] = [
   { role: "Candle Sponsor", heading: "To Light Our Path" },
   { role: "Veil Sponsor", heading: "To Bind Us As One" },
   { role: "Cord Sponsor", heading: "To Clothe Us As One" },
-  { role: "Ring Bearer", heading: "Ring Bearer" },
-  { role: "Bible & Coin Bearer", heading: "Bible & Coin Bearer" },
+  { role: "Coin & Ring Bearer", heading: "Coin & Ring Bearer" },
+  { role: "Bible Bearer", heading: "Bible Bearer" },
   { role: "Flower Girl", heading: "Flower Girls" },
 ];
 
@@ -64,8 +64,8 @@ const ROLE_TINT: Record<string, string> = {
   "Candle Sponsor": COUPLE_TINT,
   "Veil Sponsor": COUPLE_TINT,
   "Cord Sponsor": COUPLE_TINT,
-  "Ring Bearer": MEN_TINT,
-  "Bible & Coin Bearer": MEN_TINT,
+  "Coin & Ring Bearer": MEN_TINT,
+  "Bible Bearer": MEN_TINT,
   "Flower Girl": WOMEN_TINT,
 };
 
@@ -76,10 +76,11 @@ interface RoleGroup {
 }
 
 /**
- * Bucket members (already name-sorted by the query) into role groups in
- * canonical order. Any role not in the config — e.g. a legacy free-text
- * value not yet migrated to the enum — is appended alphabetically using
- * the raw role string as its heading, so no one silently disappears.
+ * Bucket members (already sorted by the query — Studio drag order, then
+ * last name) into role groups in canonical order. Any role not in the
+ * config — e.g. a legacy value not yet migrated to the current enum — is
+ * appended alphabetically using the raw role string as its heading, so no
+ * one silently disappears.
  */
 function groupByRole(members: EntourageMemberResult[], order: readonly RoleGroupConfig[]): RoleGroup[] {
   const buckets = new Map<string, EntourageMemberResult[]>();

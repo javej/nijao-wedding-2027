@@ -1,5 +1,6 @@
 import { groq } from "next-sanity";
 import { sanityFetch } from "@/sanity/lib/live";
+import { sortEntourage } from "@/sanity/queries/entourage-order";
 
 const isSanityConfigured =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== "placeholder" &&
@@ -11,18 +12,19 @@ const PADRINO_ROLES = '["Ninong", "Ninang"]';
 /**
  * Padrinos — ninongs and ninangs for the Padrino Wall. Names only; the
  * section/group split and ordering are derived from `role` in the component.
- * Sorted by name here so each role group reads alphabetically.
+ * Ordered by the Studio drag rank so each role group reads in the order the
+ * couple arranged it (see `sortEntourage` for the last-name tiebreak).
  */
 export const PADRINOS_QUERY = groq`
-  *[_type == "entourageMember" && role in ${PADRINO_ROLES}] | order(name asc) {
-    _id, name, role
+  *[_type == "entourageMember" && role in ${PADRINO_ROLES}] | order(orderRank asc) {
+    _id, name, role, orderRank
   }
 `;
 
 /** Wedding Party — every entourage member whose role is not a padrino role. */
 export const WEDDING_PARTY_QUERY = groq`
-  *[_type == "entourageMember" && defined(role) && !(role in ${PADRINO_ROLES})] | order(name asc) {
-    _id, name, role
+  *[_type == "entourageMember" && defined(role) && !(role in ${PADRINO_ROLES})] | order(orderRank asc) {
+    _id, name, role, orderRank
   }
 `;
 
@@ -31,6 +33,7 @@ export type EntourageMemberResult = {
   _id: string;
   name: string;
   role: string;
+  orderRank?: string | null;
 };
 
 export type PadrinoResult = EntourageMemberResult;
@@ -45,7 +48,7 @@ export async function getPadrinos(): Promise<PadrinoResult[]> {
     tags: ["sanity"],
   });
 
-  return (data ?? []) as PadrinoResult[];
+  return sortEntourage((data ?? []) as PadrinoResult[]);
 }
 
 /** Fetch all non-padrino wedding party members. */
@@ -57,5 +60,5 @@ export async function getWeddingParty(): Promise<WeddingPartyResult[]> {
     tags: ["sanity"],
   });
 
-  return (data ?? []) as WeddingPartyResult[];
+  return sortEntourage((data ?? []) as WeddingPartyResult[]);
 }
