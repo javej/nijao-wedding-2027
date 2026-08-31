@@ -1,0 +1,61 @@
+frontend/components/sections/ActCard.test.tsx
+  s_72950e4358b03d::t_b7ca93a08eeba0 1-9,14-38
+  s_72950e4358b03d::t_85065622909c83 10-13
+frontend/components/sections/ActCard.tsx
+  s_72950e4358b03d::t_b6473f1f8b986a 38-41
+  s_72950e4358b03d::t_7ceebb4c5ec1d8 1-37,42-44,47-49,51-82
+  h_e320e9b9b1464c 45-46,50
+frontend/components/ui/CurtainDrapes.tsx
+  s_72950e4358b03d::t_2a293ce755b7b3 1-177
+frontend/components/WeddingExperience.tsx
+  s_72950e4358b03d::t_fb7ad9edf0a3b5 88-97,99-103
+  s_72950e4358b03d::t_390f38bc828678 6
+  s_72950e4358b03d::t_65668a0533a14b 98
+  s_72950e4358b03d::t_e4738e392c063f 129-140
+frontend/vitest.setup.ts
+  s_72950e4358b03d::t_bf0df4504112a6 28-44
+frontend/app/globals.css
+  s_72950e4358b03d::t_863df1522a7920 115-134
+  s_72950e4358b03d::t_aaf98e205d00a7 287-290,296-307,309-343,345-375
+  s_72950e4358b03d::t_b048b76cf98503 59-60
+  s_72950e4358b03d::t_f552161bab3817 291-295
+  s_72950e4358b03d::t_ff9f7fdc3c1b23 344
+  s_72950e4358b03d::t_57a494ac685ce0 308
+frontend/components/ui/ChapterPhotoCrossfade.test.tsx
+  s_72950e4358b03d::t_c83fb0b847dadf 1-139
+  s_72950e4358b03d::t_933172d6d5740f 140-171
+frontend/components/ui/ChapterPhotoCrossfade.tsx
+  s_72950e4358b03d::t_94f48f58db4c6d 27-34,45-73,75-76,91,96-101
+  s_72950e4358b03d::t_204cb923a4750b 214-221
+  s_72950e4358b03d::t_9ff2947ea4c5eb 125,129,137,139,145-153,155-157,159,161,164
+  s_72950e4358b03d::t_01a35cc299c462 74,77-90,92-95
+  s_72950e4358b03d::t_48bf5619bf161e 102
+frontend/components/sections/StoryChapter.tsx
+  s_72950e4358b03d::t_035ff7ccf2f220 83-86
+  s_72950e4358b03d::t_919c9c113cddd0 60
+frontend/components/ui/PageCard.tsx
+  s_72950e4358b03d::t_7a8a00df2ddcf9 37,45,49
+  s_72950e4358b03d::t_038b8406d8a551 1-2,4,22-27,38-44,46,53-62,88-120,123,137-141
+  s_72950e4358b03d::t_af1ca42435dd12 28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "8aeebeb9a527ae6ec87275dd7da15e23a41cfc11",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_72950e4358b03d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9b8c9651-fd8e-4f82-93fe-7d0cf40a51d5",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
