@@ -1,0 +1,26 @@
+studio/plugins/guest-link-generator/GuestLinksTool.tsx
+  s_df6a7cb46a0020::t_cd1b17d27d452a 16,22,39,102,231,252-253
+studio/lib/guestName.ts
+  s_df6a7cb46a0020::t_cd1b17d27d452a 14-29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "2543689de3d86d607fc038300e485b8eaaa94860",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_df6a7cb46a0020": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3b096845-6ed8-45a0-801a-27410dc399b5",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
