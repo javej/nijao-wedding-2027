@@ -77,7 +77,7 @@ export interface RSVPChatProps {
 
 // --- Confirmation Constants ---
 
-const CONFIRMATION_MESSAGE = "We've been waiting for you.";
+const CONFIRMATION_MESSAGE = "Glad to have you! Your RSVP is confirmed";
 const CLOSED_MESSAGE =
   "RSVPs have closed on November 8. If you'd still like to reach us, please contact Jave & Nianne directly.";
 
@@ -138,7 +138,7 @@ export function RSVPChat({
   // Outer container ref for mobile keyboard offset
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Tracks the "We've been waiting for you." closing bubble so it only fires once
+  // Tracks the "Glad to have you! Your RSVP is confirmed" closing bubble so it only fires once
   const finalBubbleShown = useRef(false);
 
   const animInitial = shouldReduceMotion ? 'reduced' : 'hidden';

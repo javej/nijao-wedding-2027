@@ -50,8 +50,7 @@ export function deriveRsvpViewState(
 
 export function deriveSummaryHeadline(status: RsvpStatus): string {
   if (status === "attending") return "We have you down for January 8 ✓";
-  if (status === "declined")
-    return "You let us know you can't make it. We'll miss you.";
+  if (status === "declined") return "We completely understand ❤️";
   return "";
 }
 
@@ -59,11 +58,17 @@ export function deriveSummaryHeadline(status: RsvpStatus): string {
  * Derive the one-line attendance detail shown on the summary card per AC 5.
  * Both the server (post-revalidation) and the client (optimistic post-edit)
  * call this with the same rule — kept here so it can't drift between them.
+ *
+ * Declined guests get a fixed reassurance line instead: the headline is kept
+ * short enough for the display type, so the warmth lives down here.
  */
 export function deriveDetailLine(
   status: RsvpStatus,
   context: RsvpDetailContext,
 ): string | null {
+  if (status === "declined") {
+    return "Thank you for letting us know. We'll miss celebrating with you — hope we can another time.";
+  }
   if (status !== "attending") return null;
   if (!context.plusOneEligible) return "Attending.";
 
