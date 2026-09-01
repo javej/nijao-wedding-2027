@@ -1,0 +1,26 @@
+frontend/app/layout.tsx
+  s_a46eb3c0c2af71::t_1d3bd99d31b2d5 14
+frontend/lib/rsvp-view-state.ts
+  s_a46eb3c0c2af71::t_1d3bd99d31b2d5 53,61-63,69-71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "478534c6676d0e12e15cda9673683393f625d461",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_a46eb3c0c2af71": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1899dc69-3339-4343-9ac5-de6ca32980ed",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
