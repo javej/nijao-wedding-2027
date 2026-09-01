@@ -11,3 +11,19 @@ export function fullName(guest: {
     .filter(Boolean)
     .join(" ");
 }
+
+// Adds the nickname in parentheses when it differs from the first name, e.g.
+// "Jane Doe (Janey)". Used where Jave needs to match a person to how the family
+// actually calls them (guest-link generator, RSVP dashboard).
+export function nameWithNickname(guest: {
+  firstName?: string | null;
+  lastName?: string | null;
+  nickname?: string | null;
+}): string {
+  const name = fullName(guest);
+  const nickname = guest.nickname?.trim();
+  if (!nickname || nickname.toLowerCase() === guest.firstName?.trim().toLowerCase()) {
+    return name;
+  }
+  return `${name} (${nickname})`;
+}
