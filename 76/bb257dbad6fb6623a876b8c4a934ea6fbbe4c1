@@ -1,0 +1,27 @@
+frontend/lib/wedding-event.test.ts
+  s_a46eb3c0c2af71::t_b5f050b6115ecc 15,20-21
+  s_a46eb3c0c2af71::t_542686afc75ae9 1-14,16-19,22-38
+frontend/lib/wedding-event.ts
+  s_a46eb3c0c2af71::t_9b2678bc4a678f 27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "76bb257dbad6fb6623a876b8c4a934ea6fbbe4c1",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_a46eb3c0c2af71": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1899dc69-3339-4343-9ac5-de6ca32980ed",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
