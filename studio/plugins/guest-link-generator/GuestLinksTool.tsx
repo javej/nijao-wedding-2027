@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   Badge,
+  Box,
   Button,
   Card,
   Flex,
@@ -24,10 +25,13 @@ type GuestRow = {
   linkedFirstName: string | null;
 };
 
+type SortKey = "firstName" | "lastName";
+type SortDir = "asc" | "desc";
+
 // Exclude drafts so a guest being edited doesn't appear twice (once as `drafts.xyz`,
 // once as the published `xyz`). Jave shares the published URL, so that's the only
 // row that matters.
-const GUESTS_QUERY = `*[_type == "guest" && defined(slug.current) && !(_id in path("drafts.**"))] | order(firstName asc) {
+const GUESTS_QUERY = `*[_type == "guest" && defined(slug.current) && !(_id in path("drafts.**"))] {
   _id,
   firstName,
   lastName,
@@ -54,6 +58,8 @@ export function GuestLinksTool() {
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState("");
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
+  const [sortKey, setSortKey] = useState<SortKey>("firstName");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
 
   const siteUrl = getSiteUrl();
 
@@ -72,16 +78,38 @@ export function GuestLinksTool() {
     };
   }, [client]);
 
-  const filtered = useMemo(() => {
+  // Sorted here rather than in GROQ: Content Lake orders strings by code point, so
+  // a lowercase "adrian" lands after "Zoe". localeCompare is case-insensitive and
+  // matches how the RSVP Dashboard sorts.
+  const sorted = useMemo(() => {
     if (!guests) return [];
+    const primary = sortKey === "lastName" ? "lastName" : "firstName";
+    const secondary = sortKey === "lastName" ? "firstName" : "lastName";
+    return [...guests].sort((a, b) => {
+      let cmp = (a[primary] ?? "").localeCompare(b[primary] ?? "");
+      if (cmp === 0) cmp = (a[secondary] ?? "").localeCompare(b[secondary] ?? "");
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+  }, [guests, sortKey, sortDir]);
+
+  const filtered = useMemo(() => {
     const q = filter.trim().toLowerCase();
-    if (!q) return guests;
-    return guests.filter(
+    if (!q) return sorted;
+    return sorted.filter(
       (g) =>
         fullName(g).toLowerCase().includes(q) ||
         g.slug?.toLowerCase().includes(q),
     );
-  }, [guests, filter]);
+  }, [sorted, filter]);
+
+  function toggleSort(key: SortKey) {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  }
 
   async function copyToClipboard(text: string, slug: string) {
     try {
@@ -148,6 +176,22 @@ export function GuestLinksTool() {
             mode="ghost"
             disabled={!filtered.length || !siteUrl}
             onClick={copyAll}
+          />
+        </Flex>
+
+        <Flex gap={2} align="center" wrap="wrap">
+          <Box flex={1} />
+          <Button
+            text={`Sort: First name ${sortKey === "firstName" ? (sortDir === "asc" ? "↑" : "↓") : ""}`}
+            mode="ghost"
+            tone={sortKey === "firstName" ? "primary" : "default"}
+            onClick={() => toggleSort("firstName")}
+          />
+          <Button
+            text={`Sort: Last name ${sortKey === "lastName" ? (sortDir === "asc" ? "↑" : "↓") : ""}`}
+            mode="ghost"
+            tone={sortKey === "lastName" ? "primary" : "default"}
+            onClick={() => toggleSort("lastName")}
           />
         </Flex>
 
