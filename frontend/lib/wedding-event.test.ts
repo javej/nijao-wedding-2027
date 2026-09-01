@@ -12,13 +12,15 @@ describe('buildWeddingIcs', () => {
     expect(ics).toContain(RECEPTION);
   });
 
-  it('escapes the comma after the hall per RFC 5545 §3.3.11', () => {
-    const description = ics
-      .split('\r\n')
-      .find((line) => line.startsWith('DESCRIPTION:'));
-    expect(description).toBeDefined();
+  it('escapes commas per RFC 5545 §3.3.11', () => {
+    const line = (prop: string) =>
+      ics.split('\r\n').find((l) => l.startsWith(`${prop}:`));
+
+    // LOCATION is the property that actually carries commas.
+    expect(line('LOCATION')).toContain(`${CHURCH}\\, Lipa\\, Batangas`);
+
     // Parentheses are not reserved, so the hall name survives verbatim.
-    expect(description).toContain(`${RECEPTION}\\, Batangas`);
+    expect(line('DESCRIPTION')).toContain(RECEPTION);
   });
 
   it('joins lines with CRLF and wraps the VEVENT correctly', () => {

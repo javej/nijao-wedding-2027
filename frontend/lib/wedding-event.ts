@@ -24,7 +24,7 @@ const WEDDING_EVENT = {
   location:
     "St. Therese of the Child Jesus and the Holy Face Parish Church, Lipa, Batangas",
   description:
-    "Ceremony 2 PM at St. Therese of the Child Jesus and the Holy Face Parish Church. Reception to follow 4 PM at 10 22 Lipa (Murraya Hall), Batangas.\n\nWe can't wait to celebrate with you! 💚\n\nhttps://www.javeandnianne.wedding/",
+    "Ceremony 2 PM at St. Therese of the Child Jesus and the Holy Face Parish Church. Reception to follow 4 PM at 10 22 Lipa (Murraya Hall).\n\nWe can't wait to celebrate with you! 💚\n\nhttps://www.javeandnianne.wedding/",
   url: "https://www.javeandnianne.wedding/",
   // Fixed so the .ics is deterministic and cacheable. The instant this
   // iCalendar object was authored (ADR-0005 date).
