@@ -24,8 +24,8 @@ export function RsvpConfirmation({ guestName }: RsvpConfirmationProps) {
               Dear {guestName},
             </Text>
             <Text style={paragraph}>
-              Thank you for confirming your attendance! We are absolutely thrilled
-              that you&apos;ll be celebrating this special day with us.
+              Thank you for confirming your attendance!
+              We&apos;re so happy that you&apos;ll be joining us on our special day.
             </Text>
             <Hr style={hr} />
             <Text style={detailsHeading}>Wedding Details</Text>
@@ -33,15 +33,15 @@ export function RsvpConfirmation({ guestName }: RsvpConfirmationProps) {
               <strong>Date:</strong> January 8, 2027
             </Text>
             <Text style={paragraph}>
-              <strong>Church:</strong> St. Therese Parish
+              <strong>Church:</strong> St. Therese of the Child Jesus and the Holy Face Parish Church
             </Text>
             <Text style={paragraph}>
-              <strong>Reception:</strong> Casa 10 22, Lipa Batangas
+              <strong>Reception:</strong> 10 22 Lipa (Murraya Hall)
             </Text>
             <Hr style={hr} />
             <Text style={paragraph}>
-              We can&apos;t wait to share this beautiful moment with you. Your
-              presence means the world to us.
+              We can&apos;t wait to celebrate, make wonderful memories, and share this special moment with you.
+              See you at the wedding!
             </Text>
             <Text style={paragraph}>
               With love,

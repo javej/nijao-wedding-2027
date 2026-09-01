@@ -51,7 +51,7 @@ export function deriveRsvpViewState(
 export function deriveSummaryHeadline(status: RsvpStatus): string {
   if (status === "attending") return "We have you down for January 8 ✓";
   if (status === "declined")
-    return "You let us know you can't make it. We'll miss you.";
+    return "No worries at all! We completely understand. We’ll miss celebrating with you, but we truly appreciate you letting us know. Hope to celebrate with you another time! ❤️";
   return "";
 }
 

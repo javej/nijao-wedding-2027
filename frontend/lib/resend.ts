@@ -25,7 +25,7 @@ export async function sendRsvpConfirmation(
     await resend.emails.send({
       from: RESEND_FROM_ADDRESS,
       to: data.guestEmail,
-      subject: "We've been waiting for you",
+      subject: "Glad to have you!",
       react: RsvpConfirmation({ guestName: data.guestName }),
     });
   } catch (error) {
