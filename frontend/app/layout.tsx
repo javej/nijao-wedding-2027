@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     default: "Jave & Nianne — January 8, 2027",
   },
   description:
-    "Ten years. One more day. Join us as we celebrate our wedding at Casa 10 22, Lipa, Batangas.",
+    "Ten years. One more day. Join us as we celebrate our wedding at 10 22 Lipa, Batangas.",
   openGraph: {
     title: "Dearest Gentle Reader, ✨",
     description:
