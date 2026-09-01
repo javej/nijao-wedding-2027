@@ -1,0 +1,33 @@
+frontend/components/ui/RSVPChat.tsx
+  h_e320e9b9b1464c 80,141
+frontend/lib/rsvp-view-state.ts
+  h_e320e9b9b1464c 54
+frontend/emails/RsvpConfirmation.tsx
+  h_e320e9b9b1464c 28,36,39,43-44
+  s_a46eb3c0c2af71::t_f35a18c1e8d92b 27
+frontend/lib/resend.ts
+  h_e320e9b9b1464c 28
+frontend/lib/wedding-event.ts
+  h_e320e9b9b1464c 27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "735bea63cfd4de507697a5b5fd2cb17117de6ade",
+  "prompts": {},
+  "humans": {
+    "h_e320e9b9b1464c": {
+      "author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  },
+  "sessions": {
+    "s_a46eb3c0c2af71": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1899dc69-3339-4343-9ac5-de6ca32980ed",
+        "model": "unknown"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
