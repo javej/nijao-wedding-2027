@@ -128,7 +128,17 @@ This template includes components aligned with the [Schema UI](https://schemaui.
 
 Add your production URL to the CORS Origins in your Sanity project settings to allow your deployed site to communicate with Sanity. Also add your deployed Studio origin (for example `https://your-hostname.sanity.studio`) if you host Studio separately.
 
-#### 2. Deploy to Vercel
+This is also what makes content updates land in an already-open tab: `<SanityLive />` opens an EventSource from the guest's browser straight to the Sanity Live Content API, and an origin missing from the allowlist fails that connection (look for a `Sanity Live is unable to connect...` warning in the browser console). Include every origin you actually serve from — the production domain, any custom domain, and the `*.vercel.app` preview domains if you review content there.
+
+#### 2. Configure the content webhook
+
+Content changes reach the deployed site three ways, and it is worth having all three:
+
+1. **Live Content API** — pushes into open tabs, needs the CORS origin above.
+2. **`/api/revalidate` webhook** — purges the build cache on publish. Set it up in [Sanity Manage](https://www.sanity.io/manage) → API → Webhooks using the settings documented at the top of `frontend/app/api/revalidate/route.ts`, and make its secret match the `SANITY_WEBHOOK_SECRET` env var on Vercel. The document-type filter there has to list every guest-facing type.
+3. **Time-based revalidation** — the backstop, set by `fetchOptions.revalidate` in `frontend/sanity/lib/live.ts`. If both push mechanisms are misconfigured, content is still at most that many seconds stale rather than frozen until the next deploy.
+
+#### 3. Deploy to Vercel
 
 Deploy your website to Vercel:
 
@@ -139,7 +149,7 @@ Deploy your website to Vercel:
 5. Copy the environment variables from `frontend/.env.local` and paste them to your Vercel project settings. Vercel supports pasting all variables at once. Include `NEXT_PUBLIC_STUDIO_URL` pointing at your hosted Studio URL (no trailing slash).
 6. Deploy
 
-#### 3. Deploy Sanity Studio (`sanity deploy`)
+#### 4. Deploy Sanity Studio (`sanity deploy`)
 
 Recommended: host Studio on `*.sanity.studio`.
 
@@ -153,7 +163,7 @@ sanity deploy
 
 After the first deploy, set `SANITY_STUDIO_APP_ID` from the CLI output so later deploys skip the hostname prompt.
 
-#### 4. GitHub Actions (Studio)
+#### 5. GitHub Actions (Studio)
 
 The repo includes [`.github/workflows/deploy-studio.yml`](.github/workflows/deploy-studio.yml): it deploys Studio when `studio/**` changes on **`master`** or **`develop`**.
 
@@ -164,7 +174,7 @@ Configure GitHub **Environments** (`Production` for `master`, `development` for 
 
 See the workflow file for the exact names checked during deploy.
 
-#### 5. Deploy Studio to Vercel (optional)
+#### 6. Deploy Studio to Vercel (optional)
 
 Create a separate Vercel project with **Root Directory** `studio` and the same `studio` environment variables as in `studio/.env.local`.
 

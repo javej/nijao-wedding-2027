@@ -4,7 +4,7 @@
  * Configure in Sanity project settings (manage.sanity.io → API → Webhooks):
  *   URL:        https://<your-domain>/api/revalidate
  *   Trigger:    Create, Update, Delete
- *   Filter:     _type in ["storyChapter", "entourageMember", "guest", "announcement", "weddingDetails", "dressCode"] && !(_id in path("drafts.**"))
+ *   Filter:     _type in ["storyChapter", "entourageMember", "guest", "announcement", "weddingDetails", "dressCode", "faq"] && !(_id in path("drafts.**"))
  *   Projection: {_type, slug}
  *   Secret:     Must match SANITY_WEBHOOK_SECRET env var
  *   HTTP method: POST
@@ -16,7 +16,12 @@ import {
   SIGNATURE_HEADER_NAME,
 } from "@/lib/webhook";
 
-/** Document types that affect all pages (home + every guest page). */
+/**
+ * Document types that affect all pages (home + every guest page). Keep this in
+ * sync with `studio/schema-types.ts` — a guest-facing type missing from here
+ * used to fall through to the home-page-only branch below, which reused the
+ * still-valid cached Sanity data and so never showed the edit at all.
+ */
 const KNOWN_CONTENT_TYPES = [
   "storyChapter",
   "entourageMember",
@@ -24,6 +29,7 @@ const KNOWN_CONTENT_TYPES = [
   "weddingDetails",
   "dressCode",
   "guest",
+  "faq",
 ] as const;
 
 export async function POST(request: NextRequest) {
@@ -70,6 +76,13 @@ export async function POST(request: NextRequest) {
   try {
     const revalidatedPaths: string[] = [];
 
+    // Bust next-sanity's fetch data cache first. `defineLive` caches every
+    // `sanityFetch` under the "sanity" tag, so this one call expires all Sanity
+    // data. It has to happen for unknown types too: without it a page
+    // revalidation just re-renders from the cached query results and the edit
+    // stays invisible.
+    revalidateTag("sanity", { expire: 0 });
+
     if (
       KNOWN_CONTENT_TYPES.includes(
         docType as (typeof KNOWN_CONTENT_TYPES)[number],
@@ -79,15 +92,10 @@ export async function POST(request: NextRequest) {
       // Layout-level revalidation is the only way to purge all dynamic [slug]
       // pages without querying Sanity for every slug at webhook time.
       revalidatePath("/", "layout");
-      // Also bust next-sanity's fetch data cache (defineLive uses tag-based caching
-      // with revalidate: false in production). All sanityFetch calls include the
-      // "sanity" tag so this single revalidateTag call expires all Sanity data.
-      revalidateTag("sanity", { expire: 0 });
       revalidatedPaths.push("/ (layout)");
-    }
-
-    // Fallback: unknown document type — revalidate home page only
-    if (revalidatedPaths.length === 0) {
+    } else {
+      // Unknown document type — the data cache is already expired above, so
+      // only the home page needs re-rendering.
       revalidatePath("/");
       revalidatedPaths.push("/");
     }
