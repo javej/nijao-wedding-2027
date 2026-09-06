@@ -3,7 +3,22 @@ import { notFound } from "next/navigation";
 import { getAllGuestSlugs, getGuestBySlug } from "@/sanity/queries/guests";
 import { WeddingExperience } from "@/components/WeddingExperience";
 
-export const dynamicParams = false;
+/**
+ * Guest slugs are added in Sanity continuously — after the last deploy, not
+ * before it. `generateStaticParams` only knows the slugs that existed at build
+ * time, so `dynamicParams` must stay `true`: a guest added today would
+ * otherwise 404 until the next rebuild (ISR revalidation cannot add new params
+ * to a frozen list). Known slugs are still pre-rendered at build time; a new
+ * slug renders once on demand and is then cached like any other static page.
+ */
+export const dynamicParams = true;
+
+/**
+ * Shape of a generated guest slug (8 chars, lowercase alphanumeric — see the
+ * `slugify` in studio/schemas/documents/guest.ts). Anything else is rejected
+ * before it can reach Sanity, so probing random URLs costs no API calls.
+ */
+const SLUG_PATTERN = /^[a-z0-9]{8}$/;
 
 export async function generateStaticParams() {
   const guests = await getAllGuestSlugs();
@@ -17,6 +32,8 @@ export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const params = await props.params;
+  if (!SLUG_PATTERN.test(params.slug)) return {};
+
   const guest = await getGuestBySlug(params.slug);
 
   if (!guest) return {};
@@ -32,6 +49,10 @@ export default async function GuestPage(props: {
   params: Promise<{ slug: string }>;
 }) {
   const params = await props.params;
+  if (!SLUG_PATTERN.test(params.slug)) {
+    notFound();
+  }
+
   const guest = await getGuestBySlug(params.slug);
 
   if (!guest) {
