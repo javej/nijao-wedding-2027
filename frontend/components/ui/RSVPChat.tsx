@@ -4,13 +4,14 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 // import Script from 'next/script';
 import { motion, useReducedMotion } from 'motion/react';
 import { submitRsvp } from '@/app/actions/rsvp';
-import type { RSVPPayload } from '@/app/actions/rsvp';
+import type { RSVPPayload, RsvpParkingAnswer } from '@/app/actions/rsvp';
 import { setLocalItem } from '@/lib/localStorage';
 import { useVisualViewportOffset } from '@/hooks/useVisualViewportOffset';
 import { useRsvpRetryQueue } from '@/hooks/useRsvpRetryQueue';
 import { useManagedTimeouts } from '@/hooks/useManagedTimeouts';
 import { isValidEmail, normalizeEmail, normalizePhMobile } from '@/lib/contact';
 import { isAffirmative, isNegative } from '@/lib/attendance-parser';
+import { normalizePlate } from '@/lib/plate';
 import { ChatMessageLog } from '@/components/ui/rsvp-chat/ChatMessageLog';
 import { ChatChips } from '@/components/ui/rsvp-chat/ChatChips';
 import { ChatInputBar } from '@/components/ui/rsvp-chat/ChatInputBar';
@@ -45,6 +46,7 @@ type ChatState =
   | 'asked-attendance'
   | 'asked-plusone'
   | 'asked-plusone-name'
+  | 'asked-plate'
   | 'asked-email'
   | 'asked-phone'
   | 'submitting'
@@ -56,6 +58,8 @@ export interface RSVPSubmissionResult {
   attending: boolean;
   plusOneName: string | null;
   plusOneAttending: boolean;
+  /** The parking answer sent with this submission; null for decliners. */
+  parking: RsvpParkingAnswer | null;
 }
 
 export interface RSVPChatProps {
@@ -69,6 +73,8 @@ export interface RSVPChatProps {
   needsEmail: boolean;
   /** Ask for the guest's mobile during the flow (attending only) when absent. */
   needsMobile: boolean;
+  /** Plate already on file, offered back as a "Same car" chip when re-RSVPing. */
+  currentPlate: string | null;
   /** Called when the final confirmation moment fires (petal burst, haptic) */
   onConfirm?: () => void;
   /** Called once a submission has been accepted by the server (success). */
@@ -78,6 +84,12 @@ export interface RSVPChatProps {
 // --- Confirmation Constants ---
 
 const CONFIRMATION_MESSAGE = "Glad to have you! Your RSVP is confirmed";
+const PARKING_PROMPT = 'Will you be driving? Drop your plate number so we can sort parking.';
+const PARKING_UNSURE_REPLY =
+  'No problem. You can come back to this page anytime and add it from your RSVP summary.';
+const PARKING_NONE_REPLY = 'Noted, no parking needed.';
+const PARKING_INVALID_REPLY =
+  "That doesn't look like a plate number. Try ABC 1234, or tap one of the options.";
 const CLOSED_MESSAGE =
   "RSVPs have closed on November 8. If you'd still like to reach us, please contact Jave & Nianne directly.";
 
@@ -92,6 +104,7 @@ export function RSVPChat({
   plusOneLinkedGuestSlug,
   needsEmail,
   needsMobile,
+  currentPlate,
   onConfirm,
   onComplete,
 }: RSVPChatProps) {
@@ -129,6 +142,8 @@ export function RSVPChat({
   // pending attendance answer parks here while we ask for contact.
   const collectedEmailRef = useRef<string | null>(null);
   const collectedMobileRef = useRef<string | null>(null);
+  // Parking answer (ADR-0008) — collected right after plus-one, before contact.
+  const collectedParkingRef = useRef<RsvpParkingAnswer | null>(null);
   const pendingSubmissionRef = useRef<{
     attending: boolean;
     plusOneName: string | null;
@@ -240,12 +255,14 @@ export function RSVPChat({
         }),
         ...(collectedEmailRef.current && { guestEmail: collectedEmailRef.current }),
         ...(collectedMobileRef.current && { guestMobile: collectedMobileRef.current }),
+        ...(collectedParkingRef.current && { parking: collectedParkingRef.current }),
       };
 
       const completion: RSVPSubmissionResult = {
         attending: data.attending,
         plusOneName: data.plusOneName,
         plusOneAttending: data.plusOneAttending,
+        parking: collectedParkingRef.current,
       };
 
       try {
@@ -371,12 +388,35 @@ export function RSVPChat({
     }
   }, [chatState, addGuestMessage, advanceFromEmail, finishContact]);
 
+  // --- Flow: Parking (attending only, ADR-0008) ---
+
+  // Parks the pending attendance answer while we ask about the car, then hands
+  // it on to the contact asks (which reuse the same pending slot).
+  const askParking = useCallback(
+    (data: { attending: boolean; plusOneName: string | null; plusOneAttending: boolean }) => {
+      pendingSubmissionRef.current = data;
+      setChatState('asked-plate');
+      setShowChips(true);
+      setShowInput(true);
+      addSystemMessage(PARKING_PROMPT);
+      schedule(() => inputRef.current?.focus(), 100);
+    },
+    [addSystemMessage, schedule],
+  );
+
+  const finishParking = useCallback(() => {
+    const data = pendingSubmissionRef.current;
+    if (!data) return;
+    pendingSubmissionRef.current = null;
+    beginContactOrSubmit(data);
+  }, [beginContactOrSubmit]);
+
   // --- Flow: Advance to plus-one or submission ---
 
   const advanceAfterAttendance = useCallback(() => {
     if (!plusOneEligible) {
-      // No plus-one — go to contact collection or straight to submission
-      beginContactOrSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
+      // No plus-one — ask about parking, then contact, then submit
+      askParking({ attending: true, plusOneName: null, plusOneAttending: false });
       return;
     }
 
@@ -390,9 +430,9 @@ export function RSVPChat({
       addSystemMessage('Will you be bringing a plus-one?');
     } else {
       // Fallback: no plus-one config
-      beginContactOrSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
+      askParking({ attending: true, plusOneName: null, plusOneAttending: false });
     }
-  }, [plusOneEligible, plusOneType, plusOneLinkedGuestName, addSystemMessage, beginContactOrSubmit]);
+  }, [plusOneEligible, plusOneType, plusOneLinkedGuestName, addSystemMessage, askParking]);
 
   // --- Chip Handlers ---
 
@@ -434,7 +474,7 @@ export function RSVPChat({
       if (plusOneType === 'linked') {
         addGuestMessage("Yes, we'll both be there");
         schedule(() => {
-          beginContactOrSubmit({
+          askParking({
             attending: true,
             plusOneName: plusOneLinkedGuestName,
             plusOneAttending: true,
@@ -450,16 +490,43 @@ export function RSVPChat({
         }, 400);
       }
     });
-  }, [selectChipAndHide, plusOneType, plusOneLinkedGuestName, addGuestMessage, addSystemMessage, beginContactOrSubmit, schedule]);
+  }, [selectChipAndHide, plusOneType, plusOneLinkedGuestName, addGuestMessage, addSystemMessage, askParking, schedule]);
 
   const handlePlusOneNo = useCallback(() => {
     selectChipAndHide('Just me', () => {
       addGuestMessage('Just me');
       schedule(() => {
-        beginContactOrSubmit({ attending: true, plusOneName: null, plusOneAttending: false });
+        askParking({ attending: true, plusOneName: null, plusOneAttending: false });
       }, 400);
     });
-  }, [selectChipAndHide, addGuestMessage, beginContactOrSubmit, schedule]);
+  }, [selectChipAndHide, addGuestMessage, askParking, schedule]);
+
+  // Parking chips: each records the answer, replies, then hands off to contact.
+  const answerParking = useCallback(
+    (label: string, answer: RsvpParkingAnswer, reply: string | null) => {
+      selectChipAndHide(label, () => {
+        addGuestMessage(label);
+        setShowInput(false);
+        collectedParkingRef.current = answer;
+        if (reply) addSystemMessage(reply);
+        schedule(finishParking, 400);
+      });
+    },
+    [selectChipAndHide, addGuestMessage, addSystemMessage, finishParking, schedule],
+  );
+
+  const handlePlateUnsure = useCallback(() => {
+    answerParking('Not sure yet', { status: 'unsure' }, PARKING_UNSURE_REPLY);
+  }, [answerParking]);
+
+  const handlePlateNone = useCallback(() => {
+    answerParking('Not driving', { status: 'none' }, PARKING_NONE_REPLY);
+  }, [answerParking]);
+
+  const handlePlateSame = useCallback(() => {
+    if (!currentPlate) return;
+    answerParking(`Same car, ${currentPlate}`, { status: 'plate', plate: currentPlate }, null);
+  }, [answerParking, currentPlate]);
 
   // --- Free-Text Input Handler ---
 
@@ -474,8 +541,24 @@ export function RSVPChat({
       setShowInput(false);
 
       schedule(() => {
-        beginContactOrSubmit({ attending: true, plusOneName: name, plusOneAttending: true });
+        askParking({ attending: true, plusOneName: name, plusOneAttending: true });
       }, 400);
+      return;
+    }
+
+    if (chatState === 'asked-plate') {
+      const plate = normalizePlate(name);
+      if (!plate) {
+        addSystemMessage(PARKING_INVALID_REPLY);
+        setInputValue('');
+        return;
+      }
+      collectedParkingRef.current = { status: 'plate', plate };
+      addGuestMessage(name);
+      setInputValue('');
+      setShowInput(false);
+      setShowChips(false);
+      finishParking();
       return;
     }
 
@@ -557,7 +640,8 @@ export function RSVPChat({
     handleAttendanceNo,
     handlePlusOneYes,
     handlePlusOneNo,
-    beginContactOrSubmit,
+    askParking,
+    finishParking,
     advanceFromEmail,
     finishContact,
     schedule,
@@ -594,6 +678,15 @@ export function RSVPChat({
         { label: 'Just me', onClick: handlePlusOneNo },
       ];
     }
+    if (chatState === 'asked-plate') {
+      return [
+        ...(currentPlate
+          ? [{ label: `Same car, ${currentPlate}`, onClick: handlePlateSame }]
+          : []),
+        { label: 'Not sure yet', onClick: handlePlateUnsure },
+        { label: 'Not driving', onClick: handlePlateNone },
+      ];
+    }
     return [];
   };
 
@@ -613,6 +706,8 @@ export function RSVPChat({
   const inputPlaceholder =
     chatState === 'asked-plusone-name'
       ? "Enter your plus-one's name..."
+      : chatState === 'asked-plate'
+        ? 'ABC 1234'
       : chatState === 'asked-email'
         ? 'you@example.com'
         : chatState === 'asked-phone'
@@ -621,6 +716,8 @@ export function RSVPChat({
   const inputAriaLabel =
     chatState === 'asked-plusone-name'
       ? "Plus-one's name"
+      : chatState === 'asked-plate'
+        ? 'Car plate number'
       : chatState === 'asked-email'
         ? 'Email address'
         : chatState === 'asked-phone'

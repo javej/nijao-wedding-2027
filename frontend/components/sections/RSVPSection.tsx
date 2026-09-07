@@ -4,14 +4,16 @@ import { useState, useEffect, useCallback } from 'react';
 import { RSVPChat, type RSVPSubmissionResult } from '@/components/ui/RSVPChat';
 import { RSVPSummaryCard } from '@/components/ui/RSVPSummaryCard';
 import { RSVPContactNudge } from '@/components/ui/RSVPContactNudge';
+import { RSVPParkingCard } from '@/components/ui/RSVPParkingCard';
 import { RSVPClosedPanel } from '@/components/ui/RSVPClosedPanel';
 import { PetalBurst } from '@/components/ui/PetalBurst';
 import type { WeddingGuest } from '@/components/WeddingExperience';
-import type { RsvpStatus } from '@/sanity/queries/guests';
+import type { GuestParking, RsvpStatus } from '@/sanity/queries/guests';
 import {
   contextFromGuest,
   deriveDetailLine,
   deriveSummaryHeadline,
+  parkingFromAnswer,
   type RsvpViewMode,
   type RsvpViewState,
 } from '@/lib/rsvp-view-state';
@@ -35,6 +37,11 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
   const [optimisticDetail, setOptimisticDetail] = useState<string | null>(
     rsvpViewState.detailLine,
   );
+  // Parking answer (ADR-0008), updated optimistically from the chat and from
+  // the summary-card plate form so the line flips without a refetch.
+  const [optimisticParking, setOptimisticParking] = useState<GuestParking | null>(
+    guest.parking,
+  );
   // Session-only: hide the contact nudge once saved or dismissed. It re-appears
   // on the next visit if contact is still missing (ADR-0006).
   const [contactNudgeHandled, setContactNudgeHandled] = useState(false);
@@ -54,11 +61,13 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
   useEffect(() => {
     setOptimisticStatus(rsvpViewState.status);
     setOptimisticDetail(rsvpViewState.detailLine);
+    setOptimisticParking(guest.parking);
     setViewMode(rsvpViewState.initialMode);
   }, [
     rsvpViewState.status,
     rsvpViewState.detailLine,
     rsvpViewState.initialMode,
+    guest.parking,
   ]);
 
   const handleReveal = useCallback(() => {
@@ -83,6 +92,9 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
           openPlusOneName: result.plusOneName,
         }),
       );
+      if (result.parking) {
+        setOptimisticParking(parkingFromAnswer(result.parking));
+      }
       if (result.attending) {
         setShowConfetti(true);
       }
@@ -120,6 +132,13 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
             affordanceLabel={affordanceLabel}
             onReveal={handleReveal}
           />
+          {optimisticStatus === 'attending' && (
+            <RSVPParkingCard
+              guestSlug={guest.slug}
+              parking={optimisticParking}
+              onSaved={(answer) => setOptimisticParking(parkingFromAnswer(answer))}
+            />
+          )}
           {rsvpViewState.isClosed && (
             <p className="font-body text-body-sm text-foreground/50">
               RSVPs are now closed.
@@ -149,6 +168,9 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
           plusOneLinkedGuestSlug={guest.plusOneLinkedGuest?.slug ?? null}
           needsEmail={needsEmail}
           needsMobile={needsMobile}
+          currentPlate={
+            optimisticParking?.status === 'plate' ? optimisticParking.plate : null
+          }
           onConfirm={() => setShowConfetti(true)}
           onComplete={handleChatComplete}
         />

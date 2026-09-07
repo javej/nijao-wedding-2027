@@ -17,6 +17,7 @@ function guest(overrides: Partial<Guest> = {}): Guest {
     rsvpStatus: null,
     rsvpUpdatedAt: null,
     openPlusOne: null,
+    parking: null,
     ...overrides,
   };
 }
