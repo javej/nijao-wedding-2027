@@ -1,0 +1,62 @@
+frontend/lib/rsvp-view-state.test.ts
+  s_1825f32f201003::t_dc01e8f9a243ad 20
+frontend/components/ui/RSVPParkingCard.tsx
+  s_1825f32f201003::t_5a0053d7b7b10b 1-184
+frontend/components/sections/RSVPSection.tsx
+  s_1825f32f201003::t_c414e7dda3798e 7,11,16,40-44,64,70,95-97,135-141,171-173
+docs/adr/0008-guest-parking-tri-state-attribute.md
+  s_1825f32f201003::t_7f7245e1b7bd53 1-64
+frontend/lib/plate.test.ts
+  s_1825f32f201003::t_161ad2c128fd9d 1-27
+frontend/lib/rsvp-view-state.ts
+  s_1825f32f201003::t_dc01e8f9a243ad 3-7,146-177
+  s_1825f32f201003::t_9c3c7a0d5c9ddd 2,178-189
+studio/schema.json
+  s_1825f32f201003::t_bb08093c1fa5fa 886-922
+frontend/components/ui/RSVPParkingCard.test.tsx
+  s_1825f32f201003::t_adad53082ab419 1-122
+frontend/sanity/queries/guests.ts
+  s_1825f32f201003::t_17075b52dbb02e 26-27,41-48,68
+frontend/app/actions/rsvp.test.ts
+  s_1825f32f201003::t_6493323bbc806a 1-146,148-156
+  s_1825f32f201003::t_4c8f06b6a2f56a 147
+CONTEXT.md
+  s_1825f32f201003::t_84670c1700f27c 11
+frontend/lib/rsvp-parking.test.ts
+  s_1825f32f201003::t_8847246dbb8bdf 2,51-64
+  s_1825f32f201003::t_caba16ca7096d9 1,3-50,65-66
+frontend/components/ui/RSVPChat.tsx
+  s_1825f32f201003::t_2190e4ed1b29aa 7,14,49,61-62,76-77,87-92,107,145-146,258,265,391-413,418-419,433,435,477,493,499,502-529,544,549-564,643-644,681-689,709-710,719-720
+frontend/sanity.types.ts
+  s_1825f32f201003::t_bb08093c1fa5fa 161-164,475,495-498,584
+frontend/app/actions/rsvp.ts
+  s_1825f32f201003::t_4c8f06b6a2f56a 10,213-272,315-319
+  s_1825f32f201003::t_2190e4ed1b29aa 26,29-36
+  s_1825f32f201003::t_ef14819b0e3aaf 37,320
+studio/plugins/rsvp-dashboard/RsvpDashboardTool.tsx
+  s_1825f32f201003::t_4301f461eceea3 18,31,58,99-119,125,137,197-199,204-205,210-214,230,301,327-336,375,405-418,443
+frontend/components/ui/RSVPChat.test.tsx
+  s_1825f32f201003::t_94dd30ad460aff 25,57,123,152-268
+  s_1825f32f201003::t_ba2d26d21aa7d9 269
+studio/schemas/documents/guest.ts
+  s_1825f32f201003::t_eba90f77140a60 17-20,88-127
+  s_1825f32f201003::t_1b0d487b1a6244 16,128
+frontend/lib/plate.ts
+  s_1825f32f201003::t_7486b65d733667 1-34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "e33f06ab440ad172862b56f876e662b0966f7c2d",
+  "prompts": {},
+  "sessions": {
+    "s_1825f32f201003": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0271ccdb-79f6-4b57-bc94-87340816d0de",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
