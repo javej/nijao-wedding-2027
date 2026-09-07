@@ -1,0 +1,31 @@
+frontend/components/WeddingExperience.tsx
+  s_eb267ba51b6ecc::t_bd7f561a1a80f6 21
+  s_eb267ba51b6ecc::t_74ac6890d975ac 81-84
+frontend/components/ui/ArrivalOverlay.test.tsx
+  s_eb267ba51b6ecc::t_bcb3234d787ef9 10-11
+  s_eb267ba51b6ecc::t_25dfbe6a5a1242 1-9,12-55
+frontend/lib/rsvp-view-state.test.ts
+  s_eb267ba51b6ecc::t_90caf2dc43274e 1-107
+frontend/components/ui/ArrivalOverlay.tsx
+  s_eb267ba51b6ecc::t_74ac6890d975ac 50-51,54-61,63,184-185,187-216
+frontend/lib/rsvp-view-state.ts
+  s_eb267ba51b6ecc::t_6e2cc896f045f1 114-140
+frontend/components/ui/ExperienceShell.tsx
+  s_eb267ba51b6ecc::t_74ac6890d975ac 14,27,92
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "a12412ceef0edb96031eac4b68e0f69c49dbdc3b",
+  "prompts": {},
+  "sessions": {
+    "s_eb267ba51b6ecc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "054a800d-c625-4dbd-b73a-cf63b3605ab8",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
