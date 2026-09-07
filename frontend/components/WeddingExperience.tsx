@@ -18,7 +18,7 @@ import { getPadrinos, getWeddingParty } from '@/sanity/queries/entourage';
 import { getFaqs } from '@/sanity/queries/faqs';
 import type { GuestResult } from '@/sanity/queries/guests';
 import type { PageBg } from '@/components/ui/PageCard';
-import { deriveRsvpViewState } from '@/lib/rsvp-view-state';
+import { deriveConfirmedNames, deriveRsvpViewState } from '@/lib/rsvp-view-state';
 
 export type WeddingGuest = NonNullable<GuestResult>;
 
@@ -78,7 +78,10 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
   let yearIndex = 0;
 
   return (
-    <ExperienceShell guestName={guest?.nickname || guest?.firstName}>
+    <ExperienceShell
+      guestName={guest?.nickname || guest?.firstName}
+      confirmedNames={guest ? deriveConfirmedNames(guest) : undefined}
+    >
       <FloatingAnchorSet />
       <ChapterScrollContainer>
         <ChapterSection id="hero" palette="raspberry" label="Jave and Nianne" decorate hero>

@@ -111,3 +111,30 @@ export function contextFromGuest(
     openPlusOneName: guest.openPlusOne?.name ?? null,
   };
 }
+
+/**
+ * Names the arrival overlay lists under "Confirmed RSVP(s) for:". Empty unless
+ * the guest themself is attending — declined and pending guests keep the
+ * generic welcome. Companions follow the same rules as {@link deriveDetailLine}
+ * so the mirror and the summary card can never disagree about who is coming.
+ */
+export function deriveConfirmedNames(guest: NonNullable<GuestResult>): string[] {
+  if (normalizeStatus(guest.rsvpStatus) !== "attending") return [];
+
+  const names = [guest.nickname || guest.firstName];
+  const context = contextFromGuest(guest);
+  if (!context.plusOneEligible) return names;
+
+  if (context.plusOneType === "linked") {
+    const partner = context.linkedPartner;
+    if (partner && normalizeStatus(partner.rsvpStatus) === "attending") {
+      names.push(partner.firstName);
+    }
+  } else if (context.plusOneType === "open") {
+    if (context.openPlusOneAttending && context.openPlusOneName) {
+      names.push(context.openPlusOneName);
+    }
+  }
+
+  return names;
+}
