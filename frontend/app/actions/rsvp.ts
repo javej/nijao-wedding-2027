@@ -7,6 +7,7 @@ import { sendRsvpConfirmation } from "@/lib/resend";
 import { writeClient } from "@/sanity/lib/write";
 import { isRsvpClosed } from "@/lib/rsvp-cutoff";
 import { normalizeEmail, normalizePhMobile } from "@/lib/contact";
+import { normalizePlate } from "@/lib/plate";
 
 // --- Types ---
 
@@ -22,7 +23,17 @@ export interface RSVPPayload {
   linkedPartnerSlug?: string;
   guestEmail?: string;
   guestMobile?: string;
+  parking?: RsvpParkingAnswer;
 }
+
+/**
+ * The guest's answer to the parking question (ADR-0008). A durable Guest
+ * attribute like contact: written to the guest doc, never to the audit log.
+ */
+export type RsvpParkingAnswer =
+  | { status: "plate"; plate: string }
+  | { status: "unsure" }
+  | { status: "none" };
 
 export type RSVPErrorCode =
   | "rsvp_closed"
@@ -199,6 +210,66 @@ export async function submitGuestContact(
   return { success: true };
 }
 
+// --- Parking-only update (summary-card plate form) ---
+
+export interface GuestParkingPayload {
+  guestSlug: string;
+  parking: RsvpParkingAnswer;
+}
+
+export type ParkingResult =
+  | { success: true }
+  | { success: false; error: "invalid" | "sanity_unavailable" };
+
+/**
+ * Record a guest's parking answer without touching their RSVP (ADR-0008). Used
+ * by the summary-card plate form: the way back for a guest who answered "Not
+ * sure yet" in the chat, and the only path for an answered-for linked partner
+ * who never sees the chat. Never mutates rsvpStatus or the audit log.
+ */
+export async function submitGuestParking(
+  payload: GuestParkingPayload,
+): Promise<ParkingResult> {
+  const parking = normalizeParkingAnswer(payload.parking);
+  if (!parking) {
+    return { success: false, error: "invalid" };
+  }
+
+  try {
+    const guest = await writeClient.fetch<GuestLookup | null>(
+      `*[_type == "guest" && slug.current == $slug][0]{ _id, _rev, rsvpStatus }`,
+      { slug: payload.guestSlug },
+    );
+
+    if (!guest) {
+      throw new Error(`Guest with slug ${payload.guestSlug} not found`);
+    }
+
+    await writeClient.patch(guest._id).set({ parking }).commit();
+  } catch (error) {
+    console.error("[submitGuestParking] Sanity write failed:", error);
+    return { success: false, error: "sanity_unavailable" };
+  }
+
+  revalidateTag(`guest:${payload.guestSlug}`, { expire: 0 });
+  return { success: true };
+}
+
+/**
+ * Canonicalize a parking answer for storage. A "plate" answer whose plate the
+ * server can't normalize is dropped (null) rather than stored as garbage; the
+ * other statuses carry no plate at all.
+ */
+function normalizeParkingAnswer(
+  answer: RsvpParkingAnswer,
+): RsvpParkingAnswer | null {
+  if (answer.status !== "plate") {
+    return { status: answer.status };
+  }
+  const plate = normalizePlate(answer.plate);
+  return plate ? { status: "plate", plate } : null;
+}
+
 // ADR-0002: Linked plus-one cross-mutation is conditional on the partner
 // still being `pending`. An explicit decline must not be silently overridden
 // by a partner's optimistic "yes both" submission.
@@ -240,6 +311,12 @@ async function writeSanityRsvp(
     const mobile = normalizePhMobile(payload.guestMobile);
     if (mobile) submitterPatch.set({ mobile });
   }
+
+  // Parking is a durable Guest attribute (ADR-0008). Set the whole object so a
+  // switch from "plate" to "unsure" drops the stale plate; never unset when the
+  // payload carries no answer (decliners), so a prior answer survives.
+  const parking = payload.parking ? normalizeParkingAnswer(payload.parking) : null;
+  if (parking) submitterPatch.set({ parking });
 
   // openPlusOne: set when attending with an open plus-one name; unset
   // otherwise so the summary card stops showing a stale plus-one name when

@@ -883,6 +883,43 @@
         },
         "optional": true
       },
+      "parking": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "status": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "union",
+                "of": [
+                  {
+                    "type": "string",
+                    "value": "plate"
+                  },
+                  {
+                    "type": "string",
+                    "value": "unsure"
+                  },
+                  {
+                    "type": "string",
+                    "value": "none"
+                  }
+                ]
+              },
+              "optional": true
+            },
+            "plate": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            }
+          }
+        },
+        "optional": true
+      },
       "slug": {
         "type": "objectAttribute",
         "value": {

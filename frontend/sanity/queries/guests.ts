@@ -23,7 +23,8 @@ export const GUEST_BY_SLUG_QUERY = groq`
     },
     rsvpStatus,
     rsvpUpdatedAt,
-    openPlusOne
+    openPlusOne,
+    parking
   }
 `;
 
@@ -36,6 +37,14 @@ export const ALL_GUEST_SLUGS_QUERY = groq`
 // --- Types ---
 
 export type RsvpStatus = "pending" | "attending" | "declined";
+
+/** How the guest answered the parking question. Absent means never asked. */
+export type ParkingStatus = "plate" | "unsure" | "none";
+
+export type GuestParking = {
+  status: ParkingStatus | null;
+  plate: string | null;
+};
 
 export type GuestResult = {
   firstName: string;
@@ -56,6 +65,7 @@ export type GuestResult = {
     attending: boolean | null;
     name: string | null;
   } | null;
+  parking: GuestParking | null;
 } | null;
 
 export type GuestSlugResult = {

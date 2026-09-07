@@ -14,6 +14,11 @@ export default defineType({
       options: { collapsible: true, collapsed: false },
     },
     {
+      name: "parking",
+      title: "Parking",
+      options: { collapsible: true, collapsed: false },
+    },
+    {
       name: "rsvp",
       title: "RSVP (managed by site — do not edit)",
       options: { collapsible: true, collapsed: true },
@@ -79,6 +84,47 @@ export default defineType({
             ? true
             : "Use E.164 format: +639XXXXXXXXX.";
         }),
+    }),
+    defineField({
+      name: "parking",
+      title: "Parking",
+      type: "object",
+      fieldset: "parking",
+      description:
+        "How the guest answered the car plate question in the RSVP chat. Filled by the site — you may add or correct it when a guest texts you their plate. Leave empty if they were never asked.",
+      fields: [
+        defineField({
+          name: "status",
+          title: "Status",
+          type: "string",
+          options: {
+            list: [
+              { title: "Plate provided", value: "plate" },
+              { title: "Not sure yet", value: "unsure" },
+              { title: "Not driving", value: "none" },
+            ],
+            layout: "radio",
+          },
+        }),
+        defineField({
+          name: "plate",
+          title: "Car Plate",
+          type: "string",
+          description: "Uppercase, e.g. ABC 1234. Shown back to the guest on their RSVP summary.",
+          hidden: ({ parent }) => parent?.status !== "plate",
+          validation: (rule) =>
+            rule.custom((value, context) => {
+              const status = (context.parent as { status?: string } | undefined)?.status;
+              if (status !== "plate") return true;
+              if (!value) return "Enter the plate, or change the status.";
+              const compact = value.trim().toUpperCase().replace(/[\s\-.]+/g, "");
+              if (!/^[A-Z0-9]{4,10}$/.test(compact) || !/[A-Z]/.test(compact) || !/\d/.test(compact)) {
+                return "Use letters and digits only, e.g. ABC 1234.";
+              }
+              return true;
+            }),
+        }),
+      ],
     }),
     defineField({
       name: "slug",

@@ -158,6 +158,10 @@ export type Guest = {
   description?: string;
   email?: string;
   mobile?: string;
+  parking?: {
+    status?: "plate" | "unsure" | "none";
+    plate?: string;
+  };
   slug?: Slug;
   plusOneEligible?: boolean;
   plusOneType?: "linked" | "open";
@@ -468,7 +472,7 @@ export type WEDDING_PARTY_QUERY_RESULT = Array<{
 
 // Source: ../frontend/sanity/queries/guests.ts
 // Variable: GUEST_BY_SLUG_QUERY
-// Query: *[_type == "guest" && slug.current == $slug][0] {    firstName,    nickname,    "slug": slug.current,    email,    mobile,    plusOneEligible,    plusOneType,    plusOneLinkedGuest->{      firstName,      "slug": slug.current,      rsvpStatus    },    rsvpStatus,    rsvpUpdatedAt,    openPlusOne  }
+// Query: *[_type == "guest" && slug.current == $slug][0] {    firstName,    nickname,    "slug": slug.current,    email,    mobile,    plusOneEligible,    plusOneType,    plusOneLinkedGuest->{      firstName,      "slug": slug.current,      rsvpStatus    },    rsvpStatus,    rsvpUpdatedAt,    openPlusOne,    parking  }
 export type GUEST_BY_SLUG_QUERY_RESULT = {
   firstName: string | null;
   nickname: string | null;
@@ -487,6 +491,10 @@ export type GUEST_BY_SLUG_QUERY_RESULT = {
   openPlusOne: {
     attending?: boolean;
     name?: string;
+  } | null;
+  parking: {
+    status?: "none" | "plate" | "unsure";
+    plate?: string;
   } | null;
 } | null;
 
@@ -573,7 +581,7 @@ declare module "@sanity/client" {
     '\n  *[_type == "dressCode"][0] {\n    paletteColors[] {\n      _key,\n      colorKey,\n      colorLabel\n    }\n  }\n': DRESS_CODE_QUERY_RESULT;
     '\n  *[_type == "entourageMember" && role in ["Ninong", "Ninang"]] | order(orderRank asc) {\n    _id, name, role, orderRank\n  }\n': PADRINOS_QUERY_RESULT;
     '\n  *[_type == "entourageMember" && defined(role) && !(role in ["Ninong", "Ninang"])] | order(orderRank asc) {\n    _id, name, role, orderRank\n  }\n': WEDDING_PARTY_QUERY_RESULT;
-    '\n  *[_type == "guest" && slug.current == $slug][0] {\n    firstName,\n    nickname,\n    "slug": slug.current,\n    email,\n    mobile,\n    plusOneEligible,\n    plusOneType,\n    plusOneLinkedGuest->{\n      firstName,\n      "slug": slug.current,\n      rsvpStatus\n    },\n    rsvpStatus,\n    rsvpUpdatedAt,\n    openPlusOne\n  }\n': GUEST_BY_SLUG_QUERY_RESULT;
+    '\n  *[_type == "guest" && slug.current == $slug][0] {\n    firstName,\n    nickname,\n    "slug": slug.current,\n    email,\n    mobile,\n    plusOneEligible,\n    plusOneType,\n    plusOneLinkedGuest->{\n      firstName,\n      "slug": slug.current,\n      rsvpStatus\n    },\n    rsvpStatus,\n    rsvpUpdatedAt,\n    openPlusOne,\n    parking\n  }\n': GUEST_BY_SLUG_QUERY_RESULT;
     '\n  *[_type == "guest" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': ALL_GUEST_SLUGS_QUERY_RESULT;
     '\n  *[_type == "storyChapter"] | order(order asc) {\n    _id,\n    year,\n    caption,\n    isProposal,\n    image {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    images[] {\n      ...,\n      asset->{\n        _id,\n        url,\n        mimeType,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height\n          }\n        }\n      }\n    },\n    order,\n    publishedAt\n  }\n': STORY_CHAPTERS_QUERY_RESULT;
     '\n  *[_type == "weddingDetails"][0] {\n    ceremonyVenue,\n    ceremonyDate,\n    ceremonyTime,\n    ceremonyAddress,\n    ceremonyMapUrl,\n    receptionVenue,\n    receptionDate,\n    receptionTime,\n    receptionAddress,\n    receptionMapUrl\n  }\n': WEDDING_DETAILS_QUERY_RESULT;

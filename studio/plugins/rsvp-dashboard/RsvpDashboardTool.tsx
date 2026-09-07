@@ -15,6 +15,7 @@ import { Download, RefreshCw } from "lucide-react";
 import { fullName } from "../../lib/guestName";
 
 type RsvpStatus = "pending" | "attending" | "declined";
+type ParkingStatus = "plate" | "unsure" | "none";
 
 type GuestRow = {
   _id: string;
@@ -27,6 +28,7 @@ type GuestRow = {
   rsvpStatus: RsvpStatus | null;
   rsvpUpdatedAt: string | null;
   openPlusOne: { attending: boolean | null; name: string | null } | null;
+  parking: { status: ParkingStatus | null; plate: string | null } | null;
   linkedPartner: {
     firstName: string;
     rsvpStatus: RsvpStatus | null;
@@ -53,6 +55,7 @@ const GUEST_DASHBOARD_QUERY = `*[
   rsvpStatus,
   rsvpUpdatedAt,
   openPlusOne,
+  parking,
   "linkedPartner": plusOneLinkedGuest->{ firstName, rsvpStatus }
 }`;
 
@@ -93,11 +96,33 @@ function plusOneDisplay(guest: GuestRow): string {
   return "";
 }
 
+// Parking answer for an attending guest (ADR-0008), for both the row badge and
+// the CSV. Empty for guests who aren't attending; "not added" distinguishes a
+// guest who was never asked from one who explicitly said "not sure yet".
+type ParkingDisplay =
+  | { kind: "plate"; text: string }
+  | { kind: "unsure"; text: string }
+  | { kind: "none"; text: string }
+  | { kind: "missing"; text: string }
+  | null;
+
+function parkingDisplay(guest: GuestRow): ParkingDisplay {
+  if (normalizeStatus(guest.rsvpStatus) !== "attending") return null;
+  const parking = guest.parking;
+  if (parking?.status === "plate" && parking.plate) {
+    return { kind: "plate", text: parking.plate };
+  }
+  if (parking?.status === "unsure") return { kind: "unsure", text: "not sure yet" };
+  if (parking?.status === "none") return { kind: "none", text: "not driving" };
+  return { kind: "missing", text: "not added" };
+}
+
 function buildCsv(rows: GuestRow[]): string {
   const header = [
     "guest name",
     "attending",
     "plus-one name",
+    "car plate",
     "timestamp",
     "description",
   ];
@@ -109,6 +134,7 @@ function buildCsv(rows: GuestRow[]): string {
         escapeCsvCell(fullName(r)),
         status === "attending" ? "yes" : status === "declined" ? "no" : "",
         escapeCsvCell(plusOneDisplay(r)),
+        escapeCsvCell(parkingDisplay(r)?.text ?? ""),
         escapeCsvCell(r.rsvpUpdatedAt ?? ""),
         escapeCsvCell(r.description ?? ""),
       ].join(","),
@@ -168,15 +194,24 @@ export function RsvpDashboardTool() {
   }, [loadData]);
 
   const counts = useMemo(() => {
-    if (!guests) return { attending: 0, declined: 0, pending: 0, plusOnes: 0 };
+    if (!guests) {
+      return { attending: 0, declined: 0, pending: 0, plusOnes: 0, cars: 0, carsToConfirm: 0 };
+    }
     let attending = 0;
     let declined = 0;
     let pending = 0;
     let plusOnes = 0;
+    let cars = 0;
+    let carsToConfirm = 0;
     for (const g of guests) {
       const status = normalizeStatus(g.rsvpStatus);
       if (status === "attending") {
         attending += 1;
+        // Parking headcount: plates on file vs. guests still to chase (never
+        // asked, or explicitly "not sure yet"). "Not driving" counts as neither.
+        const parking = parkingDisplay(g);
+        if (parking?.kind === "plate") cars += 1;
+        if (parking?.kind === "unsure" || parking?.kind === "missing") carsToConfirm += 1;
         // Count attending plus-ones in headcount: linked partner only if THEIR
         // own status is attending (avoid double-counting since the partner is
         // their own guest row); open plus-one if marked attending.
@@ -192,7 +227,7 @@ export function RsvpDashboardTool() {
         pending += 1;
       }
     }
-    return { attending, declined, pending, plusOnes };
+    return { attending, declined, pending, plusOnes, cars, carsToConfirm };
   }, [guests]);
 
   const sortedGuests = useMemo(() => {
@@ -263,7 +298,7 @@ export function RsvpDashboardTool() {
           </Card>
         )}
 
-        <Grid columns={[1, 3]} gap={3}>
+        <Grid columns={[1, 2, 4]} gap={3}>
           <SummaryCard
             label="Attending"
             value={guests ? counts.attending : null}
@@ -286,6 +321,16 @@ export function RsvpDashboardTool() {
             hint={
               guests
                 ? `${guests.length} guest${guests.length === 1 ? "" : "s"} total`
+                : undefined
+            }
+          />
+          <SummaryCard
+            label="Cars"
+            value={guests ? counts.cars : null}
+            tone="primary"
+            hint={
+              guests
+                ? `${counts.carsToConfirm} plate${counts.carsToConfirm === 1 ? "" : "s"} still to confirm`
                 : undefined
             }
           />
@@ -327,6 +372,7 @@ export function RsvpDashboardTool() {
             {sortedGuests.map((g) => {
               const status = normalizeStatus(g.rsvpStatus);
               const plusOneName = plusOneDisplay(g);
+              const parking = parkingDisplay(g);
               return (
                 <Card key={g._id} padding={3} radius={2} border>
                   <Flex align="center" gap={3} wrap="wrap">
@@ -356,6 +402,20 @@ export function RsvpDashboardTool() {
                             +1: {plusOneName}
                           </Badge>
                         )}
+                        {parking && (
+                          <Badge
+                            tone={
+                              parking.kind === "plate"
+                                ? "primary"
+                                : parking.kind === "unsure"
+                                  ? "caution"
+                                  : "default"
+                            }
+                            fontSize={0}
+                          >
+                            {parking.kind === "none" ? "Not driving" : `Plate: ${parking.text}`}
+                          </Badge>
+                        )}
                       </Flex>
                       <Text size={1} muted>
                         {formatTimestamp(g.rsvpUpdatedAt)}
@@ -380,7 +440,7 @@ function SummaryCard({
 }: {
   label: string;
   value: number | null;
-  tone: "positive" | "critical" | "caution";
+  tone: "positive" | "critical" | "caution" | "primary";
   hint?: string;
 }) {
   return (

@@ -1,5 +1,10 @@
 import { isRsvpClosed } from "@/lib/rsvp-cutoff";
-import type { GuestResult, RsvpStatus } from "@/sanity/queries/guests";
+import type { RsvpParkingAnswer } from "@/app/actions/rsvp";
+import type {
+  GuestParking,
+  GuestResult,
+  RsvpStatus,
+} from "@/sanity/queries/guests";
 
 export type RsvpViewMode = "summary" | "chat" | "closed";
 
@@ -137,4 +142,48 @@ export function deriveConfirmedNames(guest: NonNullable<GuestResult>): string[] 
   }
 
   return names;
+}
+
+/**
+ * Second detail line on the summary card describing the guest's parking
+ * answer (ADR-0008). Attending guests only. A `plate` status with no plate
+ * value can only come from a hand edit in Studio; treat it as never asked so
+ * the guest is invited to fill it in rather than shown an empty line.
+ */
+export function deriveParkingLine(
+  status: RsvpStatus,
+  parking: GuestParking | null,
+): string | null {
+  if (status !== "attending") return null;
+  if (parking?.status === "plate" && parking.plate) {
+    return `Car plate: ${parking.plate}`;
+  }
+  if (parking?.status === "unsure") return "Car plate: not sure yet";
+  if (parking?.status === "none") return "Not driving.";
+  return "Car plate: not added yet";
+}
+
+/**
+ * Whether the summary card should offer the "Add it" plate form: the guest is
+ * attending and has neither a plate on file nor told us they aren't driving.
+ */
+export function parkingNeedsPlate(
+  status: RsvpStatus,
+  parking: GuestParking | null,
+): boolean {
+  if (status !== "attending") return false;
+  if (parking?.status === "plate" && parking.plate) return false;
+  if (parking?.status === "none") return false;
+  return true;
+}
+
+/**
+ * Shape a just-submitted parking answer the way the guest doc will read back,
+ * so the client can update its optimistic copy without a refetch.
+ */
+export function parkingFromAnswer(answer: RsvpParkingAnswer): GuestParking {
+  return {
+    status: answer.status,
+    plate: answer.status === "plate" ? answer.plate : null,
+  };
 }
