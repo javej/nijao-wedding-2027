@@ -47,10 +47,20 @@ interface ArrivalOverlayProps {
   /** Fires after the overlay's fade-out exit animation completes. Used by the shell to release the scroll lock only AFTER the fade, not at gesture time. See ADR-0003. */
   onExitComplete?: () => void;
   guestName?: string;
+  /** Everyone whose RSVP is on file as attending, guest first. Empty/omitted → generic welcome. */
+  confirmedNames?: string[];
 }
 
-export function ArrivalOverlay({ visible, interactive, onDismiss, onExitComplete, guestName }: ArrivalOverlayProps) {
+export function ArrivalOverlay({
+  visible,
+  interactive,
+  onDismiss,
+  onExitComplete,
+  guestName,
+  confirmedNames = [],
+}: ArrivalOverlayProps) {
   const shouldReduceMotion = useReducedMotion();
+  const hasConfirmed = confirmedNames.length > 0;
   const hasDismissed = useRef(false);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -171,13 +181,39 @@ export function ArrivalOverlay({ visible, interactive, onDismiss, onExitComplete
                 viewport-based text would overflow the lace center. 6.25cqi keeps
                 the text at ~30px when the frame is at its 480px max, clamped for
                 legibility on tiny frames and to not overrun on large ones. */}
-            <p className="absolute inset-x-[16%] inset-y-[18%] flex items-center justify-center text-center font-display text-[clamp(0.9rem,6.25cqi,1.875rem)] font-light text-foreground leading-relaxed">
-              <span>
+            <div className="absolute inset-x-[16%] inset-y-[18%] flex flex-col items-center justify-center text-center font-display font-light text-foreground leading-relaxed">
+              <p className="text-[clamp(0.9rem,6.25cqi,1.875rem)]">
                 {guestName ? <>Welcome, <span className="italic text-raspberry">{guestName}</span>.</> : 'Welcome.'}
-                <br />
-                We&rsquo;re so glad you&rsquo;re here.
-              </span>
-            </p>
+                {!hasConfirmed && (
+                  <>
+                    <br />
+                    We&rsquo;re so glad you&rsquo;re here.
+                  </>
+                )}
+              </p>
+              {/* Once the RSVP is on file the mirror reflects it back: who is
+                  confirmed, in place of the generic welcome. Slightly smaller
+                  than the greeting so the list stays inside the lace center. */}
+              {hasConfirmed && (
+                <>
+                  <span aria-hidden="true" className="my-[3cqi] h-px w-2/5 bg-foreground/25" />
+                  <p className="text-[clamp(0.8rem,5.25cqi,1.5rem)]">
+                    Confirmed RSVP{confirmedNames.length > 1 ? 's' : ''} for:
+                  </p>
+                  {confirmedNames.length === 1 ? (
+                    <p className="text-[clamp(0.85rem,5.75cqi,1.625rem)] font-semibold">{confirmedNames[0]}</p>
+                  ) : (
+                    <ol className="list-inside list-decimal text-left text-[clamp(0.85rem,5.75cqi,1.625rem)] font-semibold">
+                      {confirmedNames.map((name, index) => (
+                        <li key={`${index}-${name}`} className={index > 0 ? 'text-raspberry' : undefined}>
+                          {name}
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </>
+              )}
+            </div>
           </motion.div>
 
           {/* Tap-to-begin affordance — ceremonial, not utilitarian */}

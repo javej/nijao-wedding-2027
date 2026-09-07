@@ -11,6 +11,7 @@ import {
 interface ExperienceShellProps {
   children: React.ReactNode;
   guestName?: string;
+  confirmedNames?: string[];
 }
 
 /**
@@ -23,7 +24,7 @@ interface ExperienceShellProps {
 /** Belt-and-braces fallback for the scroll-lock release in case the overlay's exit animation is ever interrupted and onExitComplete never fires. Comfortably longer than the 500ms fade. */
 const ARRIVAL_FALLBACK_MS = 1000;
 
-export function ExperienceShell({ children, guestName }: ExperienceShellProps) {
+export function ExperienceShell({ children, guestName, confirmedNames }: ExperienceShellProps) {
   const [loaderDone, setLoaderDone] = useState(false);
   const [overlayDismissed, setOverlayDismissed] = useState(false);
   const [arrivalComplete, setArrivalComplete] = useState(false);
@@ -88,6 +89,7 @@ export function ExperienceShell({ children, guestName }: ExperienceShellProps) {
         onDismiss={handleOverlayDismiss}
         onExitComplete={handleOverlayExitComplete}
         guestName={guestName}
+        confirmedNames={confirmedNames}
       />
       <AudioController ref={audioRef} visible={overlayDismissed} />
       {children}
