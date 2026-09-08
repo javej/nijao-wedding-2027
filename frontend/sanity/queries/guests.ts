@@ -63,7 +63,8 @@ export type GuestResult = {
   rsvpUpdatedAt: string | null;
   openPlusOne: {
     attending: boolean | null;
-    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
   } | null;
   parking: GuestParking | null;
 } | null;

@@ -15,8 +15,9 @@ export interface RSVPPayload {
   guestSlug: string;
   guestName: string;
   attending: boolean;
-  plusOneName?: string;
   turnstileToken: string;
+  /** Free-form plus-one, captured as two fields so the export can list them as their own line. */
+  openPlusOne?: OpenPlusOneName;
   linkedGuest?: { name: string; slug?: string; attending: boolean };
   plusOneType?: "linked" | "open" | null;
   plusOneAttending?: boolean;
@@ -24,6 +25,11 @@ export interface RSVPPayload {
   guestEmail?: string;
   guestMobile?: string;
   parking?: RsvpParkingAnswer;
+}
+
+export interface OpenPlusOneName {
+  firstName: string;
+  lastName: string;
 }
 
 /**
@@ -92,11 +98,12 @@ export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
   // The audit row mirrors Sanity: include the linked partner's row only when
   // their cross-mutation actually committed, so the sheet never claims a "yes"
   // the guest doc doesn't reflect.
+  const plusOneName = auditPlusOneName(payload);
   const auditPayload: RsvpAuditPayload = {
     guestName: payload.guestName,
     guestSlug: payload.guestSlug,
     attending: payload.attending,
-    ...(payload.plusOneName && { plusOneName: payload.plusOneName }),
+    ...(plusOneName && { plusOneName }),
     ...(partnerWritten && payload.linkedGuest && { linkedGuest: payload.linkedGuest }),
   };
 
@@ -119,6 +126,34 @@ export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
   }
 
   return { success: true };
+}
+
+/**
+ * The single plus-one column in the Sheets audit log: the open plus-one's full
+ * name, or the linked partner's name when the submission answered for them.
+ * Null for "just me" and for decliners, whose plus-one is not coming either way.
+ */
+function auditPlusOneName(payload: RSVPPayload): string | null {
+  if (!payload.attending || !payload.plusOneAttending) return null;
+  if (payload.plusOneType === "open") {
+    const plusOne = normalizeOpenPlusOne(payload.openPlusOne);
+    return plusOne ? `${plusOne.firstName} ${plusOne.lastName}` : null;
+  }
+  if (payload.plusOneType === "linked") {
+    return payload.linkedGuest?.name ?? null;
+  }
+  return null;
+}
+
+/** Trim both halves; a blank half means the guest never finished naming them. */
+function normalizeOpenPlusOne(
+  plusOne: OpenPlusOneName | undefined,
+): OpenPlusOneName | null {
+  if (!plusOne) return null;
+  const firstName = plusOne.firstName.trim();
+  const lastName = plusOne.lastName.trim();
+  if (!firstName || !lastName) return null;
+  return { firstName, lastName };
 }
 
 /**
@@ -318,16 +353,16 @@ async function writeSanityRsvp(
   const parking = payload.parking ? normalizeParkingAnswer(payload.parking) : null;
   if (parking) submitterPatch.set({ parking });
 
-  // openPlusOne: set when attending with an open plus-one name; unset
+  // openPlusOne: set when attending with a named open plus-one; unset
   // otherwise so the summary card stops showing a stale plus-one name when
   // an editing guest switches from "with someone" to "just me".
-  if (
-    payload.plusOneType === "open" &&
-    payload.attending &&
-    payload.plusOneName
-  ) {
+  const openPlusOne =
+    payload.plusOneType === "open" && payload.attending && payload.plusOneAttending
+      ? normalizeOpenPlusOne(payload.openPlusOne)
+      : null;
+  if (openPlusOne) {
     submitterPatch.set({
-      openPlusOne: { attending: true, name: payload.plusOneName },
+      openPlusOne: { attending: true, ...openPlusOne },
     });
   } else {
     submitterPatch.unset(["openPlusOne"]);

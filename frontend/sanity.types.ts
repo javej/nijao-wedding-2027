@@ -170,7 +170,8 @@ export type Guest = {
   rsvpUpdatedAt?: string;
   openPlusOne?: {
     attending?: boolean;
-    name?: string;
+    firstName?: string;
+    lastName?: string;
   };
 };
 
@@ -490,7 +491,8 @@ export type GUEST_BY_SLUG_QUERY_RESULT = {
   rsvpUpdatedAt: string | null;
   openPlusOne: {
     attending?: boolean;
-    name?: string;
+    firstName?: string;
+    lastName?: string;
   } | null;
   parking: {
     status?: "none" | "plate" | "unsure";

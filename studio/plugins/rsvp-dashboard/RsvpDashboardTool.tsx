@@ -13,33 +13,22 @@ import {
 import { useClient } from "sanity";
 import { Download, RefreshCw } from "lucide-react";
 import { fullName } from "../../lib/guestName";
-
-type RsvpStatus = "pending" | "attending" | "declined";
-type ParkingStatus = "plate" | "unsure" | "none";
-
-type GuestRow = {
-  _id: string;
-  firstName: string;
-  lastName: string | null;
-  slug: string;
-  description: string | null;
-  plusOneEligible: boolean | null;
-  plusOneType: "linked" | "open" | null;
-  rsvpStatus: RsvpStatus | null;
-  rsvpUpdatedAt: string | null;
-  openPlusOne: { attending: boolean | null; name: string | null } | null;
-  parking: { status: ParkingStatus | null; plate: string | null } | null;
-  linkedPartner: {
-    firstName: string;
-    rsvpStatus: RsvpStatus | null;
-  } | null;
-};
+import {
+  buildCsv,
+  normalizeStatus,
+  parkingDisplay,
+  plusOneDisplay,
+  type GuestRow,
+} from "./csv";
 
 type SortKey = "rsvpUpdatedAt" | "name";
 type SortDir = "asc" | "desc";
 
 const API_VERSION = process.env.SANITY_STUDIO_API_VERSION || "2026-04-09";
 
+// "plusOneOf" is the reverse of plusOneLinkedGuest: the guest who lists this
+// guest as their partner. That guest — not this guest's own link — is who this
+// row is the plus-one of.
 const GUEST_DASHBOARD_QUERY = `*[
   _type == "guest" &&
   !(_id in path("drafts.**")) &&
@@ -56,92 +45,19 @@ const GUEST_DASHBOARD_QUERY = `*[
   rsvpUpdatedAt,
   openPlusOne,
   parking,
-  "linkedPartner": plusOneLinkedGuest->{ firstName, rsvpStatus }
+  "linkedPartner": plusOneLinkedGuest->{ firstName, rsvpStatus },
+  "plusOneOf": *[
+    _type == "guest" &&
+    !(_id in path("drafts.**")) &&
+    plusOneLinkedGuest._ref == ^._id
+  ][0]{ firstName, lastName }
 }`;
-
-function normalizeStatus(value: RsvpStatus | null | undefined): RsvpStatus {
-  return value ?? "pending";
-}
 
 function formatTimestamp(iso: string | null): string {
   if (!iso) return "—";
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return iso;
   return date.toLocaleString();
-}
-
-function escapeCsvCell(value: string): string {
-  if (/[",\n\r]/.test(value)) {
-    return `"${value.replace(/"/g, '""')}"`;
-  }
-  return value;
-}
-
-// Compute the visible plus-one name for a guest (linked partner if attending,
-// open plus-one name if attending) — used in both the table and the CSV.
-function plusOneDisplay(guest: GuestRow): string {
-  if (normalizeStatus(guest.rsvpStatus) !== "attending") return "";
-  if (guest.plusOneType === "linked") {
-    if (guest.linkedPartner && normalizeStatus(guest.linkedPartner.rsvpStatus) === "attending") {
-      return guest.linkedPartner.firstName;
-    }
-    return "";
-  }
-  if (guest.plusOneType === "open") {
-    if (guest.openPlusOne?.attending && guest.openPlusOne.name) {
-      return guest.openPlusOne.name;
-    }
-    return "";
-  }
-  return "";
-}
-
-// Parking answer for an attending guest (ADR-0008), for both the row badge and
-// the CSV. Empty for guests who aren't attending; "not added" distinguishes a
-// guest who was never asked from one who explicitly said "not sure yet".
-type ParkingDisplay =
-  | { kind: "plate"; text: string }
-  | { kind: "unsure"; text: string }
-  | { kind: "none"; text: string }
-  | { kind: "missing"; text: string }
-  | null;
-
-function parkingDisplay(guest: GuestRow): ParkingDisplay {
-  if (normalizeStatus(guest.rsvpStatus) !== "attending") return null;
-  const parking = guest.parking;
-  if (parking?.status === "plate" && parking.plate) {
-    return { kind: "plate", text: parking.plate };
-  }
-  if (parking?.status === "unsure") return { kind: "unsure", text: "not sure yet" };
-  if (parking?.status === "none") return { kind: "none", text: "not driving" };
-  return { kind: "missing", text: "not added" };
-}
-
-function buildCsv(rows: GuestRow[]): string {
-  const header = [
-    "guest name",
-    "attending",
-    "plus-one name",
-    "car plate",
-    "timestamp",
-    "description",
-  ];
-  const lines = [header.join(",")];
-  for (const r of rows) {
-    const status = normalizeStatus(r.rsvpStatus);
-    lines.push(
-      [
-        escapeCsvCell(fullName(r)),
-        status === "attending" ? "yes" : status === "declined" ? "no" : "",
-        escapeCsvCell(plusOneDisplay(r)),
-        escapeCsvCell(parkingDisplay(r)?.text ?? ""),
-        escapeCsvCell(r.rsvpUpdatedAt ?? ""),
-        escapeCsvCell(r.description ?? ""),
-      ].join(","),
-    );
-  }
-  // Prepend UTF-8 BOM so Excel detects encoding correctly for accented names.
-  return "﻿" + lines.join("\n");
 }
 
 function downloadCsv(filename: string, csv: string): void {

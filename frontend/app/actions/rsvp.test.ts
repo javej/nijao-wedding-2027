@@ -39,6 +39,7 @@ vi.mock('@/lib/rsvp-cutoff', () => ({ isRsvpClosed: () => false }));
 vi.mock('@/sanity/lib/write', () => ({ writeClient: fakes.writeClient }));
 
 import { revalidateTag } from 'next/cache';
+import { appendRsvpRows } from '@/lib/sheets';
 import { submitRsvp, submitGuestParking, type RSVPPayload } from './rsvp';
 
 const basePayload: RSVPPayload = {
@@ -152,5 +153,71 @@ describe('submitGuestParking (summary-card plate form)', () => {
     });
 
     expect(result).toEqual({ success: false, error: 'sanity_unavailable' });
+  });
+});
+
+describe('submitRsvp open plus-one', () => {
+  const withPlusOne: RSVPPayload = {
+    ...basePayload,
+    plusOneType: 'open',
+    plusOneAttending: true,
+    openPlusOne: { firstName: 'Jane', lastName: 'Doe' },
+  };
+
+  it('stores the plus-one as separate first and last names on the guest doc', async () => {
+    await submitRsvp(withPlusOne);
+
+    expect(submitterPatch().set).toHaveBeenCalledWith({
+      openPlusOne: { attending: true, firstName: 'Jane', lastName: 'Doe' },
+    });
+    expect(submitterPatch().unset).not.toHaveBeenCalledWith(['openPlusOne']);
+  });
+
+  it('trims the names before storing them', async () => {
+    await submitRsvp({
+      ...withPlusOne,
+      openPlusOne: { firstName: '  Jane ', lastName: ' Doe  ' },
+    });
+
+    expect(submitterPatch().set).toHaveBeenCalledWith({
+      openPlusOne: { attending: true, firstName: 'Jane', lastName: 'Doe' },
+    });
+  });
+
+  it('writes the joined full name to the Sheets audit log', async () => {
+    await submitRsvp(withPlusOne);
+
+    expect(appendRsvpRows).toHaveBeenCalledWith(
+      expect.objectContaining({ guestName: 'Sharky', plusOneName: 'Jane Doe' }),
+    );
+  });
+
+  it('clears a stale plus-one when the guest switches to "just me"', async () => {
+    await submitRsvp({ ...basePayload, plusOneType: 'open', plusOneAttending: false });
+
+    expect(submitterPatch().unset).toHaveBeenCalledWith(['openPlusOne']);
+    expect(appendRsvpRows).toHaveBeenCalledWith(
+      expect.not.objectContaining({ plusOneName: expect.anything() }),
+    );
+  });
+
+  it('clears the plus-one when the guest declines', async () => {
+    await submitRsvp({ ...withPlusOne, attending: false });
+
+    expect(submitterPatch().unset).toHaveBeenCalledWith(['openPlusOne']);
+  });
+
+  it("logs a linked partner's name to Sheets when both are coming", async () => {
+    await submitRsvp({
+      ...basePayload,
+      plusOneType: 'linked',
+      plusOneAttending: true,
+      linkedPartnerSlug: 'bob',
+      linkedGuest: { name: 'Bob', slug: 'bob', attending: true },
+    });
+
+    expect(appendRsvpRows).toHaveBeenCalledWith(
+      expect.objectContaining({ plusOneName: 'Bob' }),
+    );
   });
 });

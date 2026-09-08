@@ -89,7 +89,7 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
         deriveDetailLine(nextStatus, {
           ...contextFromGuest(guest),
           openPlusOneAttending: result.plusOneAttending,
-          openPlusOneName: result.plusOneName,
+          openPlusOneFirstName: result.openPlusOne?.firstName ?? null,
         }),
       );
       if (result.parking) {

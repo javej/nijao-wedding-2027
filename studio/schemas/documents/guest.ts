@@ -240,7 +240,7 @@ export default defineType({
       title: "Open Plus-One",
       type: "object",
       description:
-        "Captured plus-one details when this guest brought someone via the 'open' plus-one flow.",
+        "Captured plus-one details when this guest brought someone via the 'open' plus-one flow. First and last name are asked separately so the plus-one appears as their own line in the RSVP export.",
       fieldset: "rsvp",
       readOnly: true,
       hidden: ({ document }) => document?.plusOneType !== "open",
@@ -252,8 +252,14 @@ export default defineType({
           readOnly: true,
         }),
         defineField({
-          name: "name",
-          title: "Name",
+          name: "firstName",
+          title: "First Name",
+          type: "string",
+          readOnly: true,
+        }),
+        defineField({
+          name: "lastName",
+          title: "Last Name",
           type: "string",
           readOnly: true,
         }),
