@@ -1,0 +1,59 @@
+frontend/components/sections/RSVPSection.tsx
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 92
+frontend/lib/rsvp-view-state.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 25-26,95-96,117,140-141
+frontend/app/actions/rsvp.test.ts
+  s_c35d9fc5a258d1::t_8ab5bd09c23b3a 223
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 42,158-222
+studio/lib/splitName.test.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 1-19
+frontend/app/actions/rsvp.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 19-20,30-34,101,106,131-158,356,359-363,365
+studio/schema.json
+  s_c35d9fc5a258d1::t_cb1c6726dd8e9e 1003-1010
+studio/tsconfig.json
+  s_c35d9fc5a258d1::t_69746886be99fc 17-18
+frontend/lib/rsvp-view-state.test.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 2,72,77,79,87,93,109-128
+  s_c35d9fc5a258d1::t_5213b485e3bb98 129
+frontend/components/ui/RSVPChat.test.tsx
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 270-371
+studio/plugins/rsvp-dashboard/csv.test.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 1-164
+studio/schemas/documents/guest.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 243,255-262
+frontend/components/ui/RSVPChat.tsx
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 7,48-49,58-65,68,156-158,237,252,270,372,403,426,440,473,486,492,495,506,545-561,567-571,734-737,746-749
+frontend/sanity/queries/guests.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 66-67
+studio/plugins/rsvp-dashboard/RsvpDashboardTool.tsx
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 16-22,29-31,48-53
+studio/package.json
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 12-13,43-44
+frontend/sanity.types.ts
+  s_c35d9fc5a258d1::t_cb1c6726dd8e9e 173-174,494-495
+studio/lib/splitName.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 1-13
+studio/plugins/rsvp-dashboard/csv.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 1-140
+studio/migrations/0003-open-plus-one-split-name.ts
+  s_c35d9fc5a258d1::t_d7baad9f8ad9e6 1-78
+pnpm-lock.yaml
+  s_c35d9fc5a258d1::t_edb277294c9bb1 228-230
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "94255c4a39fd882d5347dea3fefe07c1a3e06c6c",
+  "prompts": {},
+  "sessions": {
+    "s_c35d9fc5a258d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "28caff62-6f43-44f0-84e4-fd2d6a70e275",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
