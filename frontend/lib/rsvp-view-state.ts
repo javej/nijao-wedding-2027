@@ -22,7 +22,8 @@ export interface RsvpDetailContext {
   plusOneType: "linked" | "open" | null;
   linkedPartner: { firstName: string; rsvpStatus: RsvpStatus | null } | null;
   openPlusOneAttending: boolean;
-  openPlusOneName: string | null;
+  /** First name only: guest-facing copy addresses companions by first name. */
+  openPlusOneFirstName: string | null;
 }
 
 function normalizeStatus(value: RsvpStatus | null | undefined): RsvpStatus {
@@ -91,8 +92,8 @@ export function deriveDetailLine(
   }
 
   if (context.plusOneType === "open") {
-    if (context.openPlusOneAttending && context.openPlusOneName) {
-      return `Attending — with ${context.openPlusOneName}.`;
+    if (context.openPlusOneAttending && context.openPlusOneFirstName) {
+      return `Attending — with ${context.openPlusOneFirstName}.`;
     }
     return "Attending.";
   }
@@ -113,7 +114,7 @@ export function contextFromGuest(
         }
       : null,
     openPlusOneAttending: guest.openPlusOne?.attending === true,
-    openPlusOneName: guest.openPlusOne?.name ?? null,
+    openPlusOneFirstName: guest.openPlusOne?.firstName ?? null,
   };
 }
 
@@ -136,8 +137,8 @@ export function deriveConfirmedNames(guest: NonNullable<GuestResult>): string[] 
       names.push(partner.firstName);
     }
   } else if (context.plusOneType === "open") {
-    if (context.openPlusOneAttending && context.openPlusOneName) {
-      names.push(context.openPlusOneName);
+    if (context.openPlusOneAttending && context.openPlusOneFirstName) {
+      names.push(context.openPlusOneFirstName);
     }
   }
 

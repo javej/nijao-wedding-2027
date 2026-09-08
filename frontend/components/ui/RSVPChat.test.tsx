@@ -267,3 +267,105 @@ describe('RSVPChat parking question (ADR-0008)', () => {
     expect(vi.mocked(submitRsvp).mock.calls[0][0].parking).toBeUndefined();
   });
 });
+
+describe('RSVPChat open plus-one name', () => {
+  const openPlusOneProps: Partial<RSVPChatProps> = {
+    plusOneEligible: true,
+    plusOneType: 'open',
+  };
+
+  async function bringSomeone(user: ReturnType<typeof userEvent.setup>) {
+    await user.click(screen.getByRole('button', { name: "Yes, I'll be there" }));
+    await user.click(await screen.findByRole('button', { name: 'Yes, bringing someone' }));
+  }
+
+  it('asks for the first name, then the last name, then moves on to parking', async () => {
+    const user = userEvent.setup();
+    renderChat(openPlusOneProps);
+
+    await bringSomeone(user);
+
+    expect(
+      await screen.findByText("Great! What's your plus-one's first name?"),
+    ).toBeInTheDocument();
+    await user.type(
+      await screen.findByRole('textbox', { name: "Plus-one's first name" }),
+      'Jane{Enter}',
+    );
+
+    expect(await screen.findByText('And their last name?')).toBeInTheDocument();
+    await user.type(
+      await screen.findByRole('textbox', { name: "Plus-one's last name" }),
+      'Doe{Enter}',
+    );
+
+    expect(await screen.findByRole('button', { name: 'Not driving' })).toBeInTheDocument();
+  });
+
+  it('submits the plus-one as separate first and last names', async () => {
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    renderChat({ ...openPlusOneProps, onComplete });
+
+    await bringSomeone(user);
+    await user.type(
+      await screen.findByRole('textbox', { name: "Plus-one's first name" }),
+      'Jane{Enter}',
+    );
+    await user.type(
+      await screen.findByRole('textbox', { name: "Plus-one's last name" }),
+      'Doe{Enter}',
+    );
+    await user.click(await screen.findByRole('button', { name: 'Not driving' }));
+
+    await waitFor(() => expect(submitRsvp).toHaveBeenCalledTimes(1), { timeout: 3000 });
+    expect(submitRsvp).toHaveBeenCalledWith(
+      expect.objectContaining({
+        plusOneType: 'open',
+        plusOneAttending: true,
+        openPlusOne: { firstName: 'Jane', lastName: 'Doe' },
+      }),
+    );
+    await waitFor(() =>
+      expect(onComplete).toHaveBeenCalledWith(
+        expect.objectContaining({
+          plusOneAttending: true,
+          openPlusOne: { firstName: 'Jane', lastName: 'Doe' },
+        }),
+      ),
+    );
+  });
+
+  it('does not accept an empty last name', async () => {
+    const user = userEvent.setup();
+    renderChat(openPlusOneProps);
+
+    await bringSomeone(user);
+    await user.type(
+      await screen.findByRole('textbox', { name: "Plus-one's first name" }),
+      'Jane{Enter}',
+    );
+    const lastName = await screen.findByRole('textbox', { name: "Plus-one's last name" });
+    await user.type(lastName, '   {Enter}');
+
+    expect(screen.getByRole('textbox', { name: "Plus-one's last name" })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Not driving' })).not.toBeInTheDocument();
+  });
+
+  it('sends no plus-one when the guest picks "Just me"', async () => {
+    const user = userEvent.setup();
+    renderChat(openPlusOneProps);
+
+    await user.click(screen.getByRole('button', { name: "Yes, I'll be there" }));
+    await user.click(await screen.findByRole('button', { name: 'Just me' }));
+    await user.click(await screen.findByRole('button', { name: 'Not driving' }));
+
+    await waitFor(() => expect(submitRsvp).toHaveBeenCalledTimes(1), { timeout: 3000 });
+    expect(submitRsvp).toHaveBeenCalledWith(
+      expect.not.objectContaining({ openPlusOne: expect.anything() }),
+    );
+    expect(submitRsvp).toHaveBeenCalledWith(
+      expect.objectContaining({ plusOneAttending: false }),
+    );
+  });
+});

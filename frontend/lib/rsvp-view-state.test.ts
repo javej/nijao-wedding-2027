@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { deriveConfirmedNames } from './rsvp-view-state';
+import { deriveConfirmedNames, deriveDetailLine, contextFromGuest } from './rsvp-view-state';
 import type { GuestResult } from '@/sanity/queries/guests';
 
 type Guest = NonNullable<GuestResult>;
@@ -69,14 +69,14 @@ describe('deriveConfirmedNames', () => {
     expect(deriveConfirmedNames(pending)).toEqual(['Test Main']);
   });
 
-  it('adds a named open plus-one who is attending', () => {
+  it('adds an attending open plus-one by first name, like the guest', () => {
     const g = guest({
       rsvpStatus: 'attending',
       plusOneEligible: true,
       plusOneType: 'open',
-      openPlusOne: { attending: true, name: 'Jane Doe' },
+      openPlusOne: { attending: true, firstName: 'Jane', lastName: 'Doe' },
     });
-    expect(deriveConfirmedNames(g)).toEqual(['Test Main', 'Jane Doe']);
+    expect(deriveConfirmedNames(g)).toEqual(['Test Main', 'Jane']);
   });
 
   it('omits an open plus-one who is not attending or has no name', () => {
@@ -84,13 +84,13 @@ describe('deriveConfirmedNames', () => {
       rsvpStatus: 'attending',
       plusOneEligible: true,
       plusOneType: 'open',
-      openPlusOne: { attending: false, name: 'Jane Doe' },
+      openPlusOne: { attending: false, firstName: 'Jane', lastName: 'Doe' },
     });
     const unnamed = guest({
       rsvpStatus: 'attending',
       plusOneEligible: true,
       plusOneType: 'open',
-      openPlusOne: { attending: true, name: null },
+      openPlusOne: { attending: true, firstName: null, lastName: null },
     });
     expect(deriveConfirmedNames(notAttending)).toEqual(['Test Main']);
     expect(deriveConfirmedNames(unnamed)).toEqual(['Test Main']);
@@ -104,5 +104,26 @@ describe('deriveConfirmedNames', () => {
       plusOneLinkedGuest: { firstName: 'Jane Doe', slug: 'efgh5678', rsvpStatus: 'attending' },
     });
     expect(deriveConfirmedNames(g)).toEqual(['Test Main']);
+  });
+});
+
+describe('deriveDetailLine with an open plus-one', () => {
+  function openPlusOneGuest(openPlusOne: Guest['openPlusOne']): Guest {
+    return guest({
+      rsvpStatus: 'attending',
+      plusOneEligible: true,
+      plusOneType: 'open',
+      openPlusOne,
+    });
+  }
+
+  it("names the plus-one by first name on the summary card", () => {
+    const g = openPlusOneGuest({ attending: true, firstName: 'Jane', lastName: 'Doe' });
+    expect(deriveDetailLine('attending', contextFromGuest(g))).toBe('Attending — with Jane.');
+  });
+
+  it('falls back to plain "Attending." when the plus-one is unnamed', () => {
+    const g = openPlusOneGuest({ attending: true, firstName: null, lastName: null });
+    expect(deriveDetailLine('attending', contextFromGuest(g))).toBe('Attending.');
   });
 });
