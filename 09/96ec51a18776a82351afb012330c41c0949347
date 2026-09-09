@@ -1,0 +1,27 @@
+frontend/components/ui/HeroJumpNav.tsx
+  s_a8274a2a94e6e5::t_150eff6235fc70 8-9
+frontend/components/sections/HeroSection.tsx
+  s_a8274a2a94e6e5::t_fd6d121c1f625f 31
+frontend/components/ui/FloatingAnchorSet.tsx
+  s_a8274a2a94e6e5::t_0e73bcb6e7aab6 34
+  s_a8274a2a94e6e5::t_69f0594d29a24b 85
+  s_a8274a2a94e6e5::t_9194efb0377123 108-109
+frontend/components/ui/HeroJumpNav.test.tsx
+  s_a8274a2a94e6e5::t_ddd96fec0626a6 1-34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "0996ec51a18776a82351afb012330c41c0949347",
+  "prompts": {},
+  "sessions": {
+    "s_a8274a2a94e6e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "17c1f24b-87ea-46f6-9749-22ac91afb0d5",
+        "model": "unknown"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
