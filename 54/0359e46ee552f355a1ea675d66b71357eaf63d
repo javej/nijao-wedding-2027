@@ -1,0 +1,25 @@
+studio/plugins/rsvp-dashboard/live.test.ts
+  s_a8274a2a94e6e5::t_1bc1bd2d84c794 1-132
+studio/plugins/rsvp-dashboard/live.ts
+  s_a8274a2a94e6e5::t_4bacf54fca9f05 1-100
+studio/plugins/rsvp-dashboard/RsvpDashboardTool.tsx
+  s_a8274a2a94e6e5::t_9da6cf7baddecc 113-128
+  s_a8274a2a94e6e5::t_7d2528ab267e0f 23
+  s_a8274a2a94e6e5::t_c89e03a3f49223 205-206
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "540359e46ee552f355a1ea675d66b71357eaf63d",
+  "prompts": {},
+  "sessions": {
+    "s_a8274a2a94e6e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "17c1f24b-87ea-46f6-9749-22ac91afb0d5",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
