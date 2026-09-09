@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllGuestSlugs, getGuestBySlug } from "@/sanity/queries/guests";
 import { WeddingExperience } from "@/components/WeddingExperience";
+import { sharedOpenGraph } from "@/lib/site-metadata";
 
 /**
  * Guest slugs are added in Sanity continuously — after the last deploy, not
@@ -38,10 +39,19 @@ export async function generateMetadata(props: {
 
   if (!guest) return {};
 
+  // Messenger (and Facebook generally) opens a link preview at the page's
+  // `og:url`, treating it as the canonical resource, not at the URL the sender
+  // pasted. Inheriting the root layout's `url: "/"` sent every first-time guest
+  // who tapped the preview card to the anonymous home page, where the RSVP
+  // section is only a heading. Advertise the guest's own URL instead.
+  const path = `/${params.slug}`;
+
   return {
     title: `${guest.firstName} — Jave & Nianne, January 8, 2027`,
     description:
       "You are cordially invited to the wedding of Jave and Nianne. January 8, 2027 — Lipa, Batangas.",
+    alternates: { canonical: path },
+    openGraph: { ...sharedOpenGraph, url: path },
   };
 }
 

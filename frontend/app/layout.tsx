@@ -3,6 +3,7 @@ import { Cormorant_Garamond, DM_Sans, Montserrat } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import { sharedOpenGraph, sharedTwitter } from "@/lib/site-metadata";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
@@ -12,30 +13,11 @@ export const metadata: Metadata = {
   },
   description:
     "Ten years. One more day. Join us as we celebrate our wedding at 10 22 Lipa, Batangas.",
-  openGraph: {
-    title: "Dearest Gentle Reader, ✨",
-    description:
-      "A decade of courtship leads to a wedding. Tap to uncover the details.",
-    url: "/",
-    type: "website",
-    locale: "en_PH",
-    siteName: "Jave & Nianne Wedding",
-    images: [
-      {
-        url: "/decorations/preview-og.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Jave & Nianne — January 8, 2027",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Dearest Gentle Reader, ✨",
-    description:
-      "A decade of courtship leads to a wedding. Tap to uncover the details.",
-    images: ["/decorations/preview-og.jpg"],
-  },
+  // Only the anonymous home page may claim the root as its URL. Guest pages
+  // set their own in `generateMetadata` — see `lib/site-metadata.ts`.
+  alternates: { canonical: "/" },
+  openGraph: { ...sharedOpenGraph, url: "/" },
+  twitter: sharedTwitter,
   robots: { index: false, follow: false },
 };
 

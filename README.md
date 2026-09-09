@@ -130,6 +130,8 @@ Add your production URL to the CORS Origins in your Sanity project settings to a
 
 This is also what makes content updates land in an already-open tab: `<SanityLive />` opens an EventSource from the guest's browser straight to the Sanity Live Content API, and an origin missing from the allowlist fails that connection (look for a `Sanity Live is unable to connect...` warning in the browser console). Include every origin you actually serve from — the production domain, any custom domain, and the `*.vercel.app` preview domains if you review content there.
 
+**Dataset visibility.** That anonymous browser connection only works because the `production` dataset is public, which also means the guest documents (names, emails, mobiles, car plates) can be read by anyone with the project ID. Making the dataset private (`sanity dataset visibility set production private`) needs a Sanity plan that allows private datasets; the current plan rejects it (`ACL mode "private" not allowed for this project`). If the plan is upgraded and the dataset made private, mount `<SanityLive />` only in Draft Mode and give guests a refresh-on-focus component instead, since the Live Content API then requires a token the browser must not hold. Server-side reads keep working through `SANITY_API_READ_TOKEN`.
+
 #### 2. Configure the content webhook
 
 Content changes reach the deployed site three ways, and it is worth having all three:
