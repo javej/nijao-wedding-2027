@@ -28,8 +28,7 @@ export function HeroSection() {
         <span className="whitespace-nowrap">Lipa, Batangas</span>
       </h1>
 
-      {/* Returning-guest jump-nav — hidden on first visit, surfaces under the names
-          once the guest has been all the way through. */}
+      {/* Jump-nav under the names, available from the very first visit. */}
       <HeroJumpNav />
     </div>
   );
