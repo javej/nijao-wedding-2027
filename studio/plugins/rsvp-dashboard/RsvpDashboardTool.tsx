@@ -20,6 +20,7 @@ import {
   plusOneDisplay,
   type GuestRow,
 } from "./csv";
+import { watchGuestChanges } from "./live";
 
 type SortKey = "rsvpUpdatedAt" | "name";
 type SortDir = "asc" | "desc";
@@ -109,6 +110,22 @@ export function RsvpDashboardTool() {
     };
   }, [loadData]);
 
+  // Refetch whenever a guest document changes, so an RSVP submitted while this
+  // tool is open shows up without pressing Refresh. Listener errors surface in
+  // the same banner as fetch errors; the manual button still works meanwhile.
+  useEffect(() => {
+    return watchGuestChanges(
+      client,
+      () => void loadData(),
+      (err) =>
+        setError(
+          err instanceof Error
+            ? `Live updates stopped: ${err.message}. Use Refresh to pull the latest data.`
+            : "Live updates stopped. Use Refresh to pull the latest data.",
+        ),
+    );
+  }, [client, loadData]);
+
   const counts = useMemo(() => {
     if (!guests) {
       return { attending: 0, declined: 0, pending: 0, plusOnes: 0, cars: 0, carsToConfirm: 0 };
@@ -185,8 +202,8 @@ export function RsvpDashboardTool() {
         <Stack space={2}>
           <Heading size={2}>RSVP Dashboard</Heading>
           <Text size={1} muted>
-            Live RSVP responses, read directly from the Sanity guest list.
-            Refresh to pull the latest data or export a CSV for the caterer.
+            Live RSVP responses, read directly from the Sanity guest list and
+            updated as guests respond. Export a CSV for the caterer any time.
           </Text>
         </Stack>
 
