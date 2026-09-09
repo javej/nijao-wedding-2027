@@ -1,0 +1,28 @@
+frontend/lib/site-metadata.ts
+  s_a8274a2a94e6e5::t_f9ff97e6fa892a 1-35
+frontend/app/(main)/[slug]/page.tsx
+  s_a8274a2a94e6e5::t_eb68e9b2090ac5 42-48,53-54
+  s_a8274a2a94e6e5::t_e46a3bcad9f35b 5
+frontend/app/(main)/[slug]/page.test.ts
+  s_a8274a2a94e6e5::t_f4e1361e520f3d 1-92
+frontend/app/layout.tsx
+  s_a8274a2a94e6e5::t_e5d596458fcc4b 6,16-20
+README.md
+  s_a8274a2a94e6e5::t_ff6c2e1e107df4 133-134
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "fb47a5991a7ee2d26c243b3b257d08ad3f560d94",
+  "prompts": {},
+  "sessions": {
+    "s_a8274a2a94e6e5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "17c1f24b-87ea-46f6-9749-22ac91afb0d5",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
