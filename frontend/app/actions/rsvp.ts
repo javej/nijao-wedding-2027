@@ -2,6 +2,7 @@
 
 // import { verifyTurnstileToken } from "@/lib/turnstile";
 import { revalidateTag } from "next/cache";
+import { after } from "next/server";
 import { appendRsvpRows } from "@/lib/sheets";
 import { sendRsvpConfirmation } from "@/lib/resend";
 import { writeClient } from "@/sanity/lib/write";
@@ -117,12 +118,15 @@ export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
     return { success: false, error: "sheets_unavailable", retryAudit: auditPayload };
   }
 
-  // 5. Send confirmation email (best-effort — never blocks success).
+  // 5. Send confirmation email (best-effort — never blocks success). Scheduled
+  // with `after()` rather than fired loose: a bare unawaited promise can be cut
+  // off when the serverless response ends, whereas `after` keeps the function
+  // alive until the send settles and surfaces its errors in the platform logs.
   if (payload.attending && payload.guestEmail) {
-    void sendRsvpConfirmation({
-      guestName: payload.guestName,
-      guestEmail: payload.guestEmail,
-    });
+    const guestEmail = normalizeEmail(payload.guestEmail);
+    after(() =>
+      sendRsvpConfirmation({ guestName: payload.guestName, guestEmail }),
+    );
   }
 
   return { success: true };
@@ -239,7 +243,7 @@ export async function submitGuestContact(
   // Send the confirmation only the FIRST time an email lands on file — a guest
   // re-saving the nudge to fix a typo'd mobile must not trigger a second email.
   if (email && !hadEmailBefore && status === "attending") {
-    void sendRsvpConfirmation({ guestName, guestEmail: email });
+    after(() => sendRsvpConfirmation({ guestName, guestEmail: email }));
   }
 
   return { success: true };
