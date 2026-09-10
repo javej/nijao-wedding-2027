@@ -73,6 +73,27 @@ interface GuestLookup {
   rsvpStatus?: "pending" | "attending" | "declined";
 }
 
+interface GuestNames {
+  firstName?: string;
+  lastName?: string;
+  nickname?: string;
+}
+
+interface EmailRecipientNames {
+  guestName: string;
+  guestNickname?: string;
+}
+
+// The email greets the guest by full name. Resolved from the guest doc, not
+// the client payload, so the greeting can't be tampered with. The nickname
+// rides along for the template to use as it sees fit.
+function emailRecipientNames(guest: GuestNames): EmailRecipientNames {
+  return {
+    guestName: [guest.firstName, guest.lastName].filter(Boolean).join(" "),
+    guestNickname: guest.nickname || undefined,
+  };
+}
+
 // --- Server Action ---
 
 export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
@@ -89,8 +110,9 @@ export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
 
   // 3. Write to Sanity (authoritative). Sheets append + email follow.
   let partnerWritten = false;
+  let recipient: EmailRecipientNames = { guestName: "" };
   try {
-    ({ partnerWritten } = await writeSanityRsvp(payload));
+    ({ partnerWritten, recipient } = await writeSanityRsvp(payload));
   } catch (error) {
     console.error("[submitRsvp] Sanity write failed:", error);
     return { success: false, error: "sanity_unavailable" };
@@ -124,9 +146,7 @@ export async function submitRsvp(payload: RSVPPayload): Promise<ActionResult> {
   // alive until the send settles and surfaces its errors in the platform logs.
   if (payload.attending && payload.guestEmail) {
     const guestEmail = normalizeEmail(payload.guestEmail);
-    after(() =>
-      sendRsvpConfirmation({ guestName: payload.guestName, guestEmail }),
-    );
+    after(() => sendRsvpConfirmation({ ...recipient, guestEmail }));
   }
 
   return { success: true };
@@ -211,13 +231,13 @@ export async function submitGuestContact(
   }
 
   let status: GuestLookup["rsvpStatus"];
-  let guestName = "";
+  let recipient: EmailRecipientNames = { guestName: "" };
   let hadEmailBefore = false;
   try {
     const guest = await writeClient.fetch<
-      (GuestLookup & { firstName?: string; email?: string }) | null
+      (GuestLookup & GuestNames & { email?: string }) | null
     >(
-      `*[_type == "guest" && slug.current == $slug][0]{ _id, _rev, rsvpStatus, firstName, email }`,
+      `*[_type == "guest" && slug.current == $slug][0]{ _id, _rev, rsvpStatus, firstName, lastName, nickname, email }`,
       { slug: payload.guestSlug },
     );
 
@@ -231,7 +251,7 @@ export async function submitGuestContact(
     await patch.commit();
 
     status = guest.rsvpStatus;
-    guestName = guest.firstName ?? "";
+    recipient = emailRecipientNames(guest);
     hadEmailBefore = Boolean(guest.email);
   } catch (error) {
     console.error("[submitGuestContact] Sanity write failed:", error);
@@ -243,7 +263,7 @@ export async function submitGuestContact(
   // Send the confirmation only the FIRST time an email lands on file — a guest
   // re-saving the nudge to fix a typo'd mobile must not trigger a second email.
   if (email && !hadEmailBefore && status === "attending") {
-    after(() => sendRsvpConfirmation({ guestName, guestEmail: email }));
+    after(() => sendRsvpConfirmation({ ...recipient, guestEmail: email }));
   }
 
   return { success: true };
@@ -321,9 +341,9 @@ function normalizeParkingAnswer(
 // submitter's. Bob's explicit act wins, per ADR-0002.
 async function writeSanityRsvp(
   payload: RSVPPayload,
-): Promise<{ partnerWritten: boolean }> {
-  const submitter = await writeClient.fetch<GuestLookup | null>(
-    `*[_type == "guest" && slug.current == $slug][0]{ _id, _rev, rsvpStatus }`,
+): Promise<{ partnerWritten: boolean; recipient: EmailRecipientNames }> {
+  const submitter = await writeClient.fetch<(GuestLookup & GuestNames) | null>(
+    `*[_type == "guest" && slug.current == $slug][0]{ _id, _rev, rsvpStatus, firstName, lastName, nickname }`,
     { slug: payload.guestSlug },
   );
 
@@ -425,7 +445,10 @@ async function writeSanityRsvp(
 
   // partnerSlugForRevalidation survives only when the partner patch was both
   // attached and committed (it's nulled on the revision-conflict fallback).
-  return { partnerWritten: partnerSlugForRevalidation !== null };
+  return {
+    partnerWritten: partnerSlugForRevalidation !== null,
+    recipient: emailRecipientNames(submitter),
+  };
 }
 
 function isRevisionConflict(err: unknown): boolean {

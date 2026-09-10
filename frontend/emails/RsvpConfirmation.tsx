@@ -9,7 +9,10 @@ import {
 } from "@react-email/components";
 
 interface RsvpConfirmationProps {
+  /** Full name, used in the greeting. */
   guestName: string;
+  /** Available for a more familiar touch; the current copy greets by full name. */
+  guestNickname?: string;
 }
 
 export function RsvpConfirmation({ guestName }: RsvpConfirmationProps) {
@@ -19,18 +22,19 @@ export function RsvpConfirmation({ guestName }: RsvpConfirmationProps) {
       <Body style={body}>
         <Container style={container}>
           <Section>
-            <Text style={heading}>We&apos;ve been waiting for you</Text>
+            <Text style={paragraph}>Dearest {guestName},</Text>
             <Text style={paragraph}>
-              Dear {guestName},
-            </Text>
-            <Text style={paragraph}>
-              Thank you for confirming your attendance!
-              We&apos;re so happy that you&apos;ll be joining us on our special day.
+              This author is simply delighted to share the good news: your attendance is confirmed!
+              We are deeply grateful that you will be joining us to gracefully ring in the new year
+              and open 2027 by our sides.
             </Text>
             <Hr style={hr} />
-            <Text style={detailsHeading}>Wedding Details</Text>
+            <Text style={detailsHeading}>The Details:</Text>
             <Text style={paragraph}>
               <strong>Date:</strong> January 8, 2027
+            </Text>
+            <Text style={paragraph}>
+              <strong>Ceremony Time:</strong> 1:30 PM prompt
             </Text>
             <Text style={paragraph}>
               <strong>Church:</strong> St. Therese of the Child Jesus and the Holy Face Parish Church
@@ -40,11 +44,11 @@ export function RsvpConfirmation({ guestName }: RsvpConfirmationProps) {
             </Text>
             <Hr style={hr} />
             <Text style={paragraph}>
-              We can&apos;t wait to celebrate, make wonderful memories, and share this special moment with you.
-              See you at the wedding!
+              Please note that this will be a formal event. Prepare yourselves for an elegant but
+              intimate celebration filled with good company, lovely memories, and so much love.
             </Text>
             <Text style={paragraph}>
-              With love,
+              With heartfelt gratitude,
               <br />
               Jave &amp; Nianne
             </Text>
@@ -69,14 +73,6 @@ const container = {
   margin: "0 auto",
   padding: "40px 24px",
   maxWidth: "520px",
-};
-
-const heading = {
-  fontSize: "24px",
-  fontWeight: "600" as const,
-  color: "#2c2c2c",
-  textAlign: "center" as const,
-  margin: "0 0 24px",
 };
 
 const detailsHeading = {

@@ -175,13 +175,40 @@ describe('submitGuestParking (summary-card plate form)', () => {
 // The confirmation email must be scheduled with `after()`: a bare unawaited
 // promise in a Server Action can be cut off when the serverless response ends.
 describe('submitRsvp confirmation email', () => {
-  it('schedules the confirmation via after() for an attending guest with an email', async () => {
+  it('schedules the confirmation via after(), greeting the guest by full name', async () => {
+    fakes.fetch.mockResolvedValue({
+      _id: 'guest-1',
+      _rev: 'rev-1',
+      rsvpStatus: 'pending',
+      firstName: 'Sharky',
+      lastName: 'Sharkson',
+      nickname: 'Shark',
+    });
+
     const result = await submitRsvp({ ...basePayload, guestEmail: 'Sharky@Example.com' });
 
     expect(result).toEqual({ success: true });
     expect(after).toHaveBeenCalledTimes(1);
     expect(sendRsvpConfirmation).toHaveBeenCalledWith({
+      guestName: 'Sharky Sharkson',
+      guestNickname: 'Shark',
+      guestEmail: 'sharky@example.com',
+    });
+  });
+
+  it('greets by first name alone when the guest has no last name', async () => {
+    fakes.fetch.mockResolvedValue({
+      _id: 'guest-1',
+      _rev: 'rev-1',
+      rsvpStatus: 'pending',
+      firstName: 'Sharky',
+    });
+
+    await submitRsvp({ ...basePayload, guestEmail: 'sharky@example.com' });
+
+    expect(sendRsvpConfirmation).toHaveBeenCalledWith({
       guestName: 'Sharky',
+      guestNickname: undefined,
       guestEmail: 'sharky@example.com',
     });
   });
@@ -208,6 +235,8 @@ describe('submitGuestContact confirmation email', () => {
       _rev: 'rev-1',
       rsvpStatus: 'attending',
       firstName: 'Sharky',
+      lastName: 'Sharkson',
+      nickname: 'Shark',
     });
 
     const result = await submitGuestContact({ guestSlug: 'sharky', guestEmail: 'sharky@example.com' });
@@ -215,7 +244,25 @@ describe('submitGuestContact confirmation email', () => {
     expect(result).toEqual({ success: true });
     expect(after).toHaveBeenCalledTimes(1);
     expect(sendRsvpConfirmation).toHaveBeenCalledWith({
+      guestName: 'Sharky Sharkson',
+      guestNickname: 'Shark',
+      guestEmail: 'sharky@example.com',
+    });
+  });
+
+  it('greets by first name alone when the guest has no last name', async () => {
+    fakes.fetch.mockResolvedValue({
+      _id: 'guest-1',
+      _rev: 'rev-1',
+      rsvpStatus: 'attending',
+      firstName: 'Sharky',
+    });
+
+    await submitGuestContact({ guestSlug: 'sharky', guestEmail: 'sharky@example.com' });
+
+    expect(sendRsvpConfirmation).toHaveBeenCalledWith({
       guestName: 'Sharky',
+      guestNickname: undefined,
       guestEmail: 'sharky@example.com',
     });
   });
