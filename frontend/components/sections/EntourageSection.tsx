@@ -39,7 +39,7 @@ const WEDDING_PARTY_ROLE_ORDER: readonly RoleGroupConfig[] = [
   { role: "Cord Sponsor", heading: "To Clothe Us As One" },
   { role: "Coin & Ring Bearer", heading: "Coin & Ring Bearer" },
   { role: "Bible Bearer", heading: "Bible Bearer" },
-  { role: "Flower Girl", heading: "Flower Girls" },
+  { role: "Flower Girl", heading: "Flower Ladies" },
 ];
 
 /**
