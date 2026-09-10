@@ -1,0 +1,57 @@
+frontend/emails/RsvpConfirmation.tsx
+  s_75ad0c198cc588::t_e7769ab546a1bd 12,14-15
+  s_75ad0c198cc588::t_6e6bf44beff45d 27-29,32,36-38,47-48,51
+  s_75ad0c198cc588::t_dc6e90ed1016cb 25
+frontend/lib/resend.ts
+  s_75ad0c198cc588::t_6e6bf44beff45d 29
+  s_75ad0c198cc588::t_e7769ab546a1bd 14,30-33
+frontend/app/actions/rsvp.ts
+  s_75ad0c198cc588::t_298cceb61f15d3 344,346
+  s_75ad0c198cc588::t_36f2e57a28981d 76-77,79-81,95-96
+  s_75ad0c198cc588::t_7d13f9592b3e09 240
+  s_75ad0c198cc588::t_8f3a601ff896e3 266
+  s_75ad0c198cc588::t_b9e1a5e1666ad0 113,115
+  s_75ad0c198cc588::t_0d2f51910e98a9 78,82-94
+  s_75ad0c198cc588::t_72012e9d98379e 238
+  s_75ad0c198cc588::t_f302fa2f3e1764 254
+  s_75ad0c198cc588::t_94a5ad3727e7fb 149
+  s_75ad0c198cc588::t_6df2321b7fe6d0 234
+  s_75ad0c198cc588::t_8add564560648d 345
+  s_75ad0c198cc588::t_6a9d3603fbf18d 448-449,451
+  s_75ad0c198cc588::t_c94120fed6659a 450
+frontend/app/actions/rsvp.test.ts
+  s_75ad0c198cc588::t_1be285583838bc 179-183,185-187,192,195-198,200-208
+  s_75ad0c198cc588::t_ccaeb270030efc 239,246,249-252,254-262
+  s_75ad0c198cc588::t_f4d7b6e0fcdd76 238,247-248,253,265
+  s_75ad0c198cc588::t_81944a06ca1880 178,184,193-194,199,211
+frontend/scripts/resend-rsvp-confirmations.ts
+  s_75ad0c198cc588::t_e7769ab546a1bd 32,104
+  s_75ad0c198cc588::t_a0d27e925817bf 33,127-130
+  s_75ad0c198cc588::t_5ee7a48081891d 1
+  s_75ad0c198cc588::t_6e6bf44beff45d 25
+  s_84731592c1dbaa::t_dc09cd85ca1062 2-24,26-31,34-103,105-126,131-148
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "b2f5c11754225b196c5418b99c010974b31383ec",
+  "prompts": {},
+  "sessions": {
+    "s_75ad0c198cc588": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9bc10030-4f2e-46b1-be12-3253e8c25227",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    },
+    "s_84731592c1dbaa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e4a65d23-1c88-49ee-8649-3a239fa88d51",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
