@@ -11,6 +11,7 @@ const resend = new Resend(RESEND_API_KEY);
 
 interface SendConfirmationData {
   guestName: string;
+  guestNickname?: string;
   guestEmail: string;
 }
 
@@ -25,8 +26,11 @@ export async function sendRsvpConfirmation(
     await resend.emails.send({
       from: RESEND_FROM_ADDRESS,
       to: data.guestEmail,
-      subject: "Glad to have you!",
-      react: RsvpConfirmation({ guestName: data.guestName }),
+      subject: "RSVP Confirmed: The Wedding of Jave & Nianne",
+      react: RsvpConfirmation({
+        guestName: data.guestName,
+        guestNickname: data.guestNickname,
+      }),
     });
   } catch (error) {
     console.error("[sendRsvpConfirmation]", error);
