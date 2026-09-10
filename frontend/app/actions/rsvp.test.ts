@@ -33,14 +33,28 @@ const { fakes } = vi.hoisted(() => {
 });
 
 vi.mock('next/cache', () => ({ revalidateTag: vi.fn() }));
+// `after` runs its callback once the response is sent. Run it inline so the
+// tests can assert on what was scheduled, while still proving it went via after.
+vi.mock('next/server', () => ({
+  after: vi.fn((task: () => unknown) => {
+    void task();
+  }),
+}));
 vi.mock('@/lib/sheets', () => ({ appendRsvpRows: vi.fn(async () => undefined) }));
-vi.mock('@/lib/resend', () => ({ sendRsvpConfirmation: vi.fn() }));
+vi.mock('@/lib/resend', () => ({ sendRsvpConfirmation: vi.fn(async () => undefined) }));
 vi.mock('@/lib/rsvp-cutoff', () => ({ isRsvpClosed: () => false }));
 vi.mock('@/sanity/lib/write', () => ({ writeClient: fakes.writeClient }));
 
 import { revalidateTag } from 'next/cache';
+import { after } from 'next/server';
 import { appendRsvpRows } from '@/lib/sheets';
-import { submitRsvp, submitGuestParking, type RSVPPayload } from './rsvp';
+import { sendRsvpConfirmation } from '@/lib/resend';
+import {
+  submitRsvp,
+  submitGuestContact,
+  submitGuestParking,
+  type RSVPPayload,
+} from './rsvp';
 
 const basePayload: RSVPPayload = {
   guestSlug: 'sharky',
@@ -54,6 +68,8 @@ const basePayload: RSVPPayload = {
 beforeEach(() => {
   fakes.patches.length = 0;
   fakes.fetch.mockResolvedValue({ _id: 'guest-1', _rev: 'rev-1', rsvpStatus: 'pending' });
+  vi.mocked(after).mockClear();
+  vi.mocked(sendRsvpConfirmation).mockClear();
 });
 
 function submitterPatch() {
@@ -153,6 +169,70 @@ describe('submitGuestParking (summary-card plate form)', () => {
     });
 
     expect(result).toEqual({ success: false, error: 'sanity_unavailable' });
+  });
+});
+
+// The confirmation email must be scheduled with `after()`: a bare unawaited
+// promise in a Server Action can be cut off when the serverless response ends.
+describe('submitRsvp confirmation email', () => {
+  it('schedules the confirmation via after() for an attending guest with an email', async () => {
+    const result = await submitRsvp({ ...basePayload, guestEmail: 'Sharky@Example.com' });
+
+    expect(result).toEqual({ success: true });
+    expect(after).toHaveBeenCalledTimes(1);
+    expect(sendRsvpConfirmation).toHaveBeenCalledWith({
+      guestName: 'Sharky',
+      guestEmail: 'sharky@example.com',
+    });
+  });
+
+  it('sends nothing when the guest gave no email', async () => {
+    await submitRsvp(basePayload);
+
+    expect(after).not.toHaveBeenCalled();
+    expect(sendRsvpConfirmation).not.toHaveBeenCalled();
+  });
+
+  it('sends nothing to a guest who declines', async () => {
+    await submitRsvp({ ...basePayload, attending: false, guestEmail: 'sharky@example.com' });
+
+    expect(after).not.toHaveBeenCalled();
+    expect(sendRsvpConfirmation).not.toHaveBeenCalled();
+  });
+});
+
+describe('submitGuestContact confirmation email', () => {
+  it('schedules the confirmation via after() the first time an attending guest adds an email', async () => {
+    fakes.fetch.mockResolvedValue({
+      _id: 'guest-1',
+      _rev: 'rev-1',
+      rsvpStatus: 'attending',
+      firstName: 'Sharky',
+    });
+
+    const result = await submitGuestContact({ guestSlug: 'sharky', guestEmail: 'sharky@example.com' });
+
+    expect(result).toEqual({ success: true });
+    expect(after).toHaveBeenCalledTimes(1);
+    expect(sendRsvpConfirmation).toHaveBeenCalledWith({
+      guestName: 'Sharky',
+      guestEmail: 'sharky@example.com',
+    });
+  });
+
+  it('does not re-send when the guest already had an email on file', async () => {
+    fakes.fetch.mockResolvedValue({
+      _id: 'guest-1',
+      _rev: 'rev-1',
+      rsvpStatus: 'attending',
+      firstName: 'Sharky',
+      email: 'old@example.com',
+    });
+
+    await submitGuestContact({ guestSlug: 'sharky', guestEmail: 'new@example.com' });
+
+    expect(after).not.toHaveBeenCalled();
+    expect(sendRsvpConfirmation).not.toHaveBeenCalled();
   });
 });
 
