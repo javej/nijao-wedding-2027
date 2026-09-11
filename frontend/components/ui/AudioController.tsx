@@ -9,6 +9,7 @@ import {
 } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Volume2, VolumeX } from 'lucide-react';
+import { useTextEntryFocused } from '@/hooks/useTextEntryFocused';
 
 /** Ambient playback volume — tasteful, not jarring. */
 const AMBIENT_VOLUME = 0.3;
@@ -42,6 +43,9 @@ export const AudioController = forwardRef<
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  // Fixed bottom-left: on Chrome Android it rides up on top of the keyboard,
+  // right where the RSVP chat's Skip button sits. Hide it while typing.
+  const textEntryFocused = useTextEntryFocused();
 
   const animationState = shouldReduceMotion ? 'reduced' : 'visible';
   const initialState = shouldReduceMotion ? 'reduced' : 'hidden';
@@ -90,7 +94,7 @@ export const AudioController = forwardRef<
 
       {/* Mute/unmute toggle — fixed bottom-left, appears after overlay dismisses */}
       <AnimatePresence>
-        {visible && (
+        {visible && !textEntryFocused && (
           <motion.button
             type="button"
             onClick={toggleMute}

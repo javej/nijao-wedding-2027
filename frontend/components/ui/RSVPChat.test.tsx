@@ -268,6 +268,64 @@ describe('RSVPChat parking question (ADR-0008)', () => {
   });
 });
 
+describe('RSVPChat contact collection (email + mobile)', () => {
+  const contactProps: Partial<RSVPChatProps> = {
+    needsEmail: true,
+    needsMobile: true,
+  };
+
+  async function reachEmailStep(user: ReturnType<typeof userEvent.setup>) {
+    await user.click(screen.getByRole('button', { name: "Yes, I'll be there" }));
+    await user.click(await screen.findByRole('button', { name: 'Not driving' }));
+    return screen.findByRole('textbox', { name: 'Email address' });
+  }
+
+  it('submits the email and mobile via the Send button', async () => {
+    const user = userEvent.setup();
+    renderChat(contactProps);
+
+    const email = await reachEmailStep(user);
+    await user.type(email, 'Jane@Example.com');
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+
+    // One guest bubble — the button submits the form exactly once.
+    expect(await screen.findByText('Jane@Example.com')).toBeInTheDocument();
+    expect(screen.getAllByText('Jane@Example.com')).toHaveLength(1);
+
+    const mobile = await screen.findByRole('textbox', { name: 'Mobile number' });
+    await user.type(mobile, '0917 123 4567');
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+
+    await waitFor(() => expect(submitRsvp).toHaveBeenCalledTimes(1), { timeout: 3000 });
+    expect(submitRsvp).toHaveBeenCalledWith(
+      expect.objectContaining({
+        guestEmail: 'jane@example.com',
+        guestMobile: '+639171234567',
+      }),
+    );
+  });
+
+  it('submits the email via the keyboard Enter key without double-firing', async () => {
+    const user = userEvent.setup();
+    renderChat(contactProps);
+
+    const email = await reachEmailStep(user);
+    await user.type(email, 'jane@example.com{Enter}');
+
+    expect(await screen.findByText('jane@example.com')).toBeInTheDocument();
+    expect(screen.getAllByText('jane@example.com')).toHaveLength(1);
+    expect(await screen.findByRole('textbox', { name: 'Mobile number' })).toBeInTheDocument();
+  });
+
+  it('keeps Send disabled until something is typed', async () => {
+    const user = userEvent.setup();
+    renderChat(contactProps);
+
+    await reachEmailStep(user);
+    expect(screen.getByRole('button', { name: 'Send' })).toBeDisabled();
+  });
+});
+
 describe('RSVPChat open plus-one name', () => {
   const openPlusOneProps: Partial<RSVPChatProps> = {
     plusOneEligible: true,
