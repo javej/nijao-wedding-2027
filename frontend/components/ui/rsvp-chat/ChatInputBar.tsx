@@ -1,6 +1,6 @@
 'use client';
 
-import { type RefObject } from 'react';
+import { type FormEvent, type RefObject, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ChatInputBarProps {
@@ -19,7 +19,15 @@ interface ChatInputBarProps {
   onSkip: () => void;
 }
 
-/** Free-text reply row: optional Skip + text field + Send. */
+/**
+ * Free-text reply row: optional Skip + text field + Send.
+ *
+ * Rendered as a real `<form>` so submission rides the browser's implicit
+ * submission: the mobile keyboard's Enter/Go key submits natively even when
+ * the IME reports it as an unidentified keydown (Chrome Android + Gboard mid
+ * composition), and Send is the form's submit button rather than a click
+ * handler on a detached `<button>`.
+ */
 export function ChatInputBar({
   inputRef,
   value,
@@ -34,8 +42,16 @@ export function ChatInputBar({
   showSkip,
   onSkip,
 }: ChatInputBarProps) {
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      onSubmit();
+    },
+    [onSubmit],
+  );
+
   return (
-    <div className="flex gap-2">
+    <form className="flex gap-2" onSubmit={handleSubmit} noValidate>
       {showSkip && (
         <button
           type="button"
@@ -55,6 +71,7 @@ export function ChatInputBar({
         type={inputType}
         inputMode={inputMode}
         autoComplete={autoComplete}
+        enterKeyHint="send"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={onKeyDown}
@@ -67,8 +84,7 @@ export function ChatInputBar({
         )}
       />
       <button
-        type="button"
-        onClick={onSubmit}
+        type="submit"
         disabled={!value.trim()}
         aria-label="Send"
         className={cn(
@@ -89,6 +105,6 @@ export function ChatInputBar({
           <path d="M3.105 2.288a.75.75 0 0 0-.826.95l1.414 4.926A1.5 1.5 0 0 0 5.135 9.25h6.115a.75.75 0 0 1 0 1.5H5.135a1.5 1.5 0 0 0-1.442 1.086l-1.414 4.926a.75.75 0 0 0 .826.95l15.5-6.25a.75.75 0 0 0 0-1.394l-15.5-6.25Z" />
         </svg>
       </button>
-    </div>
+    </form>
   );
 }

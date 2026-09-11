@@ -5,6 +5,7 @@ import { Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { quickNavAnchors, scrollToAnchor } from '@/lib/quick-nav';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useTextEntryFocused } from '@/hooks/useTextEntryFocused';
 import type { PaletteColor } from '@/components/ui/ChapterSection';
 
 /** Maps palette keys to Tailwind ring-color classes for the FAB accent. */
@@ -30,6 +31,10 @@ export function FloatingAnchorSet() {
   const [open, setOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const navRef = useRef<HTMLElement>(null);
+  // On Chrome Android the keyboard shrinks the viewport, so this fixed
+  // bottom-right FAB rides up and sits on the RSVP chat's Send button (both
+  // hug the right edge on phones). Get out of the way while the guest types.
+  const textEntryFocused = useTextEntryFocused();
 
   // Track the active section to drive palette + hide-on-hero behavior.
   //
@@ -105,8 +110,9 @@ export function FloatingAnchorSet() {
     };
   }, [open]);
 
-  // Stay hidden on the hero (HeroJumpNav covers wayfinding there).
-  if (activeSectionId === HERO_SECTION_ID) return null;
+  // Stay hidden on the hero (HeroJumpNav covers wayfinding there) and while
+  // the on-screen keyboard is up.
+  if (activeSectionId === HERO_SECTION_ID || textEntryFocused) return null;
 
   const ringClass = paletteRingClass[activePalette] ?? '';
 
