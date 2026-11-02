@@ -35,7 +35,7 @@ interface MakeupPalettePanProps {
 /**
  * MakeupPalettePan — Server Component
  *
- * Renders the dress-code colours as a single makeup-palette object: a cream
+ * Renders the dress-code colors as a single makeup-palette object: a cream
  * tray with seven gap-less swatches inset (4 on top, 3 centred below). No
  * visible labels — each swatch carries an `aria-label` so screen readers and
  * the accessibility tree can still announce the colour name.
@@ -71,7 +71,7 @@ export function MakeupPalettePan({ palette }: MakeupPalettePanProps) {
       // so neighbouring washes don't collide.
       className="bg-paper-white rounded-md shadow-md p-2 flex flex-col gap-2 overflow-hidden"
       role="group"
-      aria-label="Wedding palette colours"
+      aria-label="Wedding palette colors"
     >
       <div className="grid grid-cols-8 gap-2">
         {topRow.map((swatch) => (

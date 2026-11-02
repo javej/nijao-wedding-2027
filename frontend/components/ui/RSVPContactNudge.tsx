@@ -57,7 +57,7 @@ export function RSVPContactNudge({
     const mobileRaw = mobile.trim();
 
     if (!emailRaw && !mobileRaw) {
-      setError('Add an email or a mobile number, or tap Not now.');
+      setError('Add an email or a mobile number, or tap Skip.');
       return;
     }
     if (needsEmail && emailRaw && !isValidEmail(emailRaw)) {
@@ -153,7 +153,7 @@ export function RSVPContactNudge({
             'focus-visible:ring-4 focus-visible:ring-golden-matcha/30 focus-visible:outline-1 focus-visible:outline-golden-matcha',
           )}
         >
-          Not now
+          Skip
         </button>
         <button
           type="button"

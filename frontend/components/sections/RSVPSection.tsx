@@ -7,6 +7,7 @@ import { RSVPContactNudge } from '@/components/ui/RSVPContactNudge';
 import { RSVPParkingCard } from '@/components/ui/RSVPParkingCard';
 import { RSVPClosedPanel } from '@/components/ui/RSVPClosedPanel';
 import { PetalBurst } from '@/components/ui/PetalBurst';
+import { RSVP_CLOSED_HEADLINE } from '@/lib/rsvp-cutoff';
 import type { WeddingGuest } from '@/components/WeddingExperience';
 import type { GuestParking, RsvpStatus } from '@/sanity/queries/guests';
 import {
@@ -141,7 +142,7 @@ export function RSVPSection({ guest, rsvpViewState }: RSVPSectionProps) {
           )}
           {rsvpViewState.isClosed && (
             <p className="font-body text-body-sm text-foreground/50">
-              RSVPs are now closed.
+              {RSVP_CLOSED_HEADLINE}
             </p>
           )}
           {optimisticStatus === 'attending' && contactMissing && !contactNudgeHandled && (

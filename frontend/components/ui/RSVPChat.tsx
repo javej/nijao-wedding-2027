@@ -12,6 +12,7 @@ import { useManagedTimeouts } from '@/hooks/useManagedTimeouts';
 import { isValidEmail, normalizeEmail, normalizePhMobile } from '@/lib/contact';
 import { isAffirmative, isNegative } from '@/lib/attendance-parser';
 import { normalizePlate } from '@/lib/plate';
+import { RSVP_CLOSED_FOLLOW_UP, RSVP_CLOSED_HEADLINE } from '@/lib/rsvp-cutoff';
 import { ChatMessageLog } from '@/components/ui/rsvp-chat/ChatMessageLog';
 import { ChatChips } from '@/components/ui/rsvp-chat/ChatChips';
 import { ChatInputBar } from '@/components/ui/rsvp-chat/ChatInputBar';
@@ -90,17 +91,15 @@ export interface RSVPChatProps {
   onComplete?: (result: RSVPSubmissionResult) => void;
 }
 
-// --- Confirmation Constants ---
+// --- Copy Constants ---
 
-const CONFIRMATION_MESSAGE = "Glad to have you! Your RSVP is confirmed";
 const PARKING_PROMPT = 'Will you be driving? Drop your plate number so we can sort parking.';
 const PARKING_UNSURE_REPLY =
   'No problem. You can come back to this page anytime and add it from your RSVP summary.';
 const PARKING_NONE_REPLY = 'Noted, no parking needed.';
 const PARKING_INVALID_REPLY =
   "That doesn't look like a plate number. Try ABC 1234, or tap one of the options.";
-const CLOSED_MESSAGE =
-  "RSVPs have closed on November 8. If you'd still like to reach us, please contact Jave & Nianne directly.";
+const CLOSED_MESSAGE = `${RSVP_CLOSED_HEADLINE} ${RSVP_CLOSED_FOLLOW_UP}`;
 
 // --- Component ---
 
@@ -160,8 +159,8 @@ export function RSVPChat({
   // Outer container ref for mobile keyboard offset
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Tracks the "Glad to have you! Your RSVP is confirmed" closing bubble so it only fires once
-  const finalBubbleShown = useRef(false);
+  // Petals + haptics fire once per fresh confirmation
+  const celebrated = useRef(false);
 
   const animInitial = shouldReduceMotion ? 'reduced' : 'hidden';
   const animAnimate = shouldReduceMotion ? 'reduced' : 'visible';
@@ -213,14 +212,15 @@ export function RSVPChat({
   // must not fire setState after the chat is swapped out.
   const schedule = useManagedTimeouts();
 
-  // --- Confirmation closing bubble (fresh confirmation only) ---
+  // --- Confirmation celebration (fresh confirmation only) ---
+  // No extra bubble here: the "Wonderful! We've saved your RSVP" message from
+  // handleSubmit already confirms it. The delay lets that bubble land first.
 
   useEffect(() => {
-    if (chatState !== 'confirmed' || finalBubbleShown.current) return;
-    finalBubbleShown.current = true;
+    if (chatState !== 'confirmed' || celebrated.current) return;
+    celebrated.current = true;
 
     const timer = setTimeout(() => {
-      addSystemMessage(CONFIRMATION_MESSAGE);
       onConfirm?.();
       // Haptic feedback — graceful degradation on iOS
       if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
@@ -229,7 +229,7 @@ export function RSVPChat({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [chatState, addSystemMessage, onConfirm]);
+  }, [chatState, onConfirm]);
 
   // --- Submission ---
 

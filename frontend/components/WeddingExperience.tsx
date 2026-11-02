@@ -84,7 +84,7 @@ export async function WeddingExperience({ guest }: WeddingExperienceProps) {
     >
       <FloatingAnchorSet />
       <ChapterScrollContainer>
-        <ChapterSection id="hero" palette="raspberry" label="Jave and Nianne" decorate hero>
+        <ChapterSection id="hero" palette="raspberry" label="Jave & Nianne" decorate hero>
           <HeroSection />
         </ChapterSection>
 

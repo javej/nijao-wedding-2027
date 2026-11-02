@@ -19,6 +19,13 @@ describe('HeroJumpNav', () => {
     }
   });
 
+  it('includes each visible pill label in its accessible name', () => {
+    // WCAG 2.5.3 — voice-control users say the word they see on the pill.
+    for (const anchor of quickNavAnchors) {
+      expect(anchor.label).toContain(anchor.shortLabel);
+    }
+  });
+
   it('does not depend on a remembered first-scroll flag', () => {
     localStorage.setItem('firstScrollComplete', 'true');
     const { unmount } = render(<HeroJumpNav />);
