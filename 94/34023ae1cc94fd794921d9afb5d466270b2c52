@@ -1,0 +1,64 @@
+frontend/app/(main)/[slug]/page.tsx
+  s_c56f93f5e4e91f::t_5836f964477cfd 50-52,54
+frontend/app/(main)/page.tsx
+  s_c56f93f5e4e91f::t_068586dbf981e4 4-6,9
+frontend/lib/rsvp-cutoff.test.ts
+  s_c56f93f5e4e91f::t_5f5fa4f0ba318a 12-15,18-19
+frontend/components/ui/RSVPClosedPanel.tsx
+  s_c56f93f5e4e91f::t_c15a3d297bcf71 29,32
+  s_c56f93f5e4e91f::t_db1234e81bcac2 4
+frontend/components/ui/RSVPChat.tsx
+  s_c56f93f5e4e91f::t_ee204b36ed53ad 215-217
+  s_c56f93f5e4e91f::t_efc25182dacc0e 94
+  s_c56f93f5e4e91f::t_60ebef98ceb111 102
+  s_c56f93f5e4e91f::t_ecfead3c3fcea5 15
+  s_c56f93f5e4e91f::t_20a055e5029627 163,220-221,232
+  s_c56f93f5e4e91f::t_d1178c7201e842 162
+frontend/app/(main)/[slug]/not-found.tsx
+  s_c56f93f5e4e91f::t_8ec0b29dc00c6d 1,5
+frontend/lib/rsvp-cutoff.ts
+  s_c56f93f5e4e91f::t_7ef6086c6338e8 2-3,5-8,15,18-20
+  s_c56f93f5e4e91f::t_4a790c3eebb269 21
+frontend/lib/quick-nav.ts
+  s_c56f93f5e4e91f::t_d836b54618d746 7-11
+  s_c56f93f5e4e91f::t_a7f661e93cdb4d 24-25
+frontend/components/ui/HeroJumpNav.test.tsx
+  s_c56f93f5e4e91f::t_dbe523d8fdb68b 22-28
+frontend/components/sections/dress-code/MakeupPalettePan.tsx
+  s_c56f93f5e4e91f::t_61db7340983a02 38,74
+frontend/components/sections/FAQSection.tsx
+  s_c56f93f5e4e91f::t_0cd48197001905 10-15,22,24,28
+frontend/components/sections/StoryChapter.tsx
+  s_c56f93f5e4e91f::t_61db7340983a02 136
+frontend/components/ui/RSVPContactNudge.tsx
+  s_c56f93f5e4e91f::t_61db7340983a02 60,156
+frontend/components/WeddingExperience.tsx
+  s_c56f93f5e4e91f::t_61db7340983a02 87
+frontend/app/(main)/[slug]/page.test.ts
+  s_c56f93f5e4e91f::t_a779c904cc81a8 72,75-76
+frontend/app/not-found.tsx
+  s_c56f93f5e4e91f::t_d75f2c80c5daa4 1,10
+frontend/components/sections/CountdownSection.tsx
+  s_c56f93f5e4e91f::t_06c882269023ca 36-37,41-42
+frontend/components/404.tsx
+  s_c56f93f5e4e91f::t_1cd60f141b325c 3-14,16-19,21-27
+frontend/components/sections/RSVPSection.tsx
+  s_c56f93f5e4e91f::t_8440e0b4e3b522 145
+  s_c56f93f5e4e91f::t_3c03bbf9368aae 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9434023ae1cc94fd794921d9afb5d466270b2c52",
+  "prompts": {},
+  "sessions": {
+    "s_c56f93f5e4e91f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bb61df2c-e743-46e6-9ddb-e8767be18435",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
