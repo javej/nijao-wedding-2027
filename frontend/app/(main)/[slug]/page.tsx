@@ -47,9 +47,11 @@ export async function generateMetadata(props: {
   const path = `/${params.slug}`;
 
   return {
-    title: `${guest.firstName} — Jave & Nianne, January 8, 2027`,
+    // `absolute` skips the layout's "%s | Jave & Nianne" template, which would
+    // otherwise repeat the names already in this title.
+    title: { absolute: `${guest.firstName} — Jave & Nianne, January 8, 2027` },
     description:
-      "You are cordially invited to the wedding of Jave and Nianne. January 8, 2027 — Lipa, Batangas.",
+      "You are cordially invited to the wedding of Jave & Nianne. January 8, 2027 — Lipa, Batangas.",
     alternates: { canonical: path },
     openGraph: { ...sharedOpenGraph, url: path },
   };

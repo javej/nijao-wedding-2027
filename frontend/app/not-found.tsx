@@ -1,4 +1,4 @@
-import Custom404 from "@/components/404";
+import NotFoundMessage from "@/components/404";
 
 import type { Metadata } from "next";
 
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function NotFoundPage() {
-  return <Custom404 />;
+  return <NotFoundMessage />;
 }

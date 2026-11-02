@@ -4,7 +4,11 @@ import { Calendar, Palette, Heart, HelpCircle, type LucideIcon } from 'lucide-re
 export interface QuickNavAnchor {
   /** Target section's HTML id */
   id: string;
-  /** Full accessible label (announced to screen readers) */
+  /**
+   * Full accessible label (announced to screen readers). Must contain
+   * `shortLabel` verbatim so voice-control users can say what they see
+   * (WCAG 2.5.3 Label in Name).
+   */
   label: string;
   /** Short visible label on the pill */
   shortLabel: string;
@@ -17,8 +21,8 @@ export interface QuickNavAnchor {
  * or destination change lands in both places at once.
  */
 export const quickNavAnchors: readonly QuickNavAnchor[] = [
-  { id: 'wedding-details', label: 'Jump to Location', shortLabel: 'Location', Icon: Calendar },
-  { id: 'dress-code', label: 'Jump to Dress Code', shortLabel: 'Attire', Icon: Palette },
+  { id: 'wedding-details', label: 'Jump to Details', shortLabel: 'Details', Icon: Calendar },
+  { id: 'dress-code', label: 'Jump to Dress Code', shortLabel: 'Dress Code', Icon: Palette },
   { id: 'rsvp', label: 'Jump to RSVP', shortLabel: 'RSVP', Icon: Heart },
   { id: 'faq', label: 'Jump to FAQ', shortLabel: 'FAQ', Icon: HelpCircle },
 ] as const;

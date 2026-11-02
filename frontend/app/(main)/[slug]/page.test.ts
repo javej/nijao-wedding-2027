@@ -69,10 +69,11 @@ describe('guest page metadata', () => {
     });
   });
 
-  it('keeps the personalised title', async () => {
+  it('keeps the personalised title, bypassing the layout title template', async () => {
     const metadata = await metadataFor('hwyrp90d');
 
-    expect(metadata.title).toBe('Marivic — Jave & Nianne, January 8, 2027');
+    // `absolute` so the layout's "%s | Jave & Nianne" doesn't repeat the names.
+    expect(metadata.title).toEqual({ absolute: 'Marivic — Jave & Nianne, January 8, 2027' });
   });
 
   it('returns no metadata for a malformed slug without querying Sanity', async () => {

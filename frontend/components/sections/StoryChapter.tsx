@@ -133,7 +133,7 @@ function toCrossfadePhotos(
 
   return source.map((image, i) => ({
     src: urlFor(image).width(800).url(),
-    alt: image.alt || `Jave and Nianne, ${year} (${i + 1})`,
+    alt: image.alt || `Jave & Nianne, ${year} (${i + 1})`,
     blurDataURL: image.asset.metadata?.lqip,
   }));
 }

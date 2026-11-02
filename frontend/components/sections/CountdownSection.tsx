@@ -33,11 +33,13 @@ function timePartsUntil(targetMs: number, nowMs: number): TimeParts {
   };
 }
 
+// Same-length plural abbreviations. Spelled-out "Minutes"/"Seconds" at the
+// mobile 16px tracked-uppercase label size overflow a 375px row of four cells.
 const UNITS = [
   { key: 'days', label: 'Days' },
   { key: 'hours', label: 'Hrs' },
-  { key: 'minutes', label: 'Min' },
-  { key: 'seconds', label: 'Sec' },
+  { key: 'minutes', label: 'Mins' },
+  { key: 'seconds', label: 'Secs' },
 ] as const;
 
 /** A single labelled unit. Days isn't zero-padded (it can be 3 digits). */
