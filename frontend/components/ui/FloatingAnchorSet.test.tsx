@@ -69,6 +69,21 @@ describe('FloatingAnchorSet', () => {
     expect(screen.queryByRole('button', { name: 'Open quick navigation' })).not.toBeInTheDocument();
   });
 
+  // The nav wraps the hidden pill stack, so its box covers ~140×250px of the
+  // bottom-right corner even while closed. It sits outside <main>, so a swipe
+  // starting on it chains to the locked root and the page will not scroll
+  // under a right thumb. Only the visible controls may take touches.
+  it('lets swipes through its empty box so the page still scrolls under it', () => {
+    render(<FloatingAnchorSet />);
+    activateRsvpSection();
+
+    expect(screen.getByRole('navigation', { name: 'Quick navigation' })).toHaveClass('pointer-events-none');
+    expect(screen.getByRole('button', { name: 'Open quick navigation' })).toHaveClass('pointer-events-auto');
+    for (const pill of screen.getAllByRole('button', { name: /^Jump to/, hidden: true })) {
+      expect(pill).toHaveClass('pointer-events-auto');
+    }
+  });
+
   it('stays hidden through the tap that blurs the field, then comes back', () => {
     render(<FloatingAnchorSet />);
     activateRsvpSection();
