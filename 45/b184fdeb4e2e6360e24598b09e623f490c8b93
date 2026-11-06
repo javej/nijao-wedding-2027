@@ -1,0 +1,32 @@
+frontend/components/ui/AudioController.test.tsx
+  s_ca081b9c578b3e::t_4c57a0329d93f4 1-103
+frontend/components/ui/AudioController.tsx
+  s_ca081b9c578b3e::t_6a25f3826d5840 6
+  s_ca081b9c578b3e::t_e42adbbc6f4d29 18-26
+  s_ca081b9c578b3e::t_a7e4f1ad1742f8 63-104,111-113
+  s_ca081b9c578b3e::t_fa49aaefa141d8 121-126
+  s_ca081b9c578b3e::t_957397af4f707e 139
+  s_ca081b9c578b3e::t_df4beb2ae7135b 146,148-149
+frontend/components/ui/MonogramLoader.test.tsx
+  s_ca081b9c578b3e::t_ffa0d82ab37f78 1-38
+frontend/components/ui/MonogramLoader.tsx
+  s_ca081b9c578b3e::t_7978ceaa204d9e 66-77
+  s_ca081b9c578b3e::t_d0cf4d04559cd6 106
+  s_ca081b9c578b3e::t_8df632aa7ecc05 50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "45b184fdeb4e2e6360e24598b09e623f490c8b93",
+  "prompts": {},
+  "sessions": {
+    "s_ca081b9c578b3e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "86c48d2a-3e5d-44bb-ad08-d62c8ba92ddc",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
