@@ -116,11 +116,16 @@ export function FloatingAnchorSet() {
 
   const ringClass = paletteRingClass[activePalette] ?? '';
 
+  // The nav's box spans the hidden pill stack too (~140×250px of the
+  // bottom-right corner, right under a guest's thumb). It lives outside
+  // <main>, so a swipe that starts on it chains to the locked root and the
+  // page will not scroll. Let touches fall through the box and re-enable
+  // them on the real controls only.
   return (
     <nav
       ref={navRef}
       aria-label="Quick navigation"
-      className="fixed right-[calc(1rem+env(safe-area-inset-right))] bottom-[calc(1.5rem+env(safe-area-inset-bottom))] z-40"
+      className="pointer-events-none fixed right-[calc(1rem+env(safe-area-inset-right))] bottom-[calc(1.5rem+env(safe-area-inset-bottom))] z-40"
     >
       {/* Expanded anchor options */}
       <div
@@ -140,7 +145,7 @@ export function FloatingAnchorSet() {
               setOpen(false);
             }}
             className={cn(
-              'flex h-11 items-center gap-2 self-end rounded-full pl-3 pr-4',
+              'pointer-events-auto flex h-11 items-center gap-2 self-end rounded-full pl-3 pr-4',
               'bg-white/90 text-foreground shadow-lg backdrop-blur-sm',
               'transition-colors duration-300',
               'hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground',
@@ -159,7 +164,7 @@ export function FloatingAnchorSet() {
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
         className={cn(
-          'ml-auto flex h-12 w-12 items-center justify-center rounded-full',
+          'pointer-events-auto ml-auto flex h-12 w-12 items-center justify-center rounded-full',
           'bg-white/90 text-foreground shadow-lg backdrop-blur-sm',
           'ring-2 transition-all duration-200',
           'hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground',
