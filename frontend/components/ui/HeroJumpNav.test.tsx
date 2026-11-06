@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import { HeroJumpNav } from './HeroJumpNav';
-import { quickNavAnchors } from '@/lib/quick-nav';
+import { fabAnchors, quickNavAnchors, storyAnchor } from '@/lib/quick-nav';
 
 beforeEach(() => {
   // A brand-new device: nothing remembered from an earlier visit.
@@ -19,9 +19,29 @@ describe('HeroJumpNav', () => {
     }
   });
 
+  // Guests were tapping straight into the logistics shortcuts and never
+  // seeing the story, so the story is the lead action, ahead of the pills.
+  it('leads with a Begin our story button that opens the story at Act One', () => {
+    const target = document.createElement('section');
+    target.id = storyAnchor.id;
+    target.scrollIntoView = vi.fn();
+    document.body.appendChild(target);
+
+    render(<HeroJumpNav />);
+    const nav = screen.getByRole('navigation', { name: 'Wedding sections' });
+    const buttons = within(nav).getAllByRole('button');
+
+    expect(buttons[0]).toHaveAccessibleName('Begin our story');
+    fireEvent.click(buttons[0]);
+    expect(target.scrollIntoView).toHaveBeenCalledTimes(1);
+
+    target.remove();
+  });
+
   it('includes each visible pill label in its accessible name', () => {
     // WCAG 2.5.3 — voice-control users say the word they see on the pill.
-    for (const anchor of quickNavAnchors) {
+    // fabAnchors is the superset: the Hero pills plus Home and Our Story.
+    for (const anchor of fabAnchors) {
       expect(anchor.label).toContain(anchor.shortLabel);
     }
   });
@@ -36,6 +56,7 @@ describe('HeroJumpNav', () => {
     render(<HeroJumpNav />);
 
     expect(screen.getAllByRole('button')).toHaveLength(withFlag);
-    expect(withFlag).toBe(quickNavAnchors.length);
+    // The story button plus one pill per logistics shortcut.
+    expect(withFlag).toBe(quickNavAnchors.length + 1);
   });
 });

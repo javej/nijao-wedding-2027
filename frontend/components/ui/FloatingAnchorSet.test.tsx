@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { FloatingAnchorSet } from './FloatingAnchorSet';
 
 type IOCallback = (entries: IntersectionObserverEntry[]) => void;
@@ -82,6 +82,48 @@ describe('FloatingAnchorSet', () => {
     for (const pill of screen.getAllByRole('button', { name: /^Jump to/, hidden: true })) {
       expect(pill).toHaveClass('pointer-events-auto');
     }
+  });
+
+  // The page scrolls inside <main>, so a phone's tap-the-status-bar shortcut
+  // can't take guests back to the top. Home and Our Story lead the menu so a
+  // guest who jumped to the logistics can always get back to the story.
+  it('offers Home and Our Story ahead of the logistics shortcuts', () => {
+    render(<FloatingAnchorSet />);
+    activateRsvpSection();
+    fireEvent.click(screen.getByRole('button', { name: 'Open quick navigation' }));
+
+    const pills = within(screen.getByRole('navigation', { name: 'Quick navigation' }))
+      .getAllByRole('button')
+      .slice(0, -1); // the last button is the compass toggle itself
+    expect(pills.map((pill) => pill.textContent)).toEqual([
+      'Home',
+      'Our Story',
+      'Details',
+      'Dress Code',
+      'RSVP',
+      'FAQ',
+    ]);
+  });
+
+  it('scrolls back to the Hero from Home and to Act One from Our Story', () => {
+    const hero = document.createElement('section');
+    hero.id = 'hero';
+    hero.scrollIntoView = vi.fn();
+    const prologue = document.createElement('section');
+    prologue.id = 'story-prologue';
+    prologue.scrollIntoView = vi.fn();
+    document.body.append(hero, prologue);
+
+    render(<FloatingAnchorSet />);
+    activateRsvpSection();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open quick navigation' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Back to Home' }));
+    expect(hero.scrollIntoView).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open quick navigation' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Jump to Our Story' }));
+    expect(prologue.scrollIntoView).toHaveBeenCalledTimes(1);
   });
 
   it('stays hidden through the tap that blurs the field, then comes back', () => {
