@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { quickNavAnchors, scrollToAnchor } from '@/lib/quick-nav';
+import { fabAnchors, homeAnchor, scrollToAnchor } from '@/lib/quick-nav';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useTextEntryFocused } from '@/hooks/useTextEntryFocused';
 import type { PaletteColor } from '@/components/ui/ChapterSection';
@@ -21,7 +21,7 @@ const paletteRingClass: Record<PaletteColor, string> = {
 };
 
 /** The Hero owns its own static jump-nav (HeroJumpNav); the FAB stays out of its way. */
-const HERO_SECTION_ID = 'hero';
+const HERO_SECTION_ID = homeAnchor.id;
 
 export function FloatingAnchorSet() {
   const [activePalette, setActivePalette] = useState<PaletteColor>('raspberry');
@@ -134,7 +134,7 @@ export function FloatingAnchorSet() {
           open ? 'visible translate-y-0 opacity-100' : 'invisible translate-y-2 opacity-0',
         )}
       >
-        {quickNavAnchors.map(({ id, label, shortLabel, Icon }) => (
+        {fabAnchors.map(({ id, label, shortLabel, Icon }) => (
           <button
             key={id}
             type="button"
