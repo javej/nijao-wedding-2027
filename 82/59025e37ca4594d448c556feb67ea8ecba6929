@@ -1,0 +1,30 @@
+frontend/lib/quick-nav.ts
+  s_8a759740aafea2::t_d766bcb0c1691d 30-55
+  s_8a759740aafea2::t_164965fc7dcbf3 1
+frontend/components/ui/HeroJumpNav.tsx
+  s_8a759740aafea2::t_c74849f6809798 3,5,12-15,21-61
+frontend/components/ui/FloatingAnchorSet.tsx
+  s_8a759740aafea2::t_5f5e7f4ffea2f9 6,24,137
+frontend/components/ui/HeroJumpNav.test.tsx
+  s_8a759740aafea2::t_1606005e2dbbd7 4,43-44
+  s_8a759740aafea2::t_cb2453ec316810 1-2,22-40,59-60
+frontend/components/ui/FloatingAnchorSet.test.tsx
+  s_8a759740aafea2::t_13bc13009dc130 87-128
+  s_8a759740aafea2::t_d91338b711dd96 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8259025e37ca4594d448c556feb67ea8ecba6929",
+  "prompts": {},
+  "sessions": {
+    "s_8a759740aafea2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "05718556-9f9a-498a-ac19-340738a18eb4",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
