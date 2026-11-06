@@ -47,6 +47,7 @@ export function MonogramLoader({ onComplete }: MonogramLoaderProps) {
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const hasExited = useRef(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   function exitLoader() {
     if (hasExited.current) return;
@@ -61,6 +62,18 @@ export function MonogramLoader({ onComplete }: MonogramLoaderProps) {
     const portrait = window.matchMedia('(orientation: portrait)').matches;
     setVideoSrc(portrait ? PORTRAIT_VIDEO : LANDSCAPE_VIDEO);
   }, []);
+
+  // Start playback explicitly so a refusal is observable. iOS Low Power Mode
+  // blocks even muted inline autoplay, and the `autoPlay` attribute reports
+  // that nowhere (no `error` event) — the guest would sit on a blank loader
+  // until the safety timeout. play()'s rejection is the only signal we get.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    video.play().catch(exitLoader);
+
+  }, [videoSrc]);
 
   // Safety timeout — force-exit if the video never reaches its end
   useEffect(() => {
@@ -90,6 +103,7 @@ export function MonogramLoader({ onComplete }: MonogramLoaderProps) {
         >
           {videoSrc && !shouldReduceMotion && (
             <video
+              ref={videoRef}
               key={videoSrc}
               className="h-full w-full object-cover"
               autoPlay
