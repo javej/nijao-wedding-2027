@@ -87,7 +87,8 @@ describe('FloatingAnchorSet', () => {
   // The page scrolls inside <main>, so a phone's tap-the-status-bar shortcut
   // can't take guests back to the top. Home and Our Story lead the menu so a
   // guest who jumped to the logistics can always get back to the story.
-  it('offers Home and Our Story ahead of the logistics shortcuts', () => {
+  // The rest follow page order, so Entourage sits between RSVP and FAQ.
+  it('offers Home and Our Story ahead of the shortcuts, in page order', () => {
     render(<FloatingAnchorSet />);
     activateRsvpSection();
     fireEvent.click(screen.getByRole('button', { name: 'Open quick navigation' }));
@@ -101,8 +102,23 @@ describe('FloatingAnchorSet', () => {
       'Details',
       'Dress Code',
       'RSVP',
+      'Entourage',
       'FAQ',
     ]);
+  });
+
+  it('jumps to the Entourage section', () => {
+    const entourage = document.createElement('section');
+    entourage.id = 'entourage';
+    entourage.scrollIntoView = vi.fn();
+    document.body.append(entourage);
+
+    render(<FloatingAnchorSet />);
+    activateRsvpSection();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open quick navigation' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Jump to Entourage' }));
+    expect(entourage.scrollIntoView).toHaveBeenCalledTimes(1);
   });
 
   it('scrolls back to the Hero from Home and to Act One from Our Story', () => {
