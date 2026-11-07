@@ -19,6 +19,13 @@ describe('HeroJumpNav', () => {
     }
   });
 
+  // Entourage lives in the compass only. A fifth Hero pill would break the
+  // balanced 2×2 grid on phones and leave one pill alone on the last row.
+  it('keeps Entourage out of the Hero shortcuts', () => {
+    render(<HeroJumpNav />);
+    expect(screen.queryByRole('button', { name: 'Jump to Entourage' })).not.toBeInTheDocument();
+  });
+
   // Guests were tapping straight into the logistics shortcuts and never
   // seeing the story, so the story is the lead action, ahead of the pills.
   it('leads with a Begin our story button that opens the story at Act One', () => {

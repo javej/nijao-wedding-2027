@@ -1,4 +1,4 @@
-import { BookHeart, Calendar, Palette, Heart, HelpCircle, House, type LucideIcon } from 'lucide-react';
+import { BookHeart, Calendar, Palette, Heart, HelpCircle, House, Users, type LucideIcon } from 'lucide-react';
 
 /** A jump-navigation destination shared by the Hero nav and the floating FAB. */
 export interface QuickNavAnchor {
@@ -15,17 +15,25 @@ export interface QuickNavAnchor {
   Icon: LucideIcon;
 }
 
+// Each destination is defined once, so a label or target change lands in
+// both the Hero pills and the compass menu.
+const detailsAnchor: QuickNavAnchor = { id: 'wedding-details', label: 'Jump to Details', shortLabel: 'Details', Icon: Calendar };
+const dressCodeAnchor: QuickNavAnchor = { id: 'dress-code', label: 'Jump to Dress Code', shortLabel: 'Dress Code', Icon: Palette };
+const rsvpAnchor: QuickNavAnchor = { id: 'rsvp', label: 'Jump to RSVP', shortLabel: 'RSVP', Icon: Heart };
+const entourageAnchor: QuickNavAnchor = { id: 'entourage', label: 'Jump to Entourage', shortLabel: 'Entourage', Icon: Users };
+const faqAnchor: QuickNavAnchor = { id: 'faq', label: 'Jump to FAQ', shortLabel: 'FAQ', Icon: HelpCircle };
+
 /**
- * Single source of truth for both quick-nav widgets. The Hero ghost-pill
- * nav and the floating compass FAB both render from this list, so a label
- * or destination change lands in both places at once.
+ * The Hero's logistics pills. Kept to four: on phones they sit in a 2×2
+ * grid, and a fifth would wrap alone onto its own row. Entourage is in the
+ * compass menu only.
  */
 export const quickNavAnchors: readonly QuickNavAnchor[] = [
-  { id: 'wedding-details', label: 'Jump to Details', shortLabel: 'Details', Icon: Calendar },
-  { id: 'dress-code', label: 'Jump to Dress Code', shortLabel: 'Dress Code', Icon: Palette },
-  { id: 'rsvp', label: 'Jump to RSVP', shortLabel: 'RSVP', Icon: Heart },
-  { id: 'faq', label: 'Jump to FAQ', shortLabel: 'FAQ', Icon: HelpCircle },
-] as const;
+  detailsAnchor,
+  dressCodeAnchor,
+  rsvpAnchor,
+  faqAnchor,
+];
 
 /**
  * The love story opens at the Act One card. The Hero leads with it as its
@@ -50,8 +58,16 @@ export const homeAnchor: QuickNavAnchor = {
   Icon: House,
 };
 
-/** FAB menu, top to bottom: the way back first, then the logistics. */
-export const fabAnchors: readonly QuickNavAnchor[] = [homeAnchor, storyAnchor, ...quickNavAnchors];
+/** FAB menu, top to bottom: the way back first, then every section in page order. */
+export const fabAnchors: readonly QuickNavAnchor[] = [
+  homeAnchor,
+  storyAnchor,
+  detailsAnchor,
+  dressCodeAnchor,
+  rsvpAnchor,
+  entourageAnchor,
+  faqAnchor,
+];
 
 /** Scroll a section into view, honoring the guest's reduced-motion preference. */
 export function scrollToAnchor(id: string, prefersReducedMotion: boolean) {
