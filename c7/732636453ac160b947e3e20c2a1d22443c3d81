@@ -1,0 +1,27 @@
+frontend/lib/quick-nav.ts
+  s_8a759740aafea2::t_87ddd1624c904f 61-70
+  s_8a759740aafea2::t_b8453c41e193c9 1
+  s_8a759740aafea2::t_69413db2eacff5 18-25,27-29,32-36
+frontend/components/ui/FloatingAnchorSet.test.tsx
+  s_8a759740aafea2::t_0a069873350900 105,110-121
+  s_8a759740aafea2::t_d4d11ab09e8fe9 90-91
+  s_8a759740aafea2::t_26e7ac157ed3e0 122-123
+frontend/components/ui/HeroJumpNav.test.tsx
+  s_8a759740aafea2::t_59670ad0c5821e 22-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c7732636453ac160b947e3e20c2a1d22443c3d81",
+  "prompts": {},
+  "sessions": {
+    "s_8a759740aafea2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "05718556-9f9a-498a-ac19-340738a18eb4",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Jave Jao <Javej@pageuppeople.com>"
+    }
+  }
+}
